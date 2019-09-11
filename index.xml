@@ -2,12 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Allen&#39;s Whiteboard</title>
-    <link>https://allenfrostline.com/index.xml</link>
+    <link>https://allenfrostline.com/</link>
     <description>Recent content on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2019</copyright>
     <lastBuildDate>Wed, 11 Sep 2019 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://allenfrostline.com/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Continuous Integration in Blogging</title>
