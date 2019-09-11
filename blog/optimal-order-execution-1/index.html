@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (1) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (1) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I&amp;rsquo;m recently reading several papers on modelling stock order behavior and its corresponding optimal strategies. Compared with classical quantitative trading strategies, serious research on order &amp;hellip;">
+      <meta property="og:description" content="I&amp;rsquo;m recently reading several papers on modelling stock order behavior and its corresponding optimal strategies. Compared with classical quantitative trading strategies, serious research on order &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/optimal-order-execution-1.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Literature Review on Optimal Order Execution (1)</h1>
+
+
+<h3>
+2018-04-23</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Hendershott and Livdan (2018)</a></li>
+
+<li><a href="#toc_1">Almgren and Chriss (2000)</a></li>
+
+<li><a href="#toc_2">Gatheral and Schied (2013)</a></li>
+
+<li><a href="#toc_3">Obizhaeva and Wang (2013)</a></li>
+
+<li><a href="#toc_4">Alfonsi, Fruth and Schied (2010)</a></li>
+
+<li><a href="#toc_5">Grinold and Kahn (1999)</a></li>
+
+<li><a href="#toc_6">References</a></li>
+</ul>
+
+</nav>
+<p>I&rsquo;m recently reading several papers on modelling stock order behavior and its corresponding optimal strategies. Compared with classical quantitative trading strategies, serious research on order optimization has a short history as its major importance dazzles in high frequency trading (HFT), one of the youngest childs of finance. I&rsquo;ll wrap up the main ideas and methodologies below in a paper-wise manner. Further unregular updates on this post are expected. Specifically, the models below are trying to answer this question: <strong>how much time should I expect before my limit order gets executed?</strong></p>
+
+<!-- more -->
+
+<h1 id="toc_0">Hendershott and Livdan (2018)</h1>
+
+<p>This is the lecture note for the course MFE230X at UC Berkeley. The note started from the motivation of the source of trading costs and a range of liquidity measures, including static ones like (realized) spreads, TWAP, volume, VWAP and POV, together with a dynamic measure, IS. With stock price <span class="math inline">\(S(t)\)</span> following some predetermined evolution model and control variable <span class="math inline">\(Q(t)\)</span>, quantity yet-to-trade up to time <span class="math inline">\(t\)</span> (same direction, boundary conditions <span class="math inline">\(Q(0)=Q\)</span> and <span class="math inline">\(Q(T)=0\)</span>), the authors compared several strategies with the objective of minimizing the cost function over time. Specifically, it&rsquo;s proved that the following <strong>four</strong> strategies are both statically and dynamically optimal.</p>
+
+<h1 id="toc_1">Almgren and Chriss (2000)</h1>
+
+<p>This is a model with market impact combined with &ldquo;urgency in execution&rdquo;. (quoted from the lecture notes) The model assumes that stock price follows a diffusion process. The market impact <span class="math inline">\(dS(t) \equiv \eta Q'(t)\)</span> on stock price, by assumption, decays instantaneously. Therefore, the cost function is</p>
+<p><span class="math display">\[
+C_0 = \eta \int_0^T Q'(t)^2 dt.
+\]</span></p><p>Using Euler-Lagrange equation and boundary conditions, the optimal strategy is</p>
+<p><span class="math display">\[
+Q(t) = Q\left(1 - \frac{t}{T}\right).
+\]</span></p><p>Next, they added a penalty term for cost variance<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></p>
+<p><span class="math display">\[
+\text{Var}(C_0) = \text{Var}\left(\sigma^2\int_0^T Q(t)dS(t)\right) = \sigma^2 \int_0^T Q(t)^2dt
+\]</span></p><p>and the new risk-adjusted cost function is thus</p>
+<p><span class="math display">\[
+C_1 = C_0 + \lambda \text{Var}(C_0) = \eta \int_0^T Q'(t)^2 dt + \lambda \sigma^2 \int_0^T Q(t)^2 dt
+\]</span></p><p>which gives optima, with <span class="math inline">\(\kappa\equiv\lambda\sigma^2/\eta\)</span></p>
+<p><span class="math display">\[
+Q(t) = Q\frac{\sinh\kappa(T-t)}{\sinh(\kappa T)}.
+\]</span></p><p>This statically optimal solution is dynamically optimal and optimal liquidation time is <span class="math inline">\(\infty\)</span>.</p>
+
+<p>Alternatively, we can also penalize average VaR instead of variance, and the cost function now becomes</p>
+<p><span class="math display">\[
+C_2 = \eta \int_0^T Q'(t)^2 dt + \lambda\sigma\int_0^T Q(t)dt.
+\]</span></p><p>Now the optimal strategy is</p>
+<p><span class="math display">\[
+Q(t) = Q\left(1 - \frac{t}{T}\right)^2
+\]</span></p><p>where</p>
+<p><span class="math display">\[
+T = \sqrt{\frac{4Q\eta}{\lambda \sigma}}.
+\]</span></p><p>The solution is again also dynamically optimal. Note that now we have finite liquidation time.</p>
+
+<h1 id="toc_2">Gatheral and Schied (2013)</h1>
+
+<p>They assumed arithmetic brownian motion (ABM)<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> and took time-averaged VaR as the risk term, ceteri paribus. The solution is</p>
+<p><span class="math display">\[
+-Q_{ABM}'(t) = \frac{2Q}{T}\left(1 - \frac{t}{T}\right)
+\]</span></p><p>and the optimal liquidation time is</p>
+<p><span class="math display">\[
+T = \sqrt{\frac{4Q}{\lambda S(0)}}.
+\]</span></p><p>Additionally, the solution under GBM assumption is</p>
+<p><span class="math display">\[
+-Q_{GBM}'(t) = \frac{Q_{GBM}(t)}{T - t} + \frac{QS(t)}{T^2S(0)}(T - t).
+\]</span></p><p>It is worth noting that the two settings are not significantly different when <span class="math inline">\(\sigma^2T\ll 1\)</span>. Another interesting result is that in Almgren-Chriss style models, we can prove VWAP is always the optimal strategy.</p>
+
+<h1 id="toc_3">Obizhaeva and Wang (2013)</h1>
+
+<p>In the paper by Obizhaeva and Wang, the price process is modelled with a resilience term:</p>
+<p><span class="math display">\[
+S(t) = S(0) + \eta \int_0^t\exp(-\rho(t-s))Q'(s)ds + \sigma\int_0^t dZ(s)
+\]</span></p><p>which, instead of market impact proportional to actual quantity on the book, assumes impact linear in the rate of trading, or more specifically, the exponentially discounted quantity finished over the time. The expected cost is thus given by</p>
+<p><span class="math display">\[
+C= \eta \int_0^T Q'(t)dt \int_0^t \exp(-\rho(t-s))Q'(s)ds.
+\]</span></p><p>To find the statically optimal policy, we have Euler-Lagrange:</p>
+<p><span class="math display">\[
+\frac{d}{dt}\frac{\partial C}{\partial Q'} = 0 \Rightarrow \frac{\partial C}{\partial Q'} = K
+\]</span></p><p>where <span class="math inline">\(K\)</span> is a constant. Functionally differentiating <span class="math inline">\(C\)</span> w.r.t. <span class="math inline">\(Q'\)</span> we obtain the Fredholm integral equation:</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial Q'}(t) = \int_0^T\exp(-\rho |t-s|) Q'(s) ds = K
+\]</span></p><p>which gives a candidate bucket policy</p>
+<p><span class="math display">\[
+Q'(t) = \frac{K}{2}(\delta(t) + \rho + \delta(t-T))
+\]</span></p>
+<h1 id="toc_4">Alfonsi, Fruth and Schied (2010)</h1>
+
+<p>In the paper by Alfonsi, Fruth and Schied<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>, the aforementioned model by Obizhaeva and Wang was further analyzed. A more general policy was proposed which handles any shape of order density function while keeping the original assumption of exponentially recovery scheme. Specifically, their models split the continuous ordering process into <span class="math inline">\(N\)</span> smaller consecutive buckets (so in total <span class="math inline">\(N + 1\)</span> orders). Here I&rsquo;ll only cover the optimal strategy from the first model in their paper.</p>
+
+<p>With some distribution <span class="math inline">\(F\)</span> for the ordering process given, suppose we have a function <span class="math inline">\(h:\mathbb{R}\to\mathbb{R}^+\)</span> with</p>
+<p><span class="math display">\[
+h(x) = F^{-1}(x) - \exp(-\rho T / N) F^{-1}(\exp(-\rho  Tx / N))
+\]</span></p><p>is one-to-one. Then there exists a unique optimal strategy <span class="math inline">\(\left\{Q_0, Q_1, \ldots, Q_N\right\}\)</span>, where the initial order is the unique solution of</p>
+<p><span class="math display">\[
+F^{-1}(Q - NQ_0(1 - \exp(-\rho T / N))) = \frac{h(Q_0)}{1 - \exp(-\rho T / N)},
+\]</span></p><p>the intermediate orders are given by</p>
+<p><span class="math display">\[
+Q_1 = Q_2 = \cdots = Q_{N - 1} = Q_0 (1 - \exp(-\rho T / N))
+\]</span></p><p>and the final order is determined by</p>
+<p><span class="math display">\[
+Q_N = Q - Q_0 - (N - 1)Q_0(1 - \exp(-\rho T / N)).
+\]</span></p>
+<h1 id="toc_5">Grinold and Kahn (1999)</h1>
+
+<p>Different from any paper above, here we introduce nonlinear transient market impact<sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup>. There is a famous square-root liquidity model by Grinold and Kahn:</p>
+<p><span class="math display">\[
+\Delta S = \text{Spread Cost} + \alpha \sigma \sqrt{\frac{\text{Trade Size}}{\text{Daily Volume}}}.
+\]</span></p><p>The square-root price process, therefore, is</p>
+<p><span class="math display">\[
+S(t) = S(0) + \frac{3}{4}\sigma\int_0^t\sqrt{\frac{-Q'(t)}{V}}\frac{ds}{\sqrt{t-s}} + \sigma\int_0^t dZ(s)
+\]</span></p><p>where we&rsquo;ve assumed a kernel <span class="math inline">\(G(t)=t^{-1/2}\)</span>. Using this market impact model, we may <strong>numerically</strong> compare different execution schedulings under a more empirically-tested framework. However, due to the concavity of <span class="math inline">\(\sqrt{-Q'(t)/V}\)</span>, there is not optimal solution for this model.</p>
+
+<hr />
+
+<h1 id="toc_6">References</h1>
+
+<ul>
+<li>Terrence Hendershott, and Dmitry Livdan. &ldquo;Optimal execution of large orders&rdquo;. MFE230X (2018).</li>
+<li>Robert Almgren, and Neil Chriss. &ldquo;Optimal execution of portfolio transactions.&rdquo; Journal of Risk 3 (2001): 5-40.</li>
+<li>Jim Gatheral, and Alexander Schied. &ldquo;Optimal trade execution under geometric Brownian motion in the Almgren and Chriss framework&rdquo;. Finance at Fields (2013): 373-388.</li>
+<li>Anna Obizhaeva, and Jiang Wang. &ldquo;Optimal trading strategy and supply/demand dynamics&rdquo;. Journal of Financial Markets 16 (2013): 1-32.</li>
+<li>Aurélien Alfonsi, Antje Fruth, and Alexander Schied. &ldquo;Optimal execution strategies in limit order books with general shape functions.&rdquo; Quantitative Finance 10.2 (2010): 143-157.</li>
+<li>Richard C. Grinold, and Ronald N. Kahn. &ldquo;Active portfolio management&rdquo; (2000).</li>
+</ul>
+
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">I don&rsquo;t quite understand how the get there, though. The variance is not obvious, is it? <a class="footnote-return" href="#fnref:1">↩︎</a></li>
+
+<li id="fn:2">It&rsquo;s a very strong assumption: <span class="math inline">\(S(t)=S(0)(1+\sigma Z(t)) \)</span>. <a class="footnote-return" href="#fnref:2">↩︎</a></li>
+
+<li id="fn:3">It&rsquo;s interesting that their paper actually got published before the one by Obizhaeva and Wang. The latter was actually first submitted as an NBER working paper in June 2005. <a class="footnote-return" href="#fnref:3">↩︎</a></li>
+
+<li id="fn:4">There&rsquo;s an empirical rule about the nonlinearity of market impact: concave for small quantities and convex for large quantities. <a class="footnote-return" href="#fnref:4">↩︎</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/switch-hexo-theme-to-apollo/">Switched Hexo Theme to Apollo</a></span>
+  <span class="nav-next"><a href="/blog/jupyter-virtualenv/">Run Jupyter Notebook within Virtualenv</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/switch-hexo-theme-to-apollo\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/jupyter-virtualenv\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/optimal-order-execution-1.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

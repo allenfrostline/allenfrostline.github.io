@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>C&#43;&#43; Key Points - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="C&#43;&#43; Key Points - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is the first post of my ambitious plan trying to enumerate as many key points about the C&#43;&#43; language as I can. These notes are only for personal reviewing purposes and shall definitely be used &amp;hellip;">
+      <meta property="og:description" content="This is the first post of my ambitious plan trying to enumerate as many key points about the C&#43;&#43; language as I can. These notes are only for personal reviewing purposes and shall definitely be used &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/cpp-key-points.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>C&#43;&#43; Key Points</h1>
+
+
+<h3>
+2018-09-03</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Header</a></li>
+
+<li><a href="#toc_1">Standard Input &amp; Output</a></li>
+
+<li><a href="#toc_2">Namespaces</a></li>
+
+<li><a href="#toc_3">Data Types</a></li>
+
+<li><a href="#toc_4">Operators</a></li>
+
+<li><a href="#toc_5">Functions</a></li>
+
+<li><a href="#toc_6">Build Process</a></li>
+
+<li><a href="#toc_7">Comments</a></li>
+
+<li><a href="#toc_8">References</a></li>
+
+<li><a href="#toc_9">Const References</a></li>
+
+<li><a href="#toc_10">Pointers</a></li>
+
+<li><a href="#toc_11">New and Delete</a></li>
+
+<li><a href="#toc_12">Const Pointers</a></li>
+
+<li><a href="#toc_13">If/Else</a></li>
+
+<li><a href="#toc_14">Switch</a></li>
+
+<li><a href="#toc_15">While</a></li>
+
+<li><a href="#toc_16">For</a></li>
+
+<li><a href="#toc_17">Classes</a></li>
+
+<li><a href="#toc_18">Protection</a></li>
+
+<li><a href="#toc_19">Constructor &amp; Destructor</a></li>
+
+<li><a href="#toc_20">Coding Style</a></li>
+
+<li><a href="#toc_21">Struct</a></li>
+
+<li><a href="#toc_22">Operator Overloading</a></li>
+
+<li><a href="#toc_23">Include Guards</a></li>
+
+<li><a href="#toc_24">Containers</a></li>
+
+<li><a href="#toc_25">Data Abstraction</a></li>
+
+<li><a href="#toc_26">Encapsulation</a></li>
+
+<li><a href="#toc_27">Friend</a></li>
+
+<li><a href="#toc_28">Inheritance</a></li>
+
+<li><a href="#toc_29">Virtual</a></li>
+
+<li><a href="#toc_30">Pure Virtual &amp; Abstract Classes</a></li>
+
+<li><a href="#toc_31">Comparing Virtual &amp; Pure Virtual</a></li>
+
+<li><a href="#toc_32">Polymorphism</a></li>
+
+<li><a href="#toc_33">Const Member Functions</a></li>
+
+<li><a href="#toc_34">Mutable</a></li>
+
+<li><a href="#toc_35">Override</a></li>
+
+<li><a href="#toc_36">Static</a></li>
+
+<li><a href="#toc_37">Function Objects</a></li>
+
+<li><a href="#toc_38">Lambda</a></li>
+
+<li><a href="#toc_39">OOP: Reviews</a></li>
+
+<li><a href="#toc_40">Methods</a></li>
+
+<li><a href="#toc_41">Functions</a></li>
+
+<li><a href="#toc_42">Structure</a></li>
+
+<li><a href="#toc_43">Sorting and Searching in STL</a></li>
+
+<li><a href="#toc_44">Copying Elements</a></li>
+
+<li><a href="#toc_45">Predicates</a></li>
+
+<li><a href="#toc_46">STL &amp; Lambda</a></li>
+
+<li><a href="#toc_47">Templates</a></li>
+
+<li><a href="#toc_48">Exception Handling</a></li>
+
+<li><a href="#toc_49">File I/O</a></li>
+
+<li><a href="#toc_50">References</a></li>
+</ul>
+
+</nav>
+<p>This is the first post of my ambitious plan trying to enumerate as many key points about the C++ language as I can. These notes are only for personal reviewing purposes and shall <strong>definitely</strong> be used commercially by anyone interested. Comment below for any missing C++ syntax or features. 👍🏻</p>
+
+<!-- more -->
+
+<h1 id="toc_0">Header</h1>
+
+<p>Basically there&rsquo;re only one thing that needs attention. For standard libraries we use <code>&lt;</code> and <code>&gt;</code> and for local libraries we use quotes.</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &quot;helloworld.h&quot;
+</code></pre>
+
+<p>These are files we declare functions and classes we want to use or implement in main files.</p>
+
+<h1 id="toc_1">Standard Input &amp; Output</h1>
+
+<p>In C++, by loading the <code>iostream</code> library we can read and write by</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    int a;
+    std::cin &gt;&gt; a;
+    std::cout &lt;&lt; a &lt;&lt; std::endl;
+}
+</code></pre>
+
+<h1 id="toc_2">Namespaces</h1>
+
+<p>Normally libraries come with classes, e.g. for <code>iostream</code> we need to use <code>std</code> everytime we need to print something. With namespaces we can reduce redundance.</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using std::cout;
+using std::cin;
+using std::endl;
+
+int main() {
+    int a;
+    std::cin &gt;&gt; a;
+    std::cout &lt;&lt; a &lt;&lt; std::endl;
+}
+</code></pre>
+
+<p>We may also use <code>using namespace std;</code> which sometimes can cause problems.</p>
+
+<h1 id="toc_3">Data Types</h1>
+
+<p>There are a variety of data types in C++. For real numbers we have</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Type</th>
+<th align="center">Bytes</th>
+<th align="center">Range</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">float</td>
+<td align="center"><span class="math inline">\(4\)</span></td>
+<td align="center"><span class="math inline">\(\pm 3.4E\pm38\)</span></td>
+</tr>
+
+<tr>
+<td align="center">double</td>
+<td align="center"><span class="math inline">\(8\)</span></td>
+<td align="center"><span class="math inline">\(\pm 1.7E\pm308\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>where we should pay enough attention to the <span class="math inline">\(\pm\)</span>. For general integers we have</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Type</th>
+<th align="center">Bytes</th>
+<th align="center">Range</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">short</td>
+<td align="center"><span class="math inline">\(2\)</span></td>
+<td align="center"><span class="math inline">\(-2E15\)</span> to <span class="math inline">\(2E15-1\)</span></td>
+</tr>
+
+<tr>
+<td align="center">int</td>
+<td align="center"><span class="math inline">\(4\)</span></td>
+<td align="center"><span class="math inline">\(-2E31\)</span> to <span class="math inline">\(2E31-1\)</span></td>
+</tr>
+
+<tr>
+<td align="center">long</td>
+<td align="center"><span class="math inline">\(8\)</span></td>
+<td align="center"><span class="math inline">\(-2E63\)</span> to <span class="math inline">\(2E63-1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>and for each type we also have an unsigned version that starts from 0 and covers the same length of range.</p>
+
+<p>We may notice that <code>long</code> has a smaller range than <code>float</code> despite the fact that the first data type actually costs more bytes than the latter. This is because the 4 bytes (or 32 bits) of a <code>float</code> <span class="math inline">\(V\)</span> is not stored equally in RAM, but rather</p>
+<p><span class="math display">\[
+V = (-1)^S \cdot M \cdot 2^E
+\]</span></p><p>where <span class="math inline">\(S\)</span> is the first bit, and <span class="math inline">\(E\)</span> the second through the ninth bits, and <span class="math inline">\(M\)</span> for the tenth and so forth. So in a sense, because <code>float</code> is more &ldquo;sparse&rdquo;, the <code>long</code> type has a smaller range.</p>
+
+<p>Apart from other fundamental types like <code>char</code> and <code>bool</code>, we can also define our own data types or use types defined in libraries, e.g. <code>std::string</code>. We may also use type aliases like</p>
+
+<pre><code class="language-cpp">typedef double OptionPrice;
+</code></pre>
+
+<h1 id="toc_4">Operators</h1>
+
+<p>We have operators for fundamental types:</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Function</th>
+<th align="center">Operator</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">assignment</td>
+<td align="center"><code>=</code></td>
+</tr>
+
+<tr>
+<td align="center">arithmetic</td>
+<td align="center"><code>+</code> <code>-</code> <code>*</code> <code>/</code></td>
+</tr>
+
+<tr>
+<td align="center">comparison</td>
+<td align="center"><code>&gt;</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+</tr>
+
+<tr>
+<td align="center">equality/nonequality</td>
+<td align="center"><code>==</code> <code>!=</code></td>
+</tr>
+
+<tr>
+<td align="center">logical</td>
+<td align="center"><code>&amp;&amp;</code> <code>&amp;#124;&amp;#124;</code></td>
+</tr>
+
+<tr>
+<td align="center">modulo</td>
+<td align="center"><code>%</code></td>
+</tr>
+</tbody>
+</table>
+<p>In C++ there&rsquo;re a set of short-cuts as follows:</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Full Operator</th>
+<th align="center">Short-cut</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>i = i + 1;</code></td>
+<td align="center"><code>i++;</code> <code>i += 1;</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>i = i - 1;</code></td>
+<td align="center"><code>i--;</code> <code>i -= 1;</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>i = i * 1;</code></td>
+<td align="center"><code>i *= 1;</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>i = i / 1;</code></td>
+<td align="center"><code>i /= 1;</code></td>
+</tr>
+</tbody>
+</table>
+<p>We may also use prefix and postfix in assignment, which are totally different. After</p>
+
+<pre><code class="language-cpp">int x = 3;
+int y = x++;
+</code></pre>
+
+<p>we have <span class="math inline">\(x = 4\)</span> and <span class="math inline">\(y = 3\)</span>. After</p>
+
+<pre><code class="language-cpp">int x = 3;
+int y = ++x;
+</code></pre>
+
+<p>we have <span class="math inline">\(x = y = 3\)</span>.</p>
+
+<h1 id="toc_5">Functions</h1>
+
+<p>A general template for a C++ function:</p>
+
+<pre><code class="language-cpp">resType f(argType1 arg1, argType2 arg2, ...) {
+    Do something;
+    return res;
+}
+</code></pre>
+
+<p>Notice we may write multiple functions with the same <code>resType</code> but with different arguments, which we call &ldquo;parameter overloading&rdquo;. Meanwhile, even withou parameter overloading we can still use a function of <code>double</code> on <code>int</code>, because <code>int</code> takes up less bytes and the implicit conversion is safe. We call it <strong>widening</strong> or <strong>promotion</strong>. In contrast, <strong>narrowing</strong> can be dangerous and cause a build warning.</p>
+
+<h1 id="toc_6">Build Process</h1>
+
+<ul>
+<li>Preprocessing</li>
+<li>Compiling (where checks syntax and types)</li>
+<li>Linking</li>
+</ul>
+
+<h1 id="toc_7">Comments</h1>
+
+<p>In C++ we have two kinds of comments.</p>
+
+<pre><code class="language-cpp">// This is inline comment
+
+/*
+These are
+block comments
+*/
+</code></pre>
+
+<h1 id="toc_8">References</h1>
+
+<p>In C++, people usually pass variables into functions by two methods: either <strong>by value</strong> or <strong>by reference</strong>. The first way creates a copy of the variable and nothing will happen to the original one. For the second, anything we do in the function will take effect on the original variable itself. The original variable must be declared once we create a reference, so</p>
+
+<pre><code class="language-cpp">int x = 1;
+int&amp; refx = x;
+</code></pre>
+
+<p>will compile, while below will not:</p>
+
+<pre><code class="language-cpp">int x = 1;
+int&amp; refx;
+refx = x;
+</code></pre>
+
+<p>References can be extremely useful, especially when the original variable is a large object and making a copy costs considerable time and memory. However, this is potentially risky when we don&rsquo;t want to mess up with the original object when calling a function. So we need const references.</p>
+
+<h1 id="toc_9">Const References</h1>
+
+<p>There&rsquo;re two situations we should take care when using the <code>const</code> keyword with references. First, we can make a reference of a const variable, and we cannot change the value of it:</p>
+
+<pre><code class="language-cpp">const int x = 1;
+const int&amp; refx = x;
+x = 2;    // error
+refx = 2; // error
+</code></pre>
+
+<p>We may also bind a const reference to a variable when the original itself is not const:</p>
+
+<pre><code class="language-cpp">int y = 1;
+const int&amp; refy = y;
+y = 2;    // success
+refy = 2; // error
+</code></pre>
+
+<p>In this case we avoid making a copy while also keep the original variable safe from unexpected editing.</p>
+
+<h1 id="toc_10">Pointers</h1>
+
+<p>There is a third way of passing a variable, that is pointers. Pointers are variables the points to their addresses in memory. We declare a pointer by</p>
+
+<pre><code class="language-cpp">int* pi;            // legal but bad without initialization
+int* pi = nullptr;  // good when there're no proper variables
+</code></pre>
+
+<p>which comes with two unique operators: <code>&amp;</code> for the address of a variable, and <span class="math inline">\(*\)</span> for the dereference of a pointer.</p>
+
+<pre><code class="language-cpp">int i = 123;
+int* pi = &amp;i;
+cout &lt;&lt; *pi;
+</code></pre>
+
+<pre><code>123
+</code></pre>
+
+<h1 id="toc_11">New and Delete</h1>
+
+<p>You can create a pointer pointing to a piece of dynamic memory for later deletion, in case memory is being an issue in your program.</p>
+
+<pre><code class="language-cpp">int *p = new int;
+// or
+int *p = NULL;
+p = new int;
+*p = 1;
+delete p
+</code></pre>
+
+<h1 id="toc_12">Const Pointers</h1>
+
+<p>You can have pointers to a const variable, i.e. you cannot change its value through pointers.</p>
+
+<pre><code class="language-cpp">const int x = 1;
+const int* px = &amp;x;
+x = 2;   // error
+*px = 2; // error
+px += 1; // success
+</code></pre>
+
+<p>You can also have const pointers to variables, then you can change the value of the variable but never again the pointer (address) itself.</p>
+
+<pre><code class="language-cpp">int x = 1;
+int* const px = &amp;x;
+x = 2;   // success
+*px = 2; // success
+px += 1; // error
+</code></pre>
+
+<p>You can also have const pointers to const variables.</p>
+
+<pre><code class="language-cpp">const int x = 1;
+const int* const px = &amp;x;
+x = 2;   // error
+*px = 2; // error
+px += 1; // error
+</code></pre>
+
+<h1 id="toc_13">If/Else</h1>
+
+<p>Below is a general template for <code>if/else</code> structures in C++.</p>
+
+<pre><code class="language-cpp">if (condition1) {
+    statement1;
+} else if (condition2) {
+    statement2;
+} else {
+    statement3;
+}
+</code></pre>
+
+<h1 id="toc_14">Switch</h1>
+
+<p>When there&rsquo;re multiple conditions, we can also use the <code>switch</code> keyword.</p>
+
+<pre><code class="language-cpp">switch (expression) {
+    case value1:
+        statement1;
+        break;
+    case value2:
+        statement2;
+        break;
+    default:
+        statement3;
+}
+</code></pre>
+
+<h1 id="toc_15">While</h1>
+
+<p>One of the most popular loops is <code>while</code> loop.</p>
+
+<pre><code class="language-cpp">while (condition) {
+    statement;
+}
+</code></pre>
+
+<p>It also has a variant called the <code>do/while</code> loop.</p>
+
+<pre><code class="language-cpp">do {
+    statement;
+} while (condition);
+</code></pre>
+
+<p>which is slightly different from the <code>while</code> loop in sequence.</p>
+
+<h1 id="toc_16">For</h1>
+
+<p>Another form of loop that keeps track of the iterator precisely.</p>
+
+<pre><code class="language-cpp">for (initializer; condition; statement1) {
+    statement2;
+}
+</code></pre>
+
+<p>There is an unwritten rule that we usually write <code>++i</code> in <code>statement1</code> because compared with <code>i++</code> which need to make a copy, <code>++i</code> is more efficient. However, it&rsquo;s arguably correct because modern compilers can surely optimize this defect.</p>
+
+<h1 id="toc_17">Classes</h1>
+
+<p>A simple but intuitive example of classes is to describe a people in C++ (here we assume type <code>string</code> under the namespace <code>std</code> is used):</p>
+
+<pre><code class="language-cpp">class Person {
+    string name;
+    string email;
+    int stu_id;
+};
+</code></pre>
+
+<p>We can also implement member functions in the class, just to make it more convenient:</p>
+
+<pre><code class="language-cpp">class Person {
+    string name;
+    string email;
+    int stu_id;
+
+    string getName();
+    string getEmail();
+    int getStuID();
+
+    void setName(string new_name);
+    void setEmail(string new_email);
+    void setStuID(int new_stu_id);
+};
+</code></pre>
+
+<h1 id="toc_18">Protection</h1>
+
+<p>We have three levels of data protection in a class:</p>
+
+<ul>
+<li>public: anyone have access</li>
+<li>private: only members can access</li>
+<li>protected: disccuss later</li>
+</ul>
+
+<p>This means we can protect data in the class by declaring them as private while get access to them via public member functions:</p>
+
+<pre><code class="language-cpp">class Person {
+private:
+    string name;
+    string email;
+    int stu_id;
+
+public:
+    string getName();
+    string getEmail();
+    int getStuID();
+
+    void setName(string new_name);
+    void setEmail(string new_email);
+    void setStuID(int new_stu_id);
+};
+</code></pre>
+
+<h1 id="toc_19">Constructor &amp; Destructor</h1>
+
+<p>An instance created based on a class is called an object. To create an object, we may need a constructor, a copy constructor and a destructor.</p>
+
+<pre><code class="language-cpp">class Person {
+private:
+    string name;
+    string email;
+    int stu_id;
+
+public:
+    Person();                                       // default constructor
+    Person(string name, string email, int stu_id);  // normal constructor
+    Person(const Person&amp; another_person);           // copy constructor
+    ~Person();                                      // destructor
+    string getName();
+    string getEmail();
+    int getStuID();
+
+    void setName(string name);
+    void setEmail(string email);
+    void setStuID(int stu_id);
+};
+</code></pre>
+
+<h1 id="toc_20">Coding Style</h1>
+
+<ul>
+<li>We write each class definition in a separate header file</li>
+<li>We implement each class in a separate cpp file</li>
+<li>First letter of the class name is uppercase, e.g. <code>Person</code></li>
+<li>Public member functions start with a upper case letter, private members use lower case</li>
+<li>Member variable names end with underscore, e.g. <code>name_</code>.</li>
+</ul>
+
+<p>According to this coding style we have in <code>Person.h</code></p>
+
+<pre><code class="language-cpp">#include &lt;string&gt;
+using std::string;
+
+class Person {
+public:
+   Person();
+   Person(string name, string email, int stu_id);
+   Person(const Person&amp; another_person);
+   ~Person();
+   string GetName();
+   string GetEmail();
+   int GetStuID();
+   void SetName(string name);
+   void SetEmail(string email);
+   void SetStuID(int stu_id);
+
+private:
+    string name_;
+    string email_;
+    int stu_id_;
+};
+</code></pre>
+
+<p>In <code>Person.cpp</code> we implement the member functions of the class:</p>
+
+<pre><code class="language-cpp">string Person::GetEmail() {
+  return email_;
+}
+
+void Person::SetEmail(string email) {
+   email_ = email;
+}
+
+...
+</code></pre>
+
+<p>Just keep in mind that the constructors as well as the destructor should also be implemented:</p>
+
+<pre><code class="language-cpp">Person::Person() {
+   name_ = &quot;&quot;;
+   email_ = &quot;&quot;;
+   stu_id_ = 0;
+}
+
+Person::Person(string name, string email, int stu_id) {
+    name_ = name;
+    email_ = email;
+    stu_id_ = stu_id;
+}
+
+Person::Person(const Person&amp; another_person) {
+    name_ = another_person.name_;
+    email_ = another_person.email_;
+    stu_id_ = another_person.stu_id_;
+}
+
+Person::~Person() {}
+</code></pre>
+
+<p>We can also use the <strong>colon syntax</strong> for constructors:</p>
+
+<pre><code class="language-cpp">Person::Person() : name_(&quot;&quot;), email_(&quot;&quot;), stu_id_(0) {}
+Person::Person(string name, string email, int stu_id) : name_(name), email_(email), stu_id_(stu_id) {}
+Person::Person(const Person&amp; another_person) :
+    name_(another_person.name_),
+    email_(another_person.email_),
+    stu_id_(another_person.stu_id_)
+{}
+</code></pre>
+
+<h1 id="toc_21">Struct</h1>
+
+<p>a <code>struct</code> is a <code>class</code> with one difference: <code>struct</code> members are by default public, while <code>class</code> members are by default private.</p>
+
+<pre><code class="language-cpp">struct Person {
+    string name;
+    string email;
+    int stu_id;
+}
+</code></pre>
+
+<h1 id="toc_22">Operator Overloading</h1>
+
+<p>For a newly created class we cannot use <code>person2 = person1</code> if we want to assign the whole object <code>person1</code> to <code>person2</code>. We have to use constructors. What we can do, instead, is to overload these operators (e.g. the assignment operator <code>=</code>) specifically for the class.</p>
+
+<p>The overloadable operators include <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> <code>^</code> <code>&amp;</code> <code>|</code> <code>~</code> <code>!</code> <code>=</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>++</code> <code>--</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>==</code> <code>!=</code> <code>&amp;&amp;</code> <code>||</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>&amp;=</code> <code>|=</code> <code>^=</code> <code>%=</code> <code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>[]</code> <code>()</code> <code>-&gt;</code> <code>-&gt;*</code> <code>new</code> <code>new[]</code> <code>delete</code> <code>delete[]</code>.</p>
+
+<p>The non-overloadable operators are <code>::</code> <code>.*</code> <code>.</code> <code>?=</code>.</p>
+
+<pre><code class="language-cpp">void Person::operator=(const Person&amp; another_person) {
+    name_ = another_person.name_;
+    email_ = another_person.email_;
+    stu_id_ = another_person.stu_id_;
+}
+</code></pre>
+
+<p>However, such overloading does not support chain assignment like <code>person3 = person2 = person1</code>. We need to return a reference in order to support that.</p>
+
+<pre><code class="language-cpp">Person&amp; Person::operator=(const Person&amp; another_person) {
+    name_ = another_person.name_;
+    email_ = another_person.email_;
+    stu_id_ = another_person.stu_id_;
+    return *this;
+}
+</code></pre>
+
+<p>where <code>this</code> is a pointer pointing to the object itself.</p>
+
+<p>Another concern is self-assignment, which in some cases can be dangerous and in almost every situation is inefficient. To avoid self-assignment we need to detect and skip it.</p>
+
+<pre><code class="language-cpp">Person&amp; Person::operator=(const Person&amp; another_person) {
+    if (this != &amp;another_person) {
+        name_ = another_person.name_;
+        email_ = another_person.email_;
+        stu_id_ = another_person.stu_id_;
+    }
+
+    return *this;
+}
+</code></pre>
+
+<h1 id="toc_23">Include Guards</h1>
+
+<p>In C++, a function can only be defined once. This is called the One Definition Rule (ODR). To avoid multiple including of the header files, we use include guards. This is being done by defining a macro at the beginning of each header file.</p>
+
+<pre><code class="language-cpp">#ifndef MYCLASS_H
+#define MYCLASS_H
+
+class MyClass {
+  ...
+}
+
+#endif
+</code></pre>
+
+<h1 id="toc_24">Containers</h1>
+
+<p>Here we introduce two of the most useful containers in the C++ Standard Library: <code>std::vector</code> and <code>std::map</code>. To initialize an empty vector, we use</p>
+
+<pre><code class="language-cpp">#include &lt;vector&gt;
+using std::vector;
+
+int main() {
+    vector&lt;int&gt; v;
+    for (int i=0; i&lt;=10; ++i) {
+        v.push_back(i);
+    }
+}
+</code></pre>
+
+<p>and to initialize with a specific size, we do</p>
+
+<pre><code class="language-cpp">#include &lt;vector&gt;
+using std::vector;
+
+int main() {
+    vector&lt;int&gt; v(10);
+    for (int i=0; i&lt;=10; ++i) {
+        v[i] = i;
+    }
+}
+</code></pre>
+
+<p>On the other hand, <code>map</code> containers are like <code>dict</code> in Python, which allows you to use indiced of any type, e.g. <code>std::string</code>.</p>
+
+<pre><code class="language-cpp">#include &lt;map&gt;
+using std::map;
+
+int main() {
+    map&lt;unsigned int, string&gt; zipcodes;
+    zipcodes[60604] = &quot;Chicago&quot;;
+    zipcodes[60637] = &quot;Hyde Park&quot;;
+}
+</code></pre>
+
+<h1 id="toc_25">Data Abstraction</h1>
+
+<p>Data abstraction refers to the separation of interface (public functions of the class) and implementation:</p>
+
+<ul>
+<li>A user of a class does not need to know how a member function in that class is implemented</li>
+<li>The interface shows you how to use it</li>
+</ul>
+
+<h1 id="toc_26">Encapsulation</h1>
+
+<p>Encapsulation refers to combining data and functions inside a class so that data is only accessed through the functions in the class.</p>
+
+<h1 id="toc_27">Friend</h1>
+
+<p>We can declare <code>friend</code> a function or class s.t. they can get access to the private and protected members of the base class.</p>
+
+<pre><code class="language-cpp">class MyClass {
+public:
+	MyClass();
+	~MyClass();
+private:
+	int my_data;
+
+	friend void change_data(MyClass&amp; obj);
+}
+</code></pre>
+
+<p>and you can implement and use this function <code>change_data</code> globally in the function to change <code>my_data</code>.</p>
+
+<h1 id="toc_28">Inheritance</h1>
+
+<p>Inheritance refers to based on the existing classes trying to:</p>
+
+<ul>
+<li>Reuse code</li>
+<li>Improve maintainability and extensibility</li>
+</ul>
+
+<p>A simple example would be</p>
+
+<pre><code class="language-cpp">class Student {
+public:
+   Student(string name, string email, string major);
+   string GetName();
+   string GetEmail();
+   string GetMajor();
+private:
+   string name_;
+   string email_;
+   string major_;
+};
+</code></pre>
+
+<p>with meanwhile</p>
+
+<pre><code class="language-cpp">class Employee {
+public:
+   Employee(string name, string email, string job);
+   string GetName();
+   string GetEmail();
+   string GetJob();
+private:
+   string name_;
+   string email_;
+   string job_;
+};
+</code></pre>
+
+<p>Apparently a lot of functions and data are repeated. What we&rsquo;re gonna do is to build a <strong>base class</strong> and reuse it onto two <strong>derived class</strong>es. Note:</p>
+
+<ul>
+<li>A derived class inherits all members from the base class.</li>
+<li>A derived class may define additional members (data and/or function).</li>
+</ul>
+
+<p>In actual coding, this is what we do:</p>
+
+<pre><code class="language-cpp">class Person {
+public:
+   Person(string name, string email);
+   string GetName();
+   string GetEmail();
+private:
+   string name_;
+   string email_;
+};
+
+</code></pre>
+
+<p>with</p>
+
+<pre><code class="language-cpp">class Student : public Person {
+public:
+   Student(string name, string email, string major);
+   string GetMajor();
+private:
+   string major_;
+};
+</code></pre>
+
+<p>and</p>
+
+<pre><code class="language-cpp">class Employee : public Person {
+public:
+   Employee(string name, string email, string job);
+   string GetJob();
+private:
+   string job_;
+};
+</code></pre>
+
+<p>To initialize a base class, we define constructors just like what we did before:</p>
+
+<pre><code class="language-cpp">Person::Person(string name, string email) : name_(name), email_(email) {}
+</code></pre>
+
+<p>while for derived classes, we need to call the base class constructor</p>
+
+<pre><code class="language-cpp">Student::Student(string name, string email, string major) : Person(name, email), major_(major) {}
+Employer::Employer(string name, string email, string job) : Person(name, email), job_(job) {}
+</code></pre>
+
+<p>A derived class can access members in the base class, subject to protection level restrictions. Protection levels public and private have their regular meanings in an inheritance class hierarchy:
+􏰀</p>
+
+<ul>
+<li>A derived class cannot access private members of a base class.</li>
+<li>A derived class can access public members of a base class.</li>
+</ul>
+
+<p>A derived class can also access protected members of a base class. If a class has protected members:
+􏰀</p>
+
+<ul>
+<li>That class can access them</li>
+<li>A derived class of that class can access them</li>
+<li>Everone else cannot access them</li>
+</ul>
+
+<h1 id="toc_29">Virtual</h1>
+
+<p>A base class uses the <code>virtual</code> keyword to allow a derived class to override (provide a different implementation) a member function. If a function is virtual (in the base class):
+􏰀</p>
+
+<ul>
+<li>The base class provides an implementation for that function; we call it the default implementation
+􏰀- A derived classes inherit the function interface (definition) as well as the default implementation
+􏰀- A derived class can provide a different implementation for that function (but it does not have to)</li>
+</ul>
+
+<pre><code class="language-cpp">class Base1 {
+public:
+    virtual void Fun1();
+    virtual void Fun2();
+    void Fun3();
+};
+</code></pre>
+
+<p>and then functions like <code>Fun1</code> will be revisable in inheritance. Note that the base class has to implement all functions no matter they&rsquo;re virtual or not.</p>
+
+<h1 id="toc_30">Pure Virtual &amp; Abstract Classes</h1>
+
+<p>If we don&rsquo;t give a default implementation of a virtual function, we call it pure virtual. This is been done by assigning <code>=0</code> at the time of definition.</p>
+
+<pre><code class="language-cpp">class Base2 {
+public:
+   virtual void Fun1() = 0;
+};
+</code></pre>
+
+<p>In this case the base class does not need to implement this <code>Fun1</code> and in contrast, the derived class must do so. A class with virtual functions is called an <strong>abstract class</strong>. Note that we cannot instantiate (make an object of) an abstract class until every virtual function is implemented.</p>
+
+<h1 id="toc_31">Comparing Virtual &amp; Pure Virtual</h1>
+
+<p>There&rsquo;s a slight difference between normal member functions, virutal functions and pure virtual functions during inheritance.</p>
+
+<ul>
+<li>For a normal member function, you don&rsquo;t necessarily need to implement it, but any derived class cannot change it</li>
+<li>For a virtual function, you can implement or not, and a derived class can redefine it</li>
+<li>For a pure virtual function, you must not implement it, and implementation is a must for any derived classes if you want to instantiate it</li>
+</ul>
+
+<h1 id="toc_32">Polymorphism</h1>
+
+<p>We use a pointer or a reference to a base class object to point to an object of a derived class, which we call the Liskov Substitution Principle (LSP).</p>
+
+<pre><code class="language-cpp">Option* option1 = nullptr;
+Option* option2 = nullptr;
+option1 = new EuropeanCall(...);
+EuropeanCall(...) option_;
+option2 = option_;
+</code></pre>
+
+<p>More direct example may be as follows. Instead of writing separately</p>
+
+<pre><code class="language-cpp">double Price(EuropeanCall option, ...) {
+    return option.Price(...);
+}
+double Price(EuropeanPut option, ...) {
+    return option.Price(...);
+}
+</code></pre>
+
+<p>we can use polymorphism and write it w.r.t. the base class <code>Option</code> using a reference or pointer</p>
+
+<pre><code class="language-cpp">double Price(Option&amp; option, ...) {
+    return option.Price(...);
+}
+</code></pre>
+
+<h1 id="toc_33">Const Member Functions</h1>
+
+<p>For variables we declare constancy by</p>
+
+<pre><code class="language-cpp">const int val = 10;
+</code></pre>
+
+<p>For constant objects, e.g.</p>
+
+<pre><code class="language-cpp">class Student {
+public:
+    ...
+    string GetName();
+private:
+    string name_;
+    string email_;
+};
+
+string Person::GetName() {
+    return name_;
+}
+</code></pre>
+
+<p>when we call</p>
+
+<pre><code class="language-cpp">const Student a('Allen', 'allen@gmail.com');
+cout &lt;&lt; a.GetName() &lt;&lt; endl;
+</code></pre>
+
+<p>we meed a compile error. This is due to that the compiler does not know the function <code>GetName</code> is constant. To declare that we need</p>
+
+<pre><code class="language-cpp">class Student {
+public:
+    ...
+    string GetName() const;
+private:
+    string name_;
+    string email_;
+};
+
+string Person::GetName() const {
+    return name_;
+}
+</code></pre>
+
+<p>When we have pure virtual constant member functions, we write like this: <code>virtual type f(...) const = 0</code>.</p>
+
+<h1 id="toc_34">Mutable</h1>
+
+<p>A const member function cannot modify data members. The only exception of this issue is mutable data members.</p>
+
+<pre><code class="language-cpp">class Student {
+public:
+    ...
+    string GetName() const;
+private:
+    string name_;
+    mutable string email_;
+};
+</code></pre>
+
+<h1 id="toc_35">Override</h1>
+
+<p>The <code>override</code> keyword serves two purposes:</p>
+
+<ul>
+<li>It shows the reader of the code that &ldquo;this is a virtual method, that is overriding a virtual method of the base class.&rdquo;</li>
+<li>The compiler also knows that it&rsquo;s an override, so it can &ldquo;check&rdquo; that you are not altering/adding new methods that you think are overrides.</li>
+</ul>
+
+<pre><code class="language-cpp">class base {
+public: 
+    virtual int foo(float x) = 0; 
+};
+
+
+class derived1: public base {
+public:
+    int foo(float x) override { ... }
+}
+
+class derived2: public base {
+public: 
+    int foo(int x) override { ... } 
+};
+</code></pre>
+
+<p>In implementation of the pure virtual function <code>foo</code> in derived class <code>derived1</code>, we&rsquo;re doing just as told by the base class. In <code>derive2</code>, with the <code>override</code> keyword we&rsquo;ll get an error for overwriting the original virtual function by changing types; while without this keyword we&rsquo;ll get at most just a warning.</p>
+
+<h1 id="toc_36">Static</h1>
+
+<p>For non-static member we change an instance&rsquo;s data and it&rsquo;s done. Nothing will happen to other instances of the same derived class. For a static member function/data the association is built and we can change one and for all.</p>
+
+<pre><code class="language-cpp">class Counter {
+public:
+    static int GetCount();
+    static void Increment();
+private:
+    static int count_;
+};
+</code></pre>
+
+<h1 id="toc_37">Function Objects</h1>
+
+<p>A regular function is generally</p>
+
+<pre><code class="language-cpp">int AddOne(int x) {return x + 1;}
+</code></pre>
+
+<p>while a function object implementation is</p>
+
+<pre><code class="language-cpp">class AddOne {
+public:
+    int operator()(const int&amp; x) {return x + 1;}
+};
+</code></pre>
+
+<p>and for the latter we can use its instances as objects, which still work as functions.</p>
+
+<pre><code class="language-cpp">vector&lt;int&gt; values{1, 2, 4, 5};
+for_each(values.begin(), values.end(), AddOne());
+</code></pre>
+
+<p>where <code>AddOne()</code> is an unnamed instance of the class <code>AddOne</code>.</p>
+
+<h1 id="toc_38">Lambda</h1>
+
+<p>In C++ we have inline function definition as</p>
+
+<pre><code class="language-cpp">int f = [](int x, int y) { return x + y; };
+int x = [](int a, int b) { return a + b; }(1, 2);
+</code></pre>
+
+<p>The <code>[]</code> is called the capture operator and it has rules as follows.</p>
+
+<ul>
+<li><code>[=]</code> captures everything by value (read but no write access)</li>
+<li><code>[&amp;]</code> captures everything by reference (read and write access)</li>
+<li><code>[=,&amp;x]</code> captures everything but x by value, and for x by reference</li>
+<li><code>[&amp;,x]</code> captures everything but x by reference, and for x by value</li>
+</ul>
+
+<h1 id="toc_39">OOP: Reviews</h1>
+
+<ul>
+<li>Classes and Objects</li>
+<li>Data Abstraction and Encapsulation</li>
+<li>Inheritance</li>
+<li>Polymorphism</li>
+</ul>
+
+<p>Below we introduce some features in STL.</p>
+
+<h1 id="toc_40">Methods</h1>
+
+<p>Two of the most commenly seen methods are <code>begin()</code> and <code>end()</code></p>
+
+<h1 id="toc_41">Functions</h1>
+
+<p>We have <code>binary_search</code>, <code>for_each</code>, <code>find_if</code> and <code>sort</code>.</p>
+
+<h1 id="toc_42">Structure</h1>
+
+<p>In the STL, algorithms are implemented as functions, and data types in containers.</p>
+
+<h1 id="toc_43">Sorting and Searching in STL</h1>
+
+<pre><code class="language-cpp">int main() {
+    vector&lt;int&gt; values {10, 1, 22, 12, 2, 7};
+    sort(values.begin(), values.end());
+    bool found = binary_search(values.begin(), values.end(), 12);
+    cout &lt;&lt; found &lt;&lt; endl;
+}
+</code></pre>
+
+<h1 id="toc_44">Copying Elements</h1>
+
+<pre><code class="language-cpp">int main() {
+    vector&lt;int&gt; values1 {10, 1, 22, 12, 2, 7};
+    vector&lt;int&gt; values2;
+    copy(values1.begin(), values1.end(), back_inserter(values2));
+}
+</code></pre>
+
+<h1 id="toc_45">Predicates</h1>
+
+<pre><code class="language-cpp">bool PersonSortCriterion(const Person&amp; p1, const Person&amp; p2) {
+    return p1.GetAge() &lt; p2.GetAge();
+}
+
+
+int main() {
+    Person p1(&quot;Jim&quot;, 12);
+    Person p2(&quot;Joe&quot;, 23);
+    Person p3(&quot;Jane&quot;, 21);
+    vector&lt;Person&gt;  ppl;
+    ppl.push_back(p1);
+    ppl.push_back(p2);
+    ppl.push_back(p3);
+    sort(ppl.begin(), ppl.end(), PersonSortCriterion);
+}
+</code></pre>
+
+<h1 id="toc_46">STL &amp; Lambda</h1>
+
+<p>By combining STL algorithms with lambdas in C++ can be very efficient. We can use lambdas in a loop without defining a function beforehand.</p>
+
+<pre><code class="language-cpp">vector&lt;int&gt; v{1, 3, 2, 4, 6};
+for_each(v.cbegin(), v.cend(), [](int elem) { cout &lt;&lt; elem &lt;&lt; endl; } )
+</code></pre>
+
+<p>We can also use it as a sorting criterion</p>
+
+<pre><code class="language-cpp">std::vector&lt;Person&gt; ppl;
+sort(ppl.begin(), ppl.end(), [](const Person&amp; p1,  const Person&amp; p2) {
+    if (p1.GetAge() &lt; p2.GetAge()) return true;
+    else return false;
+});
+</code></pre>
+
+<h1 id="toc_47">Templates</h1>
+
+<p>We can have templates of a function:</p>
+
+<pre><code class="language-cpp">template &lt;class T&gt; T sum(T a, T b) {return a + b; }
+sum(12, 13) // 25
+</code></pre>
+
+<p>We can also have templates of a class:</p>
+
+<pre><code class="language-cpp">template &lt;class T&gt;
+class Pair {
+public:
+    Pair(T a, T b) : First(a), Second(b) {}
+private:
+    T First, Second;
+}
+
+Pair&lt;int&gt; new_pair(12, 13);
+</code></pre>
+
+<h1 id="toc_48">Exception Handling</h1>
+
+<pre><code class="language-cpp">int x, y;
+x = 1;
+y = 2;
+try {
+    x += 1;
+    y += x;
+    if (y ==4) {
+        throw 1;
+    }
+}
+catch (int err) {
+    if (err == 1) {
+        cout &lt;&lt; &quot;Error 1&quot; &lt;&lt; endl;
+    }
+}
+</code></pre>
+
+<h1 id="toc_49">File I/O</h1>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+using std::string;
+using std::endl;
+using std::cout;
+
+int main() {
+    ifstream f_in('in.txt');
+    ofstream f_out('out.txt', ios::trunc);
+    if (f_in.is_open() &amp;&amp; f_out.is_open()) { cout &lt;&lt; &quot;Files opend!&quot; &lt;&lt; endl; } 
+    string line;
+    while (getline(f_in, line)) { f_out &lt;&lt; line &lt;&lt; endl; }
+    f_in.close();
+    f_out.close();
+}
+</code></pre>
+
+<p>Specifically, for the open modes we have</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Mode</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>ios::app</code></td>
+<td align="center">Append to the end</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::ate</code></td>
+<td align="center">Go to the end of file on opening</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::binary</code></td>
+<td align="center">Open in binary mode</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::in</code></td>
+<td align="center">Open file for reading only</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::out</code></td>
+<td align="center">Open file for writing only</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::nocreate</code></td>
+<td align="center">Fail if you have to create it</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::noreplace</code></td>
+<td align="center">Fail if you have to replace</td>
+</tr>
+
+<tr>
+<td align="center"><code>ios::trunc</code></td>
+<td align="center">Remove all content if the file exists</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h1 id="toc_50">References</h1>
+
+<ul>
+<li>Chanaka Liyanaarachchi. &ldquo;Computing for Finance I&rdquo; (2018).</li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/cryptocurrency-arbitrage-3/">Cryptocurrency Arbitrage: One More Strategy</a></span>
+  <span class="nav-next"><a href="/blog/color-print/">ColorPrint: Print Colorfully in Python</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-3\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/color-print\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/cpp-key-points.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

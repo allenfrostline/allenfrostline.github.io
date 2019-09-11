@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Stochastic Calculus - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Stochastic Calculus - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, &amp;hellip;">
+      <meta property="og:description" content="This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/notes-on-stochastic-calculus.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Notes on Stochastic Calculus</h1>
+
+
+<h3>
+2019-02-21</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">MGF of Normal Distribution</a></li>
+
+<li><a href="#toc_1">Truncated Normal Distribution</a></li>
+
+<li><a href="#toc_2">Doob&rsquo;s Identity</a></li>
+
+<li><a href="#toc_3">Matingale Transform</a></li>
+
+<li><a href="#toc_4">Common MGs</a></li>
+
+<li><a href="#toc_5">Convex Mapping</a></li>
+
+<li><a href="#toc_6"><span class="math inline">\(L^p\)</span> and <span class="math inline">\(L^p\)</span> Boundedness</a></li>
+
+<li><a href="#toc_7">Doob&rsquo;s Maximal Ineq.</a></li>
+
+<li><a href="#toc_8">MG Convergence Theorem</a></li>
+
+<li><a href="#toc_9">Change of Measure</a></li>
+
+<li><a href="#toc_10">Cameron-Martin</a></li>
+
+<li><a href="#toc_11">Strong Markov Property</a></li>
+
+<li><a href="#toc_12">Orthogonal Transform</a></li>
+
+<li><a href="#toc_13">Doob&rsquo;s Decomposition</a></li>
+
+<li><a href="#toc_14">Gambler&rsquo;s Ruin</a></li>
+
+<li><a href="#toc_15">Reflection Principle</a></li>
+
+<li><a href="#toc_16">First Passage Time <span class="math inline">\(T:=\tau(a)\)</span></a></li>
+
+<li><a href="#toc_17">Joint Distribution of BM and its Maximum</a></li>
+
+<li><a href="#toc_18"><span class="math inline">\(2\)</span>-BM Stopped on 1 Boundary</a></li>
+
+<li><a href="#toc_19">Itô Integral</a></li>
+
+<li><a href="#toc_20">Martingality of Itô Integral</a></li>
+
+<li><a href="#toc_21">Itô Isometry</a></li>
+
+<li><a href="#toc_22">Itô Formula - <span class="math inline">\(f(W_t)\)</span></a></li>
+
+<li><a href="#toc_23">Itô Formula - <span class="math inline">\(f(t,W_t)\)</span></a></li>
+
+<li><a href="#toc_24">Wiener Integral</a></li>
+
+<li><a href="#toc_25">Itô Process</a></li>
+
+<li><a href="#toc_26">Itô Product and Quotient</a></li>
+
+<li><a href="#toc_27">Brownian Bridge</a></li>
+
+<li><a href="#toc_28">Itô Formula - <span class="math inline">\(u(t, X_t)\)</span></a></li>
+
+<li><a href="#toc_29">The Ornstein-Uhlenbeck Process</a></li>
+
+<li><a href="#toc_30">Diffusion Process</a></li>
+
+<li><a href="#toc_31">Hitting Probability for Diffusion Processes</a></li>
+
+<li><a href="#toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\bs{W}_t)\)</span></a></li>
+
+<li><a href="#toc_33">Dynkin&rsquo;s Formula</a></li>
+
+<li><a href="#toc_34">Harmonic Functions</a></li>
+
+<li><a href="#toc_35">Harmonic Corollary of Dynkin</a></li>
+
+<li><a href="#toc_36">Multivariate Itô Process</a></li>
+
+<li><a href="#toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\bs{X}_t)\)</span></a></li>
+
+<li><a href="#toc_38">Knight&rsquo;s Theorem</a></li>
+
+<li><a href="#toc_39">Radial Process</a></li>
+
+<li><a href="#toc_40">Bessel Process</a></li>
+
+<li><a href="#toc_41">Itô&rsquo;s Representation Theorem</a></li>
+
+<li><a href="#toc_42">Assumptions of the Black-Scholes Model</a></li>
+
+<li><a href="#toc_43">Black-Scholes Model</a></li>
+
+<li><a href="#toc_44">Contingent Claims</a></li>
+
+<li><a href="#toc_45">Black-Scholes Formula</a></li>
+
+<li><a href="#toc_46">Black-Scholes PDE</a></li>
+
+<li><a href="#toc_47">Hedging in Continuous Time</a></li>
+
+<li><a href="#toc_48">Barrier Option</a></li>
+
+<li><a href="#toc_49">Exponential Process</a></li>
+
+<li><a href="#toc_50">Girsanov&rsquo;s Theorem</a></li>
+
+<li><a href="#toc_51">Novikov&rsquo;s Theorem</a></li>
+
+<li><a href="#toc_52">Standard BM to OU Process</a></li>
+
+<li><a href="#toc_53">Fundamental Principle of Statistical Mechanics</a></li>
+
+<li><a href="#toc_54">Conditioned Brownian Motion</a></li>
+
+<li><a href="#toc_55">Lévy Process</a></li>
+
+<li><a href="#toc_56">First-Passage-Time Process</a></li>
+
+<li><a href="#toc_57">Poisson Process</a></li>
+
+<li><a href="#toc_58">MGF of Poisson</a></li>
+
+<li><a href="#toc_59">Law of Small Numbers</a></li>
+
+<li><a href="#toc_60">Poisson-Exponential Martingale</a></li>
+
+<li><a href="#toc_61">Vector Lévy Process</a></li>
+</ul>
+
+</nav>
+
+<style>
+.main {text-align: left}
+</style>
+
+<p>This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, etc.
+<span class="math inline">\(\newcommand{\E}{\text{E}}
+\newcommand{\P}{\text{P}}
+\newcommand{\Q}{\text{Q}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\d}{\text{d}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\sgn}{\text{sgn}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}
+\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\MGF}{\text{MGF}}\)</span></p>
+
+<!-- more -->
+
+<h1 id="toc_0">MGF of Normal Distribution</h1>
+
+<p>For <span class="math inline">\(X\sim\N(\mu,\sigma^2)\)</span>, we have <span class="math inline">\(\MGF(\theta)=\exp(\theta\mu + \theta^2\sigma^2/2)\)</span>. We have <span class="math inline">\(\E(X^k) = \MGF^{\ (k)}(0)\)</span>.</p>
+
+<h1 id="toc_1">Truncated Normal Distribution</h1>
+
+<p>Consider a two-sided truncation <span class="math inline">\((a,b)\)</span> on <span class="math inline">\(\N(\mu,\sigma^2)\)</span>, then</p>
+<p><span class="math display">\[
+\E[X\mid a &lt; X &lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\beta)}{\Phi(\alpha) - \Phi(\beta)}
+\]</span></p><p>where <span class="math inline">\(\alpha:=(a-\mu)/\sigma\)</span> and <span class="math inline">\(\beta:=(b-\mu)/\sigma\)</span>.</p>
+
+<h1 id="toc_2">Doob&rsquo;s Identity</h1>
+
+<p>Let <span class="math inline">\(X\)</span> be a MG and <span class="math inline">\(T\)</span> a stopping time, then <span class="math inline">\(\E X_{T\wedge n} = \E X_0\)</span> for any <span class="math inline">\(n\)</span>.</p>
+
+<h1 id="toc_3">Matingale Transform</h1>
+
+<p>Define <span class="math inline">\((Z\cdot X)_n:=\sum_{i=1}^n Z_i(X_i - X_{i-1})\)</span> where <span class="math inline">\(X\)</span> is MG with <span class="math inline">\(X_0=0\)</span> and <span class="math inline">\(Z_n\)</span> is predictable and bounded, then <span class="math inline">\((Z\cdot X)\)</span> is MG. If <span class="math inline">\(X\)</span> is sub-MG, then also is <span class="math inline">\((Z\cdot X)\)</span>. Furthermore, if <span class="math inline">\(Z\in[0,1]\)</span>, then <span class="math inline">\(\E(Z\cdot X)\le \E X\)</span>.</p>
+
+<h1 id="toc_4">Common MGs</h1>
+
+<ul>
+<li><span class="math inline">\(S_n:=\sum_{i=1}^n X_i\)</span> for <span class="math inline">\(X\sim(0,\sigma^2)\)</span> (this is called symmetric RW)</li>
+<li><span class="math inline">\(S_n^2 - n\sigma^2\)</span> for symmetric RW <span class="math inline">\(S_n\)</span></li>
+<li><span class="math inline">\(\exp(\theta S_n)\ /\ \MGF_X(\theta)\)</span> for symmetric RW <span class="math inline">\(S_n\)</span></li>
+<li><span class="math inline">\((q/p)^{S_n}\)</span> for assymetric RW <span class="math inline">\(S_n\)</span> (<span class="math inline">\(P(X=1)=p\)</span>, <span class="math inline">\(P(X=-1)=q=1-p\)</span>)</li>
+<li><span class="math inline">\(S_n - n (p-q)\)</span> for assymetric RW <span class="math inline">\(S_n\)</span></li>
+<li><span class="math inline">\(B_t^2 - t\)</span> for standard BM <span class="math inline">\(B_t\)</span></li>
+<li><span class="math inline">\(\exp(\theta B_t - \theta^2 t / 2)\)</span> for standard BM <span class="math inline">\(B_t\)</span></li>
+<li><span class="math inline">\(\exp(-2\mu B_t)\)</span> for <span class="math inline">\(B_t = W_t + \mu t\)</span> where <span class="math inline">\(W_t\)</span> is standard BM</li>
+</ul>
+
+<h1 id="toc_5">Convex Mapping</h1>
+
+<p>If <span class="math inline">\(X\)</span> is MG and <span class="math inline">\(\phi(\cdot)\)</span> is a convex function, then <span class="math inline">\(\phi(X)\)</span> is sub-MG.</p>
+
+<h1 id="toc_6"><span class="math inline">\(L^p\)</span> and <span class="math inline">\(L^p\)</span> Boundedness</h1>
+
+<ul>
+<li><span class="math inline">\(X\)</span> is an <span class="math inline">\(L^p\)</span> MG if <span class="math inline">\(\E X_n^p\)</span> is finite for all <span class="math inline">\(n\)</span>.</li>
+<li><span class="math inline">\(X\)</span> is an <span class="math inline">\(L^p\)</span>-bounded MG if <span class="math inline">\(\sup_{n\ge 0}\E X_n^2\)</span> is finite.</li>
+</ul>
+
+<h1 id="toc_7">Doob&rsquo;s Maximal Ineq.</h1>
+
+<ul>
+<li><span class="math inline">\(L^1\)</span>: if <span class="math inline">\(X\)</span> is a non-negative sub-MG with <span class="math inline">\(X_0=0\)</span>, then <span class="math inline">\(\P(\max_{i\le n} X_i\ge \alpha)\le\E X_n / \alpha\)</span>.</li>
+<li><span class="math inline">\(L^2\)</span>: if <span class="math inline">\(X\)</span> is an <span class="math inline">\(L^2\)</span> MG with <span class="math inline">\(X_0=0\)</span>, then <span class="math inline">\(\P(\max_{i\le n} X_i\ge \alpha)\le \E X_n^2 / \alpha^2\)</span>.</li>
+<li><span class="math inline">\(L^2\)</span>-bounded: if <span class="math inline">\(X\)</span> is <span class="math inline">\(L^2\)</span>-bounded, then <span class="math inline">\(\P(\sup_{n\ge 0}|X_n|\ge \alpha) \le \sup_{n\ge 0}\E X_n^2 / \alpha^2\)</span>.</li>
+</ul>
+
+<h1 id="toc_8">MG Convergence Theorem</h1>
+
+<ul>
+<li><span class="math inline">\(L^1\)</span>-bounded: <span class="math inline">\(\exists X_{\infty}\in L^1\)</span> s.t. <span class="math inline">\(\lim_{n\to\infty}X_n \overset{\text{a.s.}}{\eeq} X_{\infty}\)</span>.</li>
+<li><span class="math inline">\(L^2\)</span>-bounded: <span class="math inline">\(\exists X_{\infty}\in L^2\)</span> s.t. <span class="math inline">\(\lim_{n\to\infty}X_n \overset{\text{a.s.}}{\eeq} X_{\infty}\)</span>, <span class="math inline">\(\lim_{n\to\infty}\E(X_n - X_{\infty})^2=0\)</span> and <span class="math inline">\(\lim_{n\to\infty}\E X_n^2 = E X_{\infty}^2\)</span>.</li>
+</ul>
+
+<h1 id="toc_9">Change of Measure</h1>
+
+<p>Given <span class="math inline">\(\P\)</span>-measure, we define the likelihood ratio <span class="math inline">\(Z:=\d\Q / \d\P\)</span> for another measure <span class="math inline">\(\Q\)</span>. Then we have</p>
+
+<ul>
+<li><span class="math inline">\(\E_{\P} Z = 1\)</span>.</li>
+<li><span class="math inline">\(\E_{\Q} Y = \E_{\P} (ZY)\)</span> for all <span class="math inline">\(Y\)</span>. Specifically, for <span class="math inline">\(Y=\textbf{1}_{\omega}\)</span> we have <span class="math inline">\(\Q(\omega) = \E_{\P}(Z\textbf{1}_{\omega}) \overset{\text{discr.}}{\eeeq} \P(\omega)Z(\omega)\)</span>.</li>
+<li>Example (changing numeraire from <code>CASH</code> <span class="math inline">\(\P\)</span>- to <code>STOCK</code> <span class="math inline">\(\Q\)</span>-measure): <span class="math inline">\(Z(\omega) = (\d\Q/\d\P)(\omega) = S_N(\omega) / S_0\)</span>.</li>
+<li>Example (importance sampling): <span class="math inline">\(\P_{.5}(S_{100} &gt; 80) = \E_{.8}\left(\textbf{1}_{S_{100} &gt; 80}\cdot \frac{.5^{100}}{.8^{S}.2^{100-S}}\right)\)</span>.</li>
+<li>Example (foreign exchange): <span class="math inline">\(\d\Q_A/\d\Q_B = A_TY_T/B_TY_0\)</span> where <span class="math inline">\(Y_t\)</span> is the exchange rate, i.e. the number of currency <span class="math inline">\(B\)</span> in exchange for <span class="math inline">\(1\)</span> unit of currency <span class="math inline">\(A\)</span>.</li>
+</ul>
+
+<h1 id="toc_10">Cameron-Martin</h1>
+
+<ul>
+<li><strong>Theorem</strong>: given <span class="math inline">\(B\)</span> is standard BM under <span class="math inline">\(\P_0\)</span> measure, then <span class="math inline">\(\exists \P_{\theta}\)</span> s.t. <span class="math inline">\(Z_T^{\theta} := \d\P_{\theta}/\d\P_0 = \exp(\theta B_T - \theta^2 T / 2)\)</span>, under which <span class="math inline">\(\{B_t\}_{t\le T}\)</span> is a BM with drift <span class="math inline">\(\theta\)</span> and variance <span class="math inline">\(1\)</span>.</li>
+<li><strong>Corollary</strong>: given any two drift <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\eta\)</span>, define similarly <span class="math inline">\(Z_T:=\d\P_{\theta}/\d\P_{\eta}\)</span> and then for any stopping time <span class="math inline">\(\tau\)</span>, we have <span class="math inline">\(\P_{\theta}(\tau\le T) = \E_{\eta}(\textbf{1}_{\tau\le T}Z_T)\)</span>.</li>
+<li><strong>Example</strong>: given <span class="math inline">\(B\)</span> is a BM with drift <span class="math inline">\(-b &lt; 0\)</span>, now define <span class="math inline">\(T=\tau(a)\)</span> for some <span class="math inline">\(a &gt; 0\)</span>, then we have <span class="math inline">\(\P_{-b}(T &lt; \infty) = \E_{+b}[\exp(-2b B_T) \textbf{1}_{T &lt; \infty}] = \exp(-2ab)\)</span>.</li>
+</ul>
+
+<h1 id="toc_11">Strong Markov Property</h1>
+
+<p>If <span class="math inline">\(B\)</span> is a BM and <span class="math inline">\(T=\tau(\cdot)\)</span> is a stopping time, then <span class="math inline">\(\{B_{t+T} - B_T\}_{t\ge T}\)</span> is a BM indep. of <span class="math inline">\(\{B_t\}_{t\le T}\)</span>.</p>
+
+<h1 id="toc_12">Orthogonal Transform</h1>
+
+<p>If <span class="math inline">\(B\)</span> is a standard <span class="math inline">\(k\)</span>-BM and <span class="math inline">\(U\in\mathbb{R}^{k\times k}\)</span> is orthogonal, then <span class="math inline">\(UB\)</span> is also a standard <span class="math inline">\(k\)</span>-BM.</p>
+
+<h1 id="toc_13">Doob&rsquo;s Decomposition</h1>
+
+<p>For any sub-MG <span class="math inline">\(X\)</span>, we have unique decomposition <span class="math inline">\(X=M+A\)</span> where <span class="math inline">\(M_n:=X_0 + \sum_{i=1}^n [X_i - \E(X_i\mid \F_{i-1})]\)</span> is a martingale and <span class="math inline">\(A_n:=\sum_{i=1}^n[\E(X_i\mid \F_{i-1}) - X_{i-1}]\)</span> is a non-decreasing predictable sequence.</p>
+
+<h1 id="toc_14">Gambler&rsquo;s Ruin</h1>
+
+<ul>
+<li>Symmetric: for (discrete- or continuous-time) MG <span class="math inline">\(S\)</span> with <span class="math inline">\(S_0=0\)</span>, define stopping time <span class="math inline">\(T=\min\{\tau(-A), \tau(B)\}\)</span> then <span class="math inline">\(\P(S_T=B)=\frac{A}{A+B}\)</span>, <span class="math inline">\(\P(\tau(B)&lt;\infty)=\lim_{A\to\infty}\P(S_T=B)=1\)</span> and <span class="math inline">\(\E T = AB\)</span>.</li>
+<li>Assymetric (<span class="math inline">\(p&lt;q\)</span>): for RW <span class="math inline">\(S_n:=S_0 + \sum_{i=1}^{n}X_i\)</span> with <span class="math inline">\(S_0=0\)</span> and <span class="math inline">\(\P(X=+1)=p\)</span>, <span class="math inline">\(\P(X=-1)=q=1-p\)</span>, define similarly <span class="math inline">\(T\)</span>, then <span class="math inline">\(\P(S_T=B)=\frac{1-(q/p)^{-A}}{(q/p)^{B} - (q/p)^{-A}}\)</span>, <span class="math inline">\(\P(\tau(B)&lt;\infty)=\lim_{A\to\infty}\P(S_T=B)=\left(p/q\right)^{B}\)</span> and <span class="math inline">\(\E T = \frac{\E S_T}{q-p}\)</span>.</li>
+</ul>
+
+<h1 id="toc_15">Reflection Principle</h1>
+
+<p>For BM <span class="math inline">\(B\)</span> and stopping time <span class="math inline">\(T=\tau(a)\)</span>, define <span class="math inline">\(B^*\)</span> s.t. <span class="math inline">\(B_t^*=B_t\)</span> for all <span class="math inline">\(t\le T\)</span> and <span class="math inline">\(B_t^* = 2a - B_t\)</span> for all <span class="math inline">\(t&gt;T\)</span>, then <span class="math inline">\(B^*\)</span> is also a BM.</p>
+
+<h1 id="toc_16">First Passage Time <span class="math inline">\(T:=\tau(a)\)</span></h1>
+
+<ul>
+<li>CDF: <span class="math inline">\(\P(T \le t) = 2\P(B_t &gt; a) = 2\Phi(-a / \sqrt{t})\)</span>.</li>
+<li>PDF: follows from CDF</li>
+<li><span class="math inline">\(\E T\)</span>: <span class="math inline">\(X_t:=\exp(\theta B_t - \theta^2 t / 2)\)</span> is a MG, we know <span class="math inline">\(\E(X_T)=X_0 = 1\)</span>, from which expectation is calculated.</li>
+</ul>
+
+<h1 id="toc_17">Joint Distribution of BM and its Maximum</h1>
+
+<p><span class="math inline">\(\P(\max_{s\le t}B_s &gt; x\text{ and }B_t &lt; y) = \Phi\!\left(\frac{y-2x}{\sqrt{t}}\right)\)</span>.</p>
+
+<h1 id="toc_18"><span class="math inline">\(2\)</span>-BM Stopped on 1 Boundary</h1>
+
+<p>Let <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> be indep. BM. Note that for all <span class="math inline">\(t\ge 0\)</span>, from exponential MG we know <span class="math inline">\(\E[\exp(i\theta X_t)]=\exp(-\theta^2 t/2)\)</span>. Now define <span class="math inline">\(T=\tau(a)\)</span> for <span class="math inline">\(Y\)</span> and we have <span class="math inline">\(\E[\exp(i\theta X_T)] = \E[\exp(-\theta^2 T /2)]=\exp(-|\theta| a)\)</span>, which is the Fourier transform of the Cauchy density <span class="math inline">\(f_a(x)=\frac{1}{\pi}\frac{a}{a^2+x^2}\)</span>.</p>
+
+<h1 id="toc_19">Itô Integral</h1>
+
+<p>We define Itô integral <span class="math inline">\(I_t(X) := \int_0^t\! X_s\d W_s\)</span> where <span class="math inline">\(W_t\)</span> is a standard Brownian process and <span class="math inline">\(X_t\)</span> is adapted.</p>
+
+<h1 id="toc_20">Martingality of Itô Integral</h1>
+
+<ul>
+<li><span class="math inline">\(I_t(X)\)</span> is a martingale</li>
+<li><span class="math inline">\(I_t(X)^2 - [I(X), I(X)]_t\)</span> is a martingale, where <span class="math inline">\([I(X), I(X)]_t := \int_0^t\! X_s^2\d s\)</span></li>
+</ul>
+
+<h1 id="toc_21">Itô Isometry</h1>
+
+<p>This is the direct result from the second martingality property above. Let <span class="math inline">\(X_t\)</span> be nonrandom and continuously differentiable, then</p>
+<p><span class="math display">\[
+\E\!\left[\!\left(\int_0^t X_t\d W_t\right)^{\!\!2}\right] = \E\!\left[\int_0^t X_t^2\d t\right].
+\]</span></p>
+<h1 id="toc_22">Itô Formula - <span class="math inline">\(f(W_t)\)</span></h1>
+
+<p>Let <span class="math inline">\(W_t\)</span> be a standard Brownian motion and let <span class="math inline">\(f:\R\mapsto\R\)</span> be a twice-continously differentiable function s.t. <span class="math inline">\(f\)</span>, <span class="math inline">\(f'\)</span> and <span class="math inline">\(f''\)</span> are all bounded, then for all <span class="math inline">\(t&gt;0\)</span> we have</p>
+<p><span class="math display">\[
+\d f(W_t) = f'(W_t)\d W_t + \frac{1}{2}f''(W_t) \d t.
+\]</span></p>
+<h1 id="toc_23">Itô Formula - <span class="math inline">\(f(t,W_t)\)</span></h1>
+
+<p>Let <span class="math inline">\(W_t\)</span> be a standard Brownian motion and let <span class="math inline">\(f:[0,\infty)\times\R\mapsto\R\)</span> be a twice-continously differentiable function s.t. its partial derivatives are all bounded, then for all <span class="math inline">\(t&gt;0\)</span> we have</p>
+<p><span class="math display">\[
+\d f(t, W_t) = f_x\d W_t + \left(f_t + \frac{1}{2}f_{xx}\right) \d t.
+\]</span></p>
+<h1 id="toc_24">Wiener Integral</h1>
+
+<p>The Wiener integral is a special case of Itô integral where <span class="math inline">\(f(t)\)</span> is here a nonrandom function of <span class="math inline">\(t\)</span>. Variance of a Wiener integral can be derived using Itô isometry.</p>
+
+<h1 id="toc_25">Itô Process</h1>
+
+<p>We say <span class="math inline">\(X_t\)</span> is an Itô process if it satisfies</p>
+<p><span class="math display">\[
+\d X_t = Y_t\d W_t + Z_t\d t
+\]</span></p><p>where <span class="math inline">\(Y_t\)</span> and <span class="math inline">\(Z_t\)</span> are adapted and <span class="math inline">\(\forall t\)</span></p>
+<p><span class="math display">\[
+\int_0^t\! \E Y_s^2\d s &lt; \infty\quad\text{and}\quad\int_0^t\! \E|Z_s|\d s &lt; \infty.
+\]</span></p><p>The quadratic variation of <span class="math inline">\(X_t\)</span> is</p>
+<p><span class="math display">\[
+[X,X]_t = \int_0^t\! Y_s^2\d s.
+\]</span></p>
+<h1 id="toc_26">Itô Product and Quotient</h1>
+
+<p>Assume <span class="math inline">\(X_t\)</span> and <span class="math inline">\(Y_t\)</span> are two Itô processes, then</p>
+<p><span class="math display">\[
+\frac{\d (XY)}{XY} = \frac{\d X}{X} + \frac{\d Y}{Y} + \frac{\d X\d Y}{XY}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\frac{\d (X/Y)}{X/Y} = \frac{\d X}{X} - \frac{\d Y}{Y} + \left(\frac{\d Y}{Y}\right)^{\!2} - \frac{\d X\d Y}{XY}.
+\]</span></p>
+<h1 id="toc_27">Brownian Bridge</h1>
+
+<p>A Brownian bridge is a continuous-time stochastic process <span class="math inline">\(X_t\)</span> with both ends pinned: <span class="math inline">\(X_0=X_T=0\)</span>. The SDE is</p>
+<p><span class="math display">\[
+\d X_t = -\frac{X_t}{1-t}\d t + \d W_t
+\]</span></p><p>which solves to</p>
+<p><span class="math display">\[
+X_t = W_t - \frac{t}{T}W_T.
+\]</span></p>
+<h1 id="toc_28">Itô Formula - <span class="math inline">\(u(t, X_t)\)</span></h1>
+
+<p>Let <span class="math inline">\(X_t\)</span> be an Itô process. Let <span class="math inline">\(u(t,x)\)</span> be a twice-continuously differentiable function with <span class="math inline">\(u\)</span> and its partial derivatives bounded, then</p>
+<p><span class="math display">\[
+\d u(t, X_t) =
+\frac{\partial u}{\partial t}(t, X_t)\d t +
+\frac{\partial u}{\partial x}(t, X_t)\d X_t +
+\frac{1}{2}\frac{\partial^2 u}{\partial x^2}(t, X_t)\d [X,X]_t.
+\]</span></p>
+<h1 id="toc_29">The Ornstein-Uhlenbeck Process</h1>
+
+<p>The OU process describes a stochastic process that has a tendency to return to an &ldquo;equilibrium&rdquo; position <span class="math inline">\(0\)</span>, with returning velocity proportional to its distance from the origin. It&rsquo;s given by SDE</p>
+<p><span class="math display">\[
+\d X_t = -\alpha X_t \d t + \d W_t \Rightarrow
+\d [\exp(\alpha t)X_t] = \exp(\alpha t)\d W_t 
+\]</span></p><p>which solves to</p>
+<p><span class="math display">\[
+X_t = \exp(-\alpha t)\left[X_0 + \int_0^t\! \exp(as)\d W_s\right].
+\]</span></p><p><strong>Remark</strong>: In finance, the OU process is often called the Vasicek model.</p>
+
+<h1 id="toc_30">Diffusion Process</h1>
+
+<p>The SDE for general diffusion process is <span class="math inline">\(\d X_t = \mu(X_t)\d t + \sigma(X_t)\d W_t\)</span>.</p>
+
+<h1 id="toc_31">Hitting Probability for Diffusion Processes</h1>
+
+<p>In order to find <span class="math inline">\(\P(X_T=B)\)</span> where we define <span class="math inline">\(T=\inf\{t\ge 0: X_t=A\text{ or }B\}\)</span>, we consider a harmonic function <span class="math inline">\(f(x)\)</span> s.t. <span class="math inline">\(f(X_t)\)</span> is a MG. This gives ODE</p>
+<p><span class="math display">\[
+f'(x)\mu(x) + f''(x)\sigma^2(x)/2 = 0\Rightarrow
+f(x) = \int_A^x C_1\exp\left\{-\!\int_A^z\frac{2\mu(y)}{\sigma^2(y)}\d y\right\}\d z + C_2
+\]</span></p><p>where <span class="math inline">\(C_{1,2}\)</span> are constants. Then since <span class="math inline">\(f(X_{T\wedge t})\)</span> is a bounded MG, by Doob&rsquo;s identity we have</p>
+<p><span class="math display">\[
+\P(X_T=B) = \frac{f(X_0) - f(A)}{f(B) - f(A)}.
+\]</span></p>
+<h1 id="toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\bs{W}_t)\)</span></h1>
+
+<p>Let <span class="math inline">\(\bs{W_t}\)</span> be a <span class="math inline">\(K\)</span>-dimensional standard Brownian motion. Let <span class="math inline">\(u:\R^K\mapsto \R\)</span> be a <span class="math inline">\(C^2\)</span> function with bounded first and second partial derivatives. Then</p>
+<p><span class="math display">\[
+\d u(\bs{W}_t) = \nabla u(\bs{W}_t)\cdot \d \bs{W}_t + \frac{1}{2}\tr[\Delta u(\bs{W}_t)] \d t
+\]</span></p><p>where the gradient operator <span class="math inline">\(\nabla\)</span> gives the vector of all first order partial derivatives, and the Laplace operator (or Laplacian) <span class="math inline">\(\Delta\equiv\nabla^2\)</span> gives the vector of all second order partial derivatives.</p>
+
+<h1 id="toc_33">Dynkin&rsquo;s Formula</h1>
+
+<p>If <span class="math inline">\(T\)</span> is a stopping time for <span class="math inline">\(\bs{W_t}\)</span>, then for any fixed <span class="math inline">\(t\)</span> we have</p>
+<p><span class="math display">\[
+\E[u(\bs{W}_{T\wedge t})] = u(\bs{0}) + \frac{1}{2}\E\!\left[\int_0^{T\wedge t}\!\!\Delta u(\bs{W}_s)\d s\right].
+\]</span></p>
+<h1 id="toc_34">Harmonic Functions</h1>
+
+<p>A <span class="math inline">\(C^2\)</span> function <span class="math inline">\(u:\R^k\mapsto\R\)</span> is said to be harmonic in a region <span class="math inline">\(\mathcal{U}\)</span> if <span class="math inline">\(\Delta u(x) = 0\)</span> for all <span class="math inline">\(x\in \mathcal{U}\)</span>. Examples are <span class="math inline">\(u(x,y)=2\log(r)\)</span> and <span class="math inline">\(u(x,y,z)=1/r\)</span> where <span class="math inline">\(r\)</span> is defined as the norm.</p>
+
+<p><strong>Remark</strong>: <span class="math inline">\(f\)</span> being a harmonic function is equivalent to <span class="math inline">\(f(X_t)\)</span> being a MG, i.e. <span class="math inline">\(f'(x)\mu(x) + f''(x)\sigma^2(x)/2 = 0\)</span> for a diffusion process <span class="math inline">\(X_t\)</span>.</p>
+
+<h1 id="toc_35">Harmonic Corollary of Dynkin</h1>
+
+<p>Let <span class="math inline">\(u\)</span> be harmonic in the an open region <span class="math inline">\(\mathcal{U}\)</span> with compact support, and assume that <span class="math inline">\(u\)</span> and its partials extend continuously to the boundary <span class="math inline">\(\partial \mathcal{U}\)</span>. Define <span class="math inline">\(T\)</span> to be the first exit time of Brownian motion from <span class="math inline">\(\mathcal{U}\)</span>. for any <span class="math inline">\(\bs{x}\in\mathcal{U}\)</span>, let <span class="math inline">\(\E^{\bs{x}}\)</span> be the expectation under measure <span class="math inline">\(\P^{\bs{x}}\)</span> s.t. <span class="math inline">\(\bs{W}_t - \bs{x}\)</span> is a <span class="math inline">\(K\)</span>-dimensional standard BM. Then</p>
+
+<ul>
+<li><span class="math inline">\(u(\bs{W}_{T\wedge t})\)</span> is a MT.</li>
+<li><span class="math inline">\(\E_{\bs{x}}[u(\bs{W}_T)] = u(\bs{x})\)</span>.</li>
+</ul>
+
+<h1 id="toc_36">Multivariate Itô Process</h1>
+
+<p>A multivariate Itô process is a continuous-time stochastic process <span class="math inline">\(X_t\in\R\)</span> of the form</p>
+<p><span class="math display">\[
+X_t = X_0 + \int_0^t\! M_s \d s + \int_0^t\! \bs{N}_s\cdot \d \bs{W}_s
+\]</span></p><p>where <span class="math inline">\(\bs{N}_t\)</span> is an adapted <span class="math inline">\(\R^K\)</span>−valued process and <span class="math inline">\(\bs{W}_t\)</span> is a
+<span class="math inline">\(K\)</span>−dimensional standard BM.</p>
+
+<h1 id="toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\bs{X}_t)\)</span></h1>
+
+<p>Let <span class="math inline">\(\bs{W}_t\in\R^K\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\bs{X}_t\in\R^m\)</span> be a vector of <span class="math inline">\(m\)</span> multivariate Itô processes satisfying</p>
+<p><span class="math display">\[
+\d X_t^i = M_t^i\d t + \bs{N}_t^i\cdot \d \bs{W}_t.
+\]</span></p><p>Then for any <span class="math inline">\(C^2\)</span> function <span class="math inline">\(u:\R^m\mapsto\R\)</span> with bounded first and second partial derivatives</p>
+<p><span class="math display">\[
+\d u(\bs{X}_t) = \nabla u(\bs{X}_t)\cdot \d \bs{X}_t + \frac{1}{2}\tr[\Delta u(\bs{X}_t)\cdot \d [\bs{X},\bs{X}]_t].
+\]</span></p>
+<h1 id="toc_38">Knight&rsquo;s Theorem</h1>
+
+<p>Let <span class="math inline">\(\bs{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\bs{U}_t\)</span> be an adapted <span class="math inline">\(K\)</span>−dimensional process satisfying</p>
+<p><span class="math display">\[
+|{\bs{U}_t}| = 1\quad\forall t\ge 0.
+\]</span></p><p>Then we know the following <span class="math inline">\(1\)</span>-dimensional Itô process is a standard BM:</p>
+<p><span class="math display">\[
+X_t := \int_0^t\!\! \bs{U}_s\cdot \d W_s.
+\]</span></p>
+<h1 id="toc_39">Radial Process</h1>
+
+<p>Let <span class="math inline">\(\bs{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(R_t=|\bs{W}_t|\)</span> be the corresponding radial process, then <span class="math inline">\(R_t\)</span> is a Bessel process with parameter <span class="math inline">\((K-1)\)</span> given by</p>
+<p><span class="math display">\[
+\d R_t = \frac{K-1}{R_t}\d t + \d W_t^{\sgn}
+\]</span></p><p>where we define <span class="math inline">\(\d W_t^{\sgn} := \sgn(\bs{W}_t)\cdot \d \bs{W}_t\)</span>.</p>
+
+<h1 id="toc_40">Bessel Process</h1>
+
+<p>A Bessel process with parameter <span class="math inline">\(a\)</span> is a stochastic process <span class="math inline">\(X_t\)</span> given by</p>
+<p><span class="math display">\[
+\d X_t = \frac{a}{X_t}\d t+ \d W_t.
+\]</span></p><p>Since this is just a special case of diffusion processes, we know the corresponding harmonic function is <span class="math inline">\(f(x)=C_1x^{-2a+1} + C_2\)</span>, and the hitting probability is</p>
+<p><span class="math display">\[
+\P(X_T=B) = \frac{f(X_0) - f(A)}{f(B) - f(A)} =
+\begin{cases}
+1 &amp; \text{if }a &gt; 1/2,\\
+(x/B)^{1-2a} &amp; \text{otherwise}.
+\end{cases}
+\]</span></p>
+<h1 id="toc_41">Itô&rsquo;s Representation Theorem</h1>
+
+<p>Let <span class="math inline">\(W_t\)</span> be a standard <span class="math inline">\(1\)</span>-dimensional Brownian motion and let <span class="math inline">\(\F_t\)</span> be the <span class="math inline">\(\sigma\)</span>−algebra of all events determined by the path <span class="math inline">\(\{W_s\}_{s\le t}\)</span>. If <span class="math inline">\(Y\)</span> is any r.v. with mean <span class="math inline">\(0\)</span> and finite variance that is measurable with respect to <span class="math inline">\(\F_t\)</span>, then for some <span class="math inline">\(t &gt; 0\)</span></p>
+<p><span class="math display">\[
+Y = \int_0^t\! A_s\d W_s
+\]</span></p><p>for some adapted process <span class="math inline">\(A_t\)</span> that satisfies</p>
+<p><span class="math display">\[
+\E(Y^2) = \int_0^t\! \E(A_s^2)\d s.
+\]</span></p><p>This theorem is of importance in finance because it implies that in the Black-Sholes setting, every contingent <code>CLAIM</code> can be hedged.</p>
+
+<p><strong>Special case:</strong> let <span class="math inline">\(Y_t=f(W_t)\)</span> be any mean <span class="math inline">\(0\)</span> r.v. with <span class="math inline">\(f\in C^2\)</span>. Let <span class="math inline">\(u(s,x):=\E[f(W_t)\mid W_s = x]\)</span>, then</p>
+<p><span class="math display">\[
+Y_t = f(W_t) = \int_0^t\! u_x(s,W_s)\d W_s.
+\]</span></p>
+<h1 id="toc_42">Assumptions of the Black-Scholes Model</h1>
+
+<ul>
+<li>Continuous-time trading</li>
+<li>No arbitrage</li>
+<li>Riskless asset <code>CASH</code> with non-random rate of return <span class="math inline">\(r_t\)</span></li>
+<li>Risky asset <code>STOCK</code> with share price <span class="math inline">\(S_t\)</span> such that <span class="math inline">\(\d S_t = S_t(\mu_t \d t + \sigma \d W_t)\)</span></li>
+</ul>
+
+<h1 id="toc_43">Black-Scholes Model</h1>
+
+<p>Under a risk-neutral measure <span class="math inline">\(\P\)</span>, the discounted share price <span class="math inline">\(S_t / M_t\)</span> is a martingale and thus</p>
+<p><span class="math display">\[
+\frac{S_t}{M_t} = \frac{S_0}{M_0}\exp\left\{\sigma W_t - \frac{\sigma^2t}{2}\right\}
+\]</span></p><p>where we used the fact that <span class="math inline">\(\mu_t = r_t\)</span> by the Fundamental Theorem.</p>
+
+<h1 id="toc_44">Contingent Claims</h1>
+
+<p>A European contingent <code>CLAIM</code> with expiration date <span class="math inline">\(T &gt; 0\)</span> and payoff function <span class="math inline">\(f:\R\mapsto\R\)</span> is a tradeable asset that pays <span class="math inline">\(f(S_T)\)</span> at time <span class="math inline">\(T\)</span>. By the Fundamental Theorem we know the discounted share price of this <code>CLAIM</code> at any <span class="math inline">\(t\le T\)</span> is <span class="math inline">\(\E[f(S_T)/M_T\mid \F_t]\)</span>. In order to calculate this conditional expectation, let <span class="math inline">\(g(W_t):= f(S_t)/M_t\)</span>, then by the Markov property of BM we know <span class="math inline">\(\E[g(W_T)\mid \F_t] = \E[g(W_t + W_{T-t}^*)\mid \F_t]\)</span> where <span class="math inline">\(W_t\)</span> is adapted in <span class="math inline">\(\F_t\)</span> and independent of <span class="math inline">\(W_t^*\)</span>.</p>
+
+<h1 id="toc_45">Black-Scholes Formula</h1>
+
+<p>The discounted time−<span class="math inline">\(t\)</span> price of a European contingent <code>CLAIM</code> with
+expiration date <span class="math inline">\(T\)</span> and payoff function <span class="math inline">\(f\)</span> is</p>
+<p><span class="math display">\[
+\E[f(S_T)/M_T\mid \F_t] = \frac{1}{M_T}\E\!\left[f\!\left(S_t\exp\!\left\{\sigma W_{T-t}^* -  \frac{\sigma^2(T-t)}{2} + R_T - R_t\right\}\right)\middle|\F_t\right]
+\]</span></p><p>where <span class="math inline">\(S_t\)</span> is adapted in <span class="math inline">\(\F_t\)</span> and independent of <span class="math inline">\(W_t^*\)</span>. The expectation is calculated using normal. Note here <span class="math inline">\(R_t = \int_0^t r_s\d s\)</span> is the log-compound interest rate.</p>
+
+<h1 id="toc_46">Black-Scholes PDE</h1>
+
+<p>Under risk-neutral probability measure, the discounted share price of <code>CLAIM</code> is a martingale, i.e. it has no drift term. So we can differentiate <span class="math inline">\(M_t^{-1}u(t,S_t)\)</span> by Itô and derive the following PDE</p>
+<p><span class="math display">\[
+u_t(t,S_t) + r_t S_tu_x(t,S_t) + \frac{\sigma^2S_t^2}{2}u_{xx}(t,S_t) = r_t u(t,S_t)
+\]</span></p><p>with terminal condition <span class="math inline">\(u(T,S_T)=f(S_T)\)</span>. Note here everything is under the BS model.</p>
+
+<h1 id="toc_47">Hedging in Continuous Time</h1>
+
+<p>A replicating portfolio for a contingent <code>CLAIM</code> in <code>STOCK</code> and <code>CASH</code> is given by</p>
+<p><span class="math display">\[
+V_t = \alpha_t M_t + \beta_t S_t
+\]</span></p><p>where <span class="math inline">\(\alpha_t = [u(t,S_t) - S_t u_x(t,S_t)]/M_t\)</span> and <span class="math inline">\(\beta_t = u_x(t,S_t)\)</span>.</p>
+
+<h1 id="toc_48">Barrier Option</h1>
+
+<p>A barrier option pays 1USD at time <span class="math inline">\(T\)</span> if <span class="math inline">\(\max_{t\le T} S_t \ge AS_0\)</span> and 0USD otherwise. This is a simple example of a path-dependent option. Other commonly used examples are knock-ins, knock-outs, lookbacks and Asian options.</p>
+
+<p>The time-<span class="math inline">\(0\)</span> price of such barrier options is calculated from</p>
+<p><span class="math display">\[
+\begin{align*}
+V_0 &amp;= \exp(-rT)\P\!\left(\max_{t\le T} S_t \ge AS_0\right)
+= \exp(-rT)\P\!\left(\max_{t\le T} W_t + \mu t \ge a\right)\\
+&amp;= \exp(-rT)\P_{\mu}\!\left(\max_{t\le T} W_t \ge a\right)
+\end{align*}
+\]</span></p><p>where <span class="math inline">\(\mu=r\sigma^{-1} - \sigma/2\)</span> and <span class="math inline">\(a = \sigma^{-1}\log A\)</span>. Now, by Cameron-Martin we know</p>
+<p><span class="math display">\[
+\begin{align*}
+\P_{\mu}\!\left(\max_{t\le T} W_t \ge a\right) &amp;=
+\E_0[Z_T\cdot \mathbf{1}_{\{\max_{t\le T} W_t\ge a\}}] =
+\E_0[\exp(\mu W_T - \mu^2 T / 2)\cdot \mathbf{1}_{\{\max_{t\le T} W_t\ge a\}}] \\ &amp;=
+\exp(- \mu^2 T / 2)\cdot \E_0[\exp(\mu W_T)\cdot \mathbf{1}_{\{\max_{t\le T} W_t\ge a\}}]
+\end{align*}
+\]</span></p><p>and by reflection principle we have</p>
+<p><span class="math display">\[
+\begin{align*}
+\E_0[\exp(\mu W_T)\cdot \mathbf{1}_{\{\max_{t\le T} W_t\ge a\}}] &amp;=
+e^{\mu a}\int_0^{\infty} (e^{\mu y} + e^{-\mu y}) \P(W_T - a \in \d y) \\&amp;=
+\Phi(\mu\sqrt{T} - a/\sqrt{T}) + e^{2\mu a}\Phi(-\mu\sqrt{T}-a/\sqrt{T}).
+\end{align*}
+\]</span></p>
+<h1 id="toc_49">Exponential Process</h1>
+
+<p>The exponential process</p>
+<p><span class="math display">\[
+Z_t = \exp\!\left\{\int_0^t\! Y_s\d W_s - \frac{1}{2}\int_0^t\! Y_s^2\d s\right\}
+\]</span></p><p>is a positive MG given</p>
+<p><span class="math display">\[
+\E\!\left[\int_0^t\! Z_s^2Y_s^2\d s\right] &lt; \infty.
+\]</span></p><p>Specifically, the exponential martingale is given by the SDE <span class="math inline">\(\d X_t = \theta X_t \d W_t\)</span>.</p>
+
+<h1 id="toc_50">Girsanov&rsquo;s Theorem</h1>
+
+<p>Assume that under the probability measure <span class="math inline">\(\P\)</span> the <strong>exponential process</strong> <span class="math inline">\(Z_t(Y)\)</span> is a MG and <span class="math inline">\(W_t\)</span> is a standard BM. Define the absolutely continuous probability measure <span class="math inline">\(Q\)</span> on <span class="math inline">\(\F_t\)</span> with likelihood ratio <span class="math inline">\(Z_t\)</span>, i.e. <span class="math inline">\((\d\Q/\d\P)_{\F_t} = Z_t\)</span>, then under <span class="math inline">\(Q\)</span> the process</p>
+<p><span class="math display">\[
+W_t^* := W_t - \int_0^t\! Y_s\d s
+\]</span></p><p>is a standard BM. Girsanov&rsquo;s Theorem shows that drift can be added or removed by change of measure.</p>
+
+<h1 id="toc_51">Novikov&rsquo;s Theorem</h1>
+
+<p>The exponential process</p>
+<p><span class="math display">\[
+Z_t = \exp\!\left\{\int_0^t\! Y_s \d W_s - \frac{1}{2}\!\int_0^t\! Y_s^2 \d s\right\}
+\]</span></p><p>is a MG given</p>
+<p><span class="math display">\[
+\E\left[\exp\!\left\{\frac{1}{2}\!\int_0^t\! Y_s^2\d s\right\}\right] &lt; \infty.
+\]</span></p><p>This theorem gives another way to show whether an exponential process is a MG.</p>
+
+<h1 id="toc_52">Standard BM to OU Process</h1>
+
+<p>Assume <span class="math inline">\(W_t\)</span> is a standard BM under <span class="math inline">\(\P\)</span>, define likelihood ratio <span class="math inline">\(Z_t = (\d\Q/\d\P)_{\F_t}\)</span> as above where <span class="math inline">\(Y_t = -\alpha W_t\)</span>, then by Girsanov <span class="math inline">\(W_t\)</span> under <span class="math inline">\(\Q\)</span> is an OU process.</p>
+
+<h1 id="toc_53">Fundamental Principle of Statistical Mechanics</h1>
+
+<p>If a system can be in one of a collection of states <span class="math inline">\(\{\omega_i\}_{i\in\mathcal{I}}\)</span>, the probability of finding it in a particular state <span class="math inline">\(\omega_i\)</span> is proportional to <span class="math inline">\(\exp\{-H(\omega_i)/kT\}\)</span> where <span class="math inline">\(k\)</span> is Boltzmann&rsquo;s constant, <span class="math inline">\(T\)</span> is temperature and <span class="math inline">\(H(\cdot)\)</span> is energy.</p>
+
+<h1 id="toc_54">Conditioned Brownian Motion</h1>
+
+<p>If <span class="math inline">\(W_t\)</span> is standard BM with <span class="math inline">\(W_0 = x \in (0, A)\)</span>, how does <span class="math inline">\(W_t\)</span> behave conditional on the event that it hits <span class="math inline">\(A\)</span> before <span class="math inline">\(0\)</span>? Define</p>
+
+<ul>
+<li><span class="math inline">\(\P^x\)</span> is a measure under which <span class="math inline">\(W_0=x\)</span></li>
+<li><span class="math inline">\(\Q^x\)</span> is a measure under which <span class="math inline">\(W_0=x\)</span> and <span class="math inline">\(W_T=A\)</span> where <span class="math inline">\(T=\inf\{t\ge 0: W_t=A\text{ or }0\}\)</span></li>
+</ul>
+
+<p>Then the likelihood ratios are</p>
+<p><span class="math display">\[
+\left(\frac{\d\Q^x}{\d\P^x}\right)_{\!\F_T} \!= \frac{\mathbf{1}_{\{W_T=A\}}}{\P^x\{W_T=x\}} \Rightarrow
+\left(\frac{\d\Q^x}{\d\P^x}\right)_{\!\F_{T\wedge t}} \!= \E\!\left[\left(\frac{\d\Q^x}{\d\P^x}\right)_{\!\F_T}\middle|\F_{T\wedge t}\right] = \frac{W_{T\wedge t}}{x}.
+\]</span></p><p>Notice</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{W_{T\wedge t}}{x} &amp;=
+\exp\left\{\log W_{T\wedge t}\right\} / x \overset{\text{Itô}}{\eeq}
+\exp\left\{\log W_0 + \int_0^{T\wedge t}W_s^{-1}\d W_s - \frac{1}{2}\int_0^{T\wedge t} W_s^{-2}\d s\right\} / x \\&amp;=
+\exp\left\{\int_0^{T\wedge t}W_s^{-1}\d W_s - \frac{1}{2}\int_0^{T\wedge t} W_s^{-2}\d s\right\}
+\end{align*}
+\]</span></p><p>which is a Girsanov likelihood ratio, so we conclude <span class="math inline">\(W_t\)</span> is a BM under <span class="math inline">\(\Q^x\)</span> with drift <span class="math inline">\(W_t^{-1}\)</span>, or equivalently</p>
+<p><span class="math display">\[
+W_t^* = W_t - \int_0^{T\wedge t}W_s^{-1}\d s
+\]</span></p><p>is a standard BM with initial point <span class="math inline">\(W_0^* = x\)</span>.</p>
+
+<h1 id="toc_55">Lévy Process</h1>
+
+<p>A one-dimensional Lévy process is a continuous-time random process <span class="math inline">\(\{X_t\}_{t\ge 0}\)</span> with <span class="math inline">\(X_0=0\)</span> and i.i.d. increments. Lévy processes are defined to be a.s. right continuous with left limits.</p>
+
+<p><strong>Remark</strong>: Brownian motion is the only Lévy process with continuous paths.</p>
+
+<h1 id="toc_56">First-Passage-Time Process</h1>
+
+<p>Let <span class="math inline">\(B_t\)</span> be a standard BM. Define the FPT process as <span class="math inline">\(\tau_x = \inf\{t\ge 0: B_t \ge x\}\)</span>. Then <span class="math inline">\(\{\tau_{x}\}_{x\ge 0}\)</span> is a Lévy process called the one-sided stable-<span class="math inline">\(1/2\)</span> process. Specifically, the sample paths <span class="math inline">\(x\mapsto \tau_x\)</span> is non-decreasing in <span class="math inline">\(x\)</span>. Such Lévy processes with non-decreasing paths are called subordinators.</p>
+
+<h1 id="toc_57">Poisson Process</h1>
+
+<p>A Poisson process with rate (or intensity) <span class="math inline">\(\lambda  &gt; 0\)</span> is a Lévy process <span class="math inline">\(N_t\)</span> such that for any <span class="math inline">\(t\ge 0\)</span> the distribution of the random variable <span class="math inline">\(N_t\)</span> is the Poisson distribution with mean <span class="math inline">\(\lambda t\)</span>. Thus, for any <span class="math inline">\(k=0,1,2,\cdots\)</span> we have <span class="math inline">\(\P(N_t=k) = (\lambda t)^k\exp(-\lambda t)\ /\ k!\)</span> for all <span class="math inline">\(t &gt; 0\)</span>.</p>
+
+<p><strong>Remark 1:</strong> (Superposition Theorem) If <span class="math inline">\(N_t\)</span> and <span class="math inline">\(M_t\)</span> are independent Poisson processes of rates <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> respectively, then the superposition <span class="math inline">\(N_t + M_t\)</span> is a Poisson process of rate <span class="math inline">\(\lambda+\mu\)</span>.</p>
+
+<p><strong>Remark 2:</strong> (Exponential Interval) Successive intervals are i.i.d. exponential r.v.s. with common mean <span class="math inline">\(1/\lambda\)</span>.</p>
+
+<p><strong>Remark 3:</strong> (Thinning Property) Bernoulli-<span class="math inline">\(p\)</span> r.v.s. by Poisson-<span class="math inline">\(\lambda\)</span> compounding is again Poisson with rate <span class="math inline">\(\lambda p\)</span>.</p>
+
+<p><strong>Remark 4:</strong> (Compounding) Every compound Poisson process is a Lévy process. We call the <span class="math inline">\(\lambda F\)</span> the Lévy measure where <span class="math inline">\(F\)</span> is the compounding distribution.</p>
+
+<h1 id="toc_58">MGF of Poisson</h1>
+
+<p>For <span class="math inline">\(N\sim\text{Pois}(\lambda)\)</span>, we have <span class="math inline">\(\MGF(\theta)=\exp[\lambda (e^{\theta}-1)]\)</span>.</p>
+
+<p>For <span class="math inline">\(X_t=\sum_{i=1}^{N_t}\!Y_i\)</span> where <span class="math inline">\(N_t\sim\text{Pois}(\lambda t)\)</span> and <span class="math inline">\(\MGF_Y(\theta) = \psi(\theta) &lt; \infty\)</span>, then <span class="math inline">\(\MGF_{X_t}(\theta)=\exp[\lambda t (\psi(\theta) - 1)]\)</span>.</p>
+
+<h1 id="toc_59">Law of Small Numbers</h1>
+
+<p>Binomial-<span class="math inline">\((n,p_n)\)</span> distribution, where <span class="math inline">\(n\to\infty\)</span> and <span class="math inline">\(p_n\to 0\)</span> s.t. <span class="math inline">\(np_n\to\lambda &gt; 0\)</span>, converges to Poisson-<span class="math inline">\(\lambda\)</span> distribution.</p>
+
+<h1 id="toc_60">Poisson-Exponential Martingale</h1>
+
+<p>If <span class="math inline">\(N_t\)</span> is a Poisson process with rate <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(Z_t=\exp[\theta N_t - (e^{\theta} - 1) \lambda t]\)</span> is a martingale for any <span class="math inline">\(\theta\in\R\)</span>.</p>
+
+<p><strong>Remark:</strong> Similar to <strong>Cameron-Martin</strong>, let <span class="math inline">\(N_t\)</span> be a Poisson process with rate <span class="math inline">\(\lambda\)</span> under <span class="math inline">\(\P\)</span>, let <span class="math inline">\(\Q\)</span> be the measure s.t. the likelihood ratio <span class="math inline">\((\d\Q/\d\P)_{\F_t}=Z_t\)</span> is defined as above, then <span class="math inline">\(N_t\)</span> under <span class="math inline">\(\Q\)</span> is a Poisson process with rate <span class="math inline">\(\lambda e^{\theta}\)</span>.</p>
+
+<p>If <span class="math inline">\(X_t\)</span> is a compound Poisson process with Lévy measure <span class="math inline">\(\lambda F\)</span>. Let the MGF of compounding distribution <span class="math inline">\(F\)</span> be <span class="math inline">\(\psi(\theta)\)</span>, then <span class="math inline">\(Z_t=\exp[\theta X_t - (\psi(\theta) - 1)\lambda t]\)</span> is a martingale for any <span class="math inline">\(\theta\in\R\)</span>.</p>
+
+<h1 id="toc_61">Vector Lévy Process</h1>
+
+<p>A <span class="math inline">\(K\)</span>-dimensional Lévy process is a continuous-time random process <span class="math inline">\(\{\bs{X}_t\}_{t\ge 0}\)</span> with <span class="math inline">\(\bs{X}_0=\bs{0}\)</span> and i.i.d. increments. Like the one-dimensional version, vector Lévy processes are defined to be a.s. right continuous with left limits.</p>
+
+<p><strong>Remark:</strong> Given non-random linear transform <span class="math inline">\(F:\R^K\mapsto \R^M\)</span> and a <span class="math inline">\(K\)</span>-dimensional Lévy process <span class="math inline">\(\{\bs{X}_t\}_{t\ge 0}\)</span>, then <span class="math inline">\(\{F(\bs{X}_t)\}_{t\ge 0}\)</span> is a Lévy process on <span class="math inline">\(\R^M\)</span>.</p>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/billiard-tournament-martingale/">Billiard Tournament: Martingale, Kelly Criterion and More</a></span>
+  <span class="nav-next"><a href="/blog/notes-on-foreign-exchange/">Notes on Foreign Exchange</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/billiard-tournament-martingale\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/notes-on-foreign-exchange\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/notes-on-stochastic-calculus.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

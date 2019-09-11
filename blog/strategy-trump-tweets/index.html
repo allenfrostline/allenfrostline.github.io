@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo? - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo? - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not &amp;hellip;">
+      <meta property="og:description" content="Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/strategy-trump-tweets.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo?</h1>
+
+
+<h3>
+2017-02-09</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<p>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)</p>
+
+<p><img src="/images/trump1.png" style="width: 850;"/></p>
+
+<p><strong>Update</strong>:</p>
+
+<p>Alright&hellip; See this Github repository <a href="https://github.com/maxbbraun/trump2cash">trump2cash</a>. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do. I also noticed that he used a less famous online broker &ldquo;TradeKing&rdquo; in U.S., which allows Python API trading. This is something I was missing in my plan. All I knew before this trump2cash project are Interactive Broker and Quantopian Zipline framework.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Time</th>
+<th align="center">Trade</th>
+<th align="center">Value</th>
+<th align="center">Return</th>
+<th align="center">Annualized</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">Initial</td>
+<td align="center">-</td>
+<td align="center">$100,000.00</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center">12/6/2016 8:52 AM</td>
+<td align="center">BA⬊</td>
+<td align="center">$99,904.05</td>
+<td align="center">-0.096%</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center">12/22/2016 5:26 PM</td>
+<td align="center">BA⬊</td>
+<td align="center">$99,904.05</td>
+<td align="center">-0.096%</td>
+<td align="center">-2.166%</td>
+</tr>
+
+<tr>
+<td align="center">1/3/2017 7:30 AM</td>
+<td align="center">GM⬊</td>
+<td align="center">$99,904.05</td>
+<td align="center">-0.096%</td>
+<td align="center">-1.289%</td>
+</tr>
+
+<tr>
+<td align="center">1/3/2017 11:44 AM</td>
+<td align="center">F⬈</td>
+<td align="center">$101,333.52</td>
+<td align="center">1.334%</td>
+<td align="center">18.849%</td>
+</tr>
+
+<tr>
+<td align="center">1/4/2017 8:19 AM</td>
+<td align="center">F⬈</td>
+<td align="center">$105,950.59</td>
+<td align="center">5.951%</td>
+<td align="center">112.442%</td>
+</tr>
+
+<tr>
+<td align="center">1/5/2017 1:14 PM</td>
+<td align="center">TM⬊</td>
+<td align="center">$106,534.52</td>
+<td align="center">6.535%</td>
+<td align="center">116.006%</td>
+</tr>
+
+<tr>
+<td align="center">1/9/2017 9:14 AM</td>
+<td align="center">FCAU⬈</td>
+<td align="center">$106,729.63</td>
+<td align="center">6.730%</td>
+<td align="center">101.209%</td>
+</tr>
+
+<tr>
+<td align="center">1/9/2017 9:16 AM</td>
+<td align="center">F⬈</td>
+<td align="center">$106,729.63</td>
+<td align="center">6.730%</td>
+<td align="center">101.209%</td>
+</tr>
+
+<tr>
+<td align="center">1/9/2017 9:16 AM</td>
+<td align="center">FCAU⬈</td>
+<td align="center">$106,729.63</td>
+<td align="center">6.730%</td>
+<td align="center">101.209%</td>
+</tr>
+
+<tr>
+<td align="center">1/17/2017 12:55 PM</td>
+<td align="center">GM⬈</td>
+<td align="center">$106,508.94</td>
+<td align="center">6.509%</td>
+<td align="center">72.981%</td>
+</tr>
+
+<tr>
+<td align="center">1/17/2017 12:55 PM</td>
+<td align="center">WMT⬈</td>
+<td align="center">$106,488.57</td>
+<td align="center">6.489%</td>
+<td align="center">72.694%</td>
+</tr>
+
+<tr>
+<td align="center">1/17/2017 12:55 PM</td>
+<td align="center">STT⬈</td>
+<td align="center">$106,053.96</td>
+<td align="center">6.054%</td>
+<td align="center">66.664%</td>
+</tr>
+
+<tr>
+<td align="center">1/18/2017 7:34 AM</td>
+<td align="center">F⬊</td>
+<td align="center">$106,053.96</td>
+<td align="center">6.054%</td>
+<td align="center">66.664%</td>
+</tr>
+
+<tr>
+<td align="center">1/18/2017 7:34 AM</td>
+<td align="center">GM⬊</td>
+<td align="center">$106,053.96</td>
+<td align="center">6.054%</td>
+<td align="center">66.664%</td>
+</tr>
+
+<tr>
+<td align="center">1/18/2017 7:34 AM</td>
+<td align="center">LMT⬊</td>
+<td align="center">$106,053.96</td>
+<td align="center">6.054%</td>
+<td align="center">66.664%</td>
+</tr>
+
+<tr>
+<td align="center">1/18/2017 8:00 AM</td>
+<td align="center">BLK⬈</td>
+<td align="center">$106,945.01</td>
+<td align="center">6.945%</td>
+<td align="center">79.233%</td>
+</tr>
+
+<tr>
+<td align="center">1/24/2017 12:49 PM</td>
+<td align="center">TRP⬊</td>
+<td align="center">$107,069.96</td>
+<td align="center">7.070%</td>
+<td align="center">66.339%</td>
+</tr>
+
+<tr>
+<td align="center">1/24/2017 7:46 PM</td>
+<td align="center">F⬈</td>
+<td align="center">$107,069.96</td>
+<td align="center">7.070%</td>
+<td align="center">66.339%</td>
+</tr>
+
+<tr>
+<td align="center">1/24/2017 7:46 PM</td>
+<td align="center">GM⬈</td>
+<td align="center">$107,069.96</td>
+<td align="center">7.070%</td>
+<td align="center">66.339%</td>
+</tr>
+
+<tr>
+<td align="center">1/30/2017 7:16 AM</td>
+<td align="center">DAL⬊</td>
+<td align="center">$107,069.96</td>
+<td align="center">7.070%</td>
+<td align="center">58.683%</td>
+</tr>
+</tbody>
+</table>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/trading-system-on-aliyun/">How to Set Up an Algo-trading System on Aliyun</a></span>
+  <span class="nav-next"><a href="/blog/how-to-deploy-a-local-project-onto-github/">How to Deploy a Local Project onto Github</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/trading-system-on-aliyun\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/how-to-deploy-a-local-project-onto-github\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/strategy-trump-tweets.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

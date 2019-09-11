@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Strategy: LSTM Neural Network &#43; Small Cap - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Strategy: LSTM Neural Network &#43; Small Cap - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
+[&amp;hellip;] &amp;hellip;">
+      <meta property="og:description" content="This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
+[&amp;hellip;] &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/strategy-lstm-neural-network-small-cap.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Strategy: LSTM Neural Network &#43; Small Cap</h1>
+
+
+<h3>
+2017-01-17</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Performance</a></li>
+
+<li><a href="#toc_1">Intuition: Small Cap</a></li>
+
+<li><a href="#toc_2">Tool: LSTM Neural Network</a></li>
+
+<li><a href="#toc_3">Codes</a></li>
+
+<li><a href="#toc_4">References:</a></li>
+</ul>
+
+</nav>
+<p>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&rsquo;s trading API.</p>
+
+<!-- more -->
+
+<h1 id="toc_0">Performance</h1>
+
+<table>
+<thead>
+<tr>
+<th align="center">Info</th>
+<th align="center">Result</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">Backtest Interval</td>
+<td align="center">20130101 - 20170101</td>
+</tr>
+
+<tr>
+<td align="center">Initial Capital</td>
+<td align="center">1,000,000</td>
+</tr>
+
+<tr>
+<td align="center">Annualized Return (Strategy)</td>
+<td align="center">68.444%</td>
+</tr>
+
+<tr>
+<td align="center">Annualized Return (Benchmark)</td>
+<td align="center">9.205%</td>
+</tr>
+
+<tr>
+<td align="center">Sharpe Ratio</td>
+<td align="center">3.4771</td>
+</tr>
+
+<tr>
+<td align="center">Maximum Drawdown</td>
+<td align="center">-13.396%</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/images/lstm_smc1.png" style="width: 850;"/></p>
+
+<h1 id="toc_1">Intuition: Small Cap</h1>
+
+<p>It is quite intuitive that small cap companies generally embrace larger probability to go up. Also, due to market making in A-share market, small caps usually have more stable paterns. These two facts hold from bear to bull and are rarely violated.</p>
+
+<h1 id="toc_2">Tool: LSTM Neural Network</h1>
+
+<p>LSTM is an RNN network model. It&rsquo;s strength is in efficiently processing text and time series of various length. For more detailed information, check <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">this</a> out.</p>
+
+<h1 id="toc_3">Codes</h1>
+
+<pre><code class="language-python">'''
+author: Allen Frostline
+update: 2017-01-16
+'''
+
+# some importance libraries
+import pandas as pd
+import numpy as np
+from datetime import timedelta
+from pybrain.datasets import SequentialDataSet
+from pybrain.tools.shortcuts import buildNetwork
+from pybrain.structure.networks import Network
+from pybrain.structure.modules import ReluLayer, LSTMLayer
+from pybrain.supervised import RPropMinusTrainer
+
+# train on trainX and trainY, return a net and its score
+def train(context, trainX, trainY):
+    ds = SequentialDataSet(4, 1)
+    for dataX, dataY in zip(trainX, trainY):
+        ds.addSample(dataX, dataY)
+    net = buildNetwork(4, 1, 1, hiddenclass=LSTMLayer, outputbias=False, recurrent=True)
+    trainer = RPropMinusTrainer(net, dataset=ds)
+    EPOCHS_PER_CYCLE = 5
+    CYCLES = 5
+    for i in range(CYCLES):
+        trainer.trainEpochs(EPOCHS_PER_CYCLE)
+    return net, trainer.testOnData()
+
+# update data
+def load(context, ticker):
+    close = history_bars(ticker, 180, '1d', 'close')
+    high  = history_bars(ticker, 180, '1d', 'high')
+    low   = history_bars(ticker, 180, '1d', 'low')
+    volume= history_bars(ticker, 180, '1d', 'volume')
+    data = np.matrix([close, high, low, volume])
+    context.position_ratio.append(np.array([close.mean(), high.mean(), low.mean(), volume.mean()]))
+    context.shape_ratio.append(np.array([close.std(), high.std(), low.std(), volume.std()]))
+    data[0,:] = (data[0,:] - context.position_ratio[-1][0]) / context.shape_ratio[-1][0]
+    data[1,:] = (data[1,:] - context.position_ratio[-1][1]) / context.shape_ratio[-1][1]
+    data[2,:] = (data[2,:] - context.position_ratio[-1][2]) / context.shape_ratio[-1][2]
+    data[3,:] = (data[3,:] - context.position_ratio[-1][3]) / context.shape_ratio[-1][3]
+    return data
+
+
+# blacklist is a necessity
+def filter_blacklist(context, stock_list):
+    return [ticker for ticker in stock_list if ticker not in context.blacklist]
+    
+def filter_stlist(stock_list):
+    return [ticker for ticker in stock_list if not is_st_stock(ticker)]
+
+# use data of past 6 months to train the model and apply it for the next 3 months
+def modelize(context, bar_dict):
+    if context.every_3_months % 3 != 0: 
+        context.every_3_months += 1
+        return 0
+    print('-'*65)
+    print('------'+'{:-^59}'.format('modelizing'))
+    context.position_ratio = []
+    context.shape_ratio    = []
+    context.data  = []
+    context.net   = []
+    context.list  = []
+    templist = list(get_fundamentals(query(fundamentals.eod_derivative_indicator.market_cap)
+                                    .order_by(fundamentals.eod_derivative_indicator.market_cap.asc())
+                                    .limit(context.num*5)).columns)
+    context.list = filter_blacklist(context, filter_stlist(templist))[:context.num]
+    names  = []
+    scores = []
+    for ticker in context.list:
+        names.append('{:&lt;11}'.format(ticker))
+        data = load(context, ticker)
+        trainX = data[:,:-1].T
+        trainY = data[0,1:].T
+        try:
+            net, mse = train(context, trainX, trainY)
+        except:
+            context.blacklist.append(ticker)
+            context.mflag = 0
+            return 0
+        context.data.append(data)
+        context.net.append(net)
+        scores.append('{:&lt;11}'.format(str(mse)[:6]))
+        if np.isnan(mse):
+            context.blacklist.append(ticker)
+            context.mflag = 0
+            return 0
+    context.pct = [0] * context.num
+    print('------'+'{:-^59}'.format('finished'))
+    print('-'*65)
+    print(' nm | '+' '.join(names))
+    print('mse | '+' '.join(scores))
+
+    context.mflag = 1  # flag that we've already modelized at least once
+    context.tflag = 0
+    context.every_3_months += 1
+    context.mv = dict(zip(context.list, [0]*len(context.list)))
+
+def mkt_panic():
+    # market alert
+    mkt = history_bars('000001.XSHG', 3, '1d', 'close')
+    panic = (mkt[-1]/mkt[-2] &lt; 0.97 and mkt[-2]/mkt[-3] &lt; 0.97) or mkt[-1]/mkt[-2] &lt; 0.95
+    if panic:
+        print('!!!!!!'+'{:!^59}'.format('panic'))
+        return 1
+    return 0
+
+# set alert range [a,b]
+def trade(context,bar_dict):
+    
+    while context.mflag == 0: modelize(context, bar_dict)
+    
+    trash_bin = [ticker for ticker in context.portfolio.positions if ticker not in context.list]
+    for ticker in trash_bin: order_target_percent(ticker, 0)
+    
+    actual_close  = []
+    actual_high   = []
+    actual_low    = []
+    actual_vol    = []
+    actual_open   = []
+    actual_data   = []
+    predict_close = []
+    
+    for i in range(context.num):
+        actual_close.append((history_bars(context.list[i], 1,'1d','close')[0] - context.position_ratio[i][0]) / context.shape_ratio[i][0])
+        actual_high.append((history_bars(context.list[i], 1,'1d','high')[0]   - context.position_ratio[i][1]) / context.shape_ratio[i][1])
+        actual_low.append((history_bars(context.list[i], 1,'1d','low')[0]     - context.position_ratio[i][2]) / context.shape_ratio[i][2])
+        actual_vol.append((history_bars(context.list[i], 1,'1d','volume')[0]  - context.position_ratio[i][3]) / context.shape_ratio[i][3])
+        actual_open.append((history_bars(context.list[i], 1,'1m','close')[0]  - context.position_ratio[i][0]) / context.shape_ratio[i][0])
+        actual_data.append([actual_close[i],actual_high[i],actual_low[i],actual_vol[i]])
+        predict_close.append(context.net[i].activate(actual_data[i])[0])
+
+    if context.tflag == 0: 
+        context.temp_pc = predict_close
+    
+    r = [float((pc*shape_ratio[0]+position_ratio[0]) / (ao*shape_ratio[0]+position_ratio[0]) - 1) for pc, ao, shape_ratio, position_ratio in zip(predict_close, actual_open, context.shape_ratio, context.position_ratio)]
+    
+    temp_r = [float((pc*shape_ratio[0]+position_ratio[0]) / (tpc*shape_ratio[0]+position_ratio[0]) - 1) for pc, tpc, shape_ratio, position_ratio in zip(predict_close, context.temp_pc, context.shape_ratio, context.position_ratio)]
+    
+    # stop loss trick
+    for stock in context.portfolio.positions:
+        try:
+            mv = context.portfolio.positions[stock].market_value # Cap
+            if mv &gt; context.mv[stock]: context.mv[stock] = mv    # History Price Max
+            md = 1 - mv/context.mv[stock]                        # Max DD
+            if md &gt; .5: order_value(stock, mv/2)
+        except:
+            pass
+    
+    # The essence of this strategy
+    hybrid_r = [max(ri,temp_ri,ri+temp_ri) for ri, temp_ri in zip(r,temp_r)]
+    bad_hybrid_signal = sum([x &lt;= 0 for x in hybrid_r])
+    a, b = 0.02, -0.02
+    panic = mkt_panic()
+    for i in range(context.num):
+        if panic or 0 &lt; context.post_panic &lt; 22 * context.num:
+            context.pct[i] = 0
+            context.post_panic = (1 - panic) * (context.post_panic + 1) + panic
+        elif hybrid_r[i] &gt; a:
+            context.pct[i] = min(context.pct[i] + .5/context.num, 2/context.num)
+            context.post_panic = 0
+        elif hybrid_r[i] &lt; b or bad_hybrid_signal &gt; 3*context.num//5:
+            context.pct[i] = max(context.pct[i] - .5/context.num, 0)
+            context.post_panic = 0
+
+    if context.tflag == 1: print(' ac | '+' '.join(['{:&lt;11}'.format(str(ac)[:6]) for ac in actual_close]))
+    print('-'*65)
+    print(' ao | '+' '.join(['{:&lt;11}'.format(str(ao)[:6]) for ao in actual_open]))
+    print(' pc | '+' '.join(['{:&lt;11}'.format(str(pc)[:6]) for pc in predict_close]))
+    print('  r | '+' '.join(['{:&lt;11}'.format(str(ri)[:6]) for ri in hybrid_r]))
+    pct = sum([context.portfolio.positions[ticker].market_value for ticker in context.portfolio.positions])/(context.portfolio.market_value+context.portfolio.cash)
+    tot_pct = max(sum(context.pct), 1)
+    context.pct = list(map(lambda x: x/tot_pct, context.pct))
+    print('  % | '+' '.join(['{:&lt;11}'.format(str(p)[:6]) for p in context.pct]))
+    plot('total position', pct * 100)
+    for i in range(context.num): order_target_percent(context.list[i], context.pct[i])
+    context.tflag = 1
+    context.temp_pc = predict_close
+    
+
+def init(context):
+    context.temp_pc        = []
+    context.every_3_months = 0
+    context.tflag          = 0
+    context.mflag          = 0
+    context.mv             = []
+    context.position_ratio = []
+    context.shape_ratio    = []
+    context.num            = 20
+    context.list           = []
+    context.pct            = [0] * context.num
+    context.net            = []
+    context.data           = []
+    context.post_panic     = 0
+    context.blacklist      = [
+                              '000004.XSHE','000546.XSHE',
+                              '000594.XSHE','002352.XSHE',
+                              '300176.XSHE','300260.XSHE',
+                              '300372.XSHE','600137.XSHG',
+                              '600306.XSHG','600656.XSHG',
+                             ]
+    scheduler.run_monthly(modelize,1)
+    scheduler.run_daily(trade)
+
+# do nothing before 9:00
+def before_trading(context):
+    pass
+
+# do not trigger minute bar activities
+def handle_bar(context, bar_dict):
+    pass
+</code></pre>
+
+<hr />
+
+<h1 id="toc_4">References:</h1>
+
+<ul>
+<li><a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTM Networks</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Long_short-term_memory">Long Short-term Memery</a></li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/gmm-estimation/">GMM Estimation of an ARMA(2,1) Model</a></span>
+  <span class="nav-next"><a href="/blog/trading-system-on-aliyun/">How to Set Up an Algo-trading System on Aliyun</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/gmm-estimation\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/trading-system-on-aliyun\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/strategy-lstm-neural-network-small-cap.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

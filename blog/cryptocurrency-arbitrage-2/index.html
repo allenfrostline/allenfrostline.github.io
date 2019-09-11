@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Cryptocurrency Arbitrage: Performance - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Cryptocurrency Arbitrage: Performance - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. &amp;hellip;">
+      <meta property="og:description" content="Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/cryptocurrency-arbitrage-2.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Cryptocurrency Arbitrage: Performance</h1>
+
+
+<h3>
+2018-01-09</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<p>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using <code>plotly</code>. Timezone is set at my local time, i.e. <code>Europe/Amsterdam</code>. Cheers!</p>
+
+<p><img src="/images/trace.png" style="width: 100%;"/></p>
+
+<p><strong>Update April 11:</strong></p>
+
+<p>Strategy offline before I realized my AWS bills was being owed and the server down due to that&hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc. (which I would call &ldquo;true performance&rdquo; but is actually summarized from two accounts) is compared below.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Gross Performance</th>
+<th align="center">Adjusted Performance</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">Timespan in Days</td>
+<td align="center">78.72</td>
+<td align="center">78.72</td>
+</tr>
+
+<tr>
+<td align="center">Cumulative Returns</td>
+<td align="center">+1386.17%</td>
+<td align="center">+651.53%</td>
+</tr>
+
+<tr>
+<td align="center">Annualized Returns</td>
+<td align="center">+6431.49%</td>
+<td align="center">+3022.94%</td>
+</tr>
+
+<tr>
+<td align="center">Sharpe Ratio</td>
+<td align="center">7.35</td>
+<td align="center">7.06</td>
+</tr>
+
+<tr>
+<td align="center">Maximum Drawdown</td>
+<td align="center">-</td>
+<td align="center">8.05%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Update June 3:</strong></p>
+
+<p>Since the mass slump this January, the strategy has experienced a remarkable decline in performance. Could be due to market panic and the corresponding flooding. Now that it&rsquo;s no longer profitable, I&rsquo;m sharing part of codes in the main file as below. Feel free to tell me your suggestions in comments!</p>
+
+<pre><code class="language-python"># Author: Allen Frostline / Version 0.1.8
+#
+# - Dynamic slippage proportional to spreads
+# - Order retry
+# - Flush all orders and errors
+# - Added a new order delay/timeout mechanism
+# - Using limit order instead of market order now
+# - Added a log-t estimation of expected time to a hit
+# - Added the sim trading feature
+# - Keep 10% BNB in the account so that fee = 5bps
+
+
+import os
+import imp
+import sys
+import ccxt
+import config
+import numpy as np
+import pandas as pd
+from time import sleep
+from pytz import timezone
+from scipy.stats import t
+from scipy.misc import imread
+from datetime import datetime
+from skimage.transform import resize
+
+
+VERSION = '0.1.8'
+SCREEN_WIDTH = 100
+PRINT_BRAND = False
+
+if sys.stdout.isatty():
+    RED = '\u001b[1m\u001b[38;5;196m'
+    GRAY = '\u001b[1m\u001b[38;5;240m'
+    GREEN = '\u001b[1m\u001b[38;5;46m'
+    YELLOW = '\u001b[1m\u001b[38;5;220m'
+    CYAN = '\u001b[1m\u001b[38;5;51m'
+    RESET = '\u001b[0m'
+else:
+    RED = GRAY = GREEN = YELLOW = CYAN = RESET = ''
+
+IS_OSX = (sys.platform == 'darwin')
+
+
+def now():
+    return datetime.now(timezone('Europe/Amsterdam'))
+
+
+def log(s, flush=False):
+    print(' ' * (SCREEN_WIDTH + 60), end='\r')
+    sys.stdout.flush()
+    if not flush:
+        print('[' + GREEN + now().strftime('%Y-%m-%d %H:%M:%S') + RESET + ']', s)
+    else:
+        print('[' + GREEN + now().strftime('%Y-%m-%d %H:%M:%S') + RESET + ']', s, end='\r')
+        sys.stdout.flush()
+
+
+YEAR = now().year
+FLUSH_ORDERS = True
+FLUSH_ERRORS = True
+PRINT_BNB_RATIO = False
+ORDER_DELAY_MAX = 1000
+ORDER_RETRY_MAX = 10
+HISTORY_LENGTH = 100
+ERROR_LENGTH = 123
+
+
+class Coinbot:
+
+    def __init__(self):
+        self.mtime_config = 0
+        self.sim_pnl = 0
+        self.mv0 = None
+        self.seconds = []
+        self.log_retns = []
+        self.init = PRINT_BRAND
+
+    def mv(self):
+        if self.sim:
+            base_amount = self.sim_amount * (1 + self.sim_pnl)
+            return self.mv_in_usd(self.base_coin, base_amount), base_amount
+        orders_made, balance = self.close_all()
+        if orders_made: balance = self.exchange.fetch_total_balance()
+        tot_mv = sum([self.mv_in_usd(c, balance[c]) for c in balance])
+        bnb_ratio = self.mv_in_usd('BNB', balance['BNB']) / tot_mv
+        return tot_mv, balance[self.base_coin], bnb_ratio
+
+    def mv_in_usd(self, c, amount):
+        if not amount: return 0
+        if c not in self.coin_list: return 0
+        ret = 0
+        rates = {'USDT': 1,
+                 'BTC': self.tickers['BTC/USDT']['last'],
+                 'ETH': self.tickers['ETH/USDT']['last'],
+                 'BNB': self.tickers['BNB/USDT']['last']}
+        if c in rates: ret = amount * rates[c]
+        else:
+            for coin in rates:
+                symbol = c + '/' + coin
+                if symbol in self.symbols:
+                    ret = amount * self.tickers[symbol]['last'] * rates[coin]
+                    break
+        return ret * (ret &gt; 1)
+
+    def update_config(self):
+        return  # instructions to print good-looking configurations
+
+    def order(self, from_coin, to_coin, from_amount=None, rate=None, retry=0):
+        if retry &gt; ORDER_RETRY_MAX: return False
+        from_amount_init = from_amount
+        try:
+            if not from_amount:
+                if from_coin == 'BNB':
+                    from_amount = self.exchange.fetch_total_balance()[from_coin] * (1 - self.bnb_ratio)
+                else: from_amount = self.exchange.fetch_total_balance()[from_coin]
+            symbol = from_coin + '/' + to_coin
+            if symbol in self.symbols:
+                limit = self.limit[symbol]
+                from_amount = from_amount // limit * limit
+                if not self.mv_in_usd(from_coin, from_amount): return False
+                if rate:
+                    log('Sell {:.6f} {} for {} at {:.6f} {}/{}'.
+                        format(from_amount, from_coin, to_coin, rate, to_coin, from_coin), FLUSH_ORDERS)
+                    self.exchange.create_limit_sell_order(symbol, from_amount, rate)
+                    order_delay = 0
+                    while order_delay &lt; ORDER_DELAY_MAX:
+                        open_orders = self.exchange.fetch_open_orders(symbol)
+                        if open_orders:
+                            sleep(.1)
+                            order_delay += 1
+                            log('Sell {:.6f} {} for {} at {:.6f} {}/{} (delay {}/{})'.
+                                format(from_amount, from_coin, to_coin, rate, to_coin, 
+                                       from_coin, order_delay, ORDER_DELAY_MAX), True)
+                        else:
+                            return True
+                    for open_order in open_orders: self.exchange.cancel_order(open_order['id'], symbol)
+                    return False
+                else:
+                    log('Sell {:.6f} {} for {}'.format(from_amount, from_coin, to_coin), FLUSH_ORDERS)
+                    self.exchange.create_market_sell_order(symbol, from_amount)
+                    return True
+            else:
+                symbol = to_coin + '/' + from_coin
+                if rate:
+                    to_amount = from_amount / rate
+                    limit = self.limit[symbol]
+                    to_amount = to_amount // limit * limit
+                    if not self.mv_in_usd(to_coin, to_amount): return False
+                    log('Buy {:.6f} {} with {} at {:.6f} {}/{}'.
+                        format(to_amount, to_coin, from_coin, rate, from_coin, to_coin), FLUSH_ORDERS)
+                    self.exchange.create_limit_buy_order(symbol, to_amount, rate)
+                    order_delay = 0
+                    while order_delay &lt; ORDER_DELAY_MAX:
+                        open_orders = self.exchange.fetch_open_orders(symbol)
+                        if open_orders:
+                            sleep(.1)
+                            order_delay += 1
+                            log('Buy {:.6f} {} with {} at {:.6f} {}/{} (delay {}/{})'.
+                                format(to_amount, to_coin, from_coin, rate, from_coin, to_coin,
+                                       order_delay, ORDER_DELAY_MAX), True)
+                        else:
+                            return True
+                    for open_order in open_orders: self.exchange.cancel_order(open_order['id'], symbol)
+                    return False
+                else:
+                    to_amount = 0
+                    order_book = self.exchange.fetch_order_book(symbol)
+                    slippage = self.updated_slippage(symbol, order_book)
+                    for x in order_book['asks']:
+                        p = x[0] * (1 + slippage)
+                        a = x[1]
+                        if a * p &lt; from_amount:
+                            to_amount += a
+                            from_amount -= a * p
+                        else:
+                            to_amount += from_amount / p
+                            from_amount -= from_amount
+                            break
+                    limit = self.limit[symbol]
+                    to_amount = to_amount // limit * limit
+                    if not self.mv_in_usd(to_coin, to_amount): return False
+                    log('Buy {:.6f} {} with {}'.format(to_amount, to_coin, from_coin), FLUSH_ORDERS)
+                    self.exchange.create_market_buy_order(symbol, to_amount)
+                    return True
+        except AssertionError:
+            raise
+        except Exception as e:
+            if IS_OSX: os.system('afplay /System/Library/Sounds/Hero.aiff')
+            err = str(e)
+            log('Error: {}...'.format(err[:ERROR_LENGTH].strip()), FLUSH_ERRORS)
+            if symbol:
+                open_orders = self.exchange.fetch_open_orders(symbol)
+                for open_order in open_orders: self.exchange.cancel_order(open_order['id'], symbol)
+            else:
+                sleep(.1)
+            self.order(from_coin, to_coin, from_amount=from_amount_init, rate=rate, retry=retry + 1)
+
+    def close_all(self):
+        orders_made = False
+        balance = self.exchange.fetch_total_balance()
+        # all to btc (except bnb, usdt and btc)
+        for c in balance:
+            if not self.mv_in_usd(c, balance[c]): continue
+            if c in [self.base_coin, 'BNB', 'BTC']: continue
+            orders_made += self.order(c, 'BTC')
+        # all BTC -&gt; BASE_COIN
+        if self.base_coin != 'BTC': orders_made += self.order('BTC', self.base_coin)
+        # if BASE_COIN is not BNB
+        if self.base_coin != 'BNB':
+            # calc ratio of bnb (both in usd)
+            tot_mv = sum([self.mv_in_usd(c, balance[c]) for c in balance])
+            bnb_mv = self.mv_in_usd('BNB', balance['BNB'])
+            bnb_ratio = round(bnb_mv / tot_mv * 100) / 100
+            # calc offset and make orders BASE_COIN -&gt; BNB
+            bnb_usdt = self.tickers['BNB/USDT']['last']
+            base_usdt = self.tickers[self.base_coin + '/USDT']['last'] if self.base_coin != 'USDT' else 1
+            if bnb_ratio &gt; self.bnb_ratio:
+                orders_made += self.order('BNB', self.base_coin,
+                                          from_amount=tot_mv * (bnb_ratio - self.bnb_ratio) / bnb_usdt)
+            elif bnb_ratio &lt; self.bnb_ratio:
+                orders_made += self.order(self.base_coin, 'BNB',
+                                          from_amount=tot_mv * (self.bnb_ratio - bnb_ratio) / base_usdt)
+        return orders_made, balance
+
+    def simulate(self, path):
+        from_coin = path[-1]
+        ffrom_coin = None if len(path) == 1 else path[-2]
+        path_list = []
+        for symbol in self.symbols:
+            ss = symbol.split('/')
+            if (from_coin not in ss) or (ffrom_coin in ss): continue
+            to_coin = ss[1] if from_coin == ss[0] else ss[0]
+            if to_coin == self.base_coin: path_list.append(path + [to_coin])
+            elif len(path) &lt; self.max_len - 1:
+                temp = self.simulate(path + [to_coin])
+                if not temp: continue
+                else: path_list += temp
+        return path_list
+
+    def updated_slippage(self, symbol, order_book):
+        spread = (order_book['asks'][0][0] - order_book['bids'][0][0]) / order_book['asks'][0][0]
+        self.spreads[symbol].append(spread)
+        if len(self.spreads) &gt; HISTORY_LENGTH: self.spreads.pop(0)
+        mean_spread = np.mean(self.spreads[symbol])
+        return mean_spread * self.slippage_ratio
+
+    def optimum(self, base_amount):
+        return path, ratio, amount   # MCTS algorithm
+
+    def cancel_all(self):
+        log('Cancelling all open orders', True)
+        for symbol in self.symbols:
+            open_orders = self.exchange.fetch_open_orders(symbol)
+            if open_orders:
+                for open_order in open_orders:
+                    self.exchange.cancel_order(open_order['id'], open_order['symbol'])
+
+    def trade(self):
+        self.tickers = self.exchange.fetch_tickers(self.symbols)
+        self.order_book = {symbol: self.exchange.fetch_order_book(symbol) for symbol in self.symbols}
+        mv, base_amount, bnb_ratio = self.mv()
+        opt = self.optimum(base_amount)
+        if opt is None: return False
+        opt_path, opt_retn, opt_rate_list = opt
+        self.end = now()
+        self.seconds.append((self.end - self.start).seconds)
+        self.log_retns.append(np.log(1 + opt_retn))
+        if len(self.seconds) &gt; HISTORY_LENGTH:
+            self.seconds.pop(0)
+            self.log_retns.pop(0)
+        freq = 60 / np.mean(self.seconds)
+        if len(self.seconds) &gt; 5:
+            ccdf = 1 - t.cdf(self.threshold, *t.fit(self.log_retns))
+            if ccdf &gt; 1e-4: exp_rounds = 1 / ccdf
+            else: exp_rounds = np.inf
+        else: exp_rounds = np.inf
+        len_trans = len(opt_path) - 1
+        mv_str = '$' + RED + '{:.4f}'.format(mv) + RESET + '/' + \
+                 RED + '{:+.4f}'.format(mv / self.mv0 * 100 - 100) + RESET + '% '
+        path_str = '[' + ' \u2192 '.join([YELLOW + coin + RESET for coin in opt_path]) + '] '
+        retn_str = CYAN + '{:+.4f}'.format(opt_retn * 10000) + RESET + 'bps '
+        freq_str = '(' + GREEN + '{:.2f}'.format(freq) + RESET + 'rpm/' + \
+                   GREEN + '{:.2f}'.format(exp_rounds / freq) + RESET + 'mph)'
+        log_str = mv_str + path_str + retn_str + freq_str
+        if PRINT_BNB_RATIO:
+            ratio_str = ' ~ {:.2f}%'.format(bnb_ratio * 100)
+            log_str += ratio_str
+        log(log_str, True)
+        if (opt_retn &gt; self.threshold):
+            log(log_str)
+            if IS_OSX: os.system('afplay /System/Library/Sounds/Ping.aiff')
+            if self.sim:
+                self.sim_pnl += (1 + self.sim_pnl) * opt_retn
+            else:
+                for i in range(len_trans):
+                    from_coin = opt_path[i]
+                    to_coin = opt_path[i + 1]
+                    rate = opt_rate_list[i]
+                    order_result = self.order(from_coin, to_coin, rate=rate)
+                    if order_result is False:
+                        log('Order cancelled', True)
+                        break
+            if IS_OSX: os.system('afplay /System/Library/Sounds/Tink.aiff')
+        self.start = now()
+
+    def run(self):
+        try:
+            while True:
+                mtime_config = os.path.getmtime('config.py')
+                if mtime_config != self.mtime_config: self.update_config()
+                self.trade()
+                self.mtime_config = mtime_config
+        except KeyboardInterrupt:
+            self.cancel_all()
+            log('Good bye')
+        except (AssertionError, KeyError) as e:
+            if IS_OSX: os.system('afplay /System/Library/Sounds/Hero.aiff')
+            err = str(e)
+            log(err, FLUSH_ERRORS)
+            sleep(.1)
+            self.cancel_all()
+            self.start = now()
+            self.run()
+        except Exception as e:
+            if IS_OSX: os.system('afplay /System/Library/Sounds/Hero.aiff')
+            err = str(e)
+            if 'until' in err:
+                idx = err.index('until') + 6
+                timestamp = int(err[idx: idx + 13])
+                wait = (datetime.fromtimestamp(timestamp / 1000) - datetime.now()).seconds
+                for i in range(wait):
+                    log('Error: too many requests, IP banned for {} seconds'.format(wait - i), True)
+                    sleep(1)
+            else:
+                log('Error: {}...'.format(err[:ERROR_LENGTH].strip()), FLUSH_ERRORS)
+                sleep(.1)
+            self.cancel_all()
+            self.start = now()
+            self.run()
+
+
+if __name__ == '__main__':
+    agent = Coinbot()
+    agent.run()
+</code></pre>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/cryptocurrency-arbitrage-1/">Cryptocurrency Arbitrage: Some Ideas</a></span>
+  <span class="nav-next"><a href="/blog/switch-hexo-theme-to-apollo/">Switched Hexo Theme to Apollo</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-1\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/switch-hexo-theme-to-apollo\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/cryptocurrency-arbitrage-2.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

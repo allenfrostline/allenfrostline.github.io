@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>GMM Estimation of an ARMA(2,1) Model - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="GMM Estimation of an ARMA(2,1) Model - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric &amp;hellip;">
+      <meta property="og:description" content="In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/gmm-estimation.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>GMM Estimation of an ARMA(2,1) Model</h1>
+
+
+<h3>
+2017-01-14</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Model Description</a></li>
+
+<li><a href="#toc_1">Data Simulation</a></li>
+
+<li><a href="#toc_2">GMM Estimation</a></li>
+
+<li><a href="#toc_3">Theoretical Asymptotic Variances of the GMM Estimator</a></li>
+
+<li><a href="#toc_4">Monte Carlo Simulation</a></li>
+
+<li><a href="#toc_5">References:</a></li>
+</ul>
+
+</nav>
+<p>In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric models, where the parameter of interest is finite-dimensional, whereas the full shape of the data&rsquo;s distribution function may not be known, and therefore maximum likelihood estimation is not applicable. Today, we are trying to write a Generalizd Method of Moments estimation framework in Python, and use it to estimate an ARMA(2,1) time series.<!-- more --></p>
+
+<h1 id="toc_0">Model Description</h1>
+
+<p>Assume that now we have already determined the form of a time series model. It is</p>
+<p><span class="math display">\[
+X_t=\phi_1X_{t-1}+\phi_2X_{t-2}+\epsilon_t+\theta_1\epsilon_{t-1},\quad \epsilon_t\sim(0,1)
+\]</span></p><p>with at least 3 <strong>kinds</strong> of moment conditions given by</p>
+
+<ol>
+<li>The expectation residual: <span class="math inline">\(E(\epsilon_t)=0\)</span></li>
+<li>The variance of the residual: <span class="math inline">\(E(\epsilon_t^2)=1\)</span></li>
+<li>The covariance between <span class="math inline">\(\epsilon_s\)</span> and <span class="math inline">\(\epsilon_t\)</span> (<span class="math inline">\(\forall s&lt;t\)</span>):
+<span class="math inline">\(Cov(\epsilon_s\epsilon_t)=0,\quad\forall s&lt;t\)</span></li>
+</ol>
+
+<p>Now, assume we have a observed sample <span class="math inline">\(x\)</span> of the population <span class="math inline">\(T\)</span>. Let the sample moment matrix be</p>
+<p><span class="math display">\[
+g(para, x)=
+\begin{bmatrix}
+g_1(para,x_1) &amp; g_1(para,x_2) &amp; g_1(para,x_T)\\
+g_2(para,x_1) &amp; g_2(para,x_2) &amp; g_2(para,x_T)\\
+\vdots        &amp; \vdots        &amp; \vdots\\
+g_k(para,x_1) &amp; g_k(para,x_2) &amp; g_k(para,x_T)\\
+\end{bmatrix}
+\]</span></p><p>where <span class="math inline">\(k\)</span> is the number of moment conditions. We define the sample mean of <span class="math inline">\(g\)</span> as <span class="math inline">\(g_m(para, x_t)\)</span>:</p>
+<p><span class="math display">\[
+g_m(para)=\dfrac{1}{T}\sum_{t=1}^Tg(para,x_t)
+\]</span></p><p>Now, starting with the weight matrix <span class="math inline">\(W_1=\mathbf{I}_{k\times k}\)</span> we can proceed the iterated GMM estimation method as follows:</p>
+
+<ol>
+<li><p>Minimize the objective function</p>
+<p><span class="math display">\[
+J(para)=Tg_m(para)^{\prime}W_ng_m(para)
+\]</span></p><p>and then solve for <span class="math inline">\(\widehat{para}_n\)</span>, that is</p>
+<p><span class="math display">\[
+\widehat{para}_n=\underset{para}{\text{argmin }}J
+\]</span></p></li>
+
+<li><p>Recompute <span class="math inline">\(W_n\)</span> based on the sample covariance of <span class="math inline">\(g(\widehat{para}_n,x)\)</span></p>
+<p><span class="math display">\[
+S_n=\dfrac{1}{T}\sum_{t=1}^Tg(\widehat{para}_n,x)g(\widehat{para}_n,x)^{\prime}
+\]</span></p><p><span class="math display">\[
+W_{n+1}=S_n^{-1}
+\]</span></p></li>
+
+<li><p>Repeat step 1 and 2 until</p>
+<p><span class="math display">\[
+\left\Vert\widehat{para}_{n+1}-\widehat{para}_n\right\Vert&lt;\delta
+\]</span></p><p>where <span class="math inline">\(\delta\)</span> is a given positive value that is very small. We may also terminate the iteration when reach an interation threshold.</p></li>
+</ol>
+
+<h1 id="toc_1">Data Simulation</h1>
+
+<p>First we need to import some necessary Python libraries, including</p>
+
+<ul>
+<li><strong>numpy</strong> for massive linear operations based on C,</li>
+<li><strong>matplotlib</strong> for plotting,</li>
+<li><strong>scipy</strong> for optimizing, and</li>
+<li><strong>statsmodels</strong> in which there&rsquo;re various built-in statistical models.</li>
+</ul>
+
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+import statsmodels.api as sm
+from time import time
+plt.rcParams['figure.figsize'] = (10,6)
+</code></pre>
+
+<p>Here we define a function called <strong>simulate</strong>, which as its name implies, simulates a time series data determined by parameters <span class="math inline">\(\phi_1\)</span>, <span class="math inline">\(\phi_2\)</span> and <span class="math inline">\(\theta_1\)</span>. The initial values are given by <strong>init</strong>. The first 1/11 of the data are thrown away as burn-in, so that at last the sample size would be <strong>T</strong>.  There is a built-in parameter called <strong>plot</strong> which is set <strong>True</strong> or <strong>1</strong> to plot the graph of the data, and <strong>False</strong> or <strong>0</strong> otherwise.</p>
+
+<pre><code class="language-python">def simulate(T, phi, theta, init, plot=0):
+    T = int(T)
+    T_ = int(T * 1.1) # we will drop the first 1/11 observations here as burn-in
+    X = np.ndarray(T_)
+    X[0] = init[0]
+    e = np.random.normal(0, 1, T_)
+    for t in range(max(len(phi), len(theta)), T_):
+        X[t] = sum([phi[i]*X[t-i-1] for i in range(len(phi))]) + \
+               e[t] + \
+               sum([theta[i]*e[t-i-1] for i in range(len(theta))])
+    X = X[T_ - T:]    # burn-in
+    if plot:          # plot the raw data
+        plt.close()
+        fig = plt.figure()
+        
+        ax1 = fig.add_subplot(211)
+        ax1.set_xlim([0,T])
+        ax1.plot(X, 'k-',lw=0.5)
+        ax1.set_xlabel('t')
+        ax1.set_ylabel('x')
+        
+        ax2 = fig.add_subplot(212)
+        ax2.hist(X, color='#444444', bins=50)
+        ax2.set_xlabel('x')
+        ax2.set_ylabel('observations')
+        
+        plt.tight_layout()
+        plt.show()
+    return X
+</code></pre>
+
+<p>Now we can set the parameters and store them in separate lists.</p>
+
+<pre><code class="language-python"># true parameters, initial entries and sample size
+phi   = [0.2, 0.05]
+theta = [0.8]
+para  = np.array(phi + theta)
+init  = [1, 1]
+T     = 20000
+T_    = T/4
+</code></pre>
+
+<p>We generate a time series dataset of size 5T/4, yet again we &ldquo;set aside&rdquo; the last T/4, so that we may compare the prediction of our estimation with the true data.</p>
+
+<pre><code class="language-python">x = simulate(T + T_, phi, theta, init, plot=1)
+x_true = x.copy()
+x = x[:T] # We'll only use the first T observations to estimate parameters
+</code></pre>
+
+<p><img src="/images/output_11_0.png" style="width: 850;"/></p>
+
+<h1 id="toc_2">GMM Estimation</h1>
+
+<p>Then we define a class named <strong>gmm</strong>, who has 2 major methods, namely <strong>fit</strong> and <strong>result</strong>. When we create an object (or model) of the class <strong>gmm</strong>, we initialize it with moment condition functions <strong>momn</strong> as well the jacobian of their mean w.r.t. the parameter vector, <strong>deriv_momn</strong>. When fitting our model to the data, we use the iterated gmm method, i.e. we alternately compute <span class="math inline">\(\widehat{para}_n\)</span> and weight matrix <span class="math inline">\(W_n\)</span>, the major step of which undertaken by scipy&rsquo;s <strong>minimize</strong> function, a brutal minimization method (with SLSQP method using jacobian matrix). The iteration terminates either when the square of the Euclidean distance between two estimators converges within a given value, <span class="math inline">\(\delta\)</span>, or it reaches an iteration threshold (set at 10 here).</p>
+
+<p>Remark 1: when iteration threshold is set at 2, this is immediately a 2-step GMM.</p>
+
+<p>Remark 2: we here also estimate the asymptotic variance when fitting to the data. The derivation of this asymptotic variance estimation will be further discussed later.</p>
+
+<pre><code class="language-python">class gmm():
+    
+    def __init__(self, momn, deriv_momn):
+        self.n_momn     = len(momn)                                     # number of moment conditions
+        self.n_para     = len(deriv_momn)                               # number of parameters
+        self.momn       = momn                                          # moment conditions
+        self.deriv_momn = deriv_momn                                    # derivative of the moment conditions
+        self.para       = 2*np.random.rand(self.n_para)-1               # parameters, initialized at random
+    
+    def fit(self, x, plot=0):
+        g  = lambda para: np.matrix([m(para, x) for m in self.momn])    # g is not a vector, but a matrix of the shape k * T
+        gm = lambda para: np.mean(g(para), axis=1)                      # gm is a column vector
+        J  = lambda para: np.asscalar(T * gm(para).T * W * gm(para))    # J is a scalar
+        S  = lambda para: g(para) * g(para).T / T                       # S is the covariance matrix
+        W  = np.identity(self.n_momn)                                   # W is the inverse of S
+        jacobian   = lambda para: np.asarray(2 * T * gm(para).T * W * np.matrix([dm(para, x) for dm in self.deriv_momn]).T)
+        iterations = 2                                                  # set 2 to make it a 2-step GMM
+        
+        if plot==1:
+            print_len  = 14 * self.n_para + 4
+            print(' '*((print_len-13)//2)+'GMM Iteration'+' '*((print_len-13)//2))
+            print('='*print_len)
+            print('No. Observations: {}'.format(T))
+            print('='*print_len)
+            print('Iter      {}'.format('        '.join(['para_{}'.format(i+1) for i in range(self.n_para)])))
+            print('-'*print_len)
+        
+        cons = [{'type':'ineq','fun':lambda t: (1+t[i])*(1-t[i])} for i in range(self.n_para)]
+        for i in range(iterations):
+            temp = minimize(J, 2*np.random.rand(self.n_para)-1, method='SLSQP', constraints=cons, jac=jacobian).x
+            temp /= max(np.abs(temp).max(), 1)
+            delta = ((temp - self.para) ** 2).sum()
+            if plot==1: print('\r{:&gt;4}   {}   ({})'.format(i+1, '   '.join(['{: .4e}'.format(i) for i in temp]), delta), end='')
+            if delta &lt; 1e-10 or np.nan in temp: break
+            self.para = temp
+            W = np.linalg.inv(S(self.para))
+        
+        if plot == 1:
+            print('\r{:&gt;4}   {}   ({})'.format(i+1, '   '.join(['{: .4e}'.format(i) for i in self.para]), delta))
+            print('-'*int(np.floor((print_len-3)/2))+'end'+'-'*int(np.ceil((print_len-3)/2)))
+        
+        g_star = lambda para: g(para) - gm(para)
+        S_     = lambda para: g_star(para) * g_star(para).T / T
+        avar   = np.linalg.inv(np.matrix([dm(self.para, x) for dm in self.deriv_momn]) * \
+                               np.linalg.inv(S_(self.para)) * \
+                               np.matrix([dm(self.para, x) for dm in self.deriv_momn]).T).diagonal().tolist()[0]
+        
+        self.J = J
+        self.x = x
+        self.avar = avar
+                        
+    def result(self, para_true):
+        print('{:^46}'.format('Iterated GMM Results'))
+        print('='*46)
+        print('Kind      {}'.format('        '.join(['para_{}'.format(i+1) for i in range(self.n_para)])))
+        print('-'*46)
+        print('Estm   {}'.format('   '.join(['{: .4e}'.format(i) for i in self.para])))
+        print('True   {}'.format('   '.join(['{: .4e}'.format(i) for i in para_true])))
+        print('-'*46)
+        print('Avar   '+'   '.join('{: .4e}'.format(v) for v in self.avar))
+        print('-'*46)
+</code></pre>
+
+<p>Below we define the moment condition functions and the derivatives of their mean.</p>
+
+<pre><code class="language-python">momn = [lambda para, x: (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2]),  # expectation
+        lambda para, x: (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])**2 - (1 + para[2]**2),  # variance
+        lambda para, x: (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2]) * \
+                        (x[3:-1] - para[0] * x[2:-2] - para[1] * x[1:-3]) - para[2],  # covariance of epsilon_t and epsilon_{t-1}
+        lambda para, x: (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2]) * \
+                        (x[2:-2] - para[0] * x[1:-3] - para[1] * x[0:-4]),  # covariance of epsilon_t and epsilon_{t-2}
+       ]
+
+deriv_momn = [lambda para, x: np.array([(-x[3:-1]).mean(),
+                                        (-2 * x[3:-1] * (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                        (-x[3:-1] * (x[3:-1] - para[0] * x[2:-2] - para[1] * x[1:-3]) - x[2:-2] * \
+                                         (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                        (-x[3:-1] * (x[2:-2] - para[0] * x[1:-3] - para[1] * x[0:-4]) - x[1:-3] * \
+                                         (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                       ]),
+              lambda para, x: np.array([(-x[2:-2]).mean(),
+                                        (-2 * x[2:-2] * (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                        (-x[2:-2] * (x[3:-1] - para[0] * x[2:-2] - para[1] * x[1:-3]) - x[1:-3] * \
+                                         (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                        (-x[2:-2] * (x[2:-2] - para[0] * x[1:-3] - para[1] * x[0:-4]) - x[0:-4] * \
+                                         (x[4:] - para[0] * x[3:-1] - para[1] * x[2:-2])).mean(),
+                                       ]),
+              lambda para, x: np.array([0,
+                                        -2 * para[2],
+                                        -1,
+                                        0,
+                                       ])
+             ]
+</code></pre>
+
+<p>Initialize the gmm model with moment condition functions and the respective partial derivatives, fit it to x, and then print out the result.</p>
+
+<pre><code class="language-python">model = gmm(momn, deriv_momn)
+model.fit(x, plot=1)
+print()
+model.result(para)
+</code></pre>
+
+<pre><code>                GMM Iteration                
+==============================================
+No. Observations: 20000
+==============================================
+Iter      para_1        para_2        para_3
+----------------------------------------------
+   2    1.9091e-01    5.6302e-02    8.1460e-01   (1.074866238949949e-08)
+---------------------end----------------------
+
+             Iterated GMM Results             
+==============================================
+Kind      para_1        para_2        para_3
+----------------------------------------------
+Estm    1.9091e-01    5.6302e-02    8.1460e-01
+True    2.0000e-01    5.0000e-02    8.0000e-01
+----------------------------------------------
+Avar    1.9905e+01    9.1790e+00    2.5171e+01
+----------------------------------------------
+</code></pre>
+
+<p>As comparison, check the maximum likelihood estimation with the help of <strong>statsmodels</strong>.</p>
+
+<pre><code class="language-python">print(sm.tsa.ARMA(x, (len(phi), len(theta))).fit().summary())
+</code></pre>
+
+<pre><code>                              ARMA Model Results                              
+==============================================================================
+Dep. Variable:                      y   No. Observations:                20000
+Model:                     ARMA(2, 1)   Log Likelihood              -28404.025
+Method:                       css-mle   S.D. of innovations              1.001
+Date:                Mon, 16 Jan 2017   AIC                          56818.050
+Time:                        11:55:46   BIC                          56857.568
+Sample:                             0   HQIC                         56830.979
+
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+const          0.0026      0.017      0.155      0.876        -0.031     0.036
+ar.L1.y        0.1983      0.010     20.706      0.000         0.179     0.217
+ar.L2.y        0.0512      0.009      5.672      0.000         0.033     0.069
+ma.L1.y        0.8050      0.006    128.761      0.000         0.793     0.817
+                                    Roots                                    
+=============================================================================
+                 Real           Imaginary           Modulus         Frequency
+-----------------------------------------------------------------------------
+AR.1            2.8895           +0.0000j            2.8895            0.0000
+AR.2           -6.7643           +0.0000j            6.7643            0.5000
+MA.1           -1.2423           +0.0000j            1.2423            0.5000
+-----------------------------------------------------------------------------
+</code></pre>
+
+<h1 id="toc_3">Theoretical Asymptotic Variances of the GMM Estimator</h1>
+
+<p>Some assumptions:</p>
+<p><span class="math display">\[
+e_t'g=
+\begin{bmatrix}
+x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})^2 - (1 + \theta_1^2)\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - \theta_1\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4})\\
+\end{bmatrix}=
+\begin{bmatrix}
+\epsilon_t+\theta_1\epsilon_{t-1}\\
+(\epsilon_t+\theta_1\epsilon_{t-1})^2-(1+\theta_1^2)\\
+(\epsilon_t+\theta_1\epsilon_{t-1})(\epsilon_{t-1}+\theta_1\epsilon_{t-2})-\theta_1\\
+(\epsilon_t+\theta_1\epsilon_{t-1})(\epsilon_{t-2}+\theta_1\epsilon_{t-3})\\
+\end{bmatrix}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+E(e_t'g)=
+\begin{bmatrix}
+0\\
+0\\
+0\\
+0\\
+\end{bmatrix}
+\]</span></p><p>where <span class="math inline">\(e_t\in\mathbb{R}^{T\times1}\)</span> is the <span class="math inline">\(t^th\)</span> basis vector. Hence,</p>
+<p><span class="math display">\[
+\frac{\partial e_t'g}{\partial\beta^{\prime}}=
+\begin{bmatrix}
+\mathcal{E}_1 &amp; \mathcal{E}_2 &amp; \mathcal{E}_3
+\end{bmatrix}
+\]</span></p><p>where</p>
+<p><span class="math display">\[
+\mathcal{E}_1 = \begin{bmatrix}
+-x_{t-1}                                                                                            \\
+-2x_{t-1}(x_t-\phi_1 x_{t-1}-\phi_2 x_{t-2})                                                        \\
+-x_{t-1}(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - x_{t-2}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})\\
+-x_{t-1}(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4}) - x_{t-3}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})
+\end{bmatrix},
+\]</span></p><p><span class="math display">\[
+\mathcal{E}_2 = \begin{bmatrix}
+-x_{t-2}                                                                                             \\
+-2x_{t-2}(x_t-\phi_1 x_{t-1}-\phi_2 x_{t-2})                                                         \\
+-x_{t-2}(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - x_{t-3}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}) \\
+-x_{t-2}(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4}) - x_{t-4}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}) 
+\end{bmatrix}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\mathcal{E}_3 = \begin{bmatrix}
+ 0\\
+-2\theta_1\\
+-1\\
+0
+\end{bmatrix}.
+\]</span></p><p>Let</p>
+<p><span class="math display">\[
+G=E\left(\dfrac{\partial e_t'g}{\partial \beta^{\prime}}\right)=
+\begin{bmatrix}
+-\mu &amp; -\mu &amp; 0\\
+2\phi_1\gamma_0+2(\phi_2-1)\gamma_1 &amp; 2\phi_2\gamma_0+2\phi_1\gamma_1-2\gamma_2 &amp; -2\theta_1\\
+(\phi_2-1)\gamma_0+2\phi_1\gamma_1+(\phi_2-1)\gamma_2 &amp; \phi_1\gamma_0+(2\phi_2-1)\gamma_1+\phi_1\gamma_2-\gamma_3 &amp; -1\\
+(\phi_2-1)\gamma_1+2\phi_1\gamma_2+(\phi_2-1)\gamma_3 &amp; -\gamma_0+\phi_1\gamma_1+2\phi_2\gamma_2+\phi_1\gamma_3-\gamma_4 &amp; 0
+\end{bmatrix}.
+\]</span></p><p>Since</p>
+<p><span class="math display">\[
+\mu = 0
+\]</span></p><p>and the autocovariances <span class="math inline">\(\gamma_i\)</span> follows</p>
+<p><span class="math display">\[
+\begin{cases}
+\gamma_0-\phi_1\gamma_1-\phi_2\gamma_2=\theta_1(\phi_1+\theta_1)+1\\
+\phi_1\gamma_0+(\phi_2-1)\gamma_1=-\theta_1\\
+\gamma_k = \phi_1\gamma_{k-1} + \phi_2\gamma_{k-2},\quad k\ge 2
+\end{cases}
+\]</span></p><p>we may derive <span class="math inline">\(G\)</span> at last.</p>
+
+<p>Also, the covariance matrix of <span class="math inline">\(e_t'g\)</span> is</p>
+<p><span class="math display">\[
+S=E(e_t'gg'e_t)=
+\begin{bmatrix}
+1+\theta_1^2    &amp; 0                         &amp; 0                        &amp; 0\\
+0               &amp; 2\theta_1^4+4\theta_1^2+2 &amp; 2\theta_1^3+2\theta_1    &amp; 0\\
+0               &amp; 2\theta_1^3+2\theta_1     &amp; \theta_1^4+3\theta_1^2+1 &amp; \theta_1^3+\theta_1\\
+0               &amp; 0                         &amp; \theta_1^3+\theta_1      &amp; \theta_1^4+2\theta_1^2+1\\
+\end{bmatrix}
+\]</span></p><p>Now with <span class="math inline">\(G\)</span> and <span class="math inline">\(S\)</span>, since</p>
+<p><span class="math display">\[
+\sqrt{T}\ (\widehat{para} - para)\overset{d}{\to}\mathcal{N}(0,(G'S^{-1}G)^{-1}),
+\]</span></p><p>we may derive the theoretical asymptotic variances of <span class="math inline">\(\sqrt{T}\ \widehat{para}\)</span> as follows.</p>
+
+<pre><code class="language-python">mu = 0 # 345112251_00121231
+A = np.matrix([[1,      -phi[0],  -phi[1]],
+               [phi[0], phi[1]-1, 0],
+               [phi[1], phi[0],   -1]
+              ])
+B = np.matrix([[theta[0]*(phi[0]+theta[0])+1],
+               [-theta[0]],
+               [0]
+              ])
+y = np.linalg.inv(A)*B
+y0, y1, y2 = [np.asscalar(a) for a in y]
+y3 = phi[0]*y2 + phi[1]*y1
+y4 = phi[0]*y3 + phi[1]*y2
+G = np.matrix([[-mu,                                     -mu,                                    0],
+               [2*phi[0]*y0+2*(phi[1]-1)*y1,             2*phi[1]*y0+2*phi[0]*y1-2*y2,           -2*theta[0]],
+               [(phi[1]-1)*y0+2*phi[0]*y1+(phi[1]-1)*y2, phi[0]*y0+(2*phi[1]-1)*y1+phi[0]*y2-y3, -1],
+               [(phi[1]-1)*y1+2*phi[0]*y2+(phi[1]-1)*y3, -y0+phi[0]*y1+2*phi[1]*y2+phi[0]*y3-y4, 0]
+              ])
+G.round(2)
+</code></pre>
+
+<pre><code>array([[ 0. ,  0. ,  0. ],
+       [-1.6, -0. , -1.6],
+       [-1.8, -0.8, -1. ],
+       [-1.2, -1.8,  0. ]])
+</code></pre>
+
+<pre><code class="language-python">S = np.matrix([[1+theta[0]**2, 0,                             0,                           0],
+               [0,             2*theta[0]**4+4*theta[0]**2+2, 2*theta[0]**3+2*theta[0],    0],
+               [0,             2*theta[0]**3+2*theta[0],      theta[0]**4+3*theta[0]**2+1, theta[0]**3+theta[0]],
+               [0,             0,                             theta[0]**3+theta[0],        theta[0]**4+2*theta[0]**2+1],
+              ])
+S.round(2)
+</code></pre>
+
+<pre><code>array([[ 1.64,  0.  ,  0.  ,  0.  ],
+       [ 0.  ,  5.38,  2.62,  0.  ],
+       [ 0.  ,  2.62,  3.33,  1.31],
+       [ 0.  ,  0.  ,  1.31,  2.69]])
+</code></pre>
+
+<pre><code class="language-python">np.linalg.inv(G.T*np.linalg.inv(S)*G).diagonal().tolist()[0]
+</code></pre>
+
+<pre><code>[21.3174392361111, 9.980590277777774, 26.878064236111097]
+</code></pre>
+
+<pre><code class="language-python">model.avar
+</code></pre>
+
+<pre><code>[19.905472617664184, 9.178999415080208, 25.170769966198534]
+</code></pre>
+
+<p>The estimated asymptotic variance is quite close to the theory.</p>
+
+<h1 id="toc_4">Monte Carlo Simulation</h1>
+
+<p>Below we use the true parameters to simulate <span class="math inline">\(N=10000\)</span> times and each time we estimate a <span class="math inline">\(\widehat{para}_n\)</span>.</p>
+
+<pre><code class="language-python">N = 1000
+para_mc = []
+with np.errstate(divide='ignore'):
+    start = time()
+    for i in range(N):
+        x_mc = simulate(T + T_, phi, theta, init)[:T]
+        model.fit(x_mc)
+        pct = i * 100 // N + 1
+        now = time()
+        eta = (100 - pct) / pct * (now - start)
+        print('\r{:&gt;3}% |'.format(pct)+'\u2591'*pct+' '*(100-pct)+'| ETA: {} s'.format(int(eta)), end='')
+        para_mc.append(model.para)
+print('\r100% |'+'\u2591'*100+'| Finished.', end='')
+para_mc = np.array(para_mc)
+</code></pre>
+
+<pre><code>100% |░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░| Finished.
+</code></pre>
+
+<pre><code class="language-python">plt.close()
+fig = plt.figure()
+ax1 = fig.add_subplot(311); ax1.hist(para_mc[:,0],bins=50,color='#444444',label='para[0]'); ax1.legend()
+ax2 = fig.add_subplot(312); ax2.hist(para_mc[:,1],bins=50,color='#444444',label='para[1]'); ax2.legend()
+ax3 = fig.add_subplot(313); ax3.hist(para_mc[:,2],bins=50,color='#444444',label='para[2]'); ax3.legend()
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="/images/output_31_0.png" style="width: 850;"/></p>
+
+<pre><code class="language-python">(para_mc.var(axis=0)*T).tolist()
+</code></pre>
+
+<pre><code>[4.422402990203701, 2.9904249354938632, 8.796234771820194]
+</code></pre>
+
+<p>As we can see, the sample variance of the Monte Carlo simulated distribution of our estimator, is significantly smaller than the theoretical one. This should be a problem.</p>
+
+<hr />
+
+<h1 id="toc_5">References:</h1>
+
+<ul>
+<li>Hall, Alastair R. Generalized method of moments. Oxford University Press, 2005.</li>
+<li>Hall, Alastair R. &ldquo;Hypothesis testing in models estimated by GMM.&rdquo; Generalized method of moments estimation 5 (1999): 96.</li>
+<li>Hansen, Lars Peter. &ldquo;Large sample properties of generalized method of moments estimators.&rdquo; Econometrica: Journal of the Econometric Society (1982): 1029-1054.</li>
+<li>Wooldridge, Jeffrey M. &ldquo;Applications of generalized method of moments estimation.&rdquo; The Journal of Economic Perspectives 15.4 (2001): 87-100.</li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/christmas-across-eastern-europe-4/">Christmas across Eastern Europe: Croatia</a></span>
+  <span class="nav-next"><a href="/blog/strategy-lstm-neural-network-small-cap/">Strategy: LSTM Neural Network &#43; Small Cap</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/christmas-across-eastern-europe-4\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/strategy-lstm-neural-network-small-cap\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/gmm-estimation.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

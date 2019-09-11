@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (3) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (3) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying &amp;hellip;">
+      <meta property="og:description" content="Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/optimal-order-execution-3.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Literature Review on Optimal Order Execution (3)</h1>
+
+
+<h3>
+2018-04-29</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Section 1: Package Import</a></li>
+
+<li><a href="#toc_1">Section 2: Data Mining</a></li>
+
+<li><a href="#toc_2">Section 3: Model</a></li>
+
+<li><a href="#toc_3">Section 4: Prediction</a></li>
+
+<li><a href="#toc_4">Reference</a></li>
+</ul>
+
+</nav>
+<p>Here I&rsquo;m trying to write something partly based on Cont&rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&rsquo;m trying to abandon the assumption of unified order sizes. To implement that, I need to shift from a Markov chain which is supported by discrete spaces, onto some other stochastic process that is estimatable. Moreover, although I actually considered supervised learning for this problem, I gave it up at last. This is because my model is inherently designed for high frequency trading and thus training for several minutes each time would be intolerable.</p>
+
+<!-- more -->
+
+<h1 id="toc_0">Section 1: Package Import</h1>
+
+<pre><code class="language-python">import smm
+import numpy as np
+import scipy as sp
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import special
+from scipy.optimize import brute
+from scipy.stats import skellam, t, kurtosis, gaussian_kde
+from matplotlib.patches import Patch
+
+np.set_printoptions(linewidth=200)
+pd.set_option('display.max_rows', 20)
+%config InlineBackend.figure_format = 'retina'
+</code></pre>
+
+<p>I need <code>smm</code> for multivariate stochastic processes, and <code>scipy.optimize</code> for maximum likelihood estimation.</p>
+
+<pre><code class="language-python">def retrieve_data(date):
+    file = 'data/depth_quarter_200_{}.csv'.format(date)
+    data = pd.read_csv(file)
+    return data
+
+
+date = '20180129'
+data.columns = ['time'] + list(data.columns[1:])
+data.head()
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>time</th>
+<th>ask<em>price</em>1</th>
+<th>ask<em>price</em>10</th>
+<th>ask<em>price</em>100</th>
+<th>ask<em>price</em>101</th>
+<th>ask<em>price</em>102</th>
+<th>ask<em>price</em>103</th>
+<th>ask<em>price</em>104</th>
+<th>ask<em>price</em>105</th>
+<th>ask<em>price</em>106</th>
+<th>&hellip;</th>
+<th>bid<em>vol</em>90</th>
+<th>bid<em>vol</em>91</th>
+<th>bid<em>vol</em>92</th>
+<th>bid<em>vol</em>93</th>
+<th>bid<em>vol</em>94</th>
+<th>bid<em>vol</em>95</th>
+<th>bid<em>vol</em>96</th>
+<th>bid<em>vol</em>97</th>
+<th>bid<em>vol</em>98</th>
+<th>bid<em>vol</em>99</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>2018-01-29 00:00:06.951631+08:00</td>
+<td>12688.00</td>
+<td>12663.58</td>
+<td>12391.48</td>
+<td>12390.00</td>
+<td>12389.96</td>
+<td>12388.00</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>&hellip;</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>2018-01-29 00:00:07.792882+08:00</td>
+<td>12676.93</td>
+<td>12657.04</td>
+<td>12391.48</td>
+<td>12390.00</td>
+<td>12389.96</td>
+<td>12388.00</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>&hellip;</td>
+<td>1.0</td>
+<td>400.0</td>
+<td>363.0</td>
+<td>5.0</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>2018-01-29 00:00:08.702945+08:00</td>
+<td>12643.27</td>
+<td>12617.26</td>
+<td>12361.27</td>
+<td>12360.00</td>
+<td>12359.38</td>
+<td>12358.06</td>
+<td>12356.22</td>
+<td>12355.44</td>
+<td>12354.17</td>
+<td>&hellip;</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>2018-01-29 00:00:10.998615+08:00</td>
+<td>12666.00</td>
+<td>12642.73</td>
+<td>12380.00</td>
+<td>12377.00</td>
+<td>12374.99</td>
+<td>12369.73</td>
+<td>12366.43</td>
+<td>12365.84</td>
+<td>12361.45</td>
+<td>&hellip;</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+<td>150.0</td>
+<td>12.0</td>
+<td>97.0</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>2018-01-29 00:00:11.742304+08:00</td>
+<td>12674.00</td>
+<td>12643.27</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>12377.00</td>
+<td>12374.99</td>
+<td>12369.73</td>
+<td>12366.43</td>
+<td>&hellip;</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>60.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+<td>150.0</td>
+<td>12.0</td>
+<td>97.0</td>
+</tr>
+</tbody>
+</table>
+<p>Larger index means smaller values for both bid and ask prices. It&rsquo;s uncommon and here I re-indexed the variables s.t. <code>bid_1</code> and <code>ask_1</code> corresponds with the best opponent prices.</p>
+
+<pre><code class="language-python">def rename_index(s):
+    if 'ask' in s:
+        _, v, i = s.split('_')
+        return f'ask_{v}_{200 - int(i) + 1}'
+    else:
+        return s
+
+data.columns = list(map(rename_index, data.columns))
+</code></pre>
+
+<h1 id="toc_1">Section 2: Data Mining</h1>
+
+<pre><code class="language-python">variables = list(data.columns[1:])
+</code></pre>
+
+<p>I dropped the <code>time</code> variable simply because I don&rsquo;t know how to use it. Normally there&rsquo;re two ways to handle uneven time-grids: resampling and ignoring, and I chose the latter.</p>
+
+<pre><code class="language-python">def plot_lob(n, t, theme='w'):
+    # function to plot the limit order book
+    assert theme in ['w', 'k', 'white', 'black']
+
+    temp_price = data[[f'bid_price_{i}' for i in range(n, 0, -1)] + \
+                      [f'ask_price_{i}' for i in range(1, n + 1)]].head(t)
+    temp_vol = data[[f'bid_vol_{i}' for i in range(n, 0, -1)] + \
+                    [f'ask_vol_{i}' for i in range(1, n + 1)]].head(t)
+    for i in range(1, n):
+        temp_vol.iloc[:, n + i] += temp_vol.iloc[:, n + i - 1]
+    for i in range(1, n):
+        temp_vol.iloc[:, n - i - 1] += temp_vol.iloc[:, n - i]
+    price_min, price_max = temp_price.min().min(), temp_price.max().max()
+    price_limits = (price_min * 1.1 - price_max * .1, price_max * 1.1 - price_min * .1)
+
+    fig = plt.figure(figsize=(12, 6))
+
+    fc1 = theme
+    ax1 = plt.subplot2grid((5, 1), (0, 0), rowspan=4, facecolor=fc1)
+    ax1.fill_betweenx(x1=n - 1, x2=n, y=price_limits, color='r', alpha=.2, lw=0)
+    lc = 'k' if theme in ['w', 'white'] else 'w'
+    for i in range(t):
+        ax1.plot(temp_price.iloc[i, :].values, color=lc, alpha=(i + 1) / t, lw=1)
+    ax1.set_ylim(price_limits)
+    ax1.set_xticklabels('')
+    ax1.spines['bottom'].set_visible(False)
+    ax1.set_ylabel('price')
+    ax1.set_xlim(-.5, 2 * n - .5)
+
+    fc2 = '#efefef' if theme in ['w', 'white'] else '#222222'
+    ax2 = plt.subplot2grid((5, 1), (4, 0), facecolor=fc2)
+    ax2.fill_betweenx(x1=n - 1, x2=n, y=[0, temp_vol.max().max() * 1.1], color='r', alpha=.2, lw=0)
+    for i in range(t):
+        ax2.bar(np.arange(2 * n), temp_vol.iloc[i, :].values, color=lc, alpha=.2)
+    ax2.set_ylim(0, temp_vol.max().max() * 1.1)
+    ax2.spines['top'].set_visible(False)
+    ax2.set_ylabel('volume')
+    ax2.set_xlim(-.5, 2 * n - .5)
+    ax2.set_xticks(range(2 * n))
+    ax2.set_xticklabels([f'bid_{i}' for i in range(n, 0, -1)] + \
+                        [f'ask_{i}' for i in range(1, n + 1)], rotation=90)
+
+    plt.tight_layout()
+    plt.subplots_adjust(hspace=.0)
+    plt.show()
+</code></pre>
+
+<p>Now we make a plot of the order book within the past 10 steps, including 20 bid levels and 20 ask levels.</p>
+
+<pre><code class="language-python">n, t = 20, 10
+plot_lob(n, t)
+</code></pre>
+
+<p><img src="/images/order_1.png" alt="png" /></p>
+
+<p>Not sure if it tells any critical information. Let&rsquo;s make another plot. This time <span class="math inline">\(t=500\)</span> and we only consider the best bid and ask orders.</p>
+
+<pre><code class="language-python">fig = plt.figure(figsize=(12, 6))
+ax = fig.add_subplot(111)
+# ax.set_yscale('log')
+ax.set_xlabel('price')
+ax.set_ylabel('volume')
+
+t = 500
+
+ap = data['ask_price_1'].values
+av = data['ask_vol_1'].values
+ax.scatter(ap[0], av[0], color='r', label='ask')
+for i in range(t):
+    ax.plot((ap[i], ap[i + 1]), (av[i], av[i + 1]), 'r-', alpha=(1 - i / t) * .5)
+
+bp = data['bid_price_1'].values
+bv = data['bid_vol_1'].values
+ax.scatter(bp[0], -bv[0], color='c', label='bid')
+for i in range(t):
+    ax.plot((bp[i], bp[i + 1]), (-bv[i], -bv[i + 1]), 'c-', alpha=(1 - i / t) * .5)
+
+plt.legend(loc='best', frameon=False)    
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="/images/order_2.png" alt="png" /></p>
+
+<pre><code class="language-python">price = data[[f'bid_price_{i}' for i in range(n,0,-1)] + [f'ask_price_{i}' for i in range(1,n+1)]]
+vol = data[[f'bid_vol_{i}' for i in range(n,0,-1)] + [f'ask_vol_{i}' for i in range(1,n+1)]]
+</code></pre>
+
+<p>A simple idea would be inputting the prices and volumes in the current orderbook, and predict the future mid prices. Furthermore, it&rsquo;s ideal to have a rough expectation of the minimum time that the mid price crosses a certain price, or the time needed in expectation before my order got executed successfully.</p>
+
+<pre><code class="language-python">change = []
+for i in range(price.shape[0] - 1):
+    # print(f'checking state {i} and {i+1}', end='\r')
+    mask = np.isin(price.iloc[i + 1, :].values, price.iloc[i, :].values) + \
+           np.isin(price.iloc[i, :].values, price.iloc[i + 1, :].values)
+    cnames = price.columns[mask]
+    mask = list(map(lambda x: x.replace('price', 'vol'), cnames))
+    change1 = vol[mask].iloc[i + 1] - vol[mask].iloc[i]
+    cnames = [c for c in price.columns if c not in cnames]
+    mask = list(map(lambda x: x.replace('price', 'vol'), cnames))
+    change2 = vol[mask].iloc[i + 1] - vol[mask].iloc[i]
+    change_temp = np.zeros(2 * n)
+    for ci in range(2 * n):
+        c = vol.columns[ci]
+        if c in change1:
+            change_temp[ci] += change1[c]
+        if c in change2:
+            change_temp[ci] += change2[c]
+    change.append(change_temp)
+</code></pre>
+
+<p>The calculation of <code>change</code> took over 10 minutes. I don&rsquo;t think it&rsquo;s gonna be useful in real work. However, it&rsquo;s not so bad an idea to save it somewhere locally in case I need it later.</p>
+
+<pre><code class="language-python">change = pd.DataFrame(np.array(change).astype(int), columns=vol.columns)
+change.to_csv(f'data/change_{date}.csv')
+</code></pre>
+
+<h1 id="toc_2">Section 3: Model</h1>
+
+<pre><code class="language-python">change = pd.read_csv(f'data/change_{date}.csv', index_col=0)
+</code></pre>
+
+<p>After some research, I decided to fit the data in <code>change</code> to student&rsquo;s t-distribution, Skellam distribution, and two-side Weibull distribution. I&rsquo;ll now elaborate reason why I chose, and how to estimate each distribution below.</p>
+
+<p>First is the <a href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">t-distribution</a>. It is well-known for its leptokurtosis which suits well in many financial time series as a better alternative to Normal distribution. The PDF and CDF of the t-distribution involves the Gamma function and thus would be computationally troublesome when we want to calculate the MSE of the parameters. However, notice for any r.v. <span class="math inline">\(X\sim t(\nu,\mu,\sigma)\)</span>, we have relationship</p>
+<p><span class="math display">\[
+\text{Var}(X) = \begin{cases}
+\frac{\nu}{\nu - 2} &amp; \text{for }\nu &gt; 2,\\
+\infty &amp; \text{for }1 &lt; \nu \le 2,\\
+\text{undefined} &amp; \text{otherwise}
+\end{cases}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\text{Kur}_+(X) = \begin{cases}
+\frac{6}{\nu - 4} &amp; \text{for }\nu &gt; 4,\\
+\infty &amp; \text{for }2 &lt; \nu \le 4,\\
+\text{undefined} &amp; \text{otherwise}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(\text{Kur}_+\equiv \text{Kur} - 3\)</span> is the excess kurtosis, we can simply go for moment estimation for t-distribution using empirical variance or kurtosis.</p>
+
+<p>Second, the <a href="https://en.wikipedia.org/wiki/Skellam_distribution">Skellam distribution</a>. This is mainly due to the original model used in Cont&rsquo;s paper, where he assumes Poisson order arrivals uniformly over the time. Here I slightly improve the model s.t. bid and ask orders are modelled in the same time and represented by r.v. <span class="math inline">\(S\equiv P_a - P_b\)</span> where <span class="math inline">\(P_a\sim Pois(\lambda_a)\)</span> and <span class="math inline">\(P_b\sim Pois(\lambda_b)\)</span>. This is therefore a discrete distribution with two parameters. <code>scipy.stats</code> has its PMF implemented and all I need to do is numerically maximize the likelihood.</p>
+
+<p>For the <a href="https://www.sciencedirect.com/science/article/pii/S0169207013000332">two-sided Weibull distribution</a>, it is given by</p>
+<p><span class="math display">\[
+Y = \begin{cases}
+-\text{Weibull}(\lambda_1, k_1) &amp; \text{if } Y &lt; 0,\\
+\text{Weibull}(\lambda_2, k_2) &amp; \text{otherwise}
+\end{cases}
+\]</span></p><p>where shape parameters <span class="math inline">\(k_{1,2}\ge 0 \)</span> and scale parameters <span class="math inline">\(\lambda_{1,2} &gt; 0\)</span>.</p>
+
+<p>Therefore, the pdf is</p>
+<p><span class="math display">\[
+f(y \mid \lambda_1, k_1, \lambda_2, k_2) = \begin{cases}
+\left(\frac{-y}{(\lambda_1)}\right)^{k_1 -1}\exp\left(-\left(\frac{-y}{(\lambda_1)}\right)^{k_1}\right) &amp; \text{if y &lt; 0},\\
+\left(\frac{y}{(\lambda_2}\right)^{k_2 -1}\exp\left(-\left(\frac{y}{(\lambda_2)}\right)^{k_2}\right)
+&amp; \text{otherwise}
+\end{cases}
+\]</span></p><p>and to normalize the integration to <span class="math inline">\(1\)</span>, we also have</p>
+<p><span class="math display">\[
+\frac{\lambda_1}{k_1} + \frac{\lambda_2}{k_2} = 1 \Rightarrow \lambda_2 = k_2 (1 - \lambda_1 / k_1)
+\]</span></p><p>which means there&rsquo;re in fact only three parameters to estimate.</p>
+
+<p>Now we rewrite the log-likelihood as</p>
+<p><span class="math display">\[
+\begin{align*}
+LL = \sum_{i=1}^n \log(f(y_i))
+= \sum_{i=1}^n &amp;\left((k_1-1)(\log^*(-y_i) - \log^*(\lambda_1)) - (-y_i / \lambda_1)^{k_1}\right)\mathbb{I}_{y_i &lt; 0} + \\
+               &amp;\left((k_2-1)(\log^*(y_i) - \log^*(\lambda_2)) - (y_i / \lambda_2)^{k_2}\right)\mathbb{I}_{y_i \ge 0}.
+\end{align*}
+\]</span></p><p>where we have the special <span class="math inline">\(\log^*(y)\equiv 0\)</span> if <span class="math inline">\(y\le0\)</span>.</p>
+
+<pre><code class="language-python">i = 15  # take ask_15 for example
+
+fig = plt.figure(figsize=(12, 6))
+
+ax = fig.add_subplot(111)
+
+cgrid = np.array([c for c in change[f'bid_vol_{-i}' if i &lt; 0 \
+                  else f'ask_vol_{i}'] if -200 &lt; c &lt; 200])[::200]
+cgrid.sort()
+density = gaussian_kde(cgrid)
+ax.plot(cgrid, density(cgrid), 'r-', label='gaussian')
+
+exkur = kurtosis(cgrid) - 3
+scale1 = np.std(cgrid)
+scale2 = (2 - 6 / (6 + 2 * exkur))**.5
+params = [6 / exkur + 4, np.mean(cgrid), scale1 * .3 + scale2 * .7]
+ax.plot(cgrid, t.pdf(cgrid, *params), 'c-', label='t({:.2f}, {:.2f}, {:.2f})'.format(*params))
+
+negloglik_skellam = lambda mu: -sum(skellam.logpmf(cgrid, *mu))
+mu = brute(negloglik_skellam, ranges=[(100, 500), (100, 500)], Ns=10, finish=None)
+ax.plot(cgrid, skellam.pmf(cgrid, *mu), 'y-', label='skellam({:.2f}, {:.2f})'.format(*mu))
+
+# log_ = lambda y: np.log(y) if y &gt; 0 else 0
+# def logpdf_tweibull(y, params):
+#     l1, k1, k2 = params
+#     l2 = k2 * (1 - l1 / k1)
+#     if l1 &gt;= k1 or l2 &gt;= k2:
+#         return 1e5
+#     ret = float(((k1 - 1) * (log_(-y) - log_(l1)) - (-y / l1)**k1) * (y &lt; 0) + \
+#                 ((k2 - 1) * (log_(y) - log_(l2)) - (y / l2)**k2) * (y &gt;= 0))
+#     if np.isnan(ret):
+#         return 1e5
+#     return ret
+# negloglik_tweibull = lambda params: -sum(logpdf_tweibull(y, params) for y in cgrid / 1000)
+# params = brute(negloglik_tweibull, ranges=[(.1, .9), (.1, .9), (.1, .9)], Ns=10, finish=None)
+# l1, k1, k2 = params
+# l2 = k2 * (1 - l1 / k1)
+# params = np.array([l1, k1, l2, k2]); print(params)
+# tweibull_pdf = lambda y: (-y/l1)**(k1-1)*np.exp(-(-y/l1)**k1) * (y &lt; 0) + \
+#                          (y/l2)**(k2-1)*np.exp(-(y/l2)**k2) * (y &gt;= 0)
+# tweibull_cdf = np.cumsum([tweibull_pdf(y) for y in cgrid / 1000])
+# ax.plot(cgrid, tweibull_cdf, 'b-', label='tweibull({:.2f}, {:.2f}, {:.2f}, {:.2f})'.format(*params))
+
+ax.hist(cgrid, bins=40, facecolor=(0,0,0,.5), edgecolor='k', normed=True, label='change')
+ax.set_xlim(-200, 200)
+ax.set_xlabel('change')
+
+plt.legend(loc='best', frameon=False)
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="/images/order_3.png" alt="png" /></p>
+
+<p>As coded above, at last I didn&rsquo;t include two-sided Weibull distribution because the optimization did not converge. In conclusion, for changes of order sizes (denoted by <span class="math inline">\(x\)</span>), we use modified t-distribution with</p>
+<p><span class="math display">\[
+\hat{\mu} = \bar{x},\quad \hat{\sigma} = 0.3 \cdot \sqrt{\widehat{\text{Var}}(x)} + 0.7 \cdot \sqrt{\left(2 - \frac{6}{6 + 2\ \widehat{\text{Kur}}_+(x)}\right)}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\hat{\nu} = \frac{6}{\widehat{\text{Kur}}_+(x)} + 4
+\]</span></p><p>where</p>
+<p><span class="math display">\[
+\widehat{\text{Kur}}_+(x) = \widehat{\text{Kur}}(x) - 3
+\]</span></p><p>while</p>
+<p><span class="math display">\[
+\widehat{\text{Kur}}(x) = \hat{m}_4(x) / \hat{m}_2^2(x)
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\hat{m}_4 = \sum_{i=1}^n (x_i - \bar{x})^4 / n,\quad \hat{m}_2 = \sum_{i=1}^n (x_i - \bar{x})^2 / n.
+\]</span></p><p>Now, when we assume independence across different buckets of order book, we can estimate the parameters of t-distributions as below.</p>
+
+<pre><code class="language-python">params = np.zeros([2 * n, 3])
+nrow = 0
+for i in np.arange(-n, n + 1):
+    if not i: continue
+    cgrid = np.array([c for c in change[f'bid_vol_{-i}' if i &lt; 0 \
+                      else f'ask_vol_{i}'] if -200 &lt; c &lt; 200])[::200]
+    exkur = kurtosis(cgrid) - 3
+    scale1 = np.std(cgrid)
+    scale2 = (2 - 6 / (6 + 2 * exkur))**.5
+    params[nrow,:] = [6 / exkur + 4, np.mean(cgrid), scale1 * .3 + scale2 * .7]
+    nrow += 1
+
+params
+</code></pre>
+
+<pre><code>array([[ 5.1589201 , -0.52536232, 11.05729   ],
+       [ 5.86412495, -0.61454545, 12.08484143],
+       [ 5.82376701,  4.61231884, 11.67543236],
+       [ 6.28819815, -0.7173913 , 10.85941723],
+       [ 6.89178374, -1.59927798, 11.25140225],
+       [ 6.14231284,  2.29856115, 12.46686452],
+       [ 6.4347771 ,  2.22302158, 13.73785226],
+       [ 6.17737187,  0.67753623, 12.19098061],
+       [ 5.9250571 , -1.68231047, 12.54472066],
+       [ 5.16886809, -0.69090909, 11.94199489],
+       ...
+       [ 5.94772822,  3.18181818, 12.4415555 ],
+       [ 6.5157695 ,  4.62181818, 13.67098387],
+       [ 6.69385395,  0.66304348, 13.63770319],
+       [ 4.99329442, -1.11510791, 11.63780506],
+       [ 5.04144977,  1.91756272, 11.20026029],
+       [ 5.47054269, -4.34163701, 10.66971035],
+       [ 5.11684414, -2.35460993,  9.98656422],
+       [ 4.89130697,  1.07092199, 11.5511127 ],
+       [ 5.31202782, -0.58865248, 11.01769165],
+       [ 5.17908162,  2.16961131, 10.81368767]])
+</code></pre>
+
+<p>When we do not ignore the correlation across all buckets, a multivariate t-distribution must be considered. Similar to multivariate Normal distributions, here we need to estimate a covariance matrix, a vector of expectations and a vector of degrees of freedom. Notice the degrees of freedom do not vary significantly across the rows in <code>params</code>, to accelerate computation I set a unified degree of freedom for all buckets, namely <span class="math inline">\(df = 7\)</span>. Using Expectation Maximization (EM) algorithm introduced by D. Peel and G. J. McLachlan (2000), I wrote the model below to estimate this distribution.</p>
+
+<pre><code class="language-python">class MVT:
+    def __init__(self, df=3.5):
+        self.df = df
+
+    def fit(self, X, iter=200, eps=1e-6):
+        # initialize parameters
+        D = X.shape[1]
+        N = X.shape[0]
+        cov = np.cov(X, rowvar=False)
+        mean = X.mean(axis=0)
+        mu = X - mean[None, :]
+        delta = np.einsum('ij,ij-&gt;i', mu, np.linalg.solve(cov, mu.T).T)
+        z = (self.df + D) / (self.df + delta)
+        obj = [
+            -N * np.linalg.slogdet(cov)[1] / 2 - (z * delta).sum() / 2
+            -N * special.gammaln(self.df / 2) + N * self.df * np.log(self.df / 2) / 2
+            +self.df * (np.log(z) - z).sum() / 2
+        ]
+
+        # iterate EM algorithm
+        for i in range(iter):
+            # M step
+            mean = (X * z[:, None]).sum(axis=0).reshape(-1, 1) / z.sum()
+            mu = X - mean.squeeze()[None, :]
+            cov = np.einsum('ij,ik-&gt;jk', mu, mu * z[:, None]) / N
+
+            # E step
+            delta = (mu * np.linalg.solve(cov, mu.T).T).sum(axis=1)
+            delta = np.einsum('ij,ij-&gt;i', mu, np.linalg.solve(cov, mu.T).T)
+            z = (self.df + D) / (self.df + delta)
+
+            # store objective
+            obj.append(
+                -N * np.linalg.slogdet(cov)[1] / 2 - (z * delta).sum() / 2
+                -N * special.gammaln(self.df / 2) + N * self.df * np.log(self.df / 2) / 2
+                +self.df * (np.log(z) - z).sum() / 2
+            )
+            err = np.abs(obj[-1] - obj[-2])
+            print(f'Iteration {i + 1}')
+            if err &lt; eps: break
+        return cov, mean.squeeze()
+
+
+model = MVT(7)
+S, m = model.fit(change.values)
+</code></pre>
+
+<p>Now the distribution for order size movement is estimated. We can simulate the trajectory and rebuild the order book in future several steps. Specifically, notice the predicted movement may well change the shape of the order book while, according to practical observation, the order book retains its &ldquo;V&rdquo;-shape in most of the time. Therefore, I sort up separately both halves of the order book every time they&rsquo;re updated by a predicted order size movement (or &ldquo;co-movement&rdquo;, since it should be a vector).</p>
+
+<pre><code class="language-python">n_steps = 20
+prediction = smm.smm.SMM.multivariate_t_rvs(S=S, m=m, df=7, n=n_steps)
+orderbook = np.zeros([1 + n_steps, 2 * n])
+orderbook[0,:] = 0
+for i in range(1, n_steps + 1):
+    orderbook[i, :n] = np.sort(orderbook[i - 1, :n] + prediction[i - 1, :n])[::-1]
+    orderbook[i, n:] = np.sort(orderbook[i - 1, n:] + prediction[i - 1, n:])
+</code></pre>
+
+<p>Below is a simple sketch of this order book trajectory where I assign stronger color to the traces that are closer to the best (bid/ask) prices.</p>
+
+<pre><code class="language-python">fig = plt.figure(figsize=(12, 6))
+ax = fig.add_subplot(111)
+for i in range(n):  # stronger color means closer to mid price
+    ax.plot(range(1 + n_steps), orderbook[:,i], 'r-', alpha=(i + 1) / n)
+for i in range(n, 2 * n):  # stronger color means closer to mid price
+    ax.plot(range(1 + n_steps), orderbook[:,i], 'c-', alpha=(2 * n - i) / n)
+ax.set_xticks(range(n_steps + 1))
+ax.set_xlabel('evolution')
+ax.set_ylabel('order book')
+plt.tight_layout();
+</code></pre>
+
+<p><img src="/images/order_5.png" alt="png" /></p>
+
+<p>It can be seen from the figure that stronger traces are located more to the bottom, which validates our intuition since trades around the current price are more active than those to the left or the right of the order book.</p>
+
+<h1 id="toc_3">Section 4: Prediction</h1>
+
+<p>With this prediction procedure implemented, we can estimate the probability of our order (placed at the price bucket <code>order_idx</code> with size <code>order_size</code>) being executed within <code>n_steps</code>.</p>
+
+<pre><code class="language-python">n_steps = 10
+n_sim = 1000
+order_idx = 12  # [0, 2n-1]
+order_size = 100
+success = 0
+orderbook = np.zeros([1 + n_steps, 2 * n])
+for i in range(n_sim):
+    prediction = smm.smm.SMM.multivariate_t_rvs(S=S, m=m, df=7, n=n_steps)
+    for j in range(1, n_steps + 1):
+        orderbook[j, :n] = np.sort(orderbook[j - 1, :n] + prediction[j - 1, :n])[::-1]
+        orderbook[j, n:] = np.sort(orderbook[j - 1, n:] + prediction[j - 1, n:])
+    if orderbook[:, order_idx].min() + order_size &lt;= 0:
+        success += 1
+success / n_sim
+</code></pre>
+
+<pre><code>0.861
+</code></pre>
+
+<p>So a limit buy order at <code>bid_8</code> (<span class="math inline">\(20 - 12 = 8\)</span>) with size 100 can be executed within 10 steps, at a probability of 86.1%. Moreover, we can even make a 3D surface plot to get a comprehensive idea of the whole distribution.</p>
+
+<pre><code class="language-python">def evolve(order_idx, order_size, n_steps=10, n_sim=1000):
+    success = 0
+    orderbook = np.zeros([1 + n_steps, 2 * n])
+    for i in range(n_sim):
+        prediction = smm.smm.SMM.multivariate_t_rvs(S=S, m=m, df=7, n=n_steps)
+        for j in range(1, n_steps + 1):
+            orderbook[j, :n] = np.sort(orderbook[j - 1, :n] + prediction[j - 1, :n])[::-1]
+            orderbook[j, n:] = np.sort(orderbook[j - 1, n:] + prediction[j - 1, n:])
+        if orderbook[:, order_idx].min() + order_size &lt;= 0:
+            success += 1
+    return success / n_sim
+
+
+grid_idx = np.arange(0, 2 * n)
+grid_size = np.arange(0, 1000, 100)
+l_idx = len(grid_idx)
+l_size = len(grid_size)
+result = np.zeros([l_idx, l_size])
+for i in range(l_idx):
+    for j in range(l_size):
+        result[i, j] = evolve(grid_idx[i], grid_size[j])
+
+
+from mpl_toolkits.mplot3d import Axes3D
+import seaborn as sns
+ 
+# Transform data to a long format
+data = pd.DataFrame(result, index=grid_idx, columns=grid_size)
+df = data.unstack().reset_index()
+df.columns = ['size', 'index', 'prob']
+ 
+# Make the plot
+fig = plt.figure(figsize=(12, 6))
+ax = fig.gca(projection='3d')
+surf=ax.plot_trisurf(df['index'], df['size'], df['prob'], cmap=plt.cm.Blues_r, linewidth=.1)
+fig.colorbar(surf, shrink=.8, aspect=10)
+ax.view_init(30, 30)
+plt.tight_layout()
+ax.set_xlabel('index')
+ax.set_ylabel('size')
+ax.set_zlabel('prob')
+plt.show()
+</code></pre>
+
+<p><img src="/images/order_6.png" alt="" /></p>
+
+<h1 id="toc_4">Reference</h1>
+
+<ul>
+<li>Rama Cont, Sasha Stoikov and Rishi Talreja. &ldquo;A stochastic model for order book dynamics&rdquo;. Operations Research, Volume 58, No. 3 (2010), 549-563.</li>
+<li>David Peel, and Geoffrey J. McLachlan. &ldquo;Robust mixture modelling using the t-distribution.&rdquo; Statistics and computing 10, no. 4 (2000): 339-348.</li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/optimal-order-execution-2/">Literature Review on Optimal Order Execution (2)</a></span>
+  <span class="nav-next"><a href="/blog/estimation-brownian-motion/">Parameter Estimation of Brownian motions by Method of Moments</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/optimal-order-execution-2\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/estimation-brownian-motion\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/optimal-order-execution-3.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

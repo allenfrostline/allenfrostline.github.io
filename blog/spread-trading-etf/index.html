@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Spread Trading: XOP and DRIP - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Spread Trading: XOP and DRIP - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In this strategy we try to do spread trading based on the M-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding &amp;hellip;">
+      <meta property="og:description" content="In this strategy we try to do spread trading based on the M-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/spread-trading-etf.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Spread Trading: XOP and DRIP</h1>
+
+
+<h3>
+2019-04-23</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Dependencies</a></li>
+
+<li><a href="#toc_1">Preparatory Analysis</a>
+<ul>
+<li>
+<ul>
+<li><a href="#toc_2">Definition of XOP</a></li>
+
+<li><a href="#toc_3">Definition of DRIP</a></li>
+
+<li><a href="#toc_4">Relationship of XOP and DRIP</a></li>
+
+<li><a href="#toc_5">Statistical Tests</a></li>
+</ul></li>
+</ul></li>
+
+<li><a href="#toc_6">Backtest Engine</a></li>
+
+<li><a href="#toc_7">Parameter Tuning</a></li>
+
+<li><a href="#toc_8">Conclusion</a></li>
+</ul>
+
+</nav>
+<p>In this strategy we try to do spread trading based on the <code>M</code>-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding one specific ETF with (in expectation) increasing returns, by holding an opposite position of another ETF with decreasing returns. Once we have that the two ETFs&rsquo; returns are highly correlated, we can trade and make profit by this sort of pair trading.</p>
+
+<!-- more -->
+
+<p>Apart from <code>M</code>, we define trading thresholds <code>g</code> and <code>j</code>, together with stop-loss threshold <code>s</code>. Total capital limit <code>K</code> is assumed to be twice of <code>N</code>, namely the 15-day rolling median volume (of the less liquid ETF). Specifically, we first calculate the array of daily minimums of the two (adjusted) volume series, and then calculate the 15-day rolling median of this series as <code>N</code>. Apart from the capital limit, we also define daily position value (if any) based on <code>N</code>, which is <code>N/100</code>.</p>
+
+<p>Specifically, for each trading day, we have workflow as below.</p>
+
+<p><img src="/images/spread0.png" style="max-width:min(100%, 600px)"></p>
+
+<p>Apart from this process, we also keep track of our risk exposure with a stop-loss threshold, and try to do trading only within a month&rsquo;s time, i.e. we start trading only when it&rsquo;s the start of a new month, and kill any position every time it&rsquo;s the end of a month.</p>
+
+<h1 id="toc_0">Dependencies</h1>
+
+<p>Import necessary modules and set up corresponding configurations. In this research notebook, we are using the following packages:</p>
+
+<ul>
+<li><strong>Quandl</strong>: source of financial data</li>
+<li><strong>NumPy</strong>: mathematical tools &amp; matrix processing</li>
+<li><strong>Pandas</strong>: data frame support</li>
+<li><strong>Matplotlib</strong>: plotting</li>
+<li><strong>SciPy</strong>: statistical analysis</li>
+<li><strong>StatsModels</strong>: statistical analysis</li>
+</ul>
+
+<pre><code class="language-python">import warnings
+import quandl
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import norm, t
+from statsmodels.tsa.stattools import adfuller
+
+
+pd.set_option('display.max_rows', 30)
+plt.style.use('bmh')
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.size'] = 15
+warnings.filterwarnings('ignore')
+quandl.ApiConfig.api_key = QUANDL_API_KEY
+</code></pre>
+
+<h1 id="toc_1">Preparatory Analysis</h1>
+
+<p>In this part, we will try to analyze the economic and statistical features in the data. Here the two ETFs we&rsquo;re using are XOP and DRIP. Data is retrieved from Quandl from <code>2015-12-02</code> to <code>2018-12-31</code>. We&rsquo;ll use only data from <code>2015-12-02</code> to <code>2016-12-01</code> for this section, as we don&rsquo;t want to include future information during the backtest. Also, while it&rsquo;s always better to have longer historical data for analysis, due to limited length of ETF data on Quandl (specifically for these two ETFs) we&rsquo;re unfortunately restrained to this short timespan.</p>
+
+<h3 id="toc_2">Definition of XOP</h3>
+
+<p>The SPDR S&amp;P Oil &amp; Gas Exploration &amp; Production ETF (XOP) seeks to provide investment results that, before fees and expenses, correspond generally to the total return performance of the S&amp;P Oil &amp; Gas Exploration &amp; Production Select Industry Index. See <a href="https://us.spdrs.com/en/etf/spdr-sp-oil-gas-exploration-production-etf-XOP">here</a> for more detailed description.</p>
+
+<h3 id="toc_3">Definition of DRIP</h3>
+
+<p>The Direxion Daily S&amp;P Oil &amp; Gas Exp. &amp; Prod. Bull and Bear 3X Shares (DRIP) seek daily investment results, before fees and expenses, of <strong>300% of the inverse</strong>, of the performance of the S&amp;P Oil &amp; Gas Exploration &amp; Production Select Industry Index. See <a href="http://www.direxioninvestments.com/products/daily-sp-oil-gas-exp-prod-bull-3x-shares">here</a> for more detailed description.</p>
+
+<h3 id="toc_4">Relationship of XOP and DRIP</h3>
+
+<p>By definition of the two ETFs, we expect DRIP to track -300% the daily return of XOP. This means the spread we should be tracking is, instead of the return difference between the two, the difference of -300% of <code>M</code>-day returns of XOP and the <code>M</code>-day returns of DRIP. Also, we are supposed to hold, if any, positions of these two ETFs in a ratio of XOP:DRIP = -3, no matter we&rsquo;re long or short in the spread.</p>
+
+<p>A peek into the data (assume <code>M</code> is 5.):</p>
+
+<ul>
+<li><code>DRIP</code>: price of DRIP</li>
+<li><code>XOP</code>: price of XOP</li>
+<li><code>rDRIP</code>: 5-day return of DRIP</li>
+<li><code>rXOP</code>: 5-day return of XOP</li>
+<li><code>rXOPn3</code>: -300% of 5-day return of XOP</li>
+<li><code>spread</code>: spread of <code>rXOPn3</code> from <code>rDRIP</code> ( <code>spread = rDRIP - rXOPn3</code> )</li>
+</ul>
+
+<p>The first few entries of our data reads:</p>
+
+<pre><code class="language-python"># exploratory settings
+symbols = ('DRIP', 'XOP')
+dates = ('2015-12-02', '2016-12-01')
+M = 5
+
+# retrieve data
+df_X = quandl.get('EOD/' + symbols[0], start_date=dates[0], end_date=dates[1])
+df_Y = quandl.get('EOD/' + symbols[1], start_date=dates[0], end_date=dates[1])
+X = df_X.Adj_Close
+Y = df_Y.Adj_Close
+
+# calculate M-day returns
+rX = (X.diff(M) / X.shift(M)).dropna()
+rY = (Y.diff(M) / Y.shift(M)).dropna()
+rY3 = rY * -3
+spread = rX - rY3
+
+# concat all variables
+df = pd.concat([X, Y, rX, rY, rY3, spread], axis=1).dropna()
+del X, Y, rX, rY, rY3, spread, df_X, df_Y
+df.columns = [symbols[0], symbols[1],
+              'r' + symbols[0], 'r' + symbols[1],
+              'r' + symbols[1] + 'n3', 'spread']
+
+df.head(10)
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">DRIP</th>
+<th align="center">XOP</th>
+<th align="center">rDRIP</th>
+<th align="center">rXOP</th>
+<th align="center">rXOPn3</th>
+<th align="center">spread</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">2015-12-09</td>
+<td align="center">93.228406</td>
+<td align="center">31.481858</td>
+<td align="center">0.300551</td>
+<td align="center">-0.091874</td>
+<td align="center">0.275621</td>
+<td align="center">0.024930</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-10</td>
+<td align="center">87.783600</td>
+<td align="center">32.033661</td>
+<td align="center">0.175401</td>
+<td align="center">-0.063402</td>
+<td align="center">0.190207</td>
+<td align="center">-0.014806</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-11</td>
+<td align="center">100.660997</td>
+<td align="center">30.465377</td>
+<td align="center">0.247456</td>
+<td align="center">-0.084908</td>
+<td align="center">0.254725</td>
+<td align="center">-0.007269</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-14</td>
+<td align="center">107.982471</td>
+<td align="center">29.719958</td>
+<td align="center">0.113006</td>
+<td align="center">-0.041524</td>
+<td align="center">0.124571</td>
+<td align="center">-0.011565</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-15</td>
+<td align="center">101.685757</td>
+<td align="center">30.310485</td>
+<td align="center">0.065597</td>
+<td align="center">-0.028545</td>
+<td align="center">0.085635</td>
+<td align="center">-0.020037</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-16</td>
+<td align="center">108.538063</td>
+<td align="center">29.632831</td>
+<td align="center">0.164217</td>
+<td align="center">-0.058733</td>
+<td align="center">0.176199</td>
+<td align="center">-0.011983</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-17</td>
+<td align="center">118.711577</td>
+<td align="center">28.616350</td>
+<td align="center">0.352321</td>
+<td align="center">-0.106679</td>
+<td align="center">0.320036</td>
+<td align="center">0.032284</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-18</td>
+<td align="center">125.551661</td>
+<td align="center">28.154731</td>
+<td align="center">0.247272</td>
+<td align="center">-0.075845</td>
+<td align="center">0.227535</td>
+<td align="center">0.019737</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-21</td>
+<td align="center">130.267899</td>
+<td align="center">27.862871</td>
+<td align="center">0.206380</td>
+<td align="center">-0.062486</td>
+<td align="center">0.187459</td>
+<td align="center">0.018921</td>
+</tr>
+
+<tr>
+<td align="center">2015-12-22</td>
+<td align="center">125.008291</td>
+<td align="center">28.203374</td>
+<td align="center">0.229359</td>
+<td align="center">-0.069518</td>
+<td align="center">0.208553</td>
+<td align="center">0.020806</td>
+</tr>
+</tbody>
+</table>
+<p>Also we may plot the histogram of the spread. Here we plot it against the fitted normal and t distributions. Apparently the t distribution matches our spread data better, which coincides with our expectation as financial data is commonly seen with fat tails. Also, we may notice that the spread is well centered around zero, which reassures us that we can assume <strong>symmetrical</strong> thresholds for trading.</p>
+
+<pre><code class="language-python">fig = plt.figure(figsize=(20, 7.5))
+
+ax = fig.add_subplot(121)
+ax.hist(df.spread, bins=50, edgecolor='k', facecolor='c', density=True)
+x_grid = np.linspace(-.2, .2, 200)
+
+# fit to normal
+params = norm.fit(df.spread)
+pdf_fitted = norm.pdf(x_grid, *params)
+plt.plot(x_grid, pdf_fitted, color='r',
+         label='$\mathcal{N}$' + '({:.2f},{:.2f})'.format(*params))
+
+# fit to t
+params = t.fit(df.spread)
+pdf_fitted = t.pdf(x_grid, *params)
+plt.plot(x_grid, pdf_fitted, color='orange',
+         label='t({:.2f},{:.2f},{:.2f})'.format(*params))
+
+ax.set_xlabel('Spread')
+ax.set_ylabel('Density')
+ax.legend(frameon=False, loc='upper left')
+
+ax = fig.add_subplot(122)
+df.spread.plot(ax=ax, color='k')
+plt.xticks(rotation=0, ha='center')
+ax.set_xlabel('Date')
+ax.set_ylabel('Spread')
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="/images/spread1.png" alt="" /></p>
+
+<p>In the second subplot, we can see that the spread series is quite &ldquo;stationary&rdquo; over time, but we&rsquo;d better not stop just observing by eye. (Also it&rsquo;s a bit heteroskedastic, but we&rsquo;re not focusing on that in this research.)</p>
+
+<h3 id="toc_5">Statistical Tests</h3>
+
+<p>Below are some statistical tests we need to run through before actual pair traing. For detailed reasoning please refer to this <a href="https://www.quantstart.com/articles/Basics-of-Statistical-Mean-Reversion-Testing">post</a>.</p>
+
+<ul>
+<li>Test for Unit Root: Here we use the Augmented Dickey-Fuller test. The p-value is 6.35e-14 <span class="math inline">\(\ll\)</span> 0.05, so we may safely reject the null.</li>
+</ul>
+
+<pre><code class="language-python">result = adfuller(df.spread)
+print('ADF Statistic: {}\np-value: {}\nCritical Values:'.format(*result[:2]))
+for key, value in result[4].items():
+    print('\t{}: {:.3f}'.format(key, value))
+</code></pre>
+
+<pre><code>ADF Statistic: -8.614239430241229
+p-value: 6.353844261802846e-14
+Critical Values:
+    1%: -3.458
+    5%: -2.874
+    10%: -2.573
+</code></pre>
+
+<ul>
+<li>Test for Strong Stationarity: Here we opt for the Hurst Exponent. By definition, Hurst value H &lt; 0.5 indicates the time series is mean-reverting, and our H value for the spread is -0.0390, so assumption is confirmed.</li>
+</ul>
+
+<pre><code class="language-python">def hurst(ts):
+    lags = range(2, 100)
+    tau = [np.sqrt(np.std(np.subtract(ts[lag:], ts[:-lag]))) for lag in lags]
+    poly = np.polyfit(np.log(lags), np.log(tau), 1)
+    return poly[0]*2.0
+
+np.random.seed(123)
+gbm = np.log(np.cumsum(np.random.randn(100000))+1000)
+mr = np.log(np.random.randn(100000)+1000)
+tr = np.log(np.cumsum(np.random.randn(100000)+1)+1000)
+
+print('H: {:.4f}'.format(hurst(df.spread)))
+</code></pre>
+
+<pre><code>H: -0.0390
+</code></pre>
+
+<p>Based on the previous two test results we conclude our spread is mean-reverting and the strategy is reasonable.</p>
+
+<h1 id="toc_6">Backtest Engine</h1>
+
+<p>In this part we design a simple backtest engine that takes ETF symbols, backtest timespan and the theoretical return ratio. It then provides an interface to run backtest against different parameters. I&rsquo;ve encapsulated private methods/variables in the class <code>BacktestEngine</code> and there are only three attributes available:</p>
+
+<ul>
+<li><code>BacktestEngine.symbols</code>: tuple of ETF symbols</li>
+<li><code>BacktestEngine.run</code>: run backtest (returns Sortino ratio, Sharpe ratio, maximum drawdown and YoY return)</li>
+<li><code>BacktestEngine.df</code>: stores the data from backtest (trade log)</li>
+</ul>
+
+<p>The basic usage of this engine would be</p>
+
+<pre><code class="language-python">be = BacktestEngine('DRIP', 'XOP', '2016-12-02', '2018-12-31', ratio=-3)
+be.run(M=5, g=0.010, j=0.005, s=0.010, verbose=True)  # plot the backtest results
+</code></pre>
+
+<p>and if you want to check the tradelog during the timespan, call <code>be.df</code>. Note in this data frame, we denote the two ETFs by <code>X</code> and <code>Y</code>, and instead of the original <code>M</code>-day return of <code>Y</code>, we denote <code>rY</code> as <code>ratio</code> times the original <code>M</code>-day returns. The positions of <code>X</code> and <code>Y</code> are also reported in <code>be.df</code> together with daily and cumulative returns (in percentages of <code>K</code>).</p>
+
+<p>An example of this <code>be.df</code> would be</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">X</th>
+<th align="center">Y</th>
+<th align="center">rX</th>
+<th align="center">rY</th>
+<th align="center">spread</th>
+<th align="center">N</th>
+<th align="center">pX</th>
+<th align="center">pY</th>
+<th align="center">daily_rtn</th>
+<th align="center">cum_rtn</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">2016-12-22</td>
+<td align="center">12.267480</td>
+<td align="center">41.323160</td>
+<td align="center">-0.019732</td>
+<td align="center">-0.017567</td>
+<td align="center">-0.002165</td>
+<td align="center">1.549400e+07</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0.0</td>
+</tr>
+
+<tr>
+<td align="center">2016-12-23</td>
+<td align="center">12.208217</td>
+<td align="center">41.450761</td>
+<td align="center">-0.017488</td>
+<td align="center">-0.015711</td>
+<td align="center">-0.001778</td>
+<td align="center">1.210184e+07</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0.0</td>
+</tr>
+
+<tr>
+<td align="center">2016-12-27</td>
+<td align="center">12.000796</td>
+<td align="center">41.666701</td>
+<td align="center">-0.018578</td>
+<td align="center">-0.016343</td>
+<td align="center">-0.002235</td>
+<td align="center">1.064284e+07</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0.0</td>
+</tr>
+
+<tr>
+<td align="center">2016-12-28</td>
+<td align="center">12.445270</td>
+<td align="center">41.166112</td>
+<td align="center">0.003185</td>
+<td align="center">0.004286</td>
+<td align="center">-0.001101</td>
+<td align="center">9.867562e+06</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0.0</td>
+</tr>
+
+<tr>
+<td align="center">2016-12-29</td>
+<td align="center">12.692200</td>
+<td align="center">40.901094</td>
+<td align="center">0.017419</td>
+<td align="center">0.017180</td>
+<td align="center">0.000239</td>
+<td align="center">9.607867e+06</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0.0</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">class BacktestEngine:
+    
+    def __init__(self, X_symbol, Y_symbol, start_date, end_date, ratio=1):
+        '''
+        PARAMETER:
+            X_symbol: string
+            Y_symbol: string
+            start_date: string or datetime object
+            end_date: string or datetime object
+
+        RETURN: None
+        '''
+
+        self.symbols = (X_symbol, Y_symbol)
+        self.__dates = (start_date, end_date)
+        self.__stop_loss_dates = []
+        self.__ratio = ratio
+        
+        # load data
+        df_X = quandl.get('EOD/' + self.symbols[0],
+                          start_date=self.__dates[0],
+                          end_date=self.__dates[1])
+        df_Y = quandl.get('EOD/' + self.symbols[1],
+                          start_date=self.__dates[0],
+                          end_date=self.__dates[1])
+        self.__data = [df_X, df_Y]
+        self.__trading = False
+
+    def __process_data(self):  # prepare data to feed model
+        '''
+        PARAMETER: None
+        
+        RETURN: None
+        '''
+        
+        df_X, df_Y = self.__data
+        
+        # generate price and volume series
+        N_X = df_X.Adj_Volume * df_X.Adj_Close
+        N_Y = df_Y.Adj_Volume * df_Y.Adj_Close
+        N = pd.concat([N_X, N_Y], axis=1).min(axis=1).rolling(15).median()
+        self.__K = N.max() * 2
+        X = df_X.Adj_Close
+        Y = df_Y.Adj_Close
+        
+        # calculate M-day returns
+        M = self.__M
+        rX = (X.diff(M) / X.shift(M)).dropna()
+        rY = (Y.diff(M) / Y.shift(M)).dropna() * self.__ratio
+        spread = rX - rY
+        
+        # concat all variables
+        df = pd.concat([X, Y, rX, rY, spread, N], axis=1).dropna()
+        del X, Y, rX, rY, spread, N
+        df.columns = ['X', 'Y', 'rX', 'rY', 'spread', 'N']
+        self.df = df
+    
+    def __update_params(self, M, g, j, s):  # update parameters of the model
+        '''
+        PARAMETER:
+            M: integer
+            g: float
+            j: float
+            s: float
+        
+        RETURN: None
+        '''
+
+        assert isinstance(M, (int, np.integer)) and (M &gt; 0), \
+               'parameter M should be a positive integer'
+        assert -g &lt; j &lt; g, 'parameter j and g should follow -g &lt; j &lt; g'
+        assert 0 &lt; s, 'parameter s should be positive'
+
+        self.__M = M
+        self.__g = g
+        self.__j = j
+        self.__s = s
+        self.__process_data()
+    
+    @staticmethod
+    def __posval(position, price1, price2, gross=False):  # calculate value
+        '''
+        PARAMETER:
+            position: float
+            price1: float
+            price2: float
+            grodd: boolean (default: False)
+        
+        RETURN: float
+        '''
+
+        if gross:
+            return abs(position[0]) * price1 + abs(position[1]) * price2
+        else:
+            return position[0] * price1 + position[1] * price2
+
+    def __pos(self, value, X, Y, longX=True):  # calculate positions
+        '''
+        PARAMETER:
+            value: float
+            X: float
+            Y: float
+            longX: boolean (default: True)
+        
+        RETURN: (float, float)
+        '''
+
+        pX = round(value / X) * abs(self.__ratio)
+        pY = round(value / Y) * (1 if self.__ratio &gt; 0 else -1)
+        return (pX, -pY) if longX else (-pX, pY)
+    
+    @staticmethod
+    def __sharpe_ratio(daily_rtn):  # calculate sharpe ratio
+        '''
+        PARAMETER:
+            daily_rtn: pd.Series of float
+        
+        RETURN: float
+        '''
+        
+        return daily_rtn.mean() / daily_rtn.std()
+    
+    @staticmethod
+    def __sortino_ratio(daily_rtn):  # calculate sortino ratio
+        '''
+        PARAMETER:
+            daily_rtn: pd.Series of float
+            
+        RETURN: float
+        '''
+        daily_rtn = daily_rtn.copy()
+        mean_rtn = daily_rtn.mean()
+        daily_rtn.loc[daily_rtn &gt; 0] = 0
+        downside_risk = daily_rtn.std()
+        return mean_rtn / downside_risk 
+    
+    @staticmethod
+    def __maximum_drawdown(value):  # maximum drawdown
+        '''
+        PARAMETER:
+            value: pd.Series of float
+        
+        RETURN: (float, datetime, datetime)
+        '''
+        
+        end = (value.cummax() / value).idxmax()
+        start = (value.loc[:end]).idxmax()
+        mdd = 1 - value[end] / value[start]
+        return mdd, start, end
+
+    def run(self, M, g, j, s, verbose=True):  # run backtest using parameters
+        '''
+        PARAMETER:
+            M: integer
+            g: float
+            j: float
+            s: float
+            verbose: boolean (default: True)
+        
+        RETURN: None
+        '''
+        
+        self.__update_params(M, g, j, s)
+        
+        pX = []
+        pY = []  # positions
+        rtn = []
+        curr_position = (0, 0)
+        curr_rtn = 0
+        prev_day = 0
+        prev_cost = 0
+        prev_gross_cost = 0
+        spread = 0
+        for date in self.df.index:
+            if date.day &lt; prev_day:  # check start of new month
+                daily_rtn = curr_rtn
+                curr_position = (0, 0)
+                prev_cost = 0
+                prev_gross_cost = 0
+                self.__trading = True
+
+            elif self.__trading:  # trading (never stop-lossed this month)
+                if curr_rtn &lt; -self.__s * prev_gross_cost:  # stop loss
+                    self.__stop_loss_dates.append(date)
+                    daily_rtn = curr_rtn
+                    curr_position = (0, 0)
+                    prev_cost = prev_gross_cost = 0
+                    self.__trading = False
+
+                else:
+                    if curr_position[0] &gt; 1:  # currently long in X
+                        daily_rtn = curr_rtn
+                        if spread &gt; self.__g:  # direactly from long to short
+                            curr_position = self.__pos(N / 100, X, Y, False)
+                            prev_cost = self.__posval(curr_position, X, Y)
+                            prev_gross_cost = self.__posval(curr_position, X, Y, True)
+                        elif spread &gt; -self.__j:  # close position
+                            curr_position = (0, 0)
+                            prev_cost = prev_gross_cost = 0
+                    elif curr_position[0] &lt; -1:  # currently short in X
+                        daily_rtn = curr_rtn
+                        if spread &lt; -self.__g:  # directly from short to long
+                            curr_position = self.__pos(N / 100, X, Y, True)
+                            prev_cost = self.__posval(curr_position, X, Y)
+                            prev_gross_cost = self.__posval(curr_position, X, Y, True)
+                        elif spread &lt; self.__j:  # close position
+                            curr_position = (0, 0)
+                            prev_cost = prev_gross_cost = 0
+                    else:  # currently having no position
+                        daily_rtn = 0
+                        if spread &gt; self.__g:  # open short position
+                            curr_position = self.__pos(N / 100, X, Y, False)
+                            prev_cost = self.__posval(curr_position, X, Y)
+                            prev_gross_cost = self.__posval(curr_position, X, Y, True)
+                        elif spread &lt; -self.__g:  # open long position
+                            curr_position = self.__pos(N / 100, X, Y, True)
+                            prev_cost = self.__posval(curr_position, X, Y)
+                            prev_gross_cost = self.__posval(curr_position, X, Y, True)
+
+            else:  # ceased until next month
+                daily_rtn = 0
+            
+            spread, X, Y, N = self.df[['spread', 'X', 'Y', 'N']].loc[date]
+            curr_rtn = self.__posval(curr_position, X, Y) - prev_cost
+
+            pX.append(curr_position[0])
+            pY.append(curr_position[1])
+            rtn.append(daily_rtn)
+            prev_day = date.day
+
+        self.df['pX'] = pX
+        self.df['pY'] = pY
+        self.df['daily_rtn'] = rtn
+        self.df.daily_rtn /= self.__K  # rtn is stored in %
+        self.df['cum_rtn'] = self.df.daily_rtn.cumsum()
+        sortino = self.__sortino_ratio(self.df.daily_rtn)
+        sharpe = self.__sharpe_ratio(self.df.daily_rtn)
+        mdd = self.__maximum_drawdown(self.df.cum_rtn + self.__K)[0]
+        yoy_rtn = (1 + self.df.cum_rtn[-1])**(250 / self.df.shape[0]) - 1
+        if verbose: self.__plot()
+        return sortino, sharpe, mdd, yoy_rtn
+ 
+    def __plot(self):  # plot backtest results
+        '''
+        PARAMETER: None
+        
+        RETURN: None
+        '''
+        
+        fig = plt.figure(figsize=(20, 15))
+
+        ax1 = fig.add_subplot(221)
+        self.df.rX.plot(ax=ax1, label='X', alpha=.5, color='darkgreen')
+        self.df.rY.plot(ax=ax1, label='Y', color='pink')
+        ax1.set_ylabel('Returns')
+        self.df.spread.plot(ax=ax1, label='spread', color='k')
+        plt.xticks(rotation=0, ha='center')
+        plt.legend(frameon=False, loc='upper right')
+        
+        ax2 = fig.add_subplot(222)
+        self.df.spread.plot(ax=ax2, label='spread', color='k')
+        ax2.plot((min(self.df.index), max(self.df.index)),
+                 (self.__g, self.__g), 'c--', label='$\pm$g')
+        ax2.plot((min(self.df.index), max(self.df.index)),
+                 (self.__j, self.__j), 'r--', label='$\pm$j')
+        ax2.plot((min(self.df.index), max(self.df.index)),
+                 (-self.__g, -self.__g), 'c--')
+        ax2.plot((min(self.df.index), max(self.df.index)),
+                 (-self.__j, -self.__j), 'r--')
+        ax2.set_ylabel('Spread')
+        plt.xticks(rotation=0, ha='center')
+        plt.legend(frameon=False)
+        
+        mdd, sd, ed = self.__maximum_drawdown(self.df.cum_rtn + self.__K)
+        
+        ax3 = fig.add_subplot(223)
+        self.df.N.plot(ax=ax3, label='N', color='k')
+        ax3.set_ylabel('Total Dollar Volumes')
+        plt.legend(frameon=False, loc='upper left')
+        plt.xticks(rotation=0, ha='center')
+        ax3_ = ax3.twinx()
+        self.df.pX.abs().plot(ax=ax3_, label='position', alpha=.5, color='r')
+        ax3_.ticklabel_format(axis='y', style='sci', scilimits=(5, 5))
+        ax3_.axvspan(xmin=sd, xmax=ed, ymin=0, ymax=1, color='grey', alpha=.5)
+        ax3_.set_ylim(ymin=0)
+        ax3_.set_ylabel('Daily Position (Long)')
+        ax3.grid(False)
+        plt.legend(frameon=False, loc='upper right')
+        
+        ax4 = fig.add_subplot(224)
+        ax4.axvspan(xmin=sd, xmax=ed, ymin=0, ymax=1, color='grey', alpha=.5)
+        (self.df.daily_rtn * 100).plot(ax=ax4, label='Daily Return (%)', color='c')
+        (self.df.cum_rtn * 100).plot(ax=ax4, label='Cum. Return (%)', color='r')
+        ax4.scatter(self.__stop_loss_dates,
+                    self.df.cum_rtn.loc[self.__stop_loss_dates] * 100,
+                    marker='x', color='k', label='', zorder=10)
+        ax4.set_ylabel('Return (%)')
+        plt.xticks(rotation=0, ha='center')
+        plt.legend(frameon=False)
+        
+        plt.tight_layout()
+        plt.show()
+</code></pre>
+
+<p>Here for illustration, we make a test run with parameters <code>M</code>=5, <code>g</code>=0.010, <code>j</code>=0.005 and <code>s</code>=0.01. The timespan, as required throughout the analysis, is set from <code>2016-12-02</code> to <code>2018-12-31</code> inclusive. The special meta parameter <code>ratio</code> is set to -3.</p>
+
+<pre><code class="language-python">be = BacktestEngine('DRIP', 'XOP', start_date='2016-12-02', end_date='2018-12-31', ratio=-3)
+st, sr, md, rt = be.run(M=5, g=0.02, j=0.01, s=0.01, verbose=True)
+print('Sortino Ratio={:.4f}, Sharpe Ratio={:.4f}, Maximum Drawdown={:.4g}, YoY Return={:.2%}'
+      .format(st, sr, md ,rt))
+</code></pre>
+
+<p><img src="/images/spread2.png" alt="" /></p>
+
+<pre><code>Sortino Ratio=0.0574, Sharpe Ratio=0.0387, Maximum Drawdown=1.118e-11, YoY Return=0.09%
+</code></pre>
+
+<p>With only a Sortino ratio of 0.0574, a Sharpe ratio of 0.0387 and YoY return of 0.09%, it&rsquo;s definitely not a good strategy. Not to mention the unsatisfactory return plots. The top right subplot together with the bottom left one suggests that we might be using too wide thresholds. In case of detailed analysis, we can also take a look at <code>be.df</code> and specifically the trading days when we have non-zero positions, which turns out rather few (and supports our worry about wideness of thresholds):</p>
+
+<pre><code class="language-python">be.df.loc[be.df.pX != 0]
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">X</th>
+<th align="center">Y</th>
+<th align="center">rX</th>
+<th align="center">rY</th>
+<th align="center">spread</th>
+<th align="center">N</th>
+<th align="center">pX</th>
+<th align="center">pY</th>
+<th align="center">daily_rtn</th>
+<th align="center">cum_rtn</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">2017-04-20</td>
+<td align="center">19.072870</td>
+<td align="center">34.413981</td>
+<td align="center">0.191975</td>
+<td align="center">0.178984</td>
+<td align="center">0.012991</td>
+<td align="center">1.533244e+07</td>
+<td align="center">-25014</td>
+<td align="center">-4643</td>
+<td align="center">0.000000</td>
+<td align="center">0.000000</td>
+</tr>
+
+<tr>
+<td align="center">2017-04-21</td>
+<td align="center">18.845694</td>
+<td align="center">34.532005</td>
+<td align="center">0.097182</td>
+<td align="center">0.100743</td>
+<td align="center">-0.003561</td>
+<td align="center">1.496846e+07</td>
+<td align="center">-25014</td>
+<td align="center">-4643</td>
+<td align="center">0.000011</td>
+<td align="center">0.000011</td>
+</tr>
+
+<tr>
+<td align="center">2017-06-12</td>
+<td align="center">21.522415</td>
+<td align="center">32.279704</td>
+<td align="center">-0.076695</td>
+<td align="center">-0.055866</td>
+<td align="center">-0.020829</td>
+<td align="center">9.166219e+06</td>
+<td align="center">13122</td>
+<td align="center">2984</td>
+<td align="center">0.000000</td>
+<td align="center">0.000056</td>
+</tr>
+
+<tr>
+<td align="center">2017-08-04</td>
+<td align="center">22.747188</td>
+<td align="center">30.827585</td>
+<td align="center">0.142928</td>
+<td align="center">0.143423</td>
+<td align="center">-0.000495</td>
+<td align="center">1.754893e+07</td>
+<td align="center">-21483</td>
+<td align="center">-5827</td>
+<td align="center">0.000000</td>
+<td align="center">0.000029</td>
+</tr>
+
+<tr>
+<td align="center">2017-11-02</td>
+<td align="center">15.319535</td>
+<td align="center">34.463445</td>
+<td align="center">-0.210285</td>
+<td align="center">-0.227637</td>
+<td align="center">0.017352</td>
+<td align="center">1.302198e+07</td>
+<td align="center">-26349</td>
+<td align="center">-3734</td>
+<td align="center">0.000000</td>
+<td align="center">0.000259</td>
+</tr>
+
+<tr>
+<td align="center">2017-12-26</td>
+<td align="center">11.398287</td>
+<td align="center">37.260895</td>
+<td align="center">-0.221848</td>
+<td align="center">-0.249496</td>
+<td align="center">0.027649</td>
+<td align="center">1.189655e+07</td>
+<td align="center">-29352</td>
+<td align="center">-3264</td>
+<td align="center">0.000000</td>
+<td align="center">0.000180</td>
+</tr>
+
+<tr>
+<td align="center">2017-12-27</td>
+<td align="center">11.645217</td>
+<td align="center">36.963916</td>
+<td align="center">-0.200136</td>
+<td align="center">-0.218041</td>
+<td align="center">0.017905</td>
+<td align="center">1.351392e+07</td>
+<td align="center">-29352</td>
+<td align="center">-3264</td>
+<td align="center">0.000135</td>
+<td align="center">0.000315</td>
+</tr>
+
+<tr>
+<td align="center">2017-12-28</td>
+<td align="center">11.418041</td>
+<td align="center">37.241096</td>
+<td align="center">-0.152493</td>
+<td align="center">-0.163117</td>
+<td align="center">0.010624</td>
+<td align="center">1.189655e+07</td>
+<td align="center">-29352</td>
+<td align="center">-3264</td>
+<td align="center">0.000092</td>
+<td align="center">0.000406</td>
+</tr>
+
+<tr>
+<td align="center">2017-12-29</td>
+<td align="center">11.714357</td>
+<td align="center">36.805528</td>
+<td align="center">-0.054226</td>
+<td align="center">-0.042553</td>
+<td align="center">-0.011673</td>
+<td align="center">1.246303e+07</td>
+<td align="center">-29352</td>
+<td align="center">-3264</td>
+<td align="center">0.000131</td>
+<td align="center">0.000537</td>
+</tr>
+
+<tr>
+<td align="center">2018-02-05</td>
+<td align="center">14.331815</td>
+<td align="center">34.023830</td>
+<td align="center">0.357343</td>
+<td align="center">0.307833</td>
+<td align="center">0.049510</td>
+<td align="center">1.823786e+07</td>
+<td align="center">-40842</td>
+<td align="center">-5061</td>
+<td align="center">0.000000</td>
+<td align="center">0.000619</td>
+</tr>
+
+<tr>
+<td align="center">2018-03-28</td>
+<td align="center">13.193795</td>
+<td align="center">33.978894</td>
+<td align="center">0.097942</td>
+<td align="center">0.103973</td>
+<td align="center">-0.006031</td>
+<td align="center">2.054748e+07</td>
+<td align="center">52227</td>
+<td align="center">6579</td>
+<td align="center">0.000000</td>
+<td align="center">0.000305</td>
+</tr>
+
+<tr>
+<td align="center">2018-04-03</td>
+<td align="center">12.630042</td>
+<td align="center">34.326023</td>
+<td align="center">0.045008</td>
+<td align="center">0.062801</td>
+<td align="center">-0.017792</td>
+<td align="center">2.304128e+07</td>
+<td align="center">51093</td>
+<td align="center">6703</td>
+<td align="center">0.000000</td>
+<td align="center">0.000390</td>
+</tr>
+
+<tr>
+<td align="center">2018-05-11</td>
+<td align="center">7.140870</td>
+<td align="center">40.931377</td>
+<td align="center">-0.120585</td>
+<td align="center">-0.125726</td>
+<td align="center">0.005141</td>
+<td align="center">3.427444e+07</td>
+<td align="center">-150390</td>
+<td align="center">-8464</td>
+<td align="center">0.000000</td>
+<td align="center">0.000188</td>
+</tr>
+
+<tr>
+<td align="center">2018-08-23</td>
+<td align="center">6.237512</td>
+<td align="center">41.241724</td>
+<td align="center">-0.144022</td>
+<td align="center">-0.155054</td>
+<td align="center">0.011033</td>
+<td align="center">2.413513e+07</td>
+<td align="center">-118650</td>
+<td align="center">-5898</td>
+<td align="center">0.000000</td>
+<td align="center">0.000023</td>
+</tr>
+
+<tr>
+<td align="center">2018-08-24</td>
+<td align="center">6.039495</td>
+<td align="center">41.778234</td>
+<td align="center">-0.157459</td>
+<td align="center">-0.177582</td>
+<td align="center">0.020123</td>
+<td align="center">2.205453e+07</td>
+<td align="center">-118650</td>
+<td align="center">-5898</td>
+<td align="center">-0.000041</td>
+<td align="center">-0.000018</td>
+</tr>
+
+<tr>
+<td align="center">2018-08-27</td>
+<td align="center">5.960289</td>
+<td align="center">41.877588</td>
+<td align="center">-0.146099</td>
+<td align="center">-0.152580</td>
+<td align="center">0.006481</td>
+<td align="center">2.155575e+07</td>
+<td align="center">-118650</td>
+<td align="center">-5898</td>
+<td align="center">0.000098</td>
+<td align="center">0.000081</td>
+</tr>
+
+<tr>
+<td align="center">2018-10-24</td>
+<td align="center">9.096368</td>
+<td align="center">35.500295</td>
+<td align="center">0.494290</td>
+<td align="center">0.398785</td>
+<td align="center">0.095505</td>
+<td align="center">3.827526e+07</td>
+<td align="center">-146172</td>
+<td align="center">-9913</td>
+<td align="center">0.000000</td>
+<td align="center">0.000239</td>
+</tr>
+
+<tr>
+<td align="center">2018-11-12</td>
+<td align="center">9.106299</td>
+<td align="center">34.953065</td>
+<td align="center">0.168153</td>
+<td align="center">0.166935</td>
+<td align="center">0.001217</td>
+<td align="center">4.281623e+07</td>
+<td align="center">156027</td>
+<td align="center">11825</td>
+<td align="center">0.000000</td>
+<td align="center">-0.001016</td>
+</tr>
+
+<tr>
+<td align="center">2018-11-14</td>
+<td align="center">9.801436</td>
+<td align="center">34.107346</td>
+<td align="center">0.324832</td>
+<td align="center">0.280804</td>
+<td align="center">0.044028</td>
+<td align="center">4.281623e+07</td>
+<td align="center">-141351</td>
+<td align="center">-13473</td>
+<td align="center">0.000000</td>
+<td align="center">-0.000185</td>
+</tr>
+
+<tr>
+<td align="center">2018-11-15</td>
+<td align="center">9.364493</td>
+<td align="center">34.614778</td>
+<td align="center">0.136145</td>
+<td align="center">0.133480</td>
+<td align="center">0.002665</td>
+<td align="center">4.050823e+07</td>
+<td align="center">-141351</td>
+<td align="center">-13473</td>
+<td align="center">0.000016</td>
+<td align="center">-0.000169</td>
+</tr>
+
+<tr>
+<td align="center">2018-11-23</td>
+<td align="center">11.211572</td>
+<td align="center">32.336311</td>
+<td align="center">0.197243</td>
+<td align="center">0.197471</td>
+<td align="center">-0.000228</td>
+<td align="center">4.050823e+07</td>
+<td align="center">120567</td>
+<td align="center">12081</td>
+<td align="center">0.000000</td>
+<td align="center">0.000222</td>
+</tr>
+
+<tr>
+<td align="center">2018-12-06</td>
+<td align="center">11.797473</td>
+<td align="center">31.520441</td>
+<td align="center">0.111319</td>
+<td align="center">0.125227</td>
+<td align="center">-0.013908</td>
+<td align="center">3.503895e+07</td>
+<td align="center">97920</td>
+<td align="center">10763</td>
+<td align="center">0.000000</td>
+<td align="center">0.001057</td>
+</tr>
+
+<tr>
+<td align="center">2018-12-07</td>
+<td align="center">11.906709</td>
+<td align="center">31.381147</td>
+<td align="center">0.147368</td>
+<td align="center">0.155996</td>
+<td align="center">-0.008628</td>
+<td align="center">3.503895e+07</td>
+<td align="center">97920</td>
+<td align="center">10763</td>
+<td align="center">0.000635</td>
+<td align="center">0.001692</td>
+</tr>
+
+<tr>
+<td align="center">2018-12-12</td>
+<td align="center">12.989137</td>
+<td align="center">30.475730</td>
+<td align="center">0.209991</td>
+<td align="center">0.191626</td>
+<td align="center">0.018365</td>
+<td align="center">4.187946e+07</td>
+<td align="center">-89073</td>
+<td align="center">-12988</td>
+<td align="center">0.000000</td>
+<td align="center">0.002391</td>
+</tr>
+
+<tr>
+<td align="center">2018-12-13</td>
+<td align="center">13.187748</td>
+<td align="center">30.286687</td>
+<td align="center">0.117845</td>
+<td align="center">0.117424</td>
+<td align="center">0.000421</td>
+<td align="center">3.936253e+07</td>
+<td align="center">-89073</td>
+<td align="center">-12988</td>
+<td align="center">0.000148</td>
+<td align="center">0.002539</td>
+</tr>
+
+<tr>
+<td align="center">2018-12-17</td>
+<td align="center">16.375449</td>
+<td align="center">28.077868</td>
+<td align="center">0.248297</td>
+<td align="center">0.226081</td>
+<td align="center">0.022215</td>
+<td align="center">4.187946e+07</td>
+<td align="center">-78804</td>
+<td align="center">-13600</td>
+<td align="center">0.000000</td>
+<td align="center">0.002583</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_7">Parameter Tuning</h1>
+
+<p>As mentioned above, in this section we try to fit the best set of parameters from <code>2015-12-02</code> to <code>2016-12-01</code>, i.e. the training set. As the focus of this report is not about efficient optimization, we opt for a simple grid search here. The parameter grids are defined as</p>
+
+<ul>
+<li><code>M_grid</code>: 5, 10, 15, 20 (4 in total)</li>
+<li><code>g_grid</code>: 0.001, 0.003, &hellip;, 0.011 (6 in total)</li>
+<li><code>j_grid</code>: -0.010, -0.008, &hellip;, 0.010 (11 in total)</li>
+<li><code>s_grid</code>: 1e-3, 5e-3, 1e-2, 5e-2, 1e-1 (5 in total)</li>
+</ul>
+
+<p>So no more than 1320 simulations are run. Note here parameter combinations where <code>-g &lt; j &lt; g</code> does not hold are neglected. Below are a selection of outstanding parameter sets during simulation.</p>
+
+<pre><code class="language-python">from time import time
+from itertools import product
+
+
+def record():
+    # record function with closure designed
+    # to keep track of the best parameters
+    record.best = []
+    def f(*args):
+        record.best.append((*args,))
+    return f
+
+mst, msr, mmd, mrt = 0, 0, 1, 0
+M_grid = np.arange(5, 25, 5)
+g_grid = np.arange(0.001, 0.012, 0.002)
+j_grid = np.arange(-0.010, 0.011, 0.002)
+s_grid = [1e-3, 5e-3, 0.01, 0.05, 0.10]
+nsim = len(M_grid) * len(g_grid) * len(j_grid) * len(s_grid)
+report_params = record()
+
+be = BacktestEngine('DRIP', 'XOP', start_date='2015-12-02', end_date='2016-12-01', ratio=-3)
+
+start_time = time()
+for i, params in enumerate(product(M_grid, g_grid, j_grid, s_grid)):
+    try:
+        st, sr, md, rt = be.run(*params, verbose=False)
+        if np.isnan(sr) or sr &lt; 0 or st &lt; 0: continue
+        report = False
+        if st &gt; mst: mst, report = st, True
+        if sr &gt; msr: msr, report = sr, True
+        if md &lt; mmd: mmd, report = md, True
+        if rt &gt; mrt: mrt, report = rt, True
+        prog = (i + 1) / nsim
+        current_time = time()
+        elapse = current_time - start_time
+        eta = elapse / prog * (1 - prog)
+        print('Running {} simulations... {:.2%} finished, ETA={:.0f}s'
+              .format(nsim, prog, eta) + ' ' * 10, end='\r')
+        if report: report_params(*params, st, sr, md, rt)
+    except AssertionError:  # (-g &lt; j &lt; g) does not hold
+        continue
+
+st_list, sr_list, md_list, rt_list = list(zip(*record.best))[-4:]
+record.best = [entries for _, entries in sorted(zip(st_list, record.best))][-5:]
+record.best = [entries for _, entries in sorted(zip(sr_list, record.best))][-5:]
+record.best = [entries for _, entries in sorted(zip(rt_list, record.best))][-5:]
+record.best = [entries for _, entries in sorted(zip(md_list, record.best))][:5]
+
+for i, entries in enumerate(record.best):
+    print('(Record {:2}) M={:&gt;2}, g={:.3f}, j={:6.3f}, s={:.5f},\t'
+          'st={:.4f} sr={:.4f}, md={:9.4g}, rt={:6.2%}'
+          .format(i, *entries))
+</code></pre>
+
+<pre><code>(Record  0) M=15, g=0.007, j=-0.004, s=0.05000, st=1.4542 sr=0.3393, md=1.934e-10, rt= 8.99%
+(Record  1) M=15, g=0.011, j=-0.010, s=0.05000, st=1.4591 sr=0.3430, md=1.673e-10, rt= 9.17%
+(Record  2) M=20, g=0.007, j=-0.006, s=0.05000, st=1.5146 sr=0.3540, md=2.076e-10, rt= 9.47%
+(Record  3) M=20, g=0.007, j= 0.006, s=0.05000, st=1.6001 sr=0.3534, md=  1.7e-10, rt= 9.33%
+(Record  4) M=15, g=0.011, j=-0.004, s=0.05000, st=1.4680 sr=0.3452, md=1.673e-10, rt= 9.15%
+</code></pre>
+
+<p>From the two plots below, we can tell that Record 3, or the parameter set <code>M=20, g=0.007, j=0.006, s=0.05000</code>, is a good choice as it has both large Sortino ratio/YoY return and a relatively small maximum drawdown. Record 2, or <code>M=20, g=0.007, j=-0.006, s=0.05000</code> is also playing well among all outstanding parameter sets, with slightly better Sortino ratio and YoY returns but larger maximum drawdown. We&rsquo;ll test on both sets.</p>
+
+<pre><code class="language-python">rec = np.arange(len(record.best))
+st_list, st_list, md_list, rt_list = list(zip(*record.best))[-4:]
+
+fig = plt.figure(figsize=(20, 7.5))
+
+ax = fig.add_subplot(121)
+ax.set_xlim(min(rt_list) * 0.95, max(rt_list) * 1.05)
+ax.set_ylim(min(st_list) * 0.95, max(st_list) * 1.05)
+st_offset = (max(st_list) - min(st_list)) * 0.02
+ax.scatter(rt_list, st_list, s=[(md / np.mean(md_list))**2 * 4e3 for md in md_list],
+           color='r', edgecolor='k', alpha=.5)
+ax.text(.086, .325, '(Bubble Size ~ Maximum Drawdown)')
+for rt, st, i in zip(rt_list, st_list, range(len(record.best))):
+    ax.text(x=rt, y=st - st_offset, s=str(i), ha='center')
+ax.set_xlabel('YoY Return')
+ax.set_ylabel('Sortino Ratio')
+
+ax = fig.add_subplot(122)
+ax.scatter(rec, st_list, color='r', marker='x', s=200, label='Sortino Ratio')
+ax.scatter(rec, rt_list, color='c', marker='o', s=200, label='YoY Return')
+ax.set_xlabel('Record')
+ax.set_ylabel('Return &amp; Ratio')
+ax.legend(frameon=False, loc='upper left')
+ 
+ax = ax.twinx()
+ax.grid(False)
+ax.scatter(rec, md_list, color='orange', marker='s', s=200, label='Maximum Drawdown')
+ax.set_ylim(min(md_list) * 0.9, max(md_list) * 1.1)
+ax.xaxis.set_ticks(rec)
+ax.set_ylabel('Maximum Drawdown')
+ax.legend(frameon=False, loc='upper right')
+
+plt.tight_layout()
+</code></pre>
+
+<p><img src="/images/spread3.png" alt="" /></p>
+
+<p>Using the parameters from Record 3, we run backtest against the test set, i.e. from <code>2016-12-02</code> to <code>2018-12-31</code>. The plots are as below.</p>
+
+<pre><code class="language-python">be = BacktestEngine('DRIP', 'XOP', start_date='2016-12-02', end_date='2018-12-31', ratio=-3)
+st, sr, md, rt = be.run(M=20, g=0.007, j= 0.006, s=0.05000, verbose=True)
+print('Sortino Ratio={:.4f}, Sharpe Ratio={:.4f}, Maximum Drawdown={:.4g}, YoY Return={:.2%}'
+      .format(st, sr, md ,rt))
+</code></pre>
+
+<p><img src="/images/spread4.png" alt="" /></p>
+
+<pre><code>Sortino Ratio=0.7407, Sharpe Ratio=0.2447, Maximum Drawdown=2.005e-11, YoY Return=1.76%
+</code></pre>
+
+<p>Using the parameters from Record 3, the backtest result is as below.</p>
+
+<pre><code class="language-python">be = BacktestEngine('DRIP', 'XOP', start_date='2016-12-02', end_date='2018-12-31', ratio=-3)
+st, sr, md, rt = be.run(M=20, g=0.007, j=-0.006, s=0.05000, verbose=True)
+print('Sortino Ratio={:.4f}, Sharpe Ratio={:.4f}, Maximum Drawdown={:.4g}, YoY Return={:.2%}'
+      .format(st, sr, md ,rt))
+</code></pre>
+
+<p><img src="/images/spread5.png" alt="" /></p>
+
+<pre><code>Sortino Ratio=0.9394, Sharpe Ratio=0.2872, Maximum Drawdown=1.997e-11, YoY Return=2.24%
+</code></pre>
+
+<h1 id="toc_8">Conclusion</h1>
+
+<p>Both results are amazingly great (especially compared with our result using random parameters before any tuning). Considering here we&rsquo;re not utilizing any future data in backtest, the performance is satisfactory despite we&rsquo;re neglecting a lot executional details in our analysis, like transaction costs and market impacts. There are also several comments on the processing of data:</p>
+
+<ul>
+<li>We are using the first <code>M</code> days to calculate the rolling median of <code>N</code>, which causes a loss in data. Perhaps we should use <code>M</code> days of further previous historical data to make up this loss.</li>
+<li>Thresholds change, over time. To be more specific, the &ldquo;ideal&rdquo; thresholds change all the time, partly due to market regime shifting and partly other unknown reasons. We may, therefore, never have the &ldquo;best&rdquo; parameters for trading. Should we go for a dynamic version of spread trading? I doubt so. But it&rsquo;s worth thinking if there&rsquo;s any remedy for this problem.</li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/bad-interpreter-error-jupyter/">Bad Interpreter Error of Jupyter and its Solution</a></span>
+  <span class="nav-next"><a href="/blog/perfect-market-maker/">The Perfect Market Maker: Is it Possible?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/bad-interpreter-error-jupyter\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/perfect-market-maker\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/spread-trading-etf.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Content Filtering with Hexo Tipue-Search Engine - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Content Filtering with Hexo Tipue-Search Engine - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;lsquo;em to show up in a search &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;lsquo;em to show up in a search &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/content-filtering-tipue-search.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Content Filtering with Hexo Tipue-Search Engine</h1>
+
+
+<h3>
+2019-05-03</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<p>It&rsquo;s always been a headache to me that I cannot have my blog&rsquo;s search engine to show content I want — there&rsquo;re always something you don&rsquo;t want &lsquo;em to show up in a search result, like <a href="https://www.npmjs.com/package/hexo-blog-encrypt">password protected</a> posts (shown as encrypted codes) and random pages for a certain project (some even don&rsquo;t have a title, and this tipue-search would still show them in the searching result — with a blank title and a bunch of html raw codes). Even worse, it seems there&rsquo;s no offical way to set this sort of content filters. This feels bad. This terrible feeling has tortured me for months till I made up my mind and fixed it from source codes today.</p>
+
+<!-- more -->
+
+<p>The fix turned out, well, quite straightforward. First, we locate the node package folder <code>hexo-generator-tipue-search-json</code>. The package structure shows</p>
+
+<pre><code>node_modules
+└───hexo-generator-tipue-search-json
+    ├───index.js
+    ├───LICENSE
+    ├───package.json
+    ├───README.md
+    └───node_modules
+        └───...
+</code></pre>
+
+<p>The file we need to edit is <code>index.js</code>. Below I&rsquo;ve attached the full codes after modification:</p>
+
+<pre><code class="language-js">var util = require('hexo-util');
+
+hexo.extend.generator.register('tipue-search-json', hexo_generator_tipue_search_json);
+
+function hexo_generator_tipue_search_json(site) {
+    var minify = function (str) {
+            return util.stripHTML(str).trim().replace(/\n/g, ' ').replace(/\s+/g, ' ');
+        },
+
+        keys = {
+            title: true,
+            url: true,
+            text: true,
+            tags: true
+        },
+
+        json = {};
+
+
+    var catags = function (item) {
+            return item.name.replace(/\s+/g, '-').toLowerCase();
+        };
+
+    var postsContent = site.posts.sort('-date').filter(function (post) {
+            return (post.published &amp;&amp; !('password' in post));  // 不搜索加密文章
+        }).map(function (post) {
+            var actualPost = {};
+
+            Object.getOwnPropertyNames(keys).forEach(function (item) {
+                switch (item) {
+                    case 'text':
+                        return actualPost[item] = minify(post.content);
+
+                    case 'tags':
+                        return actualPost[item] = post.tags.map(catags).join(' ');
+
+                    case 'url':
+                        return actualPost[item] = hexo.config.root + post['path'];
+
+                    default:
+                        return actualPost[item] = post[item];
+                }
+            });
+
+            return actualPost;
+        });
+
+    // var pagesContent = site.pages.sort('-date').map(function (page) {
+    //         var actualPage = {};
+    
+    //         Object.getOwnPropertyNames(keys).forEach(function (item) {
+    //             switch (item) {
+    //                 case 'text':
+    //                     return actualPage[item] = minify(page.content);
+    
+    //                 case 'url':
+    //                     return actualPage[item] = hexo.config.root + page['path'];
+    
+    //                 default:
+    //                     return actualPage[item] = page[item];
+    //             }
+    //         });
+    //         actualPage.tags = &quot;&quot;;
+    //         return actualPage;
+    //     });
+
+    // json.pages = postsContent.concat(pagesContent);  // 不要搜索pages
+    json.pages = postsContent;
+
+    return {
+        path: '/tipuesearch/tipuesearch_content.json',
+        data: JSON.stringify(json)
+    };
+}
+</code></pre>
+
+<p>Note the second line of the definition of <code>postsContent</code> and the lines we comment out. These modifications are made such that encrypted posts and standalone pages won&rsquo;t be searched.</p>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/revert-github-commit/">Revert GitHub Commit History?</a></span>
+  <span class="nav-next"><a href="/blog/stock-price-simulation/">Stock Price Simulation</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/revert-github-commit\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/stock-price-simulation\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/content-filtering-tipue-search.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

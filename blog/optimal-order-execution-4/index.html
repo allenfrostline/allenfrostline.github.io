@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (4) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (4) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size \(Q\), we can estimate the probability to perform the optimal strategy in the paper within &amp;hellip;">
+      <meta property="og:description" content="Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size \(Q\), we can estimate the probability to perform the optimal strategy in the paper within &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/optimal-order-execution-4.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Literature Review on Optimal Order Execution (4)</h1>
+
+
+<h3>
+2018-05-06</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Mathematical Formulation</a></li>
+
+<li><a href="#toc_1">Implementation</a></li>
+</ul>
+
+</nav>
+<p>Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size <span class="math inline">\(Q\)</span>, we can estimate the probability to perform the optimal strategy in the paper within time horizon of <span class="math inline">\(T\)</span>.</p>
+
+<!-- more -->
+
+<h1 id="toc_0">Mathematical Formulation</h1>
+
+<p>It is tolerable<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> in HFT that we assume stock price evolves according to the discrete time arithmetic Brownian motion:</p>
+
+<p>\begin{cases}
+dS(t) = \mu dt + \sigma dW(t),\\
+dQ(t) = -\dot{Q}(t)dt
+\end{cases}</p>
+
+<p>where <span class="math inline">\(Q(t)\)</span> is the quantity of stock we still need to order at time <span class="math inline">\(t\)</span>. Now let <span class="math inline">\(\eta\)</span> denote the linear coefficient for <strong>temporary</strong> market impact, and let <span class="math inline">\(\lambda\)</span> denote the penalty coefficient for risks. To minimize the cost function</p>
+<p><span class="math display">\[
+C = \eta \int_0^T \dot{Q}^2(t) dt + \lambda\sigma\int_0^T Q(t) dt
+\]</span></p>
+<p id='solution'>we have the unique solution given by</p>
+<p><span class="math display">\[
+Q^*(t) = Q\cdot \left(1 - \frac{t}{T^*}\right)^2
+\]</span></p><p>where <span class="math inline">\(Q\equiv Q(0)\)</span> is the total and initial quantity to execute, and the optimal liquidation horizon <span class="math inline">\(T^*\)</span> is given by</p>
+<p><span class="math display">\[
+T^* = \sqrt{\frac{4Q\eta}{\lambda\sigma}}.
+\]</span></p><p>Here, <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\lambda\)</span> are exogenous parameters and <span class="math inline">\(\sigma\)</span> is estimated from the price time series (see the <a href="http://allenfrostline.com/2018/05/05/estimation-geometric-brownian-motion/">previous post</a>) within <span class="math inline">\(K\)</span> time units, given by</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \frac{\sum_{i=1}^n (\Delta_i - \hat{\mu}_{\Delta})^2}{(n-1)\tau}
+\]</span></p><p>where <span class="math inline">\(\\{\Delta_i\\}\)</span> are the first order differences of the stock price using <span class="math inline">\(\tau\)</span> as sample period, <span class="math inline">\(n\equiv\lfloor K / \tau\rfloor\)</span> is the length of the array, and</p>
+<p><span class="math display">\[
+\hat{\mu}_{\Delta} = \frac{\sum_{i=1}^n \Delta_i}{n}.
+\]</span></p><p>Notice that <span class="math inline">\(\hat{\sigma}^2\)</span> is proved asymptotically normal with variance</p>
+<p><span class="math display">\[
+Var(\hat{\sigma}^2) = \frac{2\sigma^4}{n}.
+\]</span></p><p>Now that we know</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 \equiv \frac{16Q^2\eta^2}{\lambda^2 \hat{T}^4} \overset{d}{\to}
+\mathcal{N}\left(\sigma^2, \frac{2\sigma^4}{n}\right)
+\]</span></p><p>which yields</p>
+<p><span class="math display">\[
+\frac{16Q^2\eta^2}{\lambda^2\hat{\sigma}^2\hat{T}^4}\overset{d}{\to}\mathcal{N}\left(1, \frac{2}{n}\right),
+\]</span></p><p>to keep consistency of parameters, with <span class="math inline">\(n\equiv \lfloor K/\tau\rfloor \to\infty\)</span> we can also write</p>
+<p><span class="math display">\[
+\frac{16Q^2\eta^2}{\lambda^2\hat{\sigma}^2\hat{T}^4}\overset{d}{\to}\mathcal{N}\left(1, \frac{2\tau}{K}\right).
+\]</span></p><p>with which we can estimate the probability of successful strategy performance. Specifically, the execution strategy is given <a href="#solution">above</a>, and the expected cost of trading is</p>
+<p><span class="math display">\[
+C^* =
+\eta \int_0^{T^*} \left(\frac{2Q}{T}\left(1 - \frac{t}{T^*}\right)\right)^2 dt + \lambda\sigma\int_0^{T^*} Q\cdot \left(1 - \frac{t}{T^*}\right) dt =
+\frac{4\eta Q^2}{3T^*} + \frac{\lambda \sigma QT^*}{3} = \frac{4}{3}\sqrt{\eta\lambda\sigma Q^3}.
+\]</span></p>
+<h1 id="toc_1">Implementation</h1>
+
+<pre><code class="language-python">import numpy as np
+from scipy.stats import norm
+
+
+def generate_abm(mu, sigma, K, S0):
+    np.random.seed(222)
+    dS = mu - sigma**2 / 2 + sigma * np.random.normal(size=K)
+    S = np.cumsum(np.append(S0, dS))
+    return S
+
+
+class OrderExecution:    
+    def __init__(self, S, tau):
+        delta = S[tau::tau] - S[:-tau:tau]
+        self.sigma2 = ((delta - delta.mean())**2).sum() / (len(delta) - 1) / tau
+        self.tau = tau
+        self.K = len(S)
+
+    def info(self, Q, T, eta, lmd):
+        statistic = 16 * Q**2 * eta**2 / lmd**2 / self.sigma2 / T**4
+        prob = 1 - norm.cdf(statistic, loc=1, scale=2 * self.tau / self.K)
+        retn = np.sqrt(eta * lmd * self.sigma2**.5 * Q**3) * 4 / 3
+        return retn, prob
+
+
+S = generate_abm(0.002, 0.06, 50000, 100)
+OE = OrderExecution(S, 10)
+OE.info(10, 3.6405, 0.02, 1)
+</code></pre>
+
+<pre><code>(1.465147881156472, 0.8431842483948604)
+</code></pre>
+
+<p>which means there&rsquo;s a probability of 84.3% that we can perform our order placement strategy of size 10 within 3.6405 time units and minimize the trading cost of 1.47 at optimum.</p>
+
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">Over long-􏰊term 􏰛investment􏰔 time scales or in extremely volatile markets􏰁 it is important to consider geometric rather than arithmetic Brownian motion􏰟; this corresponds to letting <span class="math inline">\(\sigma\)</span>􏰮 scale with <span class="math inline">\(S\)</span>􏰘 But over the short-􏰊term 􏰛trading􏰔 time horizons of interest the total fractional price changes are small􏰁 and the di􏰈fference between arithmetic and geometric Brownian motions is negligible. (Almgren and Chriss, 2000) <a class="footnote-return" href="#fnref:1">↩︎</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/estimation-brownian-motion/">Parameter Estimation of Brownian motions by Method of Moments</a></span>
+  <span class="nav-next"><a href="/blog/optimal-order-execution-5/">Literature Review on Optimal Order Execution (5)</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/estimation-brownian-motion\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/optimal-order-execution-5\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/optimal-order-execution-4.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,3561 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context &amp;hellip;">
+      <meta property="og:description" content="This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/crypto-news.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market</h1>
+
+
+<h3>
+2019-06-09</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Introduction</a></li>
+
+<li><a href="#toc_1">Data</a>
+<ul>
+<li><a href="#toc_2">Data Crawling</a></li>
+
+<li><a href="#toc_3">Data Preparation</a></li>
+</ul></li>
+
+<li><a href="#toc_4">The Hybrid Model</a>
+<ul>
+<li><a href="#toc_5">Model Construction</a></li>
+
+<li><a href="#toc_6">Backtesting Results</a></li>
+
+<li><a href="#toc_7">Model Sensitivity to Parameters</a></li>
+
+<li><a href="#toc_8">Risk Management</a></li>
+</ul></li>
+
+<li><a href="#toc_9">Conclusion</a></li>
+
+<li><a href="#toc_10">References</a></li>
+
+<li><a href="#toc_11">Appendix</a>
+<ul>
+<li><a href="#toc_12">Appendix A: News Data</a></li>
+
+<li><a href="#toc_13">Appendix B: EOD Data</a></li>
+
+<li><a href="#toc_14">Appendix C: Backtest Engine and Hyper-Parameter Testing</a></li>
+</ul></li>
+</ul>
+
+</nav>
+<p>This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context analysis (or more specifically, word analysis) into traditional momentum strategies and adjusts position automatically over time using both factors. The hybrid strategy is implemented with backtesing period from Dec. 17th 2017 to May 2nd 2019. It yields cumulative return of 229% and a remarkable Sharpe ratio of 2.68 with acceptable maximum drawdown in out-of-sample backtest, which is a huge improvement from classical momentum strategies in our analysis.</p>
+
+<p><img src="/images/cryptonews_56_0.png" style="width: 100%;"/></p>
+
+<h1 id="toc_0">Introduction</h1>
+
+<p>Cryptocurrency has been a hot topic ever since the creation of Bitcoin in 2009. Unlike stocks which are backed by real companies, cryptocurrency has no intrinsic value, causing its price to be heavily reliant on market information. The decentralization of exchanges, the inconsistency of prices, the lack of tangible entity and assets all present serious analytics challenges that are difficult to solve with traditional tools. Therefore, we want to introduce news data into our strategy.</p>
+
+<p>There are many reasons to believe that momentum strategy will perform well in this market. Compared to other markets, there are fewer participants in the cryptocurrency market; thus, information is both diffused and acted on slowly. In addition, a smaller number of participants leads to a lack of liquidity, forcing large investors to spread out transactions over time. Last but not least, the limited information source makes the decision of investors largely dependent on recent performance, which further drives the herd mentality. However, there are no less reasons to think that momentum strategy will fail. We need something else to help us decide when we should use momentum strategy and when we may want to go opposite. So we go one step further and develop a new strategy that we call hybrid sentiment-momentum strategy.</p>
+
+<p>On the other hand, the cryptocurrency market is mostly driven by the overall investors&rsquo; fanaticism, which suggests that momentum strategy would perform extremely well when this market is optimistic and bullish. However, when fanaticism is dampened by negative news, people go back to a more rational and conservative investing style, driving a momentum reversal strategy to gain.</p>
+
+<p>In the following sections, we showcase our hybrid sentiment-momentum strategy step by step. First of all, we introduce how we use web crawling to get news data, coin prices and market capitalization and how we process them. After that, we illustrate our model construction and the underlying mathematical support. We then present our evaluation on strategy performance through comparing it with benchmark strategies including buy-and-hold, momentum and momentum reversal. Before wrapping up with our conclusions, we demonstrate our analysis on model sensitivity to multiple parameters.</p>
+
+<h1 id="toc_1">Data</h1>
+
+<p>In this section, we are going to discuss our source of data as well as how we prepare our data for the sentiment model.</p>
+
+<pre><code class="language-python">import os
+import warnings
+import matplotlib
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from itertools import product
+import matplotlib.pyplot as plt
+from scipy.stats import multinomial
+from scipy.optimize import minimize
+from IPython.display import display, HTML, Image
+from wordcloud import WordCloud, STOPWORDS
+from collections import Counter, namedtuple
+from pandas.plotting import register_matplotlib_converters
+
+register_matplotlib_converters()
+matplotlib.font_manager._rebuild()
+np.set_printoptions(linewidth=200, threshold=100, floatmode='fixed')
+plt.rcParams['lines.linewidth'] = 2
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.serif'] = 'Palatino'
+plt.rcParams['axes.facecolor'] = '#000000'
+plt.rcParams['figure.figsize'] = (12, 5)
+plt.rcParams['figure.dpi'] = 150
+pd.set_option('max_row', 10)
+pd.set_option('display.max_columns', 10)
+pd.set_option('display.width', 1000)
+warnings.filterwarnings('ignore')
+</code></pre>
+
+<h2 id="toc_2">Data Crawling</h2>
+
+<p><strong>News Data</strong></p>
+
+<p>We crawl all posts from <a href="http://www.coindesk.com">CoinDesk</a>. The crawling scripts are included in <a href="#toc_12">Appendix A</a>. We have news data from 2013-04-15 to 2019-05-02 (latest by the time of drafting). Entries are <code>title</code>, <code>abstract</code> and <code>contents</code>.</p>
+
+<pre><code class="language-python">df = pd.read_csv('data/posts.csv', index_col=0)
+df.index = pd.to_datetime(df.index).date
+display(HTML(df.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>‘Zerocoin’ widget promises Bitcoin privacy</td>
+<td>Researchers at Johns Hopkins University are pr&hellip;</td>
+<td>Researchers at Johns Hopkins University are pr&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>OpenCoin aims to build a better digital currency</td>
+<td>Digital currency promises to solve some proble&hellip;</td>
+<td>Digital currency promises to solve some proble&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>Meet the money behind bitcoin competitor OpenCoin</td>
+<td>At first glance, especially to a digital curre&hellip;</td>
+<td>At first glance, especially to a digital curre&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>$500k in funding paves way for bitcoin trading</td>
+<td>New York City-based bitcoin startup Coinsetter&hellip;</td>
+<td>New York City-based bitcoin startup Coinsetter&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>Argentina trades $50k of bitcoins</td>
+<td>A record $50,000 of bitcoins were traded in Ar&hellip;</td>
+<td>A record $50,000 of bitcoins were traded in Ar&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>CoinMarketCap Forms Alliance to Tackle Concern&hellip;</td>
+<td>Crypto data provider CoinMarketCap is working &hellip;</td>
+<td>Cryptocurrency data provider CoinMarketCap is &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>Techstars-Backed Alkemi Enters DeFi Race With &hellip;</td>
+<td>This new startup wants to plug exchanges, fund&hellip;</td>
+<td>A new type of decentralized finance (DeFi) app&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>When Tether Warnings Are Marketing Tools</td>
+<td>Stablecoin issuers are taking advantage of Tet&hellip;</td>
+<td>“We’re in a scary place, because if Tether’s p&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>3 Price Hurdles That Could Complicate a Bitcoi&hellip;</td>
+<td>Bitcoin is on the offensive, having defended k&hellip;</td>
+<td>Bitcoin (BTC) is on the offensive, having defe&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>Diamond Standard Launches Blockchain-Powered T&hellip;</td>
+<td>A new startup is looking to make diamonds as a&hellip;</td>
+<td>As a store of value, diamonds have their advan&hellip;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EOD Price &amp; Market Cap Data</strong></p>
+
+<p>Also, we crawl the <a href="https://coinmarketcap.com">CoinMarketCap</a> for historical EOD data of over 10 major coins. Only daily close prices and market caps are kept. See <a href="#toc_13">Appendix B</a><a id='abback'></a> for codes. Cryptocurrency market is 24/7, for the purpose of this research, we define daily close price as the price at 24:00:00 UTC.</p>
+
+<h2 id="toc_3">Data Preparation</h2>
+
+<p><strong>Step 0</strong>: Group up post (news) data by dates.</p>
+
+<pre><code class="language-python">df_eod = df.copy()
+df_eod['date'] = pd.to_datetime(df_eod.index).date
+g = df_eod.groupby('date')
+title = g.title.apply(' '.join)
+abstract = g.abstract.apply(' '.join)
+content = g.content.apply(lambda x: '\n\n'.join(map(str, x.values)))
+df_eod = pd.concat([title, abstract, content], axis=1)
+df_eod.index = pd.to_datetime(df_eod.index)
+df_eod.index.name = None
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>‘Zerocoin’ widget promises Bitcoin privacy</td>
+<td>Researchers at Johns Hopkins University are pr&hellip;</td>
+<td>Researchers at Johns Hopkins University are pr&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>OpenCoin aims to build a better digital curren&hellip;</td>
+<td>Digital currency promises to solve some proble&hellip;</td>
+<td>Digital currency promises to solve some proble&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>$500k in funding paves way for bitcoin trading</td>
+<td>New York City-based bitcoin startup Coinsetter&hellip;</td>
+<td>New York City-based bitcoin startup Coinsetter&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>Argentina trades $50k of bitcoins Bitcoin pric&hellip;</td>
+<td>A record $50,000 of bitcoins were traded in Ar&hellip;</td>
+<td>A record $50,000 of bitcoins were traded in Ar&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>Mt Gox CEO on Bitcoin’s future Alt-currency fi&hellip;</td>
+<td>Mark Karpeles gives a great explanation of how&hellip;</td>
+<td>Mark Karpeles gives a great explanation of how&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>How Crypto Markets Are Reacting to the Tether-&hellip;</td>
+<td>The crypto markets endured a loss of as much a&hellip;</td>
+<td>The cryptocurrency markets endured a loss of a&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>US Stock Broker E*Trade to Launch Bitcoin and &hellip;</td>
+<td>Online stock brokerage E*Trade is preparing to&hellip;</td>
+<td>Online stock brokerage E*Trade Financial is sa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>Want to Understand Bitfinex? Understand Mt. Go&hellip;</td>
+<td>People interested in understanding Bitfinex ar&hellip;</td>
+<td>Daniel Cawrey is chief executive officer of Pa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>Where Crypto Exchanges Are Beating the Bear Ma&hellip;</td>
+<td>Turkish exchanges OKEx and BtcTurk are onboard&hellip;</td>
+<td>With the Turkish lira dropping to a six-month &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>When Tether Warnings Are Marketing Tools 3 Pri&hellip;</td>
+<td>Stablecoin issuers are taking advantage of Tet&hellip;</td>
+<td>“We’re in a scary place, because if Tether’s p&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>Researchers at Johns Hopkins University are proposing a cryptographic extension to bitcoin that could enable fully anonymous transactions on the network. The extension, called Zerocoin, works – as NewScientist explains it – by “allowing bitcoin users to leave their coins floating on the network for someone else to redeem, on the condition that they can redeem the same amount of bitcoin, similarly left floating on the network, at an arbitrary time in the future.”
+</code></pre>
+
+<p><strong>Step 1</strong>: Get everything in its lowercase (if possible).</p>
+
+<pre><code class="language-python">df_eod.title = df_eod.title.str.lower()
+df_eod.abstract = df_eod.abstract.str.lower()
+df_eod.content = df_eod.content.str.lower()
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>‘zerocoin’ widget promises bitcoin privacy</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>opencoin aims to build a better digital curren&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>$500k in funding paves way for bitcoin trading</td>
+<td>new york city-based bitcoin startup coinsetter&hellip;</td>
+<td>new york city-based bitcoin startup coinsetter&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>argentina trades $50k of bitcoins bitcoin pric&hellip;</td>
+<td>a record $50,000 of bitcoins were traded in ar&hellip;</td>
+<td>a record $50,000 of bitcoins were traded in ar&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>mt gox ceo on bitcoin’s future alt-currency fi&hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>how crypto markets are reacting to the tether-&hellip;</td>
+<td>the crypto markets endured a loss of as much a&hellip;</td>
+<td>the cryptocurrency markets endured a loss of a&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>us stock broker e*trade to launch bitcoin and &hellip;</td>
+<td>online stock brokerage e*trade is preparing to&hellip;</td>
+<td>online stock brokerage e*trade financial is sa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>want to understand bitfinex? understand mt. go&hellip;</td>
+<td>people interested in understanding bitfinex ar&hellip;</td>
+<td>daniel cawrey is chief executive officer of pa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>where crypto exchanges are beating the bear ma&hellip;</td>
+<td>turkish exchanges okex and btcturk are onboard&hellip;</td>
+<td>with the turkish lira dropping to a six-month &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>when tether warnings are marketing tools 3 pri&hellip;</td>
+<td>stablecoin issuers are taking advantage of tet&hellip;</td>
+<td>“we’re in a scary place, because if tether’s p&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>researchers at johns hopkins university are proposing a cryptographic extension to bitcoin that could enable fully anonymous transactions on the network. the extension, called zerocoin, works – as newscientist explains it – by “allowing bitcoin users to leave their coins floating on the network for someone else to redeem, on the condition that they can redeem the same amount of bitcoin, similarly left floating on the network, at an arbitrary time in the future.”
+</code></pre>
+
+<p><strong>Step 2</strong>: Remove trivial abbreviations starting with <code>'</code> e.g. <code>'s</code>, <code>'ll</code>. Join all <code>\n</code> (paragraphs).</p>
+
+<pre><code class="language-python">remove_abbr = lambda x: ' '.join([_.split('’')[0] for _ in x.split()])
+df_eod = df_eod.applymap(remove_abbr)
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>‘zerocoin widget promises bitcoin privacy</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>opencoin aims to build a better digital curren&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>$500k in funding paves way for bitcoin trading</td>
+<td>new york city-based bitcoin startup coinsetter&hellip;</td>
+<td>new york city-based bitcoin startup coinsetter&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>argentina trades $50k of bitcoins bitcoin pric&hellip;</td>
+<td>a record $50,000 of bitcoins were traded in ar&hellip;</td>
+<td>a record $50,000 of bitcoins were traded in ar&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>mt gox ceo on bitcoin future alt-currency firm&hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>how crypto markets are reacting to the tether-&hellip;</td>
+<td>the crypto markets endured a loss of as much a&hellip;</td>
+<td>the cryptocurrency markets endured a loss of a&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>us stock broker e*trade to launch bitcoin and &hellip;</td>
+<td>online stock brokerage e*trade is preparing to&hellip;</td>
+<td>online stock brokerage e*trade financial is sa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>want to understand bitfinex? understand mt. go&hellip;</td>
+<td>people interested in understanding bitfinex ar&hellip;</td>
+<td>daniel cawrey is chief executive officer of pa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>where crypto exchanges are beating the bear ma&hellip;</td>
+<td>turkish exchanges okex and btcturk are onboard&hellip;</td>
+<td>with the turkish lira dropping to a six-month &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>when tether warnings are marketing tools 3 pri&hellip;</td>
+<td>stablecoin issuers are taking advantage of tet&hellip;</td>
+<td>“we in a scary place, because if tether pretty&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>researchers at johns hopkins university are proposing a cryptographic extension to bitcoin that could enable fully anonymous transactions on the network. the extension, called zerocoin, works – as newscientist explains it – by “allowing bitcoin users to leave their coins floating on the network for someone else to redeem, on the condition that they can redeem the same amount of bitcoin, similarly left floating on the network, at an arbitrary time in the future.”
+</code></pre>
+
+<p><strong>Step 3</strong>: Keep only alphabetical symbols.</p>
+
+<pre><code class="language-python">alph_space = lambda x: (ord('a') &lt;= ord(x) &lt;= ord('z')) or x == ' '
+keep_alph = lambda x: ''.join(filter(alph_space, x))
+df_eod = df_eod.applymap(keep_alph)
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>zerocoin widget promises bitcoin privacy</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+<td>researchers at johns hopkins university are pr&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>opencoin aims to build a better digital curren&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+<td>digital currency promises to solve some proble&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>k in funding paves way for bitcoin trading</td>
+<td>new york citybased bitcoin startup coinsetter &hellip;</td>
+<td>new york citybased bitcoin startup coinsetter &hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>argentina trades k of bitcoins bitcoin prices &hellip;</td>
+<td>a record  of bitcoins were traded in argentina&hellip;</td>
+<td>a record  of bitcoins were traded in argentina&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>mt gox ceo on bitcoin future altcurrency firm &hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+<td>mark karpeles gives a great explanation of how&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>how crypto markets are reacting to the tetherb&hellip;</td>
+<td>the crypto markets endured a loss of as much a&hellip;</td>
+<td>the cryptocurrency markets endured a loss of a&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>us stock broker etrade to launch bitcoin and e&hellip;</td>
+<td>online stock brokerage etrade is preparing to &hellip;</td>
+<td>online stock brokerage etrade financial is sai&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>want to understand bitfinex understand mt gox &hellip;</td>
+<td>people interested in understanding bitfinex ar&hellip;</td>
+<td>daniel cawrey is chief executive officer of pa&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>where crypto exchanges are beating the bear ma&hellip;</td>
+<td>turkish exchanges okex and btcturk are onboard&hellip;</td>
+<td>with the turkish lira dropping to a sixmonth l&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>when tether warnings are marketing tools  pric&hellip;</td>
+<td>stablecoin issuers are taking advantage of tet&hellip;</td>
+<td>we in a scary place because if tether pretty s&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>researchers at johns hopkins university are proposing a cryptographic extension to bitcoin that could enable fully anonymous transactions on the network the extension called zerocoin works  as newscientist explains it  by allowing bitcoin users to leave their coins floating on the network for someone else to redeem on the condition that they can redeem the same amount of bitcoin similarly left floating on the network at an arbitrary time in the future
+</code></pre>
+
+<p><strong>Step 4</strong>: Remove all prepositions and other auxiliary words (aka &ldquo;stop words&rdquo; in NLP).</p>
+
+<pre><code class="language-python">replace_stop_words = lambda x: ' '.join(_ for _ in x.split() if _ not in STOPWORDS)    
+df_eod = df_eod.applymap(replace_stop_words)
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>zerocoin widget promises bitcoin privacy</td>
+<td>researchers johns hopkins university proposing&hellip;</td>
+<td>researchers johns hopkins university proposing&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>opencoin aims build better digital currency me&hellip;</td>
+<td>digital currency promises solve problems real &hellip;</td>
+<td>digital currency promises solve problems real &hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>funding paves way bitcoin trading</td>
+<td>new york citybased bitcoin startup coinsetter &hellip;</td>
+<td>new york citybased bitcoin startup coinsetter &hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>argentina trades bitcoins bitcoin prices yoyo &hellip;</td>
+<td>record bitcoins traded argentina second week a&hellip;</td>
+<td>record bitcoins traded argentina second week a&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>mt gox ceo bitcoin future altcurrency firm biz&hellip;</td>
+<td>mark karpeles gives great explanation foot bit&hellip;</td>
+<td>mark karpeles gives great explanation foot bit&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>crypto markets reacting tetherbitfinex allegat&hellip;</td>
+<td>crypto markets endured loss much billion aroun&hellip;</td>
+<td>cryptocurrency markets endured loss much billi&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>us stock broker etrade launch bitcoin ether tr&hellip;</td>
+<td>online stock brokerage etrade preparing launch&hellip;</td>
+<td>online stock brokerage etrade financial said p&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>want understand bitfinex understand mt gox bit&hellip;</td>
+<td>people interested understanding bitfinex wells&hellip;</td>
+<td>daniel cawrey chief executive officer pactum c&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>crypto exchanges beating bear market digging d&hellip;</td>
+<td>turkish exchanges okex btcturk onboarding thou&hellip;</td>
+<td>turkish lira dropping sixmonth low dollar last&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>tether warnings marketing tools price hurdles &hellip;</td>
+<td>stablecoin issuers taking advantage tethers tr&hellip;</td>
+<td>scary place tether pretty systematically embed&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>researchers johns hopkins university proposing cryptographic extension bitcoin enable fully anonymous transactions network extension called zerocoin works newscientist explains allowing bitcoin users leave coins floating network someone redeem condition redeem amount bitcoin similarly left floating network arbitrary time future
+</code></pre>
+
+<p><strong>Step 5</strong>: Convert dataframe entries into lists (or &ldquo;bags&rdquo;) of words</p>
+
+<pre><code class="language-python">df_eod = df_eod.applymap(str.split).applymap(sorted)
+display(HTML(df_eod.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>title</th>
+<th>abstract</th>
+<th>content</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-04-15</td>
+<td>[bitcoin, privacy, promises, widget, zerocoin]</td>
+<td>[anonymous, bitcoin, cryptographic, enable, ex&hellip;</td>
+<td>[allowing, amount, anonymous, arbitrary, bitco&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-16</td>
+<td>[aims, behind, better, bitcoin, build, competi&hellip;</td>
+<td>[among, beyond, bitcoin, currency, currency, d&hellip;</td>
+<td>[abound, accepts, according, actually, advanta&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-17</td>
+<td>[bitcoin, funding, paves, trading, way]</td>
+<td>[bitcoin, citybased, closing, coinsetter, firs&hellip;</td>
+<td>[barry, ben, bitcoin, bitcoin, bitcoin, bitcoi&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-22</td>
+<td>[argentina, bitcoin, bitcoins, bites, bitfloor&hellip;</td>
+<td>[account, alternative, ancient, announcing, ap&hellip;</td>
+<td>[able, abroad, according, account, account, ac&hellip;</td>
+</tr>
+
+<tr>
+<td>2013-04-23</td>
+<td>[altcurrency, bitcoin, bizx, ceo, firm, future&hellip;</td>
+<td>[alternative, bitcoin, bitcoin, bizx, buzz, co&hellip;</td>
+<td>[accelerator, access, account, account, accoun&hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>[allegations, bitfinex, cfo, crypto, funds, ma&hellip;</td>
+<td>[allegations, around, attorney, billion, bitfi&hellip;</td>
+<td>[access, according, according, according, acco&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>[aims, bid, bitcoin, bitcoin, bounce, broker, &hellip;</td>
+<td>[according, bitcoins, bleak, bloomberg, broker&hellip;</td>
+<td>[abort, access, according, according, accordin&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>[adding, bitcoin, bitfinex, bitfinex, closes, &hellip;</td>
+<td>[according, adding, aspiring, bitcoin, bitcoin&hellip;</td>
+<td>[able, able, acceptance, acceptance, access, a&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>[alkemi, alliance, april, bear, beating, bigge&hellip;</td>
+<td>[ago, aimed, april, argues, bitcoin, bitwise, &hellip;</td>
+<td>[access, access, accessible, according, accord&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>[backed, bitcoin, blockchainpowered, complicat&hellip;</td>
+<td>[advantage, alternates, attractive, bitcoin, c&hellip;</td>
+<td>[able, aborted, access, accompanied, according&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(df_eod.iloc[0].content)
+</code></pre>
+
+<pre><code>['allowing', 'amount', 'anonymous', 'arbitrary', 'bitcoin', 'bitcoin', 'bitcoin', 'called', 'coins', 'condition', 'cryptographic', 'enable', 'explains', 'extension', 'extension', 'floating', 'floating', 'fully', 'future', 'hopkins', 'johns', 'leave', 'left', 'network', 'network', 'network', 'newscientist', 'proposing', 'redeem', 'redeem', 'researchers', 'similarly', 'someone', 'time', 'transactions', 'university', 'users', 'works', 'zerocoin']
+</code></pre>
+
+<h1 id="toc_4">The Hybrid Model</h1>
+
+<p>In this part we&rsquo;ll introduce and implement the so-called hybrid model. We mainly follow the algorithm introduced in <a href="#kkx2019">Ke, Kelly and Xiu (2019)</a><a id='kkx2019back'></a>. To keep consistency, we use the same notations as used in the paper. In their paper, the underlying assets are stocks; and news data for stocks, unlike them for cryptocurrency, are abundant. To tailor the model without compromising the virtues of it, we keep the algorithm of the model but modify the definitions slightly. In the paper, <span class="math inline">\(p\)</span> is defined as the sentiment score of an article; in our research, we define <span class="math inline">\(p\)</span> to be the sentiment score of all the articles in a day.
+<span class="math inline">\(\bs{O}^+\)</span> and <span class="math inline">\(\bs{O}^-\)</span> are the distributions of the positive and negative sentiment topics respectively in the paper. We instead use them to represent the positive and negative sentiment topics in a day.</p>
+
+<p>First let&rsquo;s take a look at the price data.</p>
+
+<pre><code class="language-python">price = pd.read_csv('data/price.csv', index_col=0)
+price.index = pd.to_datetime(price.index)
+display(HTML(price.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>BTC</th>
+<th>DOGE</th>
+<th>FTC</th>
+<th>IXC</th>
+<th>LTC</th>
+<th>MEC</th>
+<th>NMC</th>
+<th>NVC</th>
+<th>NXT</th>
+<th>OMNI</th>
+<th>PPC</th>
+<th>XPM</th>
+<th>XRP</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-12-24</td>
+<td>665.58</td>
+<td>0.000686</td>
+<td>0.272888</td>
+<td>0.122467</td>
+<td>17.64</td>
+<td>0.496110</td>
+<td>4.130000</td>
+<td>12.050000</td>
+<td>0.038054</td>
+<td>107.16</td>
+<td>3.320000</td>
+<td>2.220000</td>
+<td>0.022575</td>
+</tr>
+
+<tr>
+<td>2013-12-25</td>
+<td>682.21</td>
+<td>0.000587</td>
+<td>0.286528</td>
+<td>0.115989</td>
+<td>21.15</td>
+<td>0.534457</td>
+<td>4.630000</td>
+<td>12.930000</td>
+<td>0.064458</td>
+<td>132.42</td>
+<td>3.460000</td>
+<td>2.340000</td>
+<td>0.022042</td>
+</tr>
+
+<tr>
+<td>2013-12-26</td>
+<td>761.98</td>
+<td>0.000602</td>
+<td>0.365750</td>
+<td>0.129925</td>
+<td>24.76</td>
+<td>0.838330</td>
+<td>5.330000</td>
+<td>14.360000</td>
+<td>0.084504</td>
+<td>186.70</td>
+<td>3.980000</td>
+<td>2.750000</td>
+<td>0.024385</td>
+</tr>
+
+<tr>
+<td>2013-12-27</td>
+<td>735.07</td>
+<td>0.000522</td>
+<td>0.338132</td>
+<td>0.126579</td>
+<td>23.27</td>
+<td>0.852615</td>
+<td>4.840000</td>
+<td>13.640000</td>
+<td>0.071800</td>
+<td>181.66</td>
+<td>3.810000</td>
+<td>2.570000</td>
+<td>0.027076</td>
+</tr>
+
+<tr>
+<td>2013-12-28</td>
+<td>727.83</td>
+<td>0.000459</td>
+<td>0.334802</td>
+<td>0.120077</td>
+<td>22.56</td>
+<td>0.816654</td>
+<td>4.810000</td>
+<td>13.430000</td>
+<td>0.060045</td>
+<td>170.10</td>
+<td>4.250000</td>
+<td>2.580000</td>
+<td>0.027303</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-16</td>
+<td>7884.91</td>
+<td>0.003168</td>
+<td>0.023343</td>
+<td>0.022766</td>
+<td>95.59</td>
+<td>0.008262</td>
+<td>0.384813</td>
+<td>0.808549</td>
+<td>0.036080</td>
+<td>2.77</td>
+<td>0.392510</td>
+<td>0.246049</td>
+<td>0.419707</td>
+</tr>
+
+<tr>
+<td>2019-05-17</td>
+<td>7343.90</td>
+<td>0.002962</td>
+<td>0.019941</td>
+<td>0.022766</td>
+<td>89.00</td>
+<td>0.008841</td>
+<td>0.384493</td>
+<td>0.755183</td>
+<td>0.032642</td>
+<td>2.62</td>
+<td>0.383351</td>
+<td>0.231594</td>
+<td>0.386193</td>
+</tr>
+
+<tr>
+<td>2019-05-18</td>
+<td>7271.21</td>
+<td>0.003005</td>
+<td>0.020308</td>
+<td>0.022766</td>
+<td>86.70</td>
+<td>0.007275</td>
+<td>0.547807</td>
+<td>0.745842</td>
+<td>0.032121</td>
+<td>2.35</td>
+<td>0.390182</td>
+<td>0.230064</td>
+<td>0.372736</td>
+</tr>
+
+<tr>
+<td>2019-05-19</td>
+<td>8197.69</td>
+<td>0.003178</td>
+<td>0.022818</td>
+<td>0.022766</td>
+<td>95.32</td>
+<td>0.008361</td>
+<td>0.659869</td>
+<td>0.840955</td>
+<td>0.034374</td>
+<td>2.47</td>
+<td>0.442125</td>
+<td>0.265329</td>
+<td>0.417700</td>
+</tr>
+
+<tr>
+<td>2019-05-20</td>
+<td>7978.31</td>
+<td>0.003041</td>
+<td>0.021786</td>
+<td>0.015150</td>
+<td>91.49</td>
+<td>0.007867</td>
+<td>0.583019</td>
+<td>0.823103</td>
+<td>0.032977</td>
+<td>2.32</td>
+<td>0.424123</td>
+<td>0.237132</td>
+<td>0.398003</td>
+</tr>
+</tbody>
+</table>
+<p>And below is the market cap data.</p>
+
+<pre><code class="language-python">mkcap = pd.read_csv('data/mkcap.csv', index_col=0)
+mkcap.index = pd.to_datetime(mkcap.index)
+display(HTML(mkcap.to_html(max_rows=10, float_format='%.4g')))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>BTC</th>
+<th>DOGE</th>
+<th>FTC</th>
+<th>IXC</th>
+<th>LTC</th>
+<th>MEC</th>
+<th>NMC</th>
+<th>NVC</th>
+<th>NXT</th>
+<th>OMNI</th>
+<th>PPC</th>
+<th>XPM</th>
+<th>XRP</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2013-12-24</td>
+<td>8.1e+09</td>
+<td>9.076e+06</td>
+<td>7.476e+06</td>
+<td>2.115e+06</td>
+<td>4.275e+08</td>
+<td>1.063e+07</td>
+<td>3.133e+07</td>
+<td>6.412e+06</td>
+<td>3.805e+07</td>
+<td>6.638e+07</td>
+<td>6.962e+07</td>
+<td>8.238e+06</td>
+<td>1.765e+08</td>
+</tr>
+
+<tr>
+<td>2013-12-25</td>
+<td>8.305e+09</td>
+<td>8.194e+06</td>
+<td>7.885e+06</td>
+<td>2.005e+06</td>
+<td>5.131e+08</td>
+<td>1.146e+07</td>
+<td>3.515e+07</td>
+<td>6.898e+06</td>
+<td>6.446e+07</td>
+<td>8.203e+07</td>
+<td>7.252e+07</td>
+<td>8.73e+06</td>
+<td>1.723e+08</td>
+</tr>
+
+<tr>
+<td>2013-12-26</td>
+<td>9.28e+09</td>
+<td>8.837e+06</td>
+<td>1.01e+07</td>
+<td>2.249e+06</td>
+<td>6.014e+08</td>
+<td>1.798e+07</td>
+<td>4.046e+07</td>
+<td>7.681e+06</td>
+<td>8.45e+07</td>
+<td>1.157e+08</td>
+<td>8.341e+07</td>
+<td>1.03e+07</td>
+<td>1.906e+08</td>
+</tr>
+
+<tr>
+<td>2013-12-27</td>
+<td>8.955e+09</td>
+<td>8.017e+06</td>
+<td>9.38e+06</td>
+<td>2.193e+06</td>
+<td>5.661e+08</td>
+<td>1.83e+07</td>
+<td>3.684e+07</td>
+<td>7.309e+06</td>
+<td>7.18e+07</td>
+<td>1.125e+08</td>
+<td>7.986e+07</td>
+<td>9.642e+06</td>
+<td>2.117e+08</td>
+</tr>
+
+<tr>
+<td>2013-12-28</td>
+<td>8.87e+09</td>
+<td>7.374e+06</td>
+<td>9.328e+06</td>
+<td>2.082e+06</td>
+<td>5.496e+08</td>
+<td>1.754e+07</td>
+<td>3.662e+07</td>
+<td>7.216e+06</td>
+<td>6.005e+07</td>
+<td>1.054e+08</td>
+<td>8.917e+07</td>
+<td>9.746e+06</td>
+<td>2.135e+08</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-16</td>
+<td>1.396e+11</td>
+<td>3.787e+08</td>
+<td>5.543e+06</td>
+<td>4.796e+05</td>
+<td>5.908e+09</td>
+<td>3.142e+05</td>
+<td>5.671e+06</td>
+<td>1.889e+06</td>
+<td>3.604e+07</td>
+<td>1.555e+06</td>
+<td>9.953e+06</td>
+<td>6.795e+06</td>
+<td>1.768e+10</td>
+</tr>
+
+<tr>
+<td>2019-05-17</td>
+<td>1.3e+11</td>
+<td>3.541e+08</td>
+<td>4.737e+06</td>
+<td>4.796e+05</td>
+<td>5.502e+09</td>
+<td>3.363e+05</td>
+<td>5.666e+06</td>
+<td>1.764e+06</td>
+<td>3.261e+07</td>
+<td>1.47e+06</td>
+<td>9.722e+06</td>
+<td>6.399e+06</td>
+<td>1.627e+10</td>
+</tr>
+
+<tr>
+<td>2019-05-18</td>
+<td>1.288e+11</td>
+<td>3.593e+08</td>
+<td>4.827e+06</td>
+<td>4.796e+05</td>
+<td>5.361e+09</td>
+<td>2.768e+05</td>
+<td>8.073e+06</td>
+<td>1.742e+06</td>
+<td>3.209e+07</td>
+<td>1.321e+06</td>
+<td>9.895e+06</td>
+<td>6.359e+06</td>
+<td>1.57e+10</td>
+</tr>
+
+<tr>
+<td>2019-05-19</td>
+<td>1.452e+11</td>
+<td>3.801e+08</td>
+<td>5.426e+06</td>
+<td>4.796e+05</td>
+<td>5.895e+09</td>
+<td>3.181e+05</td>
+<td>9.724e+06</td>
+<td>1.964e+06</td>
+<td>3.434e+07</td>
+<td>1.387e+06</td>
+<td>1.121e+07</td>
+<td>7.336e+06</td>
+<td>1.76e+10</td>
+</tr>
+
+<tr>
+<td>2019-05-20</td>
+<td>1.413e+11</td>
+<td>3.637e+08</td>
+<td>5.183e+06</td>
+<td>3.192e+05</td>
+<td>5.66e+09</td>
+<td>2.993e+05</td>
+<td>8.592e+06</td>
+<td>1.923e+06</td>
+<td>3.294e+07</td>
+<td>1.304e+06</td>
+<td>1.076e+07</td>
+<td>6.56e+06</td>
+<td>1.676e+10</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_5">Model Construction</h2>
+
+<p>Now we construct the momentum strategy with <span class="math inline">\(n=3\)</span> coins for both long and short sides, and a look-back window of <span class="math inline">\(d=60\)</span> days to determine the best- and worst-performing coins. This type of classical strategies was popularized  before Richard Donchian, i.e. mid 20th century, and got rather prevalent around 2000 (<a href="#a2014">Antonacci, 2014</a><a id='a2014back'></a>). Due to the diminishing market cap of some coins, we limit our momentum strategy to hold only top 10 coins considering market caps. For more detailed analysis on the efficiency of momentum strategies in the cryptocurrency market, see <a href="#rso2017">Rohrbach, Suremann &amp; Osterrieder (2017)</a><a id='rso2017back'></a>.</p>
+
+<p>The selected coins in the long and short positions are listed below (training part only), together with a histogram illustrating the empirical distribution of our momentum strategy. The table below the figure, which contains three entries, <code>words</code> (list of words on that day), <code>r</code> (momentum return) and <code>p</code> (rank score of <code>r</code>), is the result of our preliminary data preparation (training part only).</p>
+
+<pre><code class="language-python">n, d = 3, 60
+
+rtn = price.pct_change().fillna(0)
+rtn.index.name = None
+temp = (rtn * (mkcap.agg('argsort') &lt; 10)).rolling(d).sum().T
+coins = pd.DataFrame(
+    [temp.nlargest(n, t).index.tolist() +
+     temp.nsmallest(n, t).index.tolist() for t in rtn.index],
+    index=rtn.index
+).shift().dropna()  # shift to avoid forward-looking bias
+display(HTML(coins.to_html(max_rows=10, header=False)))
+
+coef = np.array([1] * n + [-1] * n) / n
+rtn = pd.DataFrame([rtn.loc[t, coins.loc[t].values] @ coef for t in coins.index], index=coins.index)[0]
+rtn.name = 'r'
+print(f'Benchmark strategy has mean return {rtn.mean():.2%} with std {rtn.std():.2f}')
+
+plt.figure()
+plt.plot(rtn)
+plt.ylabel('Daily Returns')
+plt.axhline(y=0, color='w', ls='--')
+plt.tight_layout()
+
+plt.figure()
+bins = np.arange(-.50, .55, .025)
+heights, bins, patches = plt.hist(rtn, bins=bins, edgecolor='k', facecolor='deepskyblue', density=True)
+for p in patches:
+    x = abs(p.get_bbox().get_points().mean(axis=0)[0]) * 20
+    p.set_alpha(1 if x &lt; 1 else 1 / x)
+plt.ylabel('Density')
+plt.xlabel('Daily Returns')
+plt.tight_layout()
+plt.show()
+
+df_total = df_eod[['content']].join(rtn, how='inner').dropna()
+df_total['p'] = np.argsort(df_total.iloc[:, 1]) / (df_total.shape[0] - 1)
+df_total.columns = ['words', 'r', 'p']
+
+test_split = 0.3
+len_total = len(df_total)
+len_test = round(len_total * test_split)
+len_train = len_total - len_test
+
+df_train = df_total.iloc[:len_train, :]
+df_test = df_total.iloc[-len_test:, :]
+display(HTML(df_train.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>coin1</th>
+<th>coin2</th>
+<th>coin3</th>
+<th>coin4</th>
+<th>coin5</th>
+<th>coin6</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2014-02-22</td>
+<td>DOGE</td>
+<td>NXT</td>
+<td>OMNI</td>
+<td>LTC</td>
+<td>NVC</td>
+<td>XRP</td>
+</tr>
+
+<tr>
+<td>2014-02-23</td>
+<td>DOGE</td>
+<td>NXT</td>
+<td>OMNI</td>
+<td>LTC</td>
+<td>NVC</td>
+<td>XRP</td>
+</tr>
+
+<tr>
+<td>2014-02-24</td>
+<td>DOGE</td>
+<td>NXT</td>
+<td>OMNI</td>
+<td>NVC</td>
+<td>LTC</td>
+<td>XRP</td>
+</tr>
+
+<tr>
+<td>2014-02-25</td>
+<td>DOGE</td>
+<td>NXT</td>
+<td>PPC</td>
+<td>MEC</td>
+<td>XRP</td>
+<td>NVC</td>
+</tr>
+
+<tr>
+<td>2014-02-26</td>
+<td>DOGE</td>
+<td>NXT</td>
+<td>PPC</td>
+<td>MEC</td>
+<td>XRP</td>
+<td>LTC</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-16</td>
+<td>IXC</td>
+<td>BTC</td>
+<td>FTC</td>
+<td>NMC</td>
+<td>PPC</td>
+<td>XPM</td>
+</tr>
+
+<tr>
+<td>2019-05-17</td>
+<td>IXC</td>
+<td>FTC</td>
+<td>BTC</td>
+<td>NMC</td>
+<td>PPC</td>
+<td>XPM</td>
+</tr>
+
+<tr>
+<td>2019-05-18</td>
+<td>IXC</td>
+<td>BTC</td>
+<td>FTC</td>
+<td>NMC</td>
+<td>PPC</td>
+<td>XPM</td>
+</tr>
+
+<tr>
+<td>2019-05-19</td>
+<td>IXC</td>
+<td>BTC</td>
+<td>FTC</td>
+<td>PPC</td>
+<td>XPM</td>
+<td>NMC</td>
+</tr>
+
+<tr>
+<td>2019-05-20</td>
+<td>IXC</td>
+<td>BTC</td>
+<td>FTC</td>
+<td>PPC</td>
+<td>XPM</td>
+<td>NVC</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code>Benchmark strategy has mean return 0.30% with std 0.12
+</code></pre>
+
+<p><img src="/images/cryptonews_30_2.png" style="width: 100%;"/></p>
+
+<p><img src="/images/cryptonews_30_3.png" style="width: 100%;"/></p>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>words</th>
+<th>r</th>
+<th>p</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2014-02-22</td>
+<td>[address, aggregators, along, amount, antinucl&hellip;</td>
+<td>0.051496</td>
+<td>0.961217</td>
+</tr>
+
+<tr>
+<td>2014-02-23</td>
+<td>[according, additional, akin, allocated, along&hellip;</td>
+<td>-0.018420</td>
+<td>0.236502</td>
+</tr>
+
+<tr>
+<td>2014-02-24</td>
+<td>[able, able, abolished, absence, accept, accep&hellip;</td>
+<td>-0.005015</td>
+<td>0.650951</td>
+</tr>
+
+<tr>
+<td>2014-02-25</td>
+<td>[abiding, abiding, able, able, abruptly, accel&hellip;</td>
+<td>0.012776</td>
+<td>0.842586</td>
+</tr>
+
+<tr>
+<td>2014-02-26</td>
+<td>[abandoned, able, able, able, able, abrupt, ac&hellip;</td>
+<td>0.028932</td>
+<td>0.525475</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-12</td>
+<td>[able, access, access, access, accessibility, &hellip;</td>
+<td>-0.303756</td>
+<td>0.006084</td>
+</tr>
+
+<tr>
+<td>2017-12-13</td>
+<td>[abort, accept, accept, accepts, according, ac&hellip;</td>
+<td>0.008222</td>
+<td>0.453232</td>
+</tr>
+
+<tr>
+<td>2017-12-14</td>
+<td>[according, according, accounts, acknowledge, &hellip;</td>
+<td>-0.097781</td>
+<td>0.657795</td>
+</tr>
+
+<tr>
+<td>2017-12-15</td>
+<td>[action, ahead, already, altcoins, alternative&hellip;</td>
+<td>-0.058729</td>
+<td>0.178707</td>
+</tr>
+
+<tr>
+<td>2017-12-17</td>
+<td>[accepted, accepting, access, accounts, accumu&hellip;</td>
+<td>0.045690</td>
+<td>0.218251</td>
+</tr>
+</tbody>
+</table>
+<p>Daily returns are positive for about half of the time and negative for the rest of the time. They follow a normal distribution with mean near 0.</p>
+
+<p>Relative Strength Index (RSI) is a momentum indicator that measures the magnitude of recent price changes. Typically, RSIs above 70 or below 30 are considered overbought or oversold.
+The plot below shows RSIs of the coins, the values lie in between 30 and 70 most of the time. From our understanding, it does not imply strong momentum, which also agrees with the return results above.
+Because of the dissatisfying return results, we are motivated to make use of news data to help us determine our positions in the portfolio formed by the momentum strategy.</p>
+
+<pre><code class="language-python">upcloses = lambda x: x[x &gt; 0].mean()
+downcloses = lambda x: -x[x &lt; 0].mean()
+rsi = 100 - 100 / (1 + price.pct_change().fillna(0).rolling(60).apply(upcloses) / \
+                   price.pct_change().fillna(0).rolling(60).apply(downcloses))
+display(HTML(rsi.dropna().to_html(max_rows=10, header=True)))
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.set_ylabel('Relative Strength Index')
+for c in rsi.columns:
+    rsi[c].dropna().plot(ax=ax, label=c, linewidth=1)
+legend = plt.legend(frameon=False, ncol=7, loc='center left', bbox_to_anchor=(0, 1.08))
+ax.axhline(y=70, ls='--', color='w')
+ax.axhline(y=30, ls='--', color='w')
+
+plt.setp(legend.get_texts(), color='k', size=10)
+plt.xticks(rotation=0, ha='center')
+plt.show()
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>BTC</th>
+<th>DOGE</th>
+<th>FTC</th>
+<th>IXC</th>
+<th>LTC</th>
+<th>MEC</th>
+<th>NMC</th>
+<th>NVC</th>
+<th>NXT</th>
+<th>OMNI</th>
+<th>PPC</th>
+<th>XPM</th>
+<th>XRP</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2014-02-21</td>
+<td>49.058925</td>
+<td>65.156681</td>
+<td>53.862094</td>
+<td>47.657728</td>
+<td>52.325117</td>
+<td>54.570707</td>
+<td>51.521608</td>
+<td>45.433964</td>
+<td>62.574567</td>
+<td>56.648806</td>
+<td>58.893839</td>
+<td>51.256646</td>
+<td>54.260447</td>
+</tr>
+
+<tr>
+<td>2014-02-22</td>
+<td>49.522637</td>
+<td>64.596253</td>
+<td>53.460666</td>
+<td>48.032722</td>
+<td>52.782995</td>
+<td>56.676395</td>
+<td>51.591070</td>
+<td>45.009183</td>
+<td>62.061175</td>
+<td>57.091294</td>
+<td>58.428030</td>
+<td>51.131053</td>
+<td>54.255182</td>
+</tr>
+
+<tr>
+<td>2014-02-23</td>
+<td>48.945374</td>
+<td>65.151465</td>
+<td>52.941467</td>
+<td>48.025571</td>
+<td>49.752735</td>
+<td>55.938327</td>
+<td>50.257133</td>
+<td>43.981559</td>
+<td>58.732269</td>
+<td>56.156984</td>
+<td>58.260900</td>
+<td>50.581732</td>
+<td>54.383604</td>
+</tr>
+
+<tr>
+<td>2014-02-24</td>
+<td>45.481897</td>
+<td>65.836615</td>
+<td>49.930642</td>
+<td>46.876769</td>
+<td>46.763598</td>
+<td>48.205328</td>
+<td>48.231589</td>
+<td>42.018331</td>
+<td>57.449330</td>
+<td>53.390006</td>
+<td>56.612380</td>
+<td>47.974323</td>
+<td>50.894997</td>
+</tr>
+
+<tr>
+<td>2014-02-25</td>
+<td>45.934169</td>
+<td>66.236415</td>
+<td>49.859535</td>
+<td>45.478231</td>
+<td>46.928958</td>
+<td>49.006769</td>
+<td>49.343941</td>
+<td>42.250401</td>
+<td>57.224469</td>
+<td>53.054030</td>
+<td>56.703915</td>
+<td>48.377624</td>
+<td>48.364130</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-16</td>
+<td>61.091263</td>
+<td>61.702769</td>
+<td>60.626529</td>
+<td>60.119838</td>
+<td>68.908869</td>
+<td>57.451714</td>
+<td>39.882253</td>
+<td>61.219468</td>
+<td>52.235643</td>
+<td>52.792051</td>
+<td>45.629136</td>
+<td>64.855576</td>
+<td>65.275916</td>
+</tr>
+
+<tr>
+<td>2019-05-17</td>
+<td>57.887408</td>
+<td>61.331565</td>
+<td>59.917963</td>
+<td>59.276013</td>
+<td>67.447653</td>
+<td>58.057233</td>
+<td>40.322335</td>
+<td>59.049640</td>
+<td>50.480915</td>
+<td>53.292698</td>
+<td>45.266453</td>
+<td>64.395536</td>
+<td>62.578782</td>
+</tr>
+
+<tr>
+<td>2019-05-18</td>
+<td>58.808677</td>
+<td>61.532147</td>
+<td>58.773376</td>
+<td>59.728521</td>
+<td>68.151764</td>
+<td>56.264933</td>
+<td>46.899272</td>
+<td>60.010127</td>
+<td>50.113854</td>
+<td>53.579574</td>
+<td>45.828418</td>
+<td>65.141129</td>
+<td>62.913106</td>
+</tr>
+
+<tr>
+<td>2019-05-19</td>
+<td>61.600190</td>
+<td>61.397682</td>
+<td>59.773348</td>
+<td>59.821076</td>
+<td>69.692913</td>
+<td>57.514977</td>
+<td>48.673904</td>
+<td>62.446071</td>
+<td>50.531950</td>
+<td>52.962195</td>
+<td>49.985647</td>
+<td>65.180359</td>
+<td>65.565234</td>
+</tr>
+
+<tr>
+<td>2019-05-20</td>
+<td>60.822707</td>
+<td>60.249918</td>
+<td>59.637880</td>
+<td>58.087599</td>
+<td>69.291624</td>
+<td>57.013209</td>
+<td>47.243223</td>
+<td>62.012823</td>
+<td>50.487780</td>
+<td>53.777199</td>
+<td>49.512879</td>
+<td>64.345972</td>
+<td>64.806905</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/images/cryptonews_32_1.png" style="width: 100%;"/></p>
+
+<p>Now we may finally start to implement the hybrid model. The algorithm is illustrated below. Instead of <code>title</code> or <code>abstract</code>, here we test on <code>content</code> directly. Contents contain more information than titles or abstracts only, thus enlarging our sample set.</p>
+
+<p><strong>Step 0</strong>: Calculate the percentage of positive returns on each word <span class="math inline">\(f_j\)</span>. Filter words occurring too infrequently. Keep only the top <span class="math inline">\(\alpha_+\)</span> and bottom <span class="math inline">\(\alpha_-\)</span> as the sentiment-charged words. Assume we have in total <span class="math inline">\(k\)</span> such words.</p>
+
+<pre><code class="language-python">words_all = sorted(list(set(w for words in df_train.words for w in words)))
+n = len(words_all)
+
+words_dict = {w: [] for w in words_all}
+
+for i in range(df_train.shape[0]):
+    words, r, _ = df_train.iloc[i]
+    for w in words:
+        words_dict[w].append(r &gt; 0)
+
+words_df = pd.DataFrame({
+    'word': words_all,
+    'r': [np.mean(words_dict[w]) for w in words_all],
+    'k': [len(words_dict[w]) for w in words_all]
+}, index=range(n)).sort_values(by='r')
+words_df = words_df[words_df.k &gt;= 50][words_df.word.apply(len) &gt;= 5].reset_index(drop=True)
+words_df['p'] = np.argsort(words_df.r) / (len(words_df) - 1)
+display(HTML(words_df.set_index('word').T.to_html(max_cols=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>word</th>
+<th>alphapoint</th>
+<th>korean</th>
+<th>masters</th>
+<th>argentina</th>
+<th>wilson</th>
+<th>&hellip;</th>
+<th>mccaleb</th>
+<th>atlas</th>
+<th>coinjar</th>
+<th>mintpal</th>
+<th>steem</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>r</td>
+<td>0.117647</td>
+<td>0.162500</td>
+<td>0.178082</td>
+<td>0.178571</td>
+<td>0.187500</td>
+<td>&hellip;</td>
+<td>0.754717</td>
+<td>0.796610</td>
+<td>0.816901</td>
+<td>0.826923</td>
+<td>0.96</td>
+</tr>
+
+<tr>
+<td>k</td>
+<td>51.000000</td>
+<td>80.000000</td>
+<td>73.000000</td>
+<td>56.000000</td>
+<td>64.000000</td>
+<td>&hellip;</td>
+<td>53.000000</td>
+<td>59.000000</td>
+<td>71.000000</td>
+<td>52.000000</td>
+<td>50.00</td>
+</tr>
+
+<tr>
+<td>p</td>
+<td>0.000000</td>
+<td>0.000516</td>
+<td>0.001032</td>
+<td>0.001548</td>
+<td>0.002064</td>
+<td>&hellip;</td>
+<td>0.997936</td>
+<td>0.998452</td>
+<td>0.998968</td>
+<td>0.999484</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1 (Training):</strong> For each date <span class="math inline">\(\newcommand{\bs}{\mathbf}\bs{d}_i = (d_{i,1}, d_{i,2},\ldots,d_{i,k})'\)</span> where <span class="math inline">\(d_{i,j}\)</span> is the count of sentiment-charged word <span class="math inline">\(w_j\)</span> in this day, assume model</p>
+<p><span class="math display">\[
+\bs{d}_i \sim \text{Multinomial}\left[k, \textstyle{\sum_{j=1}^{k}} d_{i,j}, p_i \bs{O}^+ + (1 - p_i) \bs{O}^-\right].
+\]</span></p><p>Where <span class="math inline">\(\bs{O}^+\)</span> is a &ldquo;positive sentiment day&rdquo;, and describes expected counts of words in a maximally positive sentiment day (one for which <span class="math inline">\(p_i\)</span> = 1). Likewise, <span class="math inline">\(\bs{O}^-\)</span> is a &ldquo;negative sentiment day&rdquo; that describes the distribution of word probabilities in maximally negative days (those for which <span class="math inline">\(p_i\)</span> = 0).</p>
+
+<p>Calculate the rank scores of all days as <span class="math inline">\(p_i\)</span>, then  estimate <span class="math inline">\(\bs{O}^+\)</span> and <span class="math inline">\(\bs{O}^-\)</span>.</p>
+
+<pre><code class="language-python">alpha = .1
+pos_words = words_df[words_df.p &gt; 1 - alpha].word.values.tolist()
+neg_words = words_df[words_df.p &lt; alpha].word.values.tolist()
+print(f'There are {len(pos_words)} positive words, {len(neg_words)} negative words')
+</code></pre>
+
+<pre><code>There are 194 positive words, 194 negative words
+</code></pre>
+
+<pre><code class="language-python">font_path = 'misc/Palatino.ttf'
+
+fig = plt.figure(figsize=(12, 5))
+
+ax = fig.add_subplot(121)
+pos_cloud = WordCloud(
+    width=800, height=800,
+    background_color='white',
+    colormap='Greens',
+    font_path=font_path,
+    min_font_size=10,
+    random_state=123
+).generate(' '.join(pos_words))
+plt.imshow(pos_cloud)
+plt.axis('off')
+
+ax = fig.add_subplot(122)
+neg_cloud = WordCloud(
+    width=800, height=800,
+    background_color='white',
+    colormap='Reds',
+    font_path=font_path,
+    min_font_size=10,
+    random_state=123
+).generate(' '.join(neg_words))
+plt.imshow(neg_cloud) 
+plt.axis('off')
+
+plt.tight_layout()
+plt.show() 
+</code></pre>
+
+<p><img src="/images/cryptonews_37_0.png" style="width: 100%;"/></p>
+
+<p>The generated positive and negative word sets are shown above. The bigger the word appears, the more positive or negative it is. Let&rsquo;s look at some examples:</p>
+
+<p>The left green diagram gives all the positive words with <span class="math inline">\(p_i &gt; 1 - \alpha\)</span>. The biggest word in the middle is &ldquo;profit&rdquo;. Most articles containing it express an optimistic view. Examples include &ldquo;generate a $150,000 profit in bitcoins&rdquo;, and &ldquo;taking profit from legitimate miners&rdquo;. Other positives words include &ldquo;boost&rdquo;, &ldquo;financing&rdquo;, and etc. &ldquo;Venture&rdquo;, which usually indicates risk, occupies the most space of the right red diagram.</p>
+
+<p>We cannot deny the fact that the relationship between words and returns may be specious. Problems also occur when words such as &ldquo;not&rdquo; negate the meaning of sentences. But overall, the classification of words works well with sufficient rationale behind.</p>
+
+<p>We can then estimate <span class="math inline">\(\bs{d}\)</span>.</p>
+
+<pre><code class="language-python">keywords = pos_words + neg_words
+
+def count_words(words):
+    c = Counter(words)
+    d = [c[w] for w in keywords]
+    return np.array(d)
+</code></pre>
+
+<pre><code class="language-python">df_train['d'] = df_train.words.apply(count_words).values
+display(HTML(df_train.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>words</th>
+<th>r</th>
+<th>p</th>
+<th>d</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2014-02-22</td>
+<td>[address, aggregators, along, amount, antinucl&hellip;</td>
+<td>0.051496</td>
+<td>0.961217</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2014-02-23</td>
+<td>[according, additional, akin, allocated, along&hellip;</td>
+<td>-0.018420</td>
+<td>0.236502</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2014-02-24</td>
+<td>[able, able, abolished, absence, accept, accep&hellip;</td>
+<td>-0.005015</td>
+<td>0.650951</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2014-02-25</td>
+<td>[abiding, abiding, able, able, abruptly, accel&hellip;</td>
+<td>0.012776</td>
+<td>0.842586</td>
+<td>[0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, &hellip;</td>
+</tr>
+
+<tr>
+<td>2014-02-26</td>
+<td>[abandoned, able, able, able, able, abrupt, ac&hellip;</td>
+<td>0.028932</td>
+<td>0.525475</td>
+<td>[0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 3, &hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-12</td>
+<td>[able, access, access, access, accessibility, &hellip;</td>
+<td>-0.303756</td>
+<td>0.006084</td>
+<td>[0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-13</td>
+<td>[abort, accept, accept, accepts, according, ac&hellip;</td>
+<td>0.008222</td>
+<td>0.453232</td>
+<td>[0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-14</td>
+<td>[according, according, accounts, acknowledge, &hellip;</td>
+<td>-0.097781</td>
+<td>0.657795</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-15</td>
+<td>[action, ahead, already, altcoins, alternative&hellip;</td>
+<td>-0.058729</td>
+<td>0.178707</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-17</td>
+<td>[accepted, accepting, access, accounts, accumu&hellip;</td>
+<td>0.045690</td>
+<td>0.218251</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, &hellip;</td>
+</tr>
+</tbody>
+</table>
+<p>Now we estimate <span class="math inline">\(\newcommand{\d}{\text{d}}\bs{O}^{+/-}\)</span> using <span class="math inline">\(\bs{d}\)</span> and <span class="math inline">\(p\)</span>.</p>
+
+<p><strong>Estimation by MLE</strong>:</p>
+
+<p>The likelihood is given by</p>
+<p><span class="math display">\[
+L(\bs{d};\bs{O^{+/-}}) \propto \textstyle{\prod_i\prod_{j=1}^k} [p_i O_j^+ + (1 - p_i) O_j^-]^{d_{i,j}}
+\]</span></p><p>and thus the log-likelihood is</p>
+<p><span class="math display">\[
+LL(\bs{d};\bs{O^{+/-}}) = C + \textstyle{\sum_i \sum_{j=1}^k} d_{i,j} \log[p_i O_j^+ + (1 - p_i) O_j^-]
+\]</span></p><p>where <span class="math inline">\(C\)</span> is not a function of <span class="math inline">\(\bs{O}^{+/-}\)</span>. Therefore, for each keyword <span class="math inline">\(w_h\)</span>,</p>
+<p><span class="math display">\[
+\frac{\partial LL}{\partial O_h^+} =
+\textstyle{\sum_i \sum_{j=1}^k} \frac{d_{i,j}p_i\mathbf{1}\{j=h\}}{p_i O_j^+ + (1 - p_i) O_j^-} =
+\textstyle{\sum_i} \frac{d_{i,h}p_i}{p_i O_h^+ + (1 - p_i) O_h^-} &gt; 0
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\frac{\partial LL}{\partial O_h^-} =
+\textstyle{\sum_i \sum_{j=1}^k} \frac{d_{i,j}(1-p_i)\mathbf{1}\{j=h\}}{p_i O_j^+ + (1 - p_i) O_j^-} =
+\textstyle{\sum_i} \frac{d_{i,h}(1-p_i)}{p_i O_h^+ + (1 - p_i) O_h^-} &gt; 0.
+\]</span></p><p>The optimization problem, therefore, is</p>
+<p><span class="math display">\[
+\begin{align*}
+\max_{\bs{O}^{+/-}}\ &amp; LL(\bs{d};\bs{O}^{+/-})\\
+\text{s.t. }         &amp; \textstyle{\sum_{j=1}^k} O_j^+ = \textstyle{\sum_{j=1}^k} O_j^- = 1\\
+                     &amp; O_j^+ \ge 0 ,\quad O_j^- \ge 0,\quad \forall 1 \le j \le k.
+\end{align*}
+\]</span></p><p>Instead of solving this problem using the <em>Karush-Kuhn-Tucker Conditions</em>, we may as well do the following transform: let</p>
+<p><span class="math display">\[
+O_j^{+/-}:=\exp(Q_j^{+/-})
+\]</span></p><p>so that the unknowns are now <span class="math inline">\(Q_j^{+/-}\in\mathbb{R}\)</span> and we no longer need any inequality constraints. The Lagrangian is</p>
+<p><span class="math display">\[
+f(\bs{Q}^{+/-}) = LL\!\left[\bs{d};\exp(\bs{Q}^{+/-})\right] + \lambda^+\!\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^+)\right] + \lambda^-\!\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^-)\right]
+\]</span></p><p>and the FOCs are <span class="math inline">\(2k\)</span> equations</p>
+<p><span class="math display">\[
+0 = \frac{\partial f}{\partial Q_j^{+/-}} =
+\frac{\partial LL}{\partial O_j^{+/-}}\frac{\d O_j^{+/-}}{\d Q_j^{+/-}} - \lambda^{+/-} \frac{\d O_j^{+/-}}{\d Q_j^{+/-}}. \quad (1 \le j \le k)
+\]</span></p><p>The FOCs can be simplified into</p>
+<p><span class="math display">\[
+\frac{\partial LL}{\partial O_1^{+/-}} =
+\frac{\partial LL}{\partial O_2^{+/-}} =
+\cdots =
+\frac{\partial LL}{\partial O_k^{+/-}} = \lambda^{+/-}
+\]</span></p><p>which is still extremely hard to solve analytically.</p>
+
+<p><strong>Estimation by Regression</strong>:</p>
+
+<p>This method is proposed in <a href="#kkx2019">Ke, Kelly and Xiu (2019)</a><a id='kkx2019back'></a>.</p>
+
+<p>Assume there&rsquo;re in total <span class="math inline">\(\newcommand{\T}{\mathsf{T}}n\)</span> days. Define</p>
+<p><span class="math display">\[
+\bs{W} = \begin{bmatrix}
+p_1 &amp; p_2 &amp; \cdots &amp; p_n\\
+1 - p_1 &amp; 1 - p_2 &amp; \cdots &amp; 1 - p_n\\
+\end{bmatrix}^\T
+\]</span></p><p>and <span class="math inline">\(\bs{D} = \left(\hat{\bs{d}}_1, \hat{\bs{d}}_1, \cdots, \hat{\bs{d}}_n\right)^{\!\T}\)</span> where <span class="math inline">\(\hat{\bs{d}}_i = \bs{d}_i / \textstyle{\sum_j} d_{i,j}\)</span>. Then <span class="math inline">\(\bs{O}^{+/-}\)</span> would be estimated by regressing <span class="math inline">\(\bs{D}\)</span> on <span class="math inline">\(\bs{W}\)</span>, namely</p>
+<p><span class="math display">\[
+\hat{\bs{O}}^{+/-} = (\bs{W}^\T \bs{W})^{-1} \bs{W}^\T \bs{D}.
+\]</span></p><p>See proof of accuracy in the appendix of the paper.</p>
+
+<pre><code class="language-python">def print_array(array):
+    print(np.array2string(array).replace('[[',' [').replace(']]',']'))
+</code></pre>
+
+<pre><code class="language-python">p = df_train.p.values
+W = np.vstack([p, 1 - p]).T
+print(f'W has shape {W.shape}:')
+print_array(W)
+</code></pre>
+
+<pre><code>W has shape (921, 2):
+ [0.96121673 0.03878327]
+ [0.23650190 0.76349810]
+ [0.65095057 0.34904943]
+ ...
+ [0.65779468 0.34220532]
+ [0.17870722 0.82129278]
+ [0.21825095 0.78174905]
+</code></pre>
+
+<pre><code class="language-python">D = np.vstack(df_train.d.values)
+D = (D.T / D.sum(axis=1)).T
+D[np.isnan(D)] = 0
+print(f'D has shape {D.shape}:')
+print_array(D)
+</code></pre>
+
+<pre><code>D has shape (921, 388):
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.06666667 0.00000000]
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.00000000 0.00000000]
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.00000000 0.00000000]
+ ...
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.00000000 0.00000000]
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.00000000 0.00000000]
+ [0.00000000 0.00000000 0.00000000 ... 0.00000000 0.00000000 0.01219512]
+</code></pre>
+
+<pre><code class="language-python">O_pos, O_neg = np.maximum(np.linalg.pinv(W.T @ W) @ (W.T @ D), 0)
+O_pos = (O_pos / O_pos.sum())
+O_neg = (O_neg / O_neg.sum())
+O_pm = np.hstack([O_pos.reshape(-1, 1), O_neg.reshape(-1, 1)])
+print(f'O± has shape {O_pm.shape}:')
+print_array(O_pm)
+</code></pre>
+
+<pre><code>O± has shape (388, 2):
+ [0.00188745 0.00293239]
+ [0.00111679 0.00332143]
+ [0.00349693 0.00450815]
+ ...
+ [0.00396731 0.00174460]
+ [0.00407812 0.00318298]
+ [0.00753035 0.00733650]
+</code></pre>
+
+<p>Now that we have already estimated <span class="math inline">\(\bs{O}^{+/-}\)</span>, we can start predicting out-of-sample <span class="math inline">\(p\)</span>, which indicates the expected rank of performance of a certain day. We&rsquo;re solving <span class="math inline">\(p\)</span> from the following optimization problem</p>
+<p><span class="math display">\[
+\hat{p} = \arg\!\max_{p\in[0,1]} \left\{\sum_{j=1}^k \hat{d}_j \log\!\left[p O_j^+ + (1 - p) O_j^-\right] + \lambda \log\left[p(1-p)\right]  \right\}
+\]</span></p><p>where <span class="math inline">\(\hat{\bs{d}}=\bs{d} / \textstyle{\sum_j}d_j\)</span> like defined above, and <span class="math inline">\(\lambda&gt;0\)</span> is a hyper-parameter for tuning. Let&rsquo;s call it the penalized log-likelihood <code>pen_ll</code>.</p>
+
+<pre><code class="language-python">def pen_ll(p, d, lamda):
+    return (d * np.log(p * O_pos + (1 - p) * O_neg)).sum() + lamda * np.log(p * (1 - p))
+
+def predict(d, lamda):
+    return minimize(lambda p: -pen_ll(p, d, lamda), x0=.5, method='Nelder-Mead').x[0]
+</code></pre>
+
+<p>Tune <span class="math inline">\(\lambda\)</span> using training set:</p>
+
+<pre><code class="language-python">def mse_p(lamda):
+    p_hat = np.array([predict(d, lamda) for d in df_train.d])
+    return ((df_train.p.values - p_hat)**2).mean()
+</code></pre>
+
+<pre><code class="language-python">best_lamda = minimize(mse_p, x0=0, method='Nelder-Mead', bounds=(0, None)).x[0]
+best_lamda
+</code></pre>
+
+<pre><code>3.6398125000000046
+</code></pre>
+
+<p><strong>Step 2 (Testing)</strong>: For each date <span class="math inline">\(\bs{d}_i\)</span> observed and <span class="math inline">\(\bs{O}^{+/-}\)</span> fixed, estimate <span class="math inline">\(p_i\)</span> as our final indicator. Specifically, we here use the best <span class="math inline">\(\lambda\)</span> we just estimated above to predict the testing set.</p>
+
+<pre><code class="language-python">df_test['d'] = df_test.words.apply(count_words).values
+df_test['p_hat'] = [predict(d, best_lamda) for d in df_test.d]
+df_test = df_test[['words', 'r', 'p', 'p_hat', 'd']]
+display(HTML(df_test.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>words</th>
+<th>r</th>
+<th>p</th>
+<th>p_hat</th>
+<th>d</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2017-12-18</td>
+<td>[according, according, according, according, a&hellip;</td>
+<td>-0.127551</td>
+<td>0.234221</td>
+<td>0.313379</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-19</td>
+<td>[ability, able, able, able, abrupt, absolutely&hellip;</td>
+<td>-0.005238</td>
+<td>0.561217</td>
+<td>0.560449</td>
+<td>[1, 0, 0, 0, 0, 0, 1, 2, 0, 1, 1, 0, 0, 0, 1, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-20</td>
+<td>[able, able, abruptly, abruptly, accelerate, a&hellip;</td>
+<td>-0.064455</td>
+<td>0.574144</td>
+<td>0.343652</td>
+<td>[0, 0, 0, 1, 0, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-21</td>
+<td>[able, according, according, according, accoun&hellip;</td>
+<td>0.151503</td>
+<td>0.171863</td>
+<td>0.313184</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2017-12-22</td>
+<td>[able, abound, acceptance, accepting, acceptin&hellip;</td>
+<td>0.083399</td>
+<td>0.768061</td>
+<td>0.340234</td>
+<td>[4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-26</td>
+<td>[access, according, according, according, acco&hellip;</td>
+<td>-0.058712</td>
+<td>0.466920</td>
+<td>0.470312</td>
+<td>[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-29</td>
+<td>[abort, access, according, according, accordin&hellip;</td>
+<td>-0.041062</td>
+<td>0.963498</td>
+<td>0.416309</td>
+<td>[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-04-30</td>
+<td>[able, able, acceptance, acceptance, access, a&hellip;</td>
+<td>-0.011006</td>
+<td>0.533080</td>
+<td>0.628125</td>
+<td>[0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-01</td>
+<td>[access, access, accessible, according, accord&hellip;</td>
+<td>-0.058620</td>
+<td>0.979468</td>
+<td>0.484668</td>
+<td>[1, 1, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, &hellip;</td>
+</tr>
+
+<tr>
+<td>2019-05-02</td>
+<td>[able, aborted, access, accompanied, according&hellip;</td>
+<td>0.006681</td>
+<td>0.374144</td>
+<td>0.445898</td>
+<td>[0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, &hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_6">Backtesting Results</h2>
+
+<p>Finally, given the predicted <code>p_hat</code> values, we can trade based on certain sizing functions and calculate the cumulative return as well as all other trading related statistics of our strategy. We will also calculate these for benchmark strategies.</p>
+
+<p><strong>A short description of benchmark strategies and our hybrid sentiment-momentum strategy:</strong></p>
+
+<ul>
+<li><p><strong>Buy-and-hold</strong>: This strategy simply buys Bitcoin and hold for the whole trading period. Bitcoin is the most commonly traded coin in the cryptocurrency market and is representative of the market. Thus, we choose Bitcoin as the asset we buy and hold.</p></li>
+
+<li><p><strong>Momentum</strong>: As explained above, the momentum strategy takes long and short positions separately in the top <code>n</code> and bottom <code>n</code> coins. Here, by &ldquo;top&rdquo; and &ldquo;bottom&rdquo;, we mean the best- and worst-performing coins in the look-back window of <code>d</code> trading days. Specifically, we take <code>n=3</code> and <code>d=60</code>.</p></li>
+
+<li><p><strong>Momentum Reversal</strong>: The momentum reversal strategy does exactly the opposite of the momentum strategy. It takes short positions in the top <code>n</code> coins and long positions in the bottom <code>n</code> coins. The definition and values of <code>n</code> and <code>d</code> remain the same.</p></li>
+
+<li><p><strong>Hybrid Sentiment-Momentum</strong>: Our hybrid sentiment-momentum strategy combines sentiment analysis and momentum trading strategy. Using the core idea of momentum, the strategy ranks all the coins based on their previous price changes and then forms a portfolio that enters long positions in coins that headed up and short positions in those that went down. This step is the same as a usual momentum trading strategy. Taking advantage of the sentiment analysis results on present da&rsquo;s news, the strategy then decides on how many units of the portfolio to buy or sell.</p></li>
+</ul>
+
+<pre><code class="language-python">size = lambda x: x * 2 - 1  # actual size of position based on predicted p values
+compound = lambda x: (1 + x).cumprod() - 1
+
+r = df_test.r
+size = df_test.p_hat.apply(size)
+
+daily_rtn = r * size
+cum_rtn = compound(daily_rtn)
+
+daily_rtn_momentum = rtn[cum_rtn.index]
+cum_rtn_momentum = compound(daily_rtn_momentum)
+
+daily_rtn_momentum_rev = -daily_rtn_momentum
+cum_rtn_momentum_rev = compound(daily_rtn_momentum_rev)
+
+daily_rtn_buy_hold = price.BTC.pct_change().loc[cum_rtn.index]
+cum_rtn_buy_hold = compound(daily_rtn_buy_hold)
+
+
+
+fig1 = plt.figure()
+
+ax1 = fig1.add_subplot(111)
+ax1.set_ylabel('Cumulative Return')
+cum_rtn_buy_hold.plot(ax=ax1, color='orange', label='Buy &amp; Hold')
+cum_rtn_momentum.plot(ax=ax1, color='r', label='Momentum')
+cum_rtn_momentum_rev.plot(ax=ax1, color='darkred', label='Mom. Rev.')
+cum_rtn.plot(ax=ax1, color='lime', label='Strategy')
+ax1.axhline(y=0, ls='--', color='w')
+legend1 = plt.legend(frameon=False, ncol=10, loc='center left', bbox_to_anchor=(0, 1.05))
+plt.setp(legend1.get_texts(), color='k', size=12)
+plt.xticks(rotation=0, ha='center')
+
+ax1 = ax1.twinx()
+ax1.grid(False)
+ax1.set_ylabel('Position')
+size.plot(ax=ax1, lw=1, alpha=.5, color='grey')
+plt.tight_layout()
+
+fig2 = plt.figure()
+
+ax2 = fig2.add_subplot(111)
+ax2.set_ylabel('Volatility')
+daily_rtn_buy_hold.rolling(5).std().plot(ax=ax2, color='orange', label='Buy &amp; Hold')
+daily_rtn_momentum.rolling(5).std().plot(ax=ax2, color='r', label='Momentum')
+daily_rtn_momentum_rev.rolling(5).std().plot(ax=ax2, color='darkred', label='Mom. Rev.')
+daily_rtn.rolling(5).std().plot(ax=ax2, color='lime', label='Strategy')
+ax2.axhline(y=0, ls='--', color='w')
+legend2 = plt.legend(frameon=False, ncol=10, loc='center left', bbox_to_anchor=(0, 1.05))
+plt.setp(legend2.get_texts(), color='k', size=12)
+plt.xticks(rotation=0, ha='center')
+
+ax2 = ax2.twinx()
+ax2.grid(False)
+ax2.set_ylabel('Position')
+size.plot(ax=ax2, lw=1, alpha=.5, color='grey')
+
+plt.tight_layout()
+plt.show()
+
+
+
+win_rate = lambda x: (x &gt; 0).mean()
+sharpe = lambda x: x.mean() / x.std() * np.sqrt(360)
+mdd = lambda x: (1 - x / x.cummax()).max()
+
+DAILY = [daily_rtn_buy_hold, daily_rtn_momentum, daily_rtn_momentum_rev, daily_rtn]
+CUM = [cum_rtn_buy_hold, cum_rtn_momentum, cum_rtn_momentum_rev, cum_rtn]
+
+cr = [x[-1] for x in CUM]
+vol = [x.std() for x in DAILY]
+wr = [win_rate(x) for x in DAILY]
+sr = [sharpe(x) for x in DAILY]
+md = [mdd(x + 1) for x in CUM]
+result = pd.DataFrame({
+    'Cum Return': cr,
+    'Volatility': vol,
+    'Win%': wr,
+    'Sharpe': sr,
+    'MDD': md
+}, index=['Buy &amp; Hold', 'Momentum', 'Mom. Rev.', 'Strategy'])
+result.index.name = 'Statistics'
+display(HTML(result.T.to_html(max_rows=10)))
+</code></pre>
+
+<p><img src="/images/cryptonews_56_0.png" style="width: 100%;"/></p>
+
+<p><img src="/images/cryptonews_56_1.png" style="width: 100%;"/></p>
+
+<table>
+<thead>
+<tr>
+<th>Statistics</th>
+<th>Buy &amp; Hold</th>
+<th>Momentum</th>
+<th>Mom. Rev.</th>
+<th>Strategy</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Win%</td>
+<td>0.524051</td>
+<td>0.437975</td>
+<td>0.562025</td>
+<td>0.536709</td>
+</tr>
+
+<tr>
+<td>Sharpe</td>
+<td>-0.975205</td>
+<td>-0.605331</td>
+<td>0.605331</td>
+<td>2.677082</td>
+</tr>
+
+<tr>
+<td>MDD</td>
+<td>0.826419</td>
+<td>0.970956</td>
+<td>0.947963</td>
+<td>0.206906</td>
+</tr>
+</tbody>
+</table>
+<p>As can be seen in the figure above, the momentum strategy performed almost as poorly as a simple buy &amp; hold throughout the bearish year of 2018. The momentum reversal strategy, on the other hand, performed extremely well at the first half year and then collapsed with the market. The partially reflects the existence of price overreactions as suggested by <a href="#cp2018">Caporale and Plastun (2018)</a><a id='cp2018back'></a>. Our hybrid strategy, on the other hand, outperformed all of them by over 100% cumulative returns by the end of backtest, and gave a Sharpe ratio of 2.68 when best of the rest, which is given by momentum reversal, is merely 0.60 or so. Volatility plot also shows that by adding sentiment analysis to determine position sides and sizes of the portfolio, the hybrid strategy significantly reduces the risks that existed in the momentum strategy. Also, considering the maximum drawdowns, all of the three benchmarks gave gigantic drawdowns in this unfortunate year, while our strategy&rsquo;s was well limited under 20% most of the time.</p>
+
+<h2 id="toc_7">Model Sensitivity to Parameters</h2>
+
+<p>The following parameters are included in our model. We want to test how the model reacts towards changes in them.</p>
+
+<ul>
+<li><code>lookback_window</code> is the number of days we feed our model for training,</li>
+<li><code>minimum_occurrence</code> is the minimum number of occurrences for a word to be considered sentiment-charged,</li>
+<li><code>minimum_length</code> is the minimum acceptable length of a word to be considered sentiment-charged,</li>
+<li><code>alpha</code> is the top (and bottom) percentile for sentiment-charged word selection</li>
+<li><code>size</code> is a univariate function mapping <span class="math inline">\([0,1]\subset\mathbb{R}\)</span> to <span class="math inline">\([-1,1]\subset\mathbb{R}\)</span>.</li>
+</ul>
+
+<pre><code class="language-python">Image('misc/lookback_window.png')
+</code></pre>
+
+<p><img src="/images/cryptonews_60_0.png" style="width: 100%;"/></p>
+
+<p>A longer look-back window provides more information in the past that can be used to help decision-making on forming the portfolio. However, the longer the window, the more stale information is included. The empirical result tells us using past 60 day&rsquo; information to determine the best and worst performing coins eventually leads to the highest Win rate and Sharpe Ratio together with the lowest Maximum Drawdown.</p>
+
+<pre><code class="language-python">Image('misc/minimum_occurrence.png')
+</code></pre>
+
+<p><img src="/images/cryptonews_62_0.png" style="width: 100%;"/></p>
+
+<p>Higher minimum occurrence implies a stricter constraint on selecting sentiment-charged words. While noises coming from words which do not show up frequently are diminished, if minimum occurrence is set too high, some useful information is left out. Moreover, a very small pool of sentiment-charged words will cause the training and predicting to be extremely hard and even impossible.</p>
+
+<p>From the results, we can conclude that setting minimum occurrence equal to 50 generates better Sharpe Ratio and Maximum Drawdown than setting it to 10 or 100.</p>
+
+<pre><code class="language-python">Image('misc/minimum_length.png')
+</code></pre>
+
+<p><img src="/images/cryptonews_64_0.png" style="width: 100%;"/></p>
+
+<p>Many of the short words, those whose lengths are 2 or 3, are not really informative, thus conveying nearly no sentiment. For instance, words such as &ldquo;a&rdquo;, &ldquo;is&rdquo;, and &ldquo;the&rdquo; show up in almost every piece of news multiple times. Whereas they don&rsquo;t offer much help in understanding the sentiment of the news, so they can be eliminated without hurting the results. Of course, this simple criterion is arbitrary, thus needs to be tested. Based on the results we get, different minimum length values don&rsquo;t impact the strategy statistics significantly.</p>
+
+<pre><code class="language-python">Image('misc/alpha.png')
+</code></pre>
+
+<p><img src="/images/cryptonews_66_0.png" style="width: 100%;"/></p>
+
+<p>Alpha is used to define the percentage of sentiment-charged words that are positive or negative. Similar to minimum occurrence, a strategy with a larger alpha includes more information into the analysis and vice versa. An alpha of 0.05 gives the best results as shown above.</p>
+
+<p><strong>For sizing function:</strong></p>
+
+<ul>
+<li>Binary: if <span class="math inline">\(p\)</span> is greater than <span class="math inline">\(0.5\)</span>, we take <span class="math inline">\(1\)</span> long position; otherwise, we take <span class="math inline">\(1\)</span> short position.</li>
+<li>Continuous: we always take <span class="math inline">\(2p-1\)</span> positions, since <span class="math inline">\(p\in[0,1]\)</span>, we know <span class="math inline">\(2p-1\in[-1,1]\)</span>.</li>
+<li>Trinary: if <span class="math inline">\(p\)</span> is greater than ⅔, we take <span class="math inline">\(1\)</span> long position in the portfolio; it <span class="math inline">\(p\)</span> is less than ⅔ but greater than ⅓, we don&rsquo;t take any position; otherwise, we take <span class="math inline">\(1\)</span> short position.</li>
+</ul>
+
+<p>Trinary has much worse performance than binary and continuous as both Win rate and Sharpe ratio are worse for Trinary than for the other two.
+While continuous and binary are similar on Win rate and Sharpe ratio, continuous always has smaller Maximum Drawdowns. Therefore, it is a more stable strategy and is thus best for risk-averse investors.</p>
+
+<p>For a more comprehensive practice of hyper-parameter exploration, we summarized the scripts above into a local module <code>backtest</code> for convenient backtesting. The general usage is summarized as below:</p>
+
+<pre><code class="language-py">from misc.backtest import BacktestEngine
+
+be = BacktestEngine()
+be.run(
+    lookback_window=60,
+    minimum_occurrence=50,
+    minimum_length=5,
+    alpha=.1,
+    size=lambda x: 2 * x - 1
+)
+</code></pre>
+
+<p>See <a href="#toc_14">Appendix C</a><a id='acback'></a> for the complete code and the detailed parameter testing outputs.</p>
+
+<h2 id="toc_8">Risk Management</h2>
+
+<p>Momentum trading strategy is essentially buying on gainers and selling on losers. Due to the low liquidity and slow information dissemination nature of cryptocurrency trading, trading on momentum is, theoretically speaking, profitable. However, there is no guarantee that what makes gains will continue being profitable and what generates losses will keep losing money. Therefore, a risk management technique to prevent the strategy from taking huge amount of unexpected losses is a must-have with no doubt.</p>
+
+<p>One of the most common approaches to controlling risks is to include a stop-loss feature. A usual way to apply a stop-loss is to calculate returns, determine if it falls below the threshold and then exit the position if it does. Here is where our strategy differs. It does not need an additional stop-loss as a stop-loss feature is embedded in the strategy already. The reason is that the underlying momentum strategy invests in a dynamic portfolio, meaning that all the positions the strategy enters on the previous day will be closed today no matter how the performance is on the previous day. In other words, the momentum strategy does not pick the same set of coins to invest from day to day, previous losses will not accumulate in following days.</p>
+
+<h1 id="toc_9">Conclusion</h1>
+
+<p>In this research paper, we tested momentum and momentum reversal strategies in the cryptocurrency market and improved the traditional momentum strategy by introducing a brand-new sentiment-based model. The model significantly improved the general strategy scenario. It turned out that our hybrid model can handle massive market collapses e.g. mid-2018 while taking valid non-zero positions, and can grasp profits at potential opportunities.</p>
+
+<p>There are, however, still several limitations in this research. First, due to the limited history of cryptocurrency, our dataset is rather short compared with stock data, with only 2014 - 2019 making up both training and testing sets. This limitation does not only occur w.r.t. time, but also troubles us during dynamic coin selection. Since we need a long period of historical data, our choices of coins became considerably restricted (less than 20), which further causes us to hold less (to be precise, 6 in this case) coins at each day. Idiosyncratic risks may not be well diversified and there is non-negligible likelihood that our strategy fails us because of failure in one certain coin -- though luckily, we didn&rsquo;t encounter this issue.</p>
+
+<p>Last but not least, more rigorous backtests could be implemented to perform against our strategies. We may use intra-day data, if possible, for better accuracy. Furthermore, we can take order book into account to cope with micro-structure related concerns. By and large, our hybrid strategy satisfyingly outperformed all benchmark strategies in the same market and we deem this as a strong and good result.</p>
+
+<h1 id="toc_10">References</h1>
+
+<ul>
+<li><a id='a2014'></a>Antonacci, Gary (2014). <em>Dual Momentum Investing: An Innovative Approach for Higher Returns with Lower Risk</em>. New York: McGraw-Hill Education, 13–18.</li>
+<li><a id='rso2017'></a>Rohrbach, J., Suremann, S., &amp; Osterrieder, J. (2017). <em>Momentum and Trend Following Trading Strategies for Currencies Revisited-Combining Academia and Industry.</em></li>
+<li><a id='kkx2019'></a>Ke, Z. T., Kelly, B. T., &amp; Xiu, D. (2019). <em>Predicting Returns With Text Data.</em> Available at SSRN.</li>
+<li><a id='cp2018'></a>Caporale, G. M., &amp; Plastun, O. (2018). <em>Price Overreactions in the Cryptocurrency Market.</em></li>
+</ul>
+
+<p><br><hr><br></p>
+
+<h1 id="toc_11">Appendix</h1>
+
+<p>We include all miscellaneous scripts (mostly for data crawling) as below.</p>
+
+<h2 id="toc_12">Appendix A: News Data</h2>
+
+<pre><code class="language-py">import time
+import random
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+from datetime import datetime as dt
+from randomheaders import LoadHeader as random_header
+
+
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+
+
+random.seed(123)
+COLUMNS = ['time', 'title']
+INFO = pd.DataFrame(columns=COLUMNS)
+IP_LIST = []
+
+
+def get_proxy():
+    return requests.get('http://localhost:5555/get/').text
+
+def delete_proxy(proxy):
+    requests.get(f'http://localhost:5555/delete/?proxy={proxy}')
+
+def get_soup(url, parser):
+    while True:
+        try:
+            time.sleep(random.uniform(0, 1))
+            proxy = get_proxy()
+            html = requests.get(
+                url, timeout=(3, 7), headers=random_header(),
+                proxies={'http': proxy, 'https': proxy}).text
+            return BeautifulSoup(html, parser)
+        except Exception:
+            delete_proxy(proxy)
+
+def parse_time(timestr):
+    raw_time = timestr[10:].split('/')[0].replace('on', '')
+    time = dt.strptime(raw_time, '%H:%M  %B %d, %Y  ')
+    return time
+
+def get_content(url):
+    soup = get_soup(url, 'lxml')
+    paragraphs = soup.select('div[class=&quot;entry-content&quot;]')[0].select('p')
+    content = '\n'.join([para.text for para in paragraphs[:-1]])
+    return content
+
+def get_posts(soup):
+    if '404 - PAGE NOT FOUND' in soup.text: return None
+    posts = soup.select('a[class=&quot;stream-article&quot;]')
+    titles, times, abstracts, contents = [], [], [], []
+    for p in posts:
+        meta = p.select('div[class=&quot;meta&quot;]')[0]
+        titles.append(meta.select('h3')[0].text)
+        times.append(meta.select('time')[0]['datetime'])
+        abstracts.append(meta.select('p')[0].text)
+        contents.append(get_content(p['href']))
+    posts = pd.DataFrame({'title': titles, 'abstract': abstracts, 'content': contents}, index=times)
+    posts.index = pd.to_datetime(posts.index)
+    return posts
+
+
+all_posts = pd.DataFrame(columns=['title', 'abstract', 'content'])
+
+i = 0
+while True:
+    try:
+        i += 1
+        print(f'Crawling page {i}: ', end='')
+        url = f'https://www.coindesk.com/category/markets-news/page/{i}'
+        soup = get_soup(url, 'lxml')
+        posts = get_posts(soup)
+        if posts is None: raise EOFError
+        all_posts = pd.concat([all_posts, posts])
+        print(f'finished ({posts.shape[0]} posts)')
+    except IndexError:
+        print('failed, retrying', end='\r')
+        i -= 1
+    except (EOFError, KeyboardInterrupt):
+        print('terminated')
+        print(f'Total number of posts crawled: {all_posts.shape[0]}')
+        all_posts.to_csv('../data/posts.csv')
+        exit()
+</code></pre>
+
+<h2 id="toc_13">Appendix B: EOD Data</h2>
+
+<pre><code class="language-py">import os
+import json
+import sys
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from _datetime import datetime, date, timedelta
+
+
+def save_crypto_coins_history(i_rank_start=1, i_rank_end=10, i_coin_file_path='crypto_coins', i_from_date=None, i_to_date=None, i_min_volume=100000, i_coin_markets=[]):
+    from_date, to_date = get_from_to_dates(i_from_date, i_to_date)
+    rank_range_from_start = i_rank_end - i_rank_start + 1
+    coins_ranking_dict = get_coins_current_ranking(i_rank_start, rank_range_from_start, i_min_volume)
+    df_coins = pd.DataFrame([])
+    for rank, coin in coins_ranking_dict.items():
+        if is_coin_in_markets(coin, set(i_coin_markets)):
+            df_coins = df_coins.append(get_coins_historical_data(rank, coin, from_date, to_date))
+            write_df_to_csv(df_coins, i_coin_file_path + '.csv')
+
+
+def get_coins_current_ranking(i_start, i_limit, i_min_volume):
+    url_coin_list_json = 'https://api.coinmarketcap.com/v1/ticker/?start={}&amp;limit={}'.format(i_start - 1, i_limit)
+    page = requests.get(url_coin_list_json)
+    json_file = json.loads(page.text)
+    coins_dict = {}
+    for k in json_file:
+        if float(k['24h_volume_usd']) &gt;= i_min_volume:
+            coins_dict[k['rank']] = k['id']
+    return coins_dict
+
+
+def get_coins_historical_data(i_rank, i_coin, i_from_date, i_to_date):
+    df_coin = get_specific_coin_historical_data(i_coin, i_from_date, i_to_date)
+    df_coin['Coin'] = i_coin
+    df_coin['Cur. Rank'] = i_rank
+    df_coin = pd.concat([df_coin.iloc[:, 7:], df_coin.iloc[:, 0:7]], axis=1, join_axes=[df_coin.index])
+    return df_coin
+
+
+def get_specific_coin_historical_data(i_coin, i_from_date, i_to_date):
+    currencies = &quot;https://coinmarketcap.com/currencies/&quot;
+    currencies_end = '/historical-data/'
+    dates = '?start={}&amp;end={}'.format(i_from_date, i_to_date)
+    url = currencies + i_coin + currencies_end + dates
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    table = soup.find('table')
+    data = {'Date': [], 'Open': [], 'High': [], 'Low': [], 'Close': [], 'Volume': [], 'Market Cap': []}
+    try:
+        rows = table.findAll('tr')[1:]
+        for row in rows:
+            cols = row.findAll('td')
+            data['Date'].append(cols[0].string)
+            data['Open'].append(cols[1].string)
+            data['High'].append(cols[2].string)
+            data['Low'].append(cols[3].string)
+            data['Close'].append(cols[4].string)
+            data['Volume'].append(cols[5].string)
+            data['Market Cap'].append(cols[6].string)
+        coin_data = pd.DataFrame(data)
+    except AttributeError:
+        print('input parameters not valid')
+        sys.exit(13)
+    return coin_data
+
+
+def write_df_to_csv(i_df, i_file):
+    try:
+        i_df.to_csv(i_file)
+    except IOError as e:
+        print(e)
+        sys.exit(13)
+
+
+def get_from_to_dates(i_from_date, i_to_date):
+    try:
+        if i_from_date is None:
+            from_date = str(date.today() + timedelta(days=-30))
+        else:
+            from_date = i_from_date
+        from_date = datetime.strptime(from_date, '%Y-%m-%d').strftime('%Y%m%d')
+
+        if i_to_date is None:
+            to_date = str(date.today() + timedelta(days=-1))
+        else:
+            to_date = i_to_date
+        to_date = datetime.strptime(to_date, '%Y-%m-%d').strftime('%Y%m%d')
+
+        return from_date, to_date
+    except ValueError as e:
+        print(e)
+        sys.exit(13)
+
+
+def is_coin_in_markets(i_coin, i_coin_markets_to_search):
+    coin_in_markets = False
+    coin_markets_url = 'https://coinmarketcap.com/currencies/{}/#markets'.format(i_coin)
+    if not i_coin_markets_to_search:
+        coin_in_markets = True
+    else:
+        page = requests.get(coin_markets_url)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        table = soup.find('table')
+        rows = table.findAll('tr')[1:]
+        markets = set()
+        for row in rows:
+            cols = row.findAll('td')
+            if cols[1].text is not None:
+                markets.add(cols[1].text.upper())
+
+            for market in i_coin_markets_to_search:
+                if market.upper() in markets:
+                    coin_in_markets = True
+                    break
+
+    return coin_in_markets
+
+
+if __name__ == '__main__':
+    symbols = [
+        ('ANC', 'anoncoin'),
+        ('BTB', 'bitbar'),
+        ('BTC', 'bitcoin'),
+        ('DGC', 'digitalcoin'),
+        ('DOGE', 'dogecoin'),
+        ('FRC', 'freicoin'),
+        ('FTC', 'feathercoin'),
+        ('IXC', 'ixcoin'),
+        ('LTC', 'litecoin'),
+        ('MEC', 'megacoin'),
+        ('MNC', 'mincoin'),
+        ('NMC', 'namecoin'),
+        ('NVC', 'novacoin'),
+        ('NXT', 'nxt'),
+        ('OMNI', 'omni'),
+        ('PPC', 'peercoin'),
+        ('QRK', 'quark'),
+        ('WDC', 'worldcoin'),
+        ('XPM', 'primecoin'),
+        ('XRP', 'ripple'),
+        ('ZET', 'zetacoin'),
+    ]
+    price = dict()
+    mkcap = dict()
+    for sym, i_coin in symbols:
+        if not os.path.isfile(f'{i_coin}.csv'):
+            try:
+                print(f'Downloading {i_coin:&gt;12}', end=': ')
+                df = get_specific_coin_historical_data(i_coin, '20120101', '20190520')[::-1]
+                print(df.Date.iloc[0], df.Date.iloc[-1])
+                df.to_csv(f'{i_coin}.csv')
+            except:
+                print('failed')
+                pass
+
+    for sym, i_coin in symbols:
+        print(f'Loading {i_coin:&gt;12}', end=': ')
+        df = pd.read_csv(f'{i_coin}.csv').set_index('Date')
+        df.index = pd.to_datetime(df.index)
+        print(df.index[0].date(), df.index[-1].date())
+        price[sym] = df['Close']
+        mkcap[sym] = df['Market Cap']
+
+    def convert(x):
+        s = str(x).replace(',', '')
+        try:
+            return float(s)
+        except:
+            if s == '-':
+                return float('nan')
+
+    price = pd.DataFrame(price).dropna().applymap(convert).fillna(method='ffill')
+    price.index.name = None
+    price.to_csv('../data/price.csv')
+
+    mkcap = pd.DataFrame(mkcap).dropna().applymap(convert).fillna(method='ffill')
+    mkcap.index.name = None
+    mkcap.to_csv('../data/mkcap.csv')
+
+    print('Task finished')
+</code></pre>
+
+<p>Now we starting generating new features from these posts. First let&rsquo;s take a look at the data.</p>
+
+<h2 id="toc_14">Appendix C: Backtest Engine and Hyper-Parameter Testing</h2>
+
+<p>In this section, we give the full code of our backtest engine as well as the full list of hyper-parameter testing results. The scripts for engine is as below.</p>
+
+<pre><code class="language-py">import numpy as np
+import pandas as pd
+from collections import Counter
+from scipy.optimize import minimize
+from wordcloud import STOPWORDS
+
+
+class BacktestEngine:
+    def __init__(self):
+        df = pd.read_csv('data/posts.csv', index_col=0)
+        df.index = pd.to_datetime(df.index).date
+        df_eod = df.copy()
+        df_eod['date'] = pd.to_datetime(df_eod.index).date
+        g = df_eod.groupby('date')
+        title = g.title.apply(' '.join)
+        abstract = g.abstract.apply(' '.join)
+        content = g.content.apply(lambda x: '\n\n'.join(map(str, x.values)))
+        df_eod = pd.concat([title, abstract, content], axis=1)
+        df_eod.index = pd.to_datetime(df_eod.index)
+        df_eod.index.name = None
+        df_eod.title = df_eod.title.str.lower()
+        df_eod.abstract = df_eod.abstract.str.lower()
+        df_eod.content = df_eod.content.str.lower()
+        remove_abbr = lambda x: ' '.join([_.split('’')[0] for _ in x.split()])
+        df_eod = df_eod.applymap(remove_abbr)
+        alph_space = lambda x: (ord('a') &lt;= ord(x) &lt;= ord('z')) or x == ' '
+        keep_alph = lambda x: ''.join(filter(alph_space, x))
+        df_eod = df_eod.applymap(keep_alph)
+        replace_stop_words = lambda x: ' '.join(_ for _ in x.split() if _ not in STOPWORDS)
+        df_eod = df_eod.applymap(replace_stop_words)
+        df_eod = df_eod.applymap(str.split).applymap(sorted)
+        price = pd.read_csv('data/price.csv', index_col=0)
+        price.index = pd.to_datetime(price.index)
+        mkcap = pd.read_csv('data/mkcap.csv', index_col=0)
+        mkcap.index = pd.to_datetime(mkcap.index)
+        self.data = (price, mkcap, df_eod)  # store data for later usage
+
+    def run(self, lookback_window=60, minimum_occurrence=50, minimum_length=5, alpha=.1, size=lambda x: 2 * x - 1):
+        n = 3  # number of coins to hold (long/short)
+        d = lookback_window  # number of days to train
+        price, mkcap, df_eod = self.data  # data stored for training (reusable)
+
+        rtn = price.pct_change().fillna(0)
+        rtn.index.name = None
+        temp = (rtn * (mkcap.agg('argsort') &lt; 10)).rolling(d).sum().T
+        coins = pd.DataFrame(
+            [temp.nlargest(n, t).index.tolist() + temp.nsmallest(n, t).index.tolist() for t in rtn.index],
+            index=rtn.index).shift().dropna()  # shift to avoid forward-looking bias
+
+        coef = np.array([1] * n + [-1] * n) / n
+        rtn = pd.DataFrame([rtn.loc[t, coins.loc[t].values] @ coef for t in coins.index], index=coins.index)[0]
+        rtn.name = 'r'
+
+        df_total = df_eod[['content']].join(rtn, how='inner').dropna()
+        df_total['p'] = np.argsort(df_total.iloc[:, 1]) / (df_total.shape[0] - 1)
+        df_total.columns = ['words', 'r', 'p']
+
+        test_split = 0.3
+        len_total = len(df_total)
+        len_test = round(len_total * test_split)
+        len_train = len_total - len_test
+
+        df_train = df_total.iloc[:len_train, :]
+        df_test = df_total.iloc[-len_test:, :]
+
+        words_all = sorted(list(set(w for words in df_train.words for w in words)))
+        words_dict = {w: [] for w in words_all}
+
+        for i in range(df_train.shape[0]):
+            words, r, _ = df_train.iloc[i]
+            for w in words: words_dict[w].append(r &gt; 0)
+
+        words_df = pd.DataFrame({
+            'word': words_all,
+            'r': [np.mean(words_dict[w]) for w in words_all],
+            'k': [len(words_dict[w]) for w in words_all]
+        }, index=range(len(words_all))).sort_values(by='r')
+
+        words_df = words_df[words_df.k &gt;= minimum_occurrence][words_df.word.apply(len) &gt;= minimum_length].reset_index(drop=True)
+        words_df['p'] = np.argsort(words_df.r) / (len(words_df) - 1)
+
+        pos_words = words_df[words_df.p &gt; 1 - alpha].word.values.tolist()
+        neg_words = words_df[words_df.p &lt; alpha].word.values.tolist()
+
+        keywords = pos_words + neg_words
+
+        def count_words(words):
+            c = Counter(words)
+            d = [c[w] for w in keywords]
+            return np.array(d)
+
+        df_train['d'] = df_train.words.apply(count_words).values
+
+        p = df_train.p.values
+        W = np.vstack([p, 1 - p]).T
+        D = np.vstack(df_train.d.values)
+        D = (D.T / D.sum(axis=1)).T
+        D[np.isnan(D)] = 0
+        O_pos, O_neg = np.maximum(np.linalg.pinv(W.T @ W) @ (W.T @ D), 0)
+        O_pos = (O_pos / O_pos.sum())
+        O_neg = (O_neg / O_neg.sum())
+
+        def pen_ll(p, d, lamda):
+            return (d * np.log(p * O_pos + (1 - p) * O_neg)).sum() + lamda * np.log(p * (1 - p))
+
+        def predict(d, lamda):
+            return minimize(lambda p: -pen_ll(p, d, lamda), x0=.5, method='Nelder-Mead').x[0]
+
+        def mse_p(lamda):
+            p_hat = np.array([predict(d, lamda) for d in df_train.d])
+            return ((df_train.p.values - p_hat)**2).mean()
+
+        best_lamda = minimize(mse_p, x0=0, method='Nelder-Mead', bounds=(0, None)).x[0]
+
+        df_test['d'] = df_test.words.apply(count_words).values
+        df_test['p_hat'] = [predict(d, best_lamda) for d in df_test.d]
+        df_test = df_test[['words', 'r', 'p', 'p_hat', 'd']]
+
+        compound = lambda x: (1 + x).cumprod() - 1
+
+        r = df_test.r
+        size = df_test.p_hat.apply(size)
+
+        daily_rtn = r * size
+        cum_rtn = compound(daily_rtn)
+        daily_rtn_momentum = rtn[cum_rtn.index]
+        cum_rtn_momentum = compound(daily_rtn_momentum)
+        daily_rtn_momentum_rev = -daily_rtn_momentum
+        cum_rtn_momentum_rev = compound(daily_rtn_momentum_rev)
+        daily_rtn_buy_hold = price.BTC.pct_change().loc[cum_rtn.index]
+        cum_rtn_buy_hold = compound(daily_rtn_buy_hold)
+
+        win_rate = lambda x: (x &gt; 0).mean()
+        sharpe = lambda x: x.mean() / x.std() * np.sqrt(360)
+        mdd = lambda x: (1 - x / x.cummax()).max()
+
+        DAILY = [daily_rtn_buy_hold, daily_rtn_momentum, daily_rtn_momentum_rev, daily_rtn]
+        CUM = [cum_rtn_buy_hold, cum_rtn_momentum, cum_rtn_momentum_rev, cum_rtn]
+        wr = [win_rate(x) for x in DAILY]
+        sr = [sharpe(x) for x in DAILY]
+        md = [mdd(x + 1) for x in CUM]
+        result = pd.DataFrame({'Win%': wr, 'Sharpe': sr, 'MDD': md}, index=['Buy &amp; Hold', 'Momentum', 'Mom. Rev.', 'Strategy'])
+        result.index.name = 'Statistics'
+
+        return result
+</code></pre>
+
+<p>The hyper-parameter testing, using the backtest engine above, is listed as follows.</p>
+
+<pre><code class="language-python">if not os.path.isfile('misc/results.csv'):
+    from misc.backtest import BacktestEngine
+    
+    be = BacktestEngine()
+    
+    size_continuous = lambda x: 2 * x - 1
+    size_binary = lambda x: 1 if x &gt; .5 else -1
+    size_trinary = lambda x: 1 if x &gt; 2 / 3 else 0 if x &gt; 1 / 3 else -1
+    size_funcs = {
+        'continuous': size_continuous,
+        'binary': size_binary,
+        'trinary': size_trinary
+    }
+    
+    params = dict(
+        lookback_window=[20, 60, 120],
+        minimum_occurrence=[10, 50, 100],
+        minimum_length=[1, 3, 5],
+        alpha=[.05, .10, .20],
+        size=['continuous', 'binary', 'trinary']
+    )
+    
+    def grid(g):
+        keys, values = zip(*g.items())
+        for v in product(*values):
+            yield dict(zip(keys, v))
+    
+    P = namedtuple('Params', params.keys())
+    
+    results = {}
+    print('Initializing...', end='\r')
+    for i, param in enumerate(grid(params)):
+        p = P(**param)
+        param['size'] = size_funcs[param['size']]
+        result = be.run(**param)
+        results[p] = result
+        wr, sr, md = result.T.Strategy
+        print(f'[{(i + 1):&gt;3d}] {p}:\n      Win%={wr:.2%}, Sharpe={sr:.2f}, MDD={md:.2%}')
+    
+    df_results = pd.concat(results).reset_index()
+    df_results.columns = ['lookback_window', 'minimum_occurrence', 'minimum_length',
+                          'alpha', 'size', 'strategy', 'win_rate', 'sharpe', 'mdd']
+    df_results.to_csv('misc/results.csv')
+
+else:
+    df_results = pd.read_csv('misc/results.csv', index_col=0)
+
+
+display(HTML(df_results.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>lookback_window</th>
+<th>minimum_occurrence</th>
+<th>minimum_length</th>
+<th>alpha</th>
+<th>size</th>
+<th>strategy</th>
+<th>win_rate</th>
+<th>sharpe</th>
+<th>mdd</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>binary</td>
+<td>Buy &amp; Hold</td>
+<td>0.527094</td>
+<td>-0.441738</td>
+<td>0.831663</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>binary</td>
+<td>Momentum</td>
+<td>0.423645</td>
+<td>-1.686962</td>
+<td>0.998461</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>binary</td>
+<td>Mom. Rev.</td>
+<td>0.576355</td>
+<td>1.686962</td>
+<td>0.781847</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>binary</td>
+<td>Strategy</td>
+<td>0.482759</td>
+<td>-0.521645</td>
+<td>0.988099</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>continuous</td>
+<td>Buy &amp; Hold</td>
+<td>0.527094</td>
+<td>-0.441738</td>
+<td>0.831663</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>967</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>continuous</td>
+<td>Strategy</td>
+<td>0.494709</td>
+<td>-0.831074</td>
+<td>0.582280</td>
+</tr>
+
+<tr>
+<td>968</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>trinary</td>
+<td>Buy &amp; Hold</td>
+<td>0.526455</td>
+<td>-0.971476</td>
+<td>0.789994</td>
+</tr>
+
+<tr>
+<td>969</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>trinary</td>
+<td>Momentum</td>
+<td>0.433862</td>
+<td>-0.060313</td>
+<td>0.925483</td>
+</tr>
+
+<tr>
+<td>970</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>trinary</td>
+<td>Mom. Rev.</td>
+<td>0.566138</td>
+<td>0.060313</td>
+<td>0.987388</td>
+</tr>
+
+<tr>
+<td>971</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>trinary</td>
+<td>Strategy</td>
+<td>0.047619</td>
+<td>-0.988654</td>
+<td>0.665146</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">df_results_strategy = df_results[df_results.strategy=='Strategy'].drop('strategy', axis=1).melt(
+    id_vars=['lookback_window', 'minimum_occurrence', 'minimum_length', 'alpha', 'size'],
+    value_vars=['win_rate', 'sharpe', 'mdd'], var_name='statistic'
+)
+display(HTML(df_results_strategy.to_html(max_rows=10)))
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>lookback_window</th>
+<th>minimum_occurrence</th>
+<th>minimum_length</th>
+<th>alpha</th>
+<th>size</th>
+<th>statistic</th>
+<th>value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>binary</td>
+<td>win_rate</td>
+<td>0.482759</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>continuous</td>
+<td>win_rate</td>
+<td>0.470443</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.05</td>
+<td>trinary</td>
+<td>win_rate</td>
+<td>0.172414</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.10</td>
+<td>binary</td>
+<td>win_rate</td>
+<td>0.514778</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>20</td>
+<td>10</td>
+<td>1</td>
+<td>0.10</td>
+<td>continuous</td>
+<td>win_rate</td>
+<td>0.512315</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+
+<tr>
+<td>724</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.10</td>
+<td>continuous</td>
+<td>mdd</td>
+<td>0.376395</td>
+</tr>
+
+<tr>
+<td>725</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.10</td>
+<td>trinary</td>
+<td>mdd</td>
+<td>0.407608</td>
+</tr>
+
+<tr>
+<td>726</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>binary</td>
+<td>mdd</td>
+<td>0.996307</td>
+</tr>
+
+<tr>
+<td>727</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>continuous</td>
+<td>mdd</td>
+<td>0.582280</td>
+</tr>
+
+<tr>
+<td>728</td>
+<td>120</td>
+<td>100</td>
+<td>5</td>
+<td>0.20</td>
+<td>trinary</td>
+<td>mdd</td>
+<td>0.665146</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">sns.set({
+    'font.size': 12, 'axes.labelsize': 12, 'legend.fontsize': 12, 
+    'axes.titlesize': 12, 'xtick.labelsize': 12, 'ytick.labelsize': 12
+})
+sns.set_style({'axes.facecolor': 'white', 'axes.edgecolor': 'black', 'axes.linewidth': 2})
+
+for hue in ['lookback_window', 'minimum_occurrence', 'minimum_length', 'alpha']:
+    sns.catplot(
+        x='size', y='value', hue=hue, col='statistic', kind='bar', capsize=.1, errwidth=2,
+        sharey=False, palette=['red', 'orange', 'gold'], data=df_results_strategy
+    )
+    plt.savefig(f'misc/{hue}.png')
+</code></pre>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/markdown-test/">Markdown Test</a></span>
+  <span class="nav-next"><a href="/blog/continuous-integration-blog/">Continuous Integration in Blogging</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/markdown-test\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/continuous-integration-blog\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/crypto-news.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

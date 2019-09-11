@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Strategy: XGBoost Classification &#43; Technical Indicators - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Strategy: XGBoost Classification &#43; Technical Indicators - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting &amp;hellip;">
+      <meta property="og:description" content="On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/strategy-xgboost-technical-indicators.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Strategy: XGBoost Classification &#43; Technical Indicators</h1>
+
+
+<h3>
+2017-03-12</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li>
+<ul>
+<li><a href="#toc_0">Performance</a></li>
+
+<li><a href="#toc_1">Intuition: Long-term vs. Short-term Prediction</a></li>
+
+<li><a href="#toc_2">Tool: Technical Indicators &amp; XGBoost Classification</a></li>
+
+<li><a href="#toc_3">Codes</a></li>
+</ul></li>
+
+<li><a href="#toc_4">References:</a></li>
+</ul>
+
+</nav>
+<p>On many <a href="https://www.kaggle.com">Kaggle</a> public leaderboards, you will see an algorithm called &ldquo;XGBoost&rdquo;, or &ldquo;Xtreme Gradient Boosting&rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.g. stock price prediction as we are gonna talk about today. Highest tribute to Tianqi Chen and his great <a href="https://arxiv.org/abs/1603.02754">paper</a>!</p>
+
+<!-- more -->
+
+<h2 id="toc_0">Performance</h2>
+
+<table>
+<thead>
+<tr>
+<th align="center">Statistic</th>
+<th align="center">Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">Backtest Interval</td>
+<td align="center">20130101 - 20170101</td>
+</tr>
+
+<tr>
+<td align="center">Initial Capital</td>
+<td align="center">1,000,000</td>
+</tr>
+
+<tr>
+<td align="center">Annualized Return (Strategy)</td>
+<td align="center">TBD</td>
+</tr>
+
+<tr>
+<td align="center">Annualized Return (Benchmark)</td>
+<td align="center">TBD</td>
+</tr>
+
+<tr>
+<td align="center">Sharpe Ratio</td>
+<td align="center">TBD</td>
+</tr>
+
+<tr>
+<td align="center">Maximum Drawdown</td>
+<td align="center">TBD</td>
+</tr>
+</tbody>
+</table>
+<p>(Performance screenshot not available at present. Will be uploaded later.)</p>
+
+<h2 id="toc_1">Intuition: Long-term vs. Short-term Prediction</h2>
+
+<p>I got the inspiration from <a href="https://www.researchgate.net/profile/Snehanshu_Saha/publication/309492895_Forecasting_to_Classification_Predicting_the_direction_of_stock_market_price_using_Xtreme_Gradient_Boosting/links/581384c008aedc7d8961e371.pdf">this paper</a>. The author raised an interesting but also convincing point when doing stock price prediction: the long-term trend is always easier to predict than the short-term. Again, let&rsquo;s take <a href="https://www.google.com/finance?q=NASDAQ:AAPL">AAPL</a> for example. The Apple Inc. witnessed a close at $139.14 per share today, a slight rise by 0.33 percent point. What is the expected price change in percentage for, say, tomorrow? Also let&rsquo;s assume that you have access to all the historical data you want, regardless of the size of the dataset or other computational issues? What if an chief engineer suddenly decides to resign from the company and the news leaks instantly through social networks? What if Samsung or another mobile phone company launches its newest prototype right after your prediction? What if, just for fun, the new prototype of Samsung (or whatever) should explode during the presentation, on the spot? The randomness is so changable that our prediction could even be totally the opposite of the true story. However, in a sense of long-term prediction, things get easier, since the overall relationship between Apple and Samsung would least likely change in the near future, and the general performance of AAPL is in principle dependent on how Apple Inc. behave in the following months. So GIVEN THAT COOPER IS NOT INSANE, BUT A RATHER CAUTIOUS CEO, we can expect a higher accuracy when predicting the average price change of AAPL in the next three months (60 tradingdays or so).</p>
+
+<p>Notice again that we are not talking about predicting the close of the day three months from now. We are talking about the AVERAGE price change of the following three months. Now, let&rsquo;s turn to see what predictor we can use to perform the idea.</p>
+
+<h2 id="toc_2">Tool: Technical Indicators &amp; XGBoost Classification</h2>
+
+<p>We are using the classification algorithm in XGBoost. The regression algorithm is slower but more intuitive, but binary classification is just faster in this case, which allows for efficient backtesting later on. The prediction is based on a certain length of historical data including open, high, low, close and volume, along with other 77 techinical indicators that are not extracted until before the prediction. This is of course far from &ldquo;all historical data&rdquo; in the market, not to mention the off-market rumors, social and political concerns, etc. But this is enough for illustration here. Therefore, a good amendment for this strategy is surely to append these left-out indicators. For NLA and similar applications in stock price prediction, you can check my <a href="https://allenfrostline.github.io/2017/02/what-about-crawling-trumps-tweets-and-make-it-to-a-trading-algo/">post</a> about making Mr. Trump&rsquo;s tweets into prediction indicators. I didn&rsquo;t acutally write the project because I found a really mature application already written on Github, but I would definitely rewrite it myself during the summer vacation. If you find the post not changed even after that, please feel free to mail me and &ldquo;harshly&rdquo; urge me for the overdue task.</p>
+
+<h2 id="toc_3">Codes</h2>
+
+<p>The codes mainly consists of three parts:</p>
+
+<ul>
+<li>Definition of techinical indicators.</li>
+<li>Two Python classes: <code>classifier</code> and <code>stock</code>.</li>
+<li>Main program, including configuration parameters for the backtesting framework.</li>
+</ul>
+
+<pre><code class="language-python">import sys
+import numpy as np
+import tushare as ts
+import pandas as pd
+import talib as tb
+from xgboost import XGBClassifier
+from datetime import datetime as dt
+from dateutil.relativedelta import relativedelta
+from sklearn.model_selection import StratifiedKFold, GridSearchCV
+from sklearn.metrics import accuracy_score
+
+
+# define pivot variables for easy use
+def technical(df):
+    open = df['open'].values
+    close = df['close'].values
+    high = df['high'].values
+    low = df['low'].values
+    volume = df['volume'].values
+    # define the technical analysis matrix
+    retn = np.array([
+        tb.MA(close, timeperiod=5),                                         # 1
+        tb.MA(close, timeperiod=10),                                        # 2
+        tb.MA(close, timeperiod=20),                                        # 3
+        tb.MA(close, timeperiod=60),                                        # 4
+        tb.MA(close, timeperiod=90),                                        # 5
+        tb.MA(close, timeperiod=120),                                       # 6
+
+        tb.ADX(high, low, close, timeperiod=20),                            # 7
+        tb.ADXR(high, low, close, timeperiod=20),                           # 8
+
+        tb.MACD(close, fastperiod=12, slowperiod=26, signalperiod=9)[0],    # 9
+        tb.RSI(close, timeperiod=14),                                       # 10
+
+        tb.BBANDS(close, timeperiod=5, nbdevup=2, nbdevdn=2, matype=0)[0],  # 11
+        tb.BBANDS(close, timeperiod=5, nbdevup=2, nbdevdn=2, matype=0)[1],  # 12
+        tb.BBANDS(close, timeperiod=5, nbdevup=2, nbdevdn=2, matype=0)[2],  # 13
+
+        tb.AD(high, low, close, volume),                                    # 14
+        tb.ATR(high, low, close, timeperiod=14),                            # 15
+
+        tb.HT_DCPERIOD(close),                                              # 16
+
+        tb.CDL2CROWS(open, high, low, close),                               # 17
+        tb.CDL3BLACKCROWS(open, high, low, close),                          # 18
+        tb.CDL3INSIDE(open, high, low, close),                              # 19
+        tb.CDL3LINESTRIKE(open, high, low, close),                          # 20
+        tb.CDL3OUTSIDE(open, high, low, close),                             # 21
+        tb.CDL3STARSINSOUTH(open, high, low, close),                        # 22
+        tb.CDL3WHITESOLDIERS(open, high, low, close),                       # 23
+        tb.CDLABANDONEDBABY(open, high, low, close, penetration=0),         # 24
+        tb.CDLADVANCEBLOCK(open, high, low, close),                         # 25
+        tb.CDLBELTHOLD(open, high, low, close),                             # 26
+        tb.CDLBREAKAWAY(open, high, low, close),                            # 27
+        tb.CDLCLOSINGMARUBOZU(open, high, low, close),                      # 28
+        tb.CDLCONCEALBABYSWALL(open, high, low, close),                     # 29
+        tb.CDLCOUNTERATTACK(open, high, low, close),                        # 30
+        tb.CDLDARKCLOUDCOVER(open, high, low, close, penetration=0),        # 31
+        tb.CDLDOJI(open, high, low, close),                                 # 32
+        tb.CDLDOJISTAR(open, high, low, close),                             # 33
+        tb.CDLDRAGONFLYDOJI(open, high, low, close),                        # 34
+        tb.CDLENGULFING(open, high, low, close),                            # 35
+        tb.CDLEVENINGDOJISTAR(open, high, low, close, penetration=0),       # 36
+        tb.CDLEVENINGSTAR(open, high, low, close, penetration=0),           # 37
+        tb.CDLGAPSIDESIDEWHITE(open, high, low, close),                     # 38
+        tb.CDLGRAVESTONEDOJI(open, high, low, close),                       # 39
+        tb.CDLHAMMER(open, high, low, close),                               # 40
+        tb.CDLHANGINGMAN(open, high, low, close),                           # 41
+        tb.CDLHARAMI(open, high, low, close),                               # 42
+        tb.CDLHARAMICROSS(open, high, low, close),                          # 43
+        tb.CDLHIGHWAVE(open, high, low, close),                             # 44
+        tb.CDLHIKKAKE(open, high, low, close),                              # 45
+        tb.CDLHIKKAKEMOD(open, high, low, close),                           # 46
+        tb.CDLHOMINGPIGEON(open, high, low, close),                         # 47
+        tb.CDLIDENTICAL3CROWS(open, high, low, close),                      # 48
+        tb.CDLINNECK(open, high, low, close),                               # 49
+        tb.CDLINVERTEDHAMMER(open, high, low, close),                       # 50
+        tb.CDLKICKING(open, high, low, close),                              # 51
+        tb.CDLKICKINGBYLENGTH(open, high, low, close),                      # 52
+        tb.CDLLADDERBOTTOM(open, high, low, close),                         # 53
+        tb.CDLLONGLEGGEDDOJI(open, high, low, close),                       # 54
+        tb.CDLLONGLINE(open, high, low, close),                             # 55
+        tb.CDLMARUBOZU(open, high, low, close),                             # 56
+        tb.CDLMATCHINGLOW(open, high, low, close),                          # 57
+        tb.CDLMATHOLD(open, high, low, close, penetration=0),               # 58
+        tb.CDLMORNINGDOJISTAR(open, high, low, close, penetration=0),       # 59
+        tb.CDLMORNINGSTAR(open, high, low, close, penetration=0),           # 60
+        tb.CDLONNECK(open, high, low, close),                               # 61
+        tb.CDLPIERCING(open, high, low, close),                             # 62
+        tb.CDLRICKSHAWMAN(open, high, low, close),                          # 63
+        tb.CDLRISEFALL3METHODS(open, high, low, close),                     # 64
+        tb.CDLSEPARATINGLINES(open, high, low, close),                      # 65
+        tb.CDLSHOOTINGSTAR(open, high, low, close),                         # 66
+        tb.CDLSHORTLINE(open, high, low, close),                            # 67
+        tb.CDLSPINNINGTOP(open, high, low, close),                          # 68
+        tb.CDLSTALLEDPATTERN(open, high, low, close),                       # 69
+        tb.CDLSTICKSANDWICH(open, high, low, close),                        # 70
+        tb.CDLTAKURI(open, high, low, close),                               # 71
+        tb.CDLTASUKIGAP(open, high, low, close),                            # 72
+        tb.CDLTHRUSTING(open, high, low, close),                            # 73
+        tb.CDLTRISTAR(open, high, low, close),                              # 74
+        tb.CDLUNIQUE3RIVER(open, high, low, close),                         # 75
+        tb.CDLUPSIDEGAP2CROWS(open, high, low, close),                      # 76
+        tb.CDLXSIDEGAP3METHODS(open, high, low, close)                      # 77
+    ]).T
+    return retn
+
+
+class stock:
+    def __init__(self, id):
+        self.id = id
+        self.train = None
+        self.test = None
+
+    def load(self, window_length=120, ratio=0, back_length=10, forward_length=60, test_size=0.25, verbose=False):
+
+        # load dataset through tushare
+        open = history_bars(self.id, window_length, '1d', 'open')
+        close = history_bars(self.id, window_length, '1d', 'close')
+        high = history_bars(self.id, window_length, '1d', 'high')
+        low = history_bars(self.id, window_length, '1d', 'low')
+        volume = history_bars(self.id, window_length, '1d', 'volume')
+        df = pd.DataFrame({'open': open, 'close': close, 'high': high, 'low': low, 'volume': volume}).astype(float)
+        tot_len = len(df)
+
+        # use the technical function to load all the technical data
+        tech = technical(df)
+
+        # define the label function, ratio required
+        def label(df, ratio, back_length, forward_length):
+            close = df['close']
+            r = 0.04  # discount rate
+            mean_diff = sum([-close.diff(-i) * np.exp(-r * i) for i in range(1, forward_length + 1)]) / forward_length
+            mean_p_change = (mean_diff / close)[back_length: -forward_length]
+            return (mean_p_change &gt; ratio).astype(int)
+
+        # split data into X and y
+        X = df[['open', 'close', 'high', 'low', 'volume']]
+        X_shift = [X]
+        for i in range(1, back_length):
+            X_shift.append(df[['open', 'close', 'high', 'low', 'volume']].shift(i))
+        if forward_length == 0:
+            return np.concatenate([tech, np.log(pd.concat(X_shift, axis=1).values)], axis=1)[back_length:]
+        X = np.concatenate([tech, np.log(pd.concat(X_shift, axis=1).values)], axis=1)[back_length: -forward_length]
+        y = label(df, ratio, back_length, forward_length)
+
+        # split data into train and test sets
+        test_len = int(tot_len * test_size)
+        train_len = tot_len - test_len
+        X_train, X_test = X[:train_len], X[-test_len:]
+        y_train, y_test = y[:train_len], y[-test_len:]
+
+        # update the train and test dataset
+        self.train = [X_train, y_train]
+        self.test = [X_test, y_test]
+
+
+class classifier:
+    def __init__(self):
+        self.model = XGBClassifier(n_estimators=300,
+                                   learning_rate=0.1,
+                                   max_depth=4,
+                                   min_child_weight=4,
+                                   subsample=0.6,
+                                   colsample_bytree=0.5,
+                                   seed=123)
+
+    def train(self, data):
+        X_train, y_train = data.train[0], data.train[1]
+        X_test, y_test = data.test[0], data.test[1]
+
+        self.model.fit(X_train, y_train,
+                       eval_metric='error',
+                       eval_set=[(X_train, y_train), (X_test, y_test)],
+                       early_stopping_rounds=20,
+                       verbose=False)
+
+        y_pred = self.model.predict(X_train)
+        predictions = [round(value) for value in y_pred]
+        # evaluate predictions
+        train_acc = accuracy_score(y_train, predictions)
+
+        # make predictions for test data
+        y_pred = self.model.predict(X_test)
+        predictions = [round(value) for value in y_pred]
+        # evaluate predictions
+        test_acc = accuracy_score(y_test, predictions)
+
+        print('{} train acc: {:.2f}%, test acc: {:.2f}%'.format(data.id, train_acc * 100, test_acc * 100))
+        return test_acc
+
+    def predict(self, data):
+        return self.model.predict(data)
+
+
+def close_all(context):
+    for s in context.portfolio.positions:
+        order_target_percent(s, 0)
+
+
+def modelize(context, bar_dict):
+    if context.flag % (context.FL // 20) != 0:
+        context.flag += 1
+        return None
+
+    print('modelizing')
+    print('-' * 49)
+
+    close_all(context)
+
+    context.pool = [
+        '600799.XSHG',
+        '600745.XSHG',
+        '600721.XSHG',
+        '000979.XSHE',
+        '600703.XSHG',
+        '000008.XSHE',
+        '600139.XSHG',
+        '000545.XSHE',
+        '000703.XSHE',
+        '600804.XSHG', ]
+    context.stock = [stock(s) for s in context.pool]
+
+    print('loading training dataset')
+    stt = (context.now + relativedelta(months=-context.WL // 20)).strftime('%Y-%m-%d')
+    end = context.now.strftime('%Y-%m-%d')
+    for i in range(context.N):
+        context.stock[i].load(window_length=context.WL,
+                              ratio=context.ratio,
+                              back_length=context.BL,
+                              forward_length=context.FL)
+        print(context.stock[i].id + ' loaded')
+    print('-' * 49)
+
+    print('training')
+    for i in range(context.N):
+        context.score[i] = context.clf[i].train(context.stock[i])
+    print('-' * 49)
+
+    print('predicting')
+    stt = (context.now + relativedelta(months=-1)).strftime('%Y-%m-%d')
+    sig = lambda s: '+' if s else '-'
+    for i in range(context.N):
+        context.signal[i] = context.clf[i].predict(context.stock[i].load(window_length=context.BL * 2,
+                                                                         ratio=context.ratio,
+                                                                         back_length=context.BL,
+                                                                         forward_length=0))[-1] * \
+            int(context.score[i] &gt; 0.9)
+        print('{}: {}'.format(context.stock[i].id, sig(context.signal[i])))
+    print('-' * 49)
+
+    tot = sum(context.signal)
+    if tot:
+        for i in range(context.N):
+            if context.signal[i]:
+                order_target_percent(context.pool[i], 1 / tot)
+    else:
+        close_all(context)
+
+
+def init(context):
+    context.N = 10          # number of stocks in pool
+    context.BL = 20         # backward length
+    context.FL = 60         # forward length
+    context.WL = 240        # total window length
+    context.ratio = 0.000   # critical ratio as threshold
+    context.flag = 0
+    context.pool = []
+    context.stock = []
+    context.signal = [0] * context.N
+    context.score = [0] * context.N
+    context.clf = [classifier()] * context.N
+    scheduler.run_monthly(modelize, tradingday=1)
+
+
+__config__ = {
+    &quot;base&quot;: {
+        &quot;strategy_type&quot;: &quot;stock&quot;,
+        &quot;start_date&quot;: &quot;2011-01-01&quot;,
+        &quot;end_date&quot;: &quot;2017-01-01&quot;,
+        &quot;frequency&quot;: &quot;1d&quot;,
+        &quot;matching_type&quot;: &quot;next_bar&quot;,
+        &quot;future_starting_cash&quot;: 1000000,
+        &quot;commission_multiplier&quot;: 0.01,
+        &quot;benchmark&quot;: &quot;000300.XSHG&quot;,
+    },
+    &quot;extra&quot;: {
+        &quot;log_level&quot;: &quot;error&quot;,
+    },
+    &quot;mod&quot;: {
+        &quot;progress&quot;: {
+            &quot;enabled&quot;: True,
+            &quot;priority&quot;: 400,
+        },
+    },
+}
+</code></pre>
+
+<hr />
+
+<h1 id="toc_4">References:</h1>
+
+<ul>
+<li>Chen, Tianqi, and Carlos Guestrin. &ldquo;Xgboost: A scalable tree boosting system.&rdquo; Proceedings of the 22Nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2016.</li>
+<li>Dey, Shubharthi, et al. &ldquo;Forecasting to Classification: Predicting the direction of stock market price using Xtreme Gradient Boosting.&rdquo;</li>
+</ul>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/arma-for-aapl/">Basic Walkthrough of ARMA: Take AAPL for Example</a></span>
+  <span class="nav-next"><a href="/blog/is-my-apple-pencil-broken/">Is My Apple Pencil Broken!?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/arma-for-aapl\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/is-my-apple-pencil-broken\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/strategy-xgboost-technical-indicators.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

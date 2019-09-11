@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Operations Research - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Operations Research - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Some notes sorted during final reviewing.">
+      <meta property="og:description" content="Some notes sorted during final reviewing.">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/notes-on-operations-research.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Notes on Operations Research</h1>
+
+
+<h3>
+2017-03-27</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Introduction</a></li>
+
+<li><a href="#toc_1">Basic Linear Programming (LP)</a></li>
+
+<li><a href="#toc_2">Matrix Notation</a></li>
+
+<li><a href="#toc_3">Duality</a></li>
+
+<li><a href="#toc_4">Economic Interpretation</a></li>
+
+<li><a href="#toc_5">Transportation Problem</a></li>
+
+<li><a href="#toc_6">Transportation Simplex Method</a></li>
+
+<li><a href="#toc_7">Assignment Problem</a></li>
+
+<li><a href="#toc_8">Some Modeling Issues</a></li>
+
+<li><a href="#toc_9">Max-flow/Min-cut Problem</a></li>
+
+<li><a href="#toc_10">Heuristics</a></li>
+
+<li><a href="#toc_11">Dynamic Programming (DP)</a></li>
+
+<li><a href="#toc_12">Traveling Salesman Problem (TSP)</a></li>
+</ul>
+
+</nav>
+<p>This is my lecture notes from the course Operations Research. The course was intended to be a fundamental one introducing various aspects of operations research, the thinking process of a typical optimization problem, and famous theorems and applications.</p>
+
+<h1 id="toc_0">Introduction</h1>
+
+<ol>
+<li>Summary of this lecture:
+
+<ul>
+<li>Introduction</li>
+<li>Basic Linear Programming</li>
+<li>Taha Chapters 1, 2, 3</li>
+</ul></li>
+<li>Structure:
+
+<ul>
+<li>7 lectures</li>
+<li>7 tutorials</li>
+<li>2 assignments</li>
+<li>individual written open-book exam (only book and no notes in the book)</li>
+</ul></li>
+<li>Operations Research definition:<br />
+
+
+<ul>
+<li>In short: OR is the discipline of applying advanced analytical methods to help make better decisions.</li>
+</ul></li>
+<li>Performing an OR project:
+
+<ul>
+<li>Problem definition</li>
+<li>Data collection</li>
+<li>Type of input data</li>
+<li>Options to use data</li>
+<li>Making assumptions</li>
+<li>Modeling Terminology: parameters, decision variables, objective, constraints</li>
+<li>Model design and implementation</li>
+</ul></li>
+<li>Algorithms
+
+<ul>
+<li>Definition: step-by-step procedure for solving a problem to optimality</li>
+<li>Techniques:
+
+<ul>
+<li>Enumeration</li>
+<li>Improvement approach</li>
+<li>Search algorithms</li>
+<li>Dynamic Programming</li>
+</ul></li>
+<li>Performance of an algorithm
+
+<ul>
+<li>Metric: TIME TO FIND OPTIMAL SOLUTION</li>
+<li>Practical: NUMBER OF STEPS</li>
+<li>Approaches:
+
+<ul>
+<li>Empirical analysis</li>
+<li>Average-case analysis</li>
+<li>Worst-case analysis</li>
+</ul></li>
+<li>Time complexity</li>
+<li>Example: Traveling Salesman Problem (TSP)
+
+<ul>
+<li>An optimal algorithm is by enumeration: <span class="math inline">\((n-1)!/2\)</span> solutions</li>
+</ul></li>
+</ul></li>
+<li>Heuristics 启发式算法
+
+<ul>
+<li>Definition:
+
+<ul>
+<li>A heuristic aims at finding good, but not necessarily optimal, feasible solutions</li>
+</ul></li>
+<li>Metrics:
+
+<ul>
+<li>Generates objective values close to optimality</li>
+<li>Simplicity</li>
+<li>Speed</li>
+<li>Robustness</li>
+<li>Good stopping criteria</li>
+<li>Produce multiple solutions</li>
+</ul></li>
+<li>Testing quality of heurisics</li>
+<li>TSP example: nearest neighbor heuristic</li>
+</ul></li>
+</ul></li>
+</ol>
+
+<h1 id="toc_1">Basic Linear Programming (LP)</h1>
+
+<ol>
+<li>Notation
+
+<ul>
+<li>Maximum</li>
+<li>Hyperplanes, Halfspaces &amp; Polyhedrons</li>
+<li>Corner point feasible solutions</li>
+</ul></li>
+<li>Simplex method
+
+<ul>
+<li>Check LP properties:
+
+<ul>
+<li>Proportionality</li>
+<li>Additivity</li>
+<li>Divisibility</li>
+<li>Certainty</li>
+</ul></li>
+<li>Fixing format
+
+<ul>
+<li>Always &ldquo;max&rdquo;</li>
+<li>All right-hand side must be non-negative</li>
+<li>All functional constraints are equalities</li>
+<li>All variables on the left, and constants on the right</li>
+<li>All decisive variables are non-negative</li>
+<li><strong>FINALLY</strong>: we get    <span class="math inline">\(\text{max}\sum x_i\qquad\text{s.t.}\sum x_{i_k}=b_k,\quad x_i\ge 0\)</span></li>
+<li><strong>HOWEVER</strong>: we need to assure all-zero is feasible for original variables and thus we introduce artificial variables. This draws out the &ldquo;big-M&rdquo; method</li>
+</ul></li>
+<li>Entering &amp; leaving basic variable</li>
+<li>Properties
+
+<ul>
+<li>If there is exactly one optimal solution, then it must be a CPF solution. 反证法</li>
+<li>If there are multiple optimal solutions then at least two must be adjacent CPF solutions (provided we have a bounded feasible region).</li>
+<li>The number of CPF solutions is bounded from above by <span class="math inline">\(\begin{pmatrix}m+n\\ n\end{pmatrix}\)</span></li>
+<li>If a CPF has no adjacent CPF solutions that are better, then there are no better CPF solutions anywhere.</li>
+</ul></li>
+<li>Basic &amp; basic feasible solutions: among all <span class="math inline">\(m+n\)</span> variables
+
+<ul>
+<li>A basic solution is where <span class="math inline">\(n\)</span> constraints hold with equality (<span class="math inline">\(\mathbf{a}_i^T\mathbf{x}=\mathbf{b}_i\)</span> or <span class="math inline">\(x_j=0\)</span>). So there are <span class="math inline">\(m\)</span> basic variables and <span class="math inline">\(n\)</span> nonbasic variables (that are all set zero).</li>
+<li>A basic feasible solution is where <span class="math inline">\(n\)</span> constraints hold with equality and all other constraints are satisfied. So there are <span class="math inline">\(m\)</span> basic variables that are nonnegative.</li>
+</ul></li>
+<li>Equation form
+
+<ul>
+<li>Original constraint: <span class="math inline">\(\mathbf{a}_i^T\mathbf{x}\le b_i\)</span></li>
+<li>Equation form: <span class="math inline">\(\mathbf{a}_i^T\mathbf{x}+x_{n+i}=b_i\)</span></li>
+<li><span class="math inline">\(x_{n+i}\)</span> is called indicating variable</li>
+</ul></li>
+</ul></li>
+<li>Comparison</li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>Particulars</th>
+<th>Slack Variable</th>
+<th>Surplus Variable</th>
+<th>Artificial Variable</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Mean</td>
+<td>Unused idle resources.</td>
+<td>Excess utilized resources.</td>
+<td>No physical or economic meaning.</td>
+</tr>
+
+<tr>
+<td>When used</td>
+<td>With &lt; Constraints</td>
+<td>With &gt; constraints</td>
+<td>With ≥ constraints</td>
+</tr>
+
+<tr>
+<td>Coefficient</td>
+<td>+1</td>
+<td>−1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Coef. in obj.</td>
+<td>0</td>
+<td>0</td>
+<td>−M for max, +M for min</td>
+</tr>
+
+<tr>
+<td>As initial program variable</td>
+<td>Used as starting point.</td>
+<td>Can’t be used since unit matrix condition is not satisfied</td>
+<td>It is initially used but later on eliminated.</td>
+</tr>
+
+<tr>
+<td>In optimal table</td>
+<td>Used to help for interpreting idle &amp; key resources.</td>
+<td>–</td>
+<td>It indicates the infeasible solution</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_2">Matrix Notation</h1>
+
+<ol>
+<li><p>Notation</p>
+
+<ul>
+<li>Constraints: From <span class="math inline">\(\text{max }Z=\sum_{i=1}^nc_ix_i\text{   s.t. }\sum_{i=1}^na_{ji}x_i\le b_i\)</span> to</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \text{max }Z=c^Tx\\
+&amp; \text{s.t. }
+\begin{bmatrix}
+\mathbf{A} &amp; \mathbf{I}
+\end{bmatrix}
+\begin{bmatrix}x\\ x_s\end{bmatrix}=b,\begin{bmatrix}x\\ x_s\end{bmatrix}\ge0
+\end{aligned}
+\]</span></p>
+<ul>
+<li>Simplex tableau as matrix: generally<br />
+</li>
+</ul>
+<p><span class="math display">\[
+\begin{bmatrix}
+\mathbf{A} &amp; \mathbf{I}
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+x_s
+\end{bmatrix}=b
+\qquad \text{or}\qquad
+\begin{bmatrix}
+1 &amp; -c^T &amp; 0\\
+0 &amp; \mathbf{A} &amp; \mathbf{I}
+\end{bmatrix}
+\begin{bmatrix}
+Z\\
+x\\
+x_s
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+b
+\end{bmatrix}
+\]</span></p><p>while we can simplify</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\mathbf{A} &amp; \mathbf{I}
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+x_s
+\end{bmatrix}=b
+\]</span></p><p>to</p>
+<p><span class="math display">\[
+\mathbf{Bx_B}=b
+\]</span></p><p>which we solve by</p>
+<p><span class="math display">\[
+\mathbf{x_B}=\mathbf{B}^{-1}b
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+Z=c_B^T\mathbf{x_B}=c_B^T\mathbf{B}^{-1}b
+\]</span></p><p>so further more, we may find that</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1 &amp; -c^T &amp; 0\\
+0 &amp; \mathbf{A} &amp; \mathbf{I}
+\end{bmatrix}
+\begin{bmatrix}
+Z\\
+x\\
+x_s
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+b
+\end{bmatrix}
+\]</span></p><p>can be rewritten by iteration into</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1 &amp; c_B^TB^{-1}A-c^T &amp; c_B^TB^{-1}\\
+0 &amp; B^{-1}A &amp; B^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+Z\\
+x\\
+x_s
+\end{bmatrix}
+=
+\begin{bmatrix}
+c_B^TB^{-1}b\\
+B^{-1}b
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li>Basic variables are those set non-zero. They are at first slack and artificial variables.</li>
+</ul></li>
+
+<li><p>Example of Simplex method<br />
+Consider the following problem:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\text{min }Z=3x_1+2x_2\\
+&amp;\text{s.t. }
+\begin{cases}
+2x_1+x_2\ge 10\\
+-3x_1+2x_2\le 6\\
+x_1+x_2\ge 6\\
+x_1\ge 0,x_2\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p><p>Now use the Simplex method in matrix notation to solve it. First, convert the problem to equation form</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\text{max }Z=-3x_1-2x_2\\
+&amp;\text{s.t. }
+\begin{cases}
+2x_1  &amp;+  x_2   &amp;- x_3 &amp;      &amp;      &amp;= 10\\
+-3x_1 &amp;+  2x_2  &amp;      &amp;      &amp;+ x_5 &amp;= 6 \\
+x_1   &amp;+  x_2   &amp;      &amp;- x_4 &amp;      &amp;=6\\
+x_1\ge 0 &amp; x_2\ge 0 &amp; x_3\ge 0 &amp; x_4\ge 0 &amp; x_5\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p><p>where <span class="math inline">\(x_3\)</span>, <span class="math inline">\(x_4\)</span> are here <strong>surplus variables</strong>, while <span class="math inline">\(x_5\)</span> is a <strong>slack variable</strong>. So later on we may use <span class="math inline">\(x_5\)</span> as an initial variable. Use big-M to   ensure that if all original variables are set zero, we still have a feasible starting solution</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\text{max }Z=-3x_1-2x_2-Mx_6-Mx_7\\
+&amp;\text{s.t. }
+\begin{cases}
+2x_1  &amp;+  x_2   &amp;- x_3 &amp;      &amp;      &amp;+ x_6 &amp;      &amp;= 10\\
+-3x_1 &amp;+  2x_2  &amp;      &amp;      &amp;+ x_5 &amp;      &amp;      &amp;= 6 \\
+x_1   &amp;+  x_2   &amp;      &amp;- x_4 &amp;      &amp;      &amp;+ x_7 &amp;=6\\
+x_1\ge 0 &amp; x_2\ge 0 &amp; x_3\ge 0 &amp; x_4\ge 0 &amp; x_5\ge 0 &amp; &amp;
+\end{cases}
+\end{aligned}
+\]</span></p><p>where <span class="math inline">\(x_6\)</span> and <span class="math inline">\(x_7\)</span> are <strong>artificial variables</strong>, and thus will be used as initial variables. Now write in matrix form</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1  &amp;  3  &amp;  2  &amp;  0  &amp;  0  &amp;  0  &amp;  M  &amp;  M\\
+0  &amp;  2  &amp;  1  &amp; -1  &amp;  0  &amp;  0  &amp;  1  &amp;  0\\
+0  &amp; -3  &amp;  2  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0\\
+0  &amp;  1  &amp;  1  &amp;  0  &amp; -   &amp;  0  &amp;  0  &amp;  1
+\end{bmatrix}
+\begin{bmatrix}
+Z\\
+x_1\\
+x_2\\
+x_3\\
+x_4\\
+x_5\\
+x_6\\
+x_7
+\end{bmatrix}=
+\begin{bmatrix}
+0\\
+10\\
+6\\
+6
+\end{bmatrix}
+\]</span></p><p>In shorthand notation (Simplex tableau)</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1  &amp;  3  &amp;  2  &amp;  0  &amp;  0  &amp;  0  &amp;  M  &amp;  M\\
+0  &amp;  2  &amp;  1  &amp; -1  &amp;  0  &amp;  0  &amp;  1  &amp;  0\\
+0  &amp; -3  &amp;  2  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0\\
+0  &amp;  1  &amp;  1  &amp;  0  &amp; -1  &amp;  0  &amp;  0  &amp;  1
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+10\\
+6\\
+6
+\end{bmatrix}
+\]</span></p><p>However, we need to ensure that the numbers in the top row for the basic variables (slack and artificial variables, namely <span class="math inline">\(x_5\)</span>, <span class="math inline">\(x_6\)</span> and <span class="math inline">\(x_7\)</span>) are zero.  By Gauss elimination, we have</p>
+<p><span class="math display">\[
+\begin{matrix}
+\text{basic var}\\
+x_6\\
+x_5\\
+x_7
+\end{matrix}
+\begin{bmatrix}
+1  &amp;-3M+3&amp;-2M+2&amp;  M  &amp;  M  &amp;  0  &amp;  0  &amp;  0\\
+0  &amp;  2  &amp;  1  &amp; -1  &amp;  0  &amp;  0  &amp;  1  &amp;  0\\
+0  &amp; -3  &amp;  2  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0\\
+0  &amp;  1  &amp;  1  &amp;  0  &amp; -1  &amp;  0  &amp;  0  &amp;  1
+\end{bmatrix}
+\begin{bmatrix}
+-16M\\
+10\\
+6\\
+6
+\end{bmatrix}
+\]</span></p><p>from which we can directly read the initial basic feasible solution: <span class="math inline">\((0,0,0,0,6,10,6)\)</span>. Now choose in the nonbasic variables whose coefficient in objective  function</p>
+<p><span class="math display">\[Z=(3M-3)x_1+(2M-2)x_2-Mx_3-Mx_4\]</span></p><p>is largest. So we get <span class="math inline">\(x_1\)</span> as entering basic variable. With <span class="math inline">\(x_1\)</span> entering the basic, we need to find a leaving basic variable. So, as <span class="math inline">\(x_1\)</span> get larger,   which basic variable (namely <span class="math inline">\(x_5\)</span>, <span class="math inline">\(x_6\)</span> and <span class="math inline">\(x_7\)</span>) will leave basic the first? We should do the <strong>minimum ratio test</strong>, which is equivalently to compare the  ratios of the return matrix (on the right) devided by the coefficients of <span class="math inline">\(x_1\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;x_6\quad\text{constraint 1}: 10/2=5\\
+&amp;x_5\quad\text{constraint 2}: 6/(-3)&lt;0,\text{ ignore}\\
+&amp;x_7\quad\text{constraint 3}: 6/1=6
+\end{aligned}
+\]</span></p><p>So the minimum ratio corresponds to <span class="math inline">\(x_6\)</span>, which means <span class="math inline">\(x_6\)</span> is the leaving variable we&rsquo;ve been looking for. Repeat the conclusion: the entering basic  variable is <span class="math inline">\(x_1\)</span>, the leaving basic variable is <span class="math inline">\(x_6\)</span>, hence</p>
+<p><span class="math display">\[
+x_B=
+\begin{bmatrix}
+x_1\\
+x_5\\
+x_7
+\end{bmatrix},c_B=
+\begin{bmatrix}
+3M-3\\
+0\\
+0
+\end{bmatrix}\text{and }B=
+\begin{bmatrix}
+2 &amp; 0 &amp; 0\\
+-3&amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 1
+\end{bmatrix}
+\]</span></p><p>Just to repeat, <span class="math inline">\(x_B\)</span> is the basic variable vector, <span class="math inline">\(c_B\)</span> is the <strong>negative transposition</strong> of the top row in the coefficient matrix corresponding to <span class="math inline">\(x_B\)</span>,  and <span class="math inline">\(B\)</span> is the coefficient matrix below <span class="math inline">\(-c_B^T\)</span> in the large matrix, also corresponding to <span class="math inline">\(x_B\)</span>. So now, as instructed in the above part, we would   premultiply the two matrices by</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1 &amp; c_B^TB^{-1}\\
+0 &amp; B^{-1}
+\end{bmatrix}=
+\begin{bmatrix}
+1 &amp; 3M/2-3/2 &amp; 0 &amp; 0\\
+0 &amp; 1/2      &amp; 0 &amp; 0\\
+0 &amp; 3/2      &amp; 1 &amp; 0\\
+0 &amp; -1/2     &amp; 0 &amp; 1
+\end{bmatrix}
+\]</span></p><p>and thus get a new Simplex tableau (which needs not Gauss elimination <strong>this time</strong>)</p>
+<p><span class="math display">\[
+\begin{matrix}
+\text{basic var}\\
+x_1\\
+x_5\\
+x_7
+\end{matrix}
+\begin{bmatrix}
+1   &amp;   0   &amp; -M/2+1/2&amp; -M/2+1/2&amp;   M   &amp;   0   &amp;3M/2-3/2&amp;  0\\
+0   &amp;   1   &amp;  1/2    &amp; -1/2    &amp;   0   &amp;   0   &amp;  1/2   &amp;  0\\
+0   &amp;   0   &amp;  7/2    &amp;  -3/2   &amp;   0   &amp;   1   &amp;  3/2   &amp;  0\\
+0   &amp;   0   &amp;  1/2    &amp;  1/2    &amp;   -1  &amp;   0   &amp;  -1/2  &amp;  1 
+\end{bmatrix}
+\begin{bmatrix}
+-M-15\\
+5\\
+21\\
+1
+\end{bmatrix}
+\]</span></p><p>Similarly, we now choose <span class="math inline">\(x_2\)</span> as the entering basic variable, since its coefficient in the top row is <strong>the most negative</strong>. With the same apporach we would   derive that <span class="math inline">\(x_7\)</span> would be the leaving basic variable, and thus</p>
+<p><span class="math display">\[
+x_B=
+\begin{bmatrix}
+x_1\\
+x_5\\
+x_2
+\end{bmatrix},c_B=
+\begin{bmatrix}
+0\\
+0\\
+-2M+2
+\end{bmatrix}\text{and }B=
+\begin{bmatrix}
+1 &amp; 0 &amp; 1/2\\
+0 &amp; 1 &amp; 7/2\\
+0 &amp; 0 &amp; 1/2
+\end{bmatrix}
+\]</span></p><p>which can be read directly from the table above. So</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1 &amp; c_B^TB^{-1}\\
+0 &amp; B^{-1}
+\end{bmatrix}=
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; -M+1\\
+0 &amp; 1 &amp; 0 &amp; -1\\
+0 &amp; 0 &amp; 1 &amp; -7\\
+0 &amp; 0 &amp; 0 &amp; 2
+\end{bmatrix}
+\]</span></p><p>Premultiply it to the Simplex tableau we derived in the 1st iteration, that is</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; -M+1\\
+0 &amp; 1 &amp; 0 &amp; -1\\
+0 &amp; 0 &amp; 1 &amp; -7\\
+0 &amp; 0 &amp; 0 &amp; 2
+\end{bmatrix}
+\begin{bmatrix}
+1   &amp;   0   &amp; -M/2+1/2&amp; -M/2+1/2&amp;   M   &amp;   0   &amp;3M/2-3/2&amp;  0\\
+0   &amp;   1   &amp;  1/2    &amp; -1/2    &amp;   0   &amp;   0   &amp;  1/2   &amp;  0\\
+0   &amp;   0   &amp;  7/2    &amp;  -3/2   &amp;   0   &amp;   1   &amp;  3/2   &amp;  0\\
+0   &amp;   0   &amp;  1/2    &amp;  1/2    &amp;   -1  &amp;   0   &amp;  -1/2  &amp;  1 
+\end{bmatrix}\\
+= &amp;
+\begin{bmatrix}
+1   &amp;   0   &amp; -M+1  &amp; -M+2  &amp;   2M-1   &amp;   0   &amp;   2M-2   &amp;-M+1\\
+0   &amp;   1   &amp;  0    &amp; -1    &amp;   1   &amp;   0   &amp;  1   &amp;  -1\\
+0   &amp;   0   &amp;  0    &amp;  -5   &amp;   7   &amp;   1   &amp;  5   &amp;  -7\\
+0   &amp;   0   &amp;  1    &amp;  1    &amp;   -2  &amp;   0   &amp;  -1  &amp;  2 
+\end{bmatrix}
+\end{aligned}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; -M+1\\
+0 &amp; 1 &amp; 0 &amp; -1\\
+0 &amp; 0 &amp; 1 &amp; -7\\
+0 &amp; 0 &amp; 0 &amp; 2
+\end{bmatrix}
+\begin{bmatrix}
+-M-15\\
+5\\
+21\\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2M-14\\
+4\\
+14\\
+2
+\end{bmatrix}
+\]</span></p><p>and thus we get a new Simplex tableau</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1   &amp;   0   &amp; -M+1  &amp; -M+2  &amp;   2M-1   &amp;   0   &amp;   2M-2   &amp;-M+1\\
+0   &amp;   1   &amp;  0    &amp; -1    &amp;   1   &amp;   0   &amp;  1   &amp;  -1\\
+0   &amp;   0   &amp;  0    &amp;  -5   &amp;   7   &amp;   1   &amp;  5   &amp;  -7\\
+0   &amp;   0   &amp;  1    &amp;  1    &amp;   -2  &amp;   0   &amp;  -1  &amp;  2 
+\end{bmatrix}
+\begin{bmatrix}
+-2M-14\\
+4\\
+14\\
+2
+\end{bmatrix}
+\]</span></p><p>By Gauss elimination we standardize the new Simplex tableau of iteration 2 to</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1   &amp;   0   &amp;   0   &amp;   1   &amp;   1   &amp;   0   &amp;  M-1  &amp;  M-1\\
+0   &amp;   1   &amp;   0   &amp;  -1   &amp;   1   &amp;   0   &amp;   1   &amp;  -1\\
+0   &amp;   0   &amp;   0   &amp;  -5   &amp;   7   &amp;   1   &amp;   5   &amp;  -7\\
+0   &amp;   0   &amp;   1   &amp;   1   &amp;  -2   &amp;   0   &amp;  -1   &amp;  2 
+\end{bmatrix}
+\begin{bmatrix}
+-16\\
+4\\
+14\\
+2
+\end{bmatrix}
+\]</span></p><p>Here we notice that all entries in the top row are positive, so iteration ends here, and the maximum is <span class="math inline">\(-16\)</span>. So as we initially transferred the problem from minimization to maximization, the optimal <span class="math inline">\(Z\)</span> is <span class="math inline">\(16\)</span>, with corresponding solution <span class="math inline">\((x_1,x_2)=(4,2)\)</span></p></li>
+</ol>
+
+<h1 id="toc_3">Duality</h1>
+
+<ol>
+<li><p>Definition:<br />
+<strong>Original Problem</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \text{max }Z=c^Tx\\
+&amp; \text{s.t.}
+\begin{cases}
+Ax\le b\\
+x\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p><p><strong>Dual Probelm</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \text{min }W=b^Ty\\
+&amp; \text{s.t.}
+\begin{cases}
+A^Ty\ge c\\
+y\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p></li>
+
+<li><p>It can be shown that the dual problem of the dual problem is the primal problem</p></li>
+
+<li><p><strong>Weak Duality</strong>: If <span class="math inline">\(x\)</span> is a feasible solution for the primal problem and <span class="math inline">\(y\)</span> is a feasible solution for the dual problem then <span class="math inline">\(c^Tx\le b^Ty\)</span><span style="font-family:'Optima-Italic'; color: #666666"></p>
+
+<ul>
+<li>If we have feasible solutions <span class="math inline">\(x^{\ast}\)</span> to the primal and <span class="math inline">\(y^{\ast}\)</span> to the dual such that <span class="math inline">\(c^Tx^{\ast}=b^Ty^{\ast}\)</span>, then <span class="math inline">\(x\)</span> must be an optimal solution to the primal problem and <span class="math inline">\(y^{\ast}\)</span> to the dual problem.</span></li>
+</ul></li>
+
+<li><p><strong>Strong Duality</strong>: If <span class="math inline">\(x\)</span> is an optimal solution for the primal problem and <span class="math inline">\(y\)</span> is for the dual then <span class="math inline">\(c^Tx=b^Ty\)</span><span style="font-family:'Optima-Italic'; color: #666666"></p>
+
+<ul>
+<li>It follows from the strong duality property that if the Simplex terminates with a feasible solution <span class="math inline">\(x\)</span>, we have also found a feasible solution <span class="math inline">\(y\)</span> for the dual problem, and both values of the objective are equal. Hence, optimality is achieved by the Simplex method (provided that there is an optimal solution)<br />
+</li>
+<li>It doesnít matter whether you solve the primal problem or dual problem. Just take the one that is easiest to use.</span></li>
+</ul></li>
+
+<li><p>More on duality</p>
+
+<ol>
+<li>If one problem has feasible solutions and a bounded objective function, then both the primal and dual each have an optimal solution.</li>
+<li>If one problem has feasible solutions and an unbounded objective function, then the other problem has no feasible solutions.</li>
+<li>If one problem has no feasible solutions, then the other problem has either no feasible solutions or an unbounded objective function.</li>
+</ol></li>
+
+<li><p>Approach to convert a problem to its dual
+<img src="/images/OR1.png" style="width: 850;"/></p></li>
+
+<li><p>Example:<br />
+Use the primal-dual rules to determine the dual of the following model</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \text{min }Z=3x_2+x_3\\
+&amp; \text{s.t.}
+\begin{cases}
+ &amp; 3x_1 &amp;- 5x_2 &amp;- 7x_3 &amp;+  x_4 &amp;-  x_5 &amp;\le 0\\
+ &amp;      &amp;  2x_2 &amp;-  x_3 &amp;- 6x_4 &amp;- 2x_5 &amp;=   0\\
+ &amp;-3x_1 &amp;+ 2x_2 &amp;-  x_3 &amp;- 4x_4 &amp;       &amp;\le -7\\
+ &amp;  x_1 &amp;+ x_2  &amp;+  x_3 &amp;+  x_4 &amp;       &amp;\ge 12\\
+ &amp; -x_1 &amp;- x_2  &amp;-  x_3 &amp;- 4x_4 &amp;       &amp;\le 4\\
+ &amp; x_1\ge 0, &amp; x_2\ge 0, &amp; x_4\ge 0, &amp; x_5\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p><p>transform into matrix form:  <span class="math inline">\(\text{max }Z=3x_2+x_3\)</span>,</p>
+<p><span class="math display">\[
+A=
+\begin{bmatrix}
+ 3   &amp;  -5   &amp;  -7   &amp;   1   &amp;  -1 \\
+ 0   &amp;   2   &amp;  -1   &amp;  -6   &amp;  -2 \\
+-3   &amp;   2   &amp;  -1   &amp;  -4   &amp;   0 \\
+ 1   &amp;   1   &amp;   1   &amp;   1   &amp;   0 \\
+-1   &amp;  -1   &amp;  -1   &amp;  -4   &amp;   0
+\end{bmatrix},
+b=
+\begin{bmatrix}
+0\\
+0\\
+-7\\
+12\\
+4
+\end{bmatrix}
+\]</span></p><p>where we have variables <span class="math inline">\(x_1,x_2,x_4,x_5\ge 0\)</span></p>
+
+<p>and thus we have dual as given by: <span class="math inline">\(\text{min }b^Ty=-7y_3+12y_4+4y_5\)</span>,</p>
+<p><span class="math display">\[
+A^T=
+\begin{bmatrix}
+ 3   &amp;   0   &amp;  -3   &amp;  -1   &amp;  -1\\
+-5   &amp;   2   &amp;   2   &amp;  -1   &amp;  -1\\
+-7   &amp;  -1   &amp;  -1   &amp;  -1   &amp;  -1\\
+ 1   &amp;  -6   &amp;  -4   &amp;  -1   &amp;  -4\\
+-1   &amp;  -2   &amp;   0   &amp;   0   &amp;   0
+\end{bmatrix},
+c=
+\begin{bmatrix}
+0\\
+3\\
+1\\
+0\\
+0
+\end{bmatrix}
+\]</span></p><p>where by referring to Table 4.2 we have variables <span class="math inline">\(y_1,y_3,y_5\le 0,y_2\text{ unrestricted},y_4\ge 0\)</span></p>
+
+<p>so in equation form we have</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  &amp;\text{max }-7y_3+12y_4+4y_5\\
+  &amp;\text{s.t.}
+  \begin{cases}
+   3y_1 &amp;   &amp;      &amp; - &amp; 3y_3 &amp; - &amp;  y_4 &amp; - &amp;  y_5 &amp; \le &amp; 0\\
+  -5y_1 &amp; + &amp; 2y_2 &amp; + &amp; 2y_3 &amp; - &amp;  y_4 &amp; - &amp;  y_5 &amp; =   &amp; 3\\
+  -7y_1 &amp; - &amp;  y_2 &amp; - &amp;  y_3 &amp; - &amp;  y_4 &amp; - &amp;  y_5 &amp; \le &amp; 1\\
+    y_1 &amp; - &amp; 6y_2 &amp; - &amp; 4y_3 &amp; - &amp;  y_4 &amp; - &amp; 4y_5 &amp; \ge &amp; 0\\
+   -y_1 &amp; - &amp; 2y_2 &amp;   &amp;      &amp;   &amp;      &amp;   &amp;      &amp; \le &amp; 0\\
+   y_1,y_3,y_5\le 0,&amp;y_2\text{ unrestricted},&amp;y_4\ge 0
+  \end{cases}
+  \end{aligned}
+  \]</span></p></li>
+</ol>
+
+<h1 id="toc_4">Economic Interpretation</h1>
+
+<p>Consider the primal problem as being a resource allocation problem, e.g. we are trying to make products <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, &hellip; Each product <span class="math inline">\(j\)</span> requires a certain amount <span class="math inline">\(a_{ij}\)</span> of each resource <span class="math inline">\(i\)</span> (like labour of machine time). Profits are <span class="math inline">\(c_j\)</span> for product <span class="math inline">\(x_j\)</span>, and the object is to maximize total profits <span class="math inline">\(c^Tx\)</span>. Now, assume we have <span class="math inline">\(m\)</span> kinds of resouces in total, and <span class="math inline">\(n\)</span> kinds of products. The equation form is given by</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\text{max }Z=\sum_{j=1}^nc_jx_j\\
+&amp;\text{s.t.}\sum_{j=1}^na_{ij}x_j\le b_i,(1\le i\le m)
+\end{aligned}
+\]</span></p><p>Now suppose we have an optimal solution <span class="math inline">\(x^{\ast}\)</span> to the primal problem.</p>
+
+<ol>
+<li>Due to strong duality we know there is a solution for the dual problem such that <span class="math inline">\(Z=c^Tx^{\ast}=b^Ty^{\ast}=W\)</span>. Where <span class="math inline">\(b_i\)</span> represents the available amount of resource <span class="math inline">\(i\)</span> in our resource allocation problem, and <span class="math inline">\(y_i\)</span> is the contribution to profit (value) of having one unit of resource <span class="math inline">\(i\)</span>. In this way <span class="math inline">\(y_i\)</span> is called the <strong>dual price</strong> or <strong>shadow price</strong> of resource <span class="math inline">\(i\)</span>.</li>
+<li>When <span class="math inline">\(Z&lt;W\)</span>, we have not reached an optimum, which economically can be interpreted that when revenues (<span class="math inline">\(Z\)</span>) are less than the value of resources (<span class="math inline">\(W\)</span>), we can always find a way to better exploit the resource.</li>
+</ol>
+
+<p>Now reconsider this in matrix notation</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1&amp;c_B^TB^{-1}A-c^T&amp;c_B^TB^{-1}\\
+0&amp;B^{-1}A&amp;B^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+c_B^TB^{-1}b\\
+B^{-1}b
+\end{bmatrix}
+\]</span></p><p>when we replace <span class="math inline">\(c_B^TB^{-1}\)</span> by <span class="math inline">\(y^{T}\)</span>, we shall find</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1&amp;y^{T}A-c^T&amp;y^{T}\\
+0&amp;B^{-1}A&amp;B^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+y^{T}b\\
+B^{-1}b
+\end{bmatrix}
+\]</span></p><p>with corresponding optimal value <span class="math inline">\(Z^{\ast}=y^{\ast T}b\)</span>. So, with <span class="math inline">\(b_i\)</span> increase by 1, we now have <span class="math inline">\(Z\)</span> increased by <span class="math inline">\(y_i^{\ast}\)</span>, and thus each entry <span class="math inline">\(y_i\)</span> in vector <span class="math inline">\(y^{\ast T}=c_B^TB^{-1}\)</span> is a shadow price!</p>
+
+<h1 id="toc_5">Transportation Problem</h1>
+
+<ol>
+<li><p>Description<br />
+简单的说, 就是给定<span class="math inline">\(m\)</span>个供应商, <span class="math inline">\(n\)</span>个客户, 分别对应供应量与需求量, 现在给你运输成本<span class="math inline">\(c_{ij}\)</span>, 让你求怎么供应成本最低.</p></li>
+
+<li><p>Model<br />
+令<span class="math inline">\(x_{ij}\)</span>为供应量. LP如下</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \min Z=\sum_{i=1}^m\sum_{j=1}^nc_{ij}x_{ij}\\
+&amp; \text{ s.t.}
+\begin{cases}
+\sum_{j=1}^nx_{ij}=s_i\\
+\sum_{i=1}^mx_{ij}=d_j\\
+x_{ij}\ge 0
+\end{cases}
+\end{aligned}
+\]</span></p><p>当出现供应量总额与需求量总额不对等时, 引入dummies.</p></li>
+</ol>
+
+<h1 id="toc_6">Transportation Simplex Method</h1>
+
+<p>Just some matrices.</p>
+
+<h1 id="toc_7">Assignment Problem</h1>
+
+<ol>
+<li><p>Description<br />
+简单的说, 就是给你<span class="math inline">\(n\)</span>个员工, <span class="math inline">\(n\)</span>个活儿, 每个人只能干一个活并且不同组合工资<span class="math inline">\(c_{ij}\)</span>各不一样, 现在问老板你怎么组合员工和工作, 付工资最少.</p></li>
+
+<li><p>Model<br />
+令二态变量<span class="math inline">\(x_{ij}\)</span>为员工干/不干某个活儿. LP如下</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \min Z=\sum_{i=1}^m\sum_{j=1}^nc_{ij}x_{ij}\\
+&amp; \text{ s.t.}
+  \begin{cases}
+  \sum_{j=1}^nx_{ij}=1\\
+  \sum_{i=1}^mx_{ij}=1\\
+  x_{ij}\in\{0,1\}
+  \end{cases}
+\end{aligned}
+\]</span></p><p>类似的, 如果不对等, 就加入dummies.</p></li>
+</ol>
+
+<h1 id="toc_8">Some Modeling Issues</h1>
+
+<ol>
+<li><p>或门/条件门</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; f_1(x)\le b_1+Mz\\
+&amp; f_2(x)\le b_2+M(1-z)\\
+&amp; z\in\{0,1\},\ M\text{ large}
+\end{aligned}
+\]</span></p></li>
+
+<li><p><span class="math inline">\(N\)</span>选<span class="math inline">\(K\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; f_k(x)\le b_k+Mz_k,\quad k=1,2,\ldots,N\\
+&amp; \sum_{k=1}^Nz_k=N-K\\
+&amp; z_k\in\{0,1\},\ M\text{ large}
+\end{aligned}
+\]</span></p></li>
+
+<li><p>绝对值</p>
+
+<ul>
+<li>出现在目标函数中: 令</li>
+</ul>
+<p><span class="math display">\[
+x=x^+-x^-,\quad x^+,x^-\ge 0
+\]</span></p><p>则</p>
+<p><span class="math display">\[
+|x|=|x^+|+|x^-|.
+\]</span></p><p>仅在<strong>最小值问题</strong>中, 这样的绝对值替换是有效的.</p>
+
+<ul>
+<li>出现在条件中</li>
+<li>有界: 转化为同时成立问题.</li>
+<li>无界: 转化为或门.</li>
+</ul></li>
+
+<li><p>最大最小值/最小最大值问题
+引入一个新变量, 替换掉嵌套在最值函数里面的那个最值, 并在条件中反映.</p></li>
+
+<li><p>Example: Faculty layout problem.</p></li>
+</ol>
+
+<h1 id="toc_9">Max-flow/Min-cut Problem</h1>
+
+<ol>
+<li><p>Introduction</p>
+
+<ul>
+<li>Undirected/directed graphs</li>
+<li>Degree of a vertex/node</li>
+<li>Complete graphs</li>
+<li>Cost and capacities</li>
+<li>Walks, paths (walks without repeated vertices) and cycles (walks end at start)</li>
+<li>Cyclic/acyclic and forests</li>
+<li>(Strongly) connected graphs</li>
+<li>Bipartite graphs</li>
+</ul></li>
+
+<li><p>Arc routing/Chinese Postman Problem 边的遍历/中国邮递员问题</p>
+
+<ul>
+<li>如何遍历所有边并保证总权重最小. 令<span class="math inline">\(x_{ij}\)</span>为边<span class="math inline">\((i,j)\)</span>被走过的次数. ILP如下<br />
+</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \min\sum_{i=1}^n\sum_{j=1}^n c_{ij}x_{ij}\\
+&amp; \text{ s.t.} \sum_{j=1}^nx_{ij}-\sum_{j=1}^nx_{ji}=0\quad\text{for all }i=1,2,\ldots,n\\
+&amp; \qquad  x_{ij}\ge 0\quad\text{for all }(i,j)\in A
+\end{aligned}
+\]</span></p>
+<ul>
+<li><strong>Euler cycle</strong>: 所有节点的度均为偶数, 则无向图有欧拉环<br />
+</li>
+<li><strong>Euler path</strong>: 只有0或者2个节点的度为奇数, 则无向图有欧拉路径</li>
+</ul></li>
+
+<li><p>Minimal Spanning Tree 最小生成树</p>
+
+<ul>
+<li>求一张图的最小权重生成树.<br />
+</li>
+<li><strong>NB</strong>: 一张有<span class="math inline">\(n\)</span>个节点的完全图有<span class="math inline">\(n^{n-2}\)</span>棵生成树.<br />
+</li>
+<li><strong>算法</strong>:
+
+<ol>
+<li>随便挑一个点</li>
+<li>贪心加陌生点</li>
+<li>加完结束</li>
+</ol></li>
+</ul></li>
+
+<li><p>Cuts 割</p>
+
+<ul>
+<li><strong>定义</strong>: A cut in a graph is a partition of the vertices into two disjoint sets.<br />
+</li>
+<li><strong>性质</strong>: Given any cut in a graph, every minimal crossing edge belongs to some MST of the graph, and every MST contains a minimal crossing edge on the cut.</li>
+</ul></li>
+
+<li><p>Shortest-route Problem 最短路径问题</p>
+
+<ul>
+<li>与中国邮递员的不同: 不需要经过所有边(或者节点), 目标是从起点到终点<br />
+</li>
+<li><strong>Dijkstra算法</strong>: 不断更新节点的标签 <span class="math inline">\([u_j,i]=[u_i+d_{ij},i]\)</span> 直到全部标签再也不变化.</li>
+</ul></li>
+
+<li><p>Maximal Flow Algorithm 最大流问题</p>
+
+<ol>
+<li>找出最大的总流量</li>
+<li>算法: 不断更新标签 <span class="math inline">\([c_{ik},k]\)</span> 直到所有标签不再变化. 其中<span class="math inline">\(c_{ik}=\max_{j\in S_i}\{c_{ij}\}\)</span>.</li>
+<li>ILP for the maximal flow problem</li>
+</ol></li>
+
+<li><p>Minimal Cut Problem 最小割问题<br />
+就是找出最小总权值的割, 与最大流问题是等价的.</p></li>
+
+<li><p>Max-flow/min-cut theorem 最大流最小割定理<br />
+在任何一张网络中, 最大流恒等价于最小割.</p></li>
+</ol>
+
+<h1 id="toc_10">Heuristics</h1>
+
+<p>贪心、局部搜索、Tabu搜索、模拟退火、神经网络&hellip;  略. 基本不会考.</p>
+
+<h1 id="toc_11">Dynamic Programming (DP)</h1>
+
+<ol>
+<li><p>Decision tree 决策树</p>
+
+<p><img src="/images/OR2.png" style="width: 550px;"/></p>
+
+<p>自后向前优化的一个过程. 这就是逆序动态规划.</p></li>
+
+<li><p>General dynamic programming 一般动态规划</p>
+
+<ol>
+<li>Process:
+
+<ul>
+<li>Devide a problem into stages.</li>
+<li>Solve from the very last stage, say, <span class="math inline">\(n\)</span>.</li>
+<li>Use the optimum of stage <span class="math inline">\(n\)</span> to solve the optimization problem of state <span class="math inline">\(n-1\)</span>, etc.</li>
+</ul></li>
+<li>Bellman equation 贝尔曼方程:</li>
+</ol>
+
+<p>$<span class="math inline">\(
+  f_i(s_i)=\min_{x_i}\{c(s_i,x_i)+f_{i+1}(s_{i+1})\}.
+  \)</span>$</p>
+
+<p>In stochastic dynamic programming, the state after decision is random and thus we have the Bellman equation instead as</p>
+
+<p>$<span class="math inline">\(
+  f_i(s_i)=\min_{x_i}\{c(s_i,x_i)+\text{E}[f_{i+1}(s_{i+1})]\}.
+  \)</span>$</p>
+
+<ul>
+<li><strong>NB</strong>: There could be overlapping subproblems, see node with weight 116 on the upper right of the figure above.</li>
+</ul></li>
+
+<li><p>Examples</p>
+
+<ul>
+<li>Project investment</li>
+<li>Hiring job candidates</li>
+<li><strong>Shortest-route problem</strong></li>
+<li>Workforce planning</li>
+<li>Solving LP&rsquo;s using dynamic programming (treat the variables as stages)</li>
+<li>Ordering inventory (simplifies to never order in periods where we still have inventory)</li>
+<li>Egg-breaking (<span class="math inline">\(n\)</span> eggs, <span class="math inline">\(k\)</span> floors, Bellman <span class="math inline">\(f(n,k)=1+\min_x\max\{f(n-1,x-1),f(n,k-x)\}\)</span>, deciding the floor for the first trial, <span class="math inline">\(x\)</span>.)</li>
+</ul></li>
+</ol>
+
+<h1 id="toc_12">Traveling Salesman Problem (TSP)</h1>
+
+<ol>
+<li><p>Description<br />
+推销员要去所有城市(恰好一次), 并且希望总路程最短且最后能回来.</p></li>
+
+<li><p>Algorithm complexity: example of shortest-route algorithm 以最短路径问题为例<br />
+</p>
+
+<ul>
+<li>第一次迭代时需要计算<span class="math inline">\(u_j=\min\{u_j,u_i+d_{ij}\}\)</span>, 即<span class="math inline">\(n-1\)</span>次加法与<span class="math inline">\(n-1\)</span>次比较, 另加上最后从所有<span class="math inline">\(u_j\)</span>中挑出最小的一个, 又是<span class="math inline">\(n-1\)</span>次比较.</li>
+<li>故第一次迭代共<span class="math inline">\(3n-3\)</span>次运算.</li>
+<li>类推, 时间复杂度为<span class="math inline">\(O[3n(n-1)/2]=O(n^2)\)</span>.</li>
+<li>然后考虑推销员问题, 我们会发现无论如何不能由多项式表示其复杂度, 因而把它归类为NP-hard问题, 即在多项式时间内可以转化为NP-complete的问题.</li>
+<li>但NP-complete暂时归为NP, 即多项式内不可解. 因为我们无法写出其多项式表达式.</li>
+</ul></li>
+
+<li><p>Graph 图</p>
+
+<ul>
+<li>Cycle 环: start=end</li>
+<li>Hamiltonian cycle 哈密尔顿环: 包含每个节点恰好一次的环</li>
+<li>因此: <strong>推销员问题亦即是最小哈密尔顿环问题.</strong></li>
+</ul></li>
+
+<li><p>ILP
+如下</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \min\sum_{i=1}^n\sum_{j=1}^n c_{ij}x_{ij}\\
+&amp; \text{ s.t.}
+\begin{cases}
+\sum_{j=1}^nx_{ij}=1,\quad i=1,2,\ldots,n\\
+\sum_{i=1}^nx_{ij}=1,\quad j=1,2,\ldots,n\\
+x_{ij}\in\{0,1\}.
+\end{cases}
+\end{aligned}
+\]</span></p><p>这不就是<strong>assignment problem 运输问题</strong>嘛!<br />
+当然是有区别的, 不然就不会分开教了. 其实上面的ILP完全就是分工问题, 而推销员问题还要加上没有<strong>subtour 子环游</strong>这个条件:</p>
+<p><span class="math display">\[
+(1)\ \sum_{i\in S}\sum_{j\in S}x_{ij}\le |S|-1\qquad
+(2)\ \sum_{i\in S}\sum_{j\in\bar S}x_{ij}\ge 1\qquad
+(3)\ u_i-u_j+nx_{ij}\le n-1,\ \forall i,j
+\]</span></p><p>任选其一. 其中<span class="math inline">\(S\subset N\)</span>, <span class="math inline">\(N\)</span>为所有节点的集合. 直白地讲, 就是随便画个圈, 不可能把这个tour给分成两部分, 必定有边被切断.</p></li>
+
+<li><p>估计时间复杂度的范围</p>
+
+<ul>
+<li>虽然是<span class="math inline">\(NP-hard\)</span>的, 我们仍然可以把推销员问题与别的<span class="math inline">\(P\)</span>问题(什么地方怪怪的)做比较, 从而得到它的时间复杂度的范围. 一个很容易想到的例子就是上面提到的分工问题. 分工问题的条件比推销员问题松, 所以推销员问题的解必定是分工问题的解, 但反之不成立. 这说明分工问题给出了复杂度的一个下界.</li>
+<li>另一方面, 考虑到如果从推销员问题的解中删除一条边, 我们就会得到一棵生成树, 所以最小生成树算法也给出了一个下界.</li>
+</ul></li>
+
+<li><p>具体算法</p>
+
+<ul>
+<li>Iteration: 从分工问题中找推销员问题的解, 逐渐增加条件</li>
+<li>Dynamic programming: 从两个城市开始考虑, 逐渐增加城市个数, 最后考虑节点全集. 考虑的情况有<span class="math inline">\(2^n\)</span>种, 每种最多包含<span class="math inline">\(n\)</span>个节点(包括起点<span class="math inline">\(1\)</span>), 令任意一个节点为终点, 都有至少<span class="math inline">\(n\)</span>条最短路径. 因而时间复杂度为<span class="math inline">\(O(n^22^n)\)</span>.</li>
+<li>Heuristics: 包括
+
+<ul>
+<li>Nearest Neighbor 近邻算法 (<span class="math inline">\(NN(I)\ge rOPT(I)\)</span>),</li>
+<li>MST 最小生成树算法 (<span class="math inline">\(MST(I)\le 2OPT(I)\)</span>),</li>
+<li>Cheapest Insertion 廉价插入算法 (<span class="math inline">\(CI(I)\le 2OPT(I)\)</span>).</li>
+</ul></li>
+</ul></li>
+</ol>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/is-my-apple-pencil-broken/">Is My Apple Pencil Broken!?</a></span>
+  <span class="nav-next"><a href="/blog/bitcoin-time-series/">Bitcoin Inter-exchange Price Spread Prediction</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/is-my-apple-pencil-broken\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/bitcoin-time-series\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/notes-on-operations-research.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

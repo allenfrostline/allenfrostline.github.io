@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Stock Price Simulation - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Stock Price Simulation - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards. &amp;hellip;">
+      <meta property="og:description" content="In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/images/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/stock-price-simulation.md" target="_blank">Edit</a></li>
+
+
+
+<li><a href="/blog/index.xml" type="application/rss+xml" title="RSS feed">RSS</a></li>
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Stock Price Simulation</h1>
+
+
+<h3>
+2019-05-10</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Brownian Motion</a></li>
+
+<li><a href="#toc_1">Geometric Brownian Motion</a></li>
+
+<li><a href="#toc_2">Merton&rsquo;s Jump Diffusion Process</a></li>
+
+<li><a href="#toc_3">The Heston Stochastic Volatility Process</a></li>
+
+<li><a href="#toc_4">Plots</a></li>
+</ul>
+
+</nav>
+<p>In this post, I&rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.</p>
+
+<p><img src="/images/price_sim1.png" alt="" /></p>
+
+<!-- more -->
+
+<p>Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:</p>
+
+<pre><code class="language-py">def prepend(arr, val=0):
+    return np.pad(arr, (1, 0), mode='constant', constant_values=val)
+</code></pre>
+
+<h1 id="toc_0">Brownian Motion</h1>
+
+<p>Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements. The random motion was the solution to massive number of tiny collisions of particles in certain medium. Brownian motion was named after the botanist, Robert Brown, in 1827, and after almost a century introduced into the financial markets. People usually call a standard Brownian motion as a Wiener process, which has the following properties:</p>
+
+<ul>
+<li><span class="math inline">\(W_0\overset{\text{a.s.}}{=}0\newcommand{\d}{\text{d}}\)</span></li>
+<li><span class="math inline">\(W\)</span> has independent increments <span class="math inline">\(\forall t &gt; 0\)</span></li>
+<li><span class="math inline">\(W\)</span> has Gaussian increments: <span class="math inline">\(W_{t + \d t} - W_t \sim \mathcal{N}(0,\d t)\)</span></li>
+<li><span class="math inline">\(W_t\)</span> is continuous in <span class="math inline">\(t\)</span> with probability <span class="math inline">\(1\)</span></li>
+</ul>
+
+<p>A general BM follows SDE:</p>
+<p><span class="math display">\[
+\d S_t = \mu \d t + \sigma \d W_t
+\]</span></p><p>which directly gives solution by take integrals on both sides:</p>
+<p><span class="math display">\[
+S_t = S_0 + \mu t + \sigma W_t.
+\]</span></p><p>With all of these given, we can easily simulate the process as below.</p>
+
+<pre><code class="language-py">class BM:
+    def __init__(self, mu, sigma, seed=None):
+        self.__mu = mu
+        self.__sigma = sigma
+        if seed is not None: np.random.seed(seed)
+
+    def generate(self, n_steps):
+        t = np.arange(n_steps)
+        W = prepend(np.random.normal(0, 1, n_steps - 1)).cumsum()
+        S = self.__mu * t + self.__sigma * W
+        return S
+</code></pre>
+
+<p><strong>Comments</strong>: One may notice that we don&rsquo;t have any constraint posed on <span class="math inline">\(W\)</span> — it can be however positive — and however negative. Therefore, while BM might give a simple and easy-to-implement solution for a short run, we don&rsquo;t really want to use it as it potentially gives us negative prices.</p>
+
+<h1 id="toc_1">Geometric Brownian Motion</h1>
+
+<p>Geometric Brownian Motion (GBM) was famous as been used in Fisher Black and Myron Scholes&rsquo;s 1973 paper, <em>The Pricing of Options and Corporate Liabilities</em>. The process is by definition positive and thus gives a fix for what we doubted in BM. The corresponding SDE is</p>
+<p><span class="math display">\[
+\d S_t = S_t(\mu \d t + \sigma \d W_t)
+\]</span></p><p>which gives solution</p>
+<p><span class="math display">\[
+S_t = S_0\exp\left\{\left(\mu-\frac{\sigma^2}{2}\right)t + \sigma W_t\right\}.
+\]</span></p>
+<pre><code class="language-py">class GBM:
+    def __init__(self, mu, sigma, seed=None):
+        self.__mu = mu
+        self.__sigma = sigma
+        if seed is not None: np.random.seed(seed)
+
+    def generate(self, n_steps):
+        t = np.arange(n_steps)
+        W = BM(0, 1).generate(n_steps)
+        S = np.exp((self.__mu - self.__sigma**2 / 2) * t + self.__sigma * W)
+        return S
+</code></pre>
+
+<p><strong>Comments</strong>: The GBM is good enough for most simulations. However, it is also well-known that the Black-Scholes model cannot give fat tails as is inspected empirically in stock markets.</p>
+
+<h1 id="toc_2">Merton&rsquo;s Jump Diffusion Process</h1>
+
+<p>Robert C. Merton, who shared the 1997 Nobel Price with Scholes (Black had passes away unfortunately), was one of the first academics to address some of the limitations in the GBM. In his 1976 paper, <em>Option Pricing when Underlying Stock Returns are Discontinuous</em>, he superimposed a &ldquo;jump&rdquo; component on the diffusion term so that the model can now simulate sudden economic shocks, i.e. jumps in prices. The jump <span class="math inline">\(J\)</span> is given by the exponential of a compound Poisson process <span class="math inline">\(N\)</span> with normal underlyings. The SDE is as follows.</p>
+<p><span class="math display">\[
+\begin{align*}
+Y_i&amp;\overset{\text{i.i.d.}}{\sim}\mathcal{N}(\gamma, \delta^2)&amp;\text{(Jump Magnitude)}\\
+\d N_t &amp; \sim \text{Pois}(\lambda \d t)&amp;\text{(Poisson Process)}\\
+J_t &amp;= \textstyle{\sum_{i=1}^{N_t}}Y_i&amp;\text{(Jump)}\\
+\d S_t &amp;= S_t (\mu \d t + \sigma \d W_t + \d J_t).\\
+\end{align*}
+\]</span></p><p>Merton&rsquo;s jump diffusion SDE has a closed-form solution:</p>
+<p><span class="math display">\[
+S_t = S_0 \exp\left\{\left(\mu -\frac{\sigma}{2}\right)t + \sigma W_t + J_t\right\}.
+\]</span></p>
+<pre><code class="language-py">class MertonJump:
+    def __init__(self, mu, sigma, lamda, gamma, delta, seed=None):
+        self.__mu = mu
+        self.__sigma = sigma
+        self.__lamda = lamda
+        self.__gamma = gamma
+        self.__delta = delta
+        if seed is not None: np.random.seed(seed)
+
+    def generate(self, n_steps):
+        t = np.arange(n_steps)
+        Y = np.random.normal(self.__gamma, self.__delta, n_steps)
+        N = prepend(np.random.poisson(self.__lamda, n_steps - 1)).cumsum()
+        J = np.array([Y[:i].sum() for i in N])
+        W = BM(0, 1).generate(n_steps)
+        S = np.exp((self.__mu - self.__sigma**2 / 2) * t + self.__sigma * W + J)
+        return S
+</code></pre>
+
+<p><strong>Comments</strong>: Merton&rsquo;s jump process solved the kurtosis mismatch problem in empirical financial data by minimally changing the GBM. However, with the discontinuous (and usually negative, corresponding to market clashes) jumps introduced in the model, we may witness frequent slumps and in general a decline in the total drift. On the other, the jump process still did not solve the constant volatility issue.</p>
+
+<h1 id="toc_3">The Heston Stochastic Volatility Process</h1>
+
+<p>In the early 1990&rsquo;s Steven Heston introduced this model where volatilities, different from the original GBM, are no longer constant. In the Heston model, volatilities evolve according to the Cox-Ingersoll-Ross process with a mean-reverting essense. As there&rsquo;re now two stochastic processes, we need two (potentially correlated) Wiener processes. The SDE is now</p>
+<p><span class="math display">\[
+\begin{align*}
+\d W_t^S\d W_t^V &amp;= \rho\d t &amp; \text{(Correlated Wiener)}\\
+\d V_t &amp;= \kappa (\theta - V_t) \d t + \xi \sqrt{V_t} \d W_t^V &amp;\text{(Cox-Ingersoll-Ross)}\\
+\d S_t &amp;= \mu S_t \d t + \sqrt{V_t}S_t \d W_t^S &amp; \text{(Heston)}
+\end{align*}
+\]</span></p>
+<pre><code class="language-py">class Heston:
+    def __init__(self, mu, theta, kappa, xi, rho, seed=None):
+        self.__mu = mu
+        self.__theta = theta
+        self.__kappa = kappa
+        self.__xi = xi
+        self.__rho = rho
+        if seed is not None: np.random.seed(seed)
+
+    def generate(self, n_steps):
+        # generate correlated BM
+        Z1, Z2 = np.random.multivariate_normal(
+            mean=[0, 0], size=n_steps - 1,
+            cov=np.array([[1, self.__rho], [self.__rho, 1]])
+        ).T
+        # generate Cox-Ingersoll-Ross process of vol
+        V = [self.__theta]
+        for t in range(n_steps - 1):
+            dV = self.__kappa * (self.__theta - V[-1]) + self.__xi * V[-1]**.5 * Z2[t]
+            V.append(abs(V[-1] + dV))
+        V = np.array(V)
+        # generate the Heston process
+        lnS = prepend(np.cumsum(np.array(
+            [self.__mu - _v / 2 + _v**.5 * _z for _v, _z in zip(V, Z1)]
+        )))
+        S = np.exp(lnS)
+        return S
+</code></pre>
+
+<p><strong>Comments</strong>: The Heston model is one of the most popular stochastic volatility models in finance. In case one need even more freedom, he may opt for time-varying parameters e.g. <span class="math inline">\(\mu\to\mu_t\)</span> and <span class="math inline">\(\xi\to\xi_t\)</span>.</p>
+
+<h1 id="toc_4">Plots</h1>
+
+<p>Finally, let&rsquo;s take a look at all the simulated price processes. The Brownian motion is shifted s.t. <span class="math inline">\(S_0=1\)</span> like the rest models. Mutual parameters like <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are set to the same values. Each figure shows <span class="math inline">\(1000\)</span> paths.</p>
+
+<p><img src="/images/price_sim2.png" alt="" /></p>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/content-filtering-tipue-search/">Content Filtering with Hexo Tipue-Search Engine</a></span>
+  <span class="nav-next"><a href="/blog/markdown-test/">Markdown Test</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/content-filtering-tipue-search\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/markdown-test\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/stock-price-simulation.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
