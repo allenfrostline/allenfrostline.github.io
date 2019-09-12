@@ -11,6 +11,60 @@
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Can n! be a Square Number?</title>
+      <link>https://allenfrostline.com/blog/n-fac-square/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/n-fac-square/</guid>
+      <description>
+        &lt;nav&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Original Problem&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;Generalized Problem&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+&lt;p&gt;I read about this simple yet interesting question the other day:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Can &lt;span class=&#34;math inline&#34;&gt;\(n!\)&lt;/span&gt; be a square number?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Of course, here we implcitly assume that &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; is a positive integer. Moreover, we&amp;rsquo;re aware of the trivial case when &lt;span class=&#34;math inline&#34;&gt;\(n=1\)&lt;/span&gt; (and yes it holds in that case). The problem seems easy at first glance but turns out not at all. There are a bunch of ways for you to factorize &lt;span class=&#34;math inline&#34;&gt;\(n!\)&lt;/span&gt; into prime numbers, to construct a pattern of products in the form of a square number, etc. Some may work, some not.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;Original Problem&lt;/h1&gt;
+
+&lt;p&gt;The best solution is given by the &lt;a href=&#34;https://en.wikipedia.org/wiki/Bertrand%27s_postulate&#34;&gt;Bertrand&amp;rsquo;s postulate&lt;/a&gt;, which is a theorem that states for any positive integer &lt;span class=&#34;math inline&#34;&gt;\(n&amp;gt;1\)&lt;/span&gt; we&amp;rsquo;ll always have at least one prime number &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(n&amp;lt;p&amp;lt;2n\)&lt;/span&gt;. The &lt;a href=&#34;https://en.wikipedia.org/wiki/Proof_of_Bertrand%27s_postulate&#34;&gt;proof&lt;/a&gt; is not easy and the statement is just as strong — With Bertrand&amp;rsquo;s postulate we know there&amp;rsquo;s always a prime &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; that satifies &lt;span class=&#34;math inline&#34;&gt;\(\lfloor n / 2\rfloor &amp;lt; p &amp;lt; n\)&lt;/span&gt; and thus in no way can we find another number &lt;span class=&#34;math inline&#34;&gt;\(m&amp;lt;n\)&lt;/span&gt; that has factor &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt;. Being a prime number, &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; itself is not a square either, so we conclude &lt;span class=&#34;math inline&#34;&gt;\(n!\)&lt;/span&gt; can never be a square number for any &lt;span class=&#34;math inline&#34;&gt;\(n&amp;gt;1\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_1&#34;&gt;Generalized Problem&lt;/h1&gt;
+
+&lt;p&gt;Now that we&amp;rsquo;ve successfully arrived at a conclusion for &lt;span class=&#34;math inline&#34;&gt;\(n!\)&lt;/span&gt;, let&amp;rsquo;s try another problem that highly resembles the one we just solved:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Can product of &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; consecutive integers be a square number?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Again we&amp;rsquo;re here neglecting the trivial cases when &lt;span class=&#34;math inline&#34;&gt;\(n=1\)&lt;/span&gt; &amp;lsquo;cause that then is a problem of whether the only number is a square or not. When &lt;span class=&#34;math inline&#34;&gt;\(n&amp;gt;1\)&lt;/span&gt;, the resemblance is apparent: when we consider the first &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; positive integers, the problem falls back to the first one. However, how are we gonna answer this question in general? An educated guess would be a &amp;ldquo;no&amp;rdquo; with the conclusion from the first problem and the straightforward observation for &lt;span class=&#34;math inline&#34;&gt;\(n=2\)&lt;/span&gt;. When &lt;span class=&#34;math inline&#34;&gt;\(n=2\)&lt;/span&gt;, we&amp;rsquo;re basically asking if &lt;span class=&#34;math inline&#34;&gt;\(k\cdot(k+1)\)&lt;/span&gt; can be a perfect square for positive &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;. It can&amp;rsquo;t, because &lt;span class=&#34;math inline&#34;&gt;\(k^2&amp;lt;k\cdot(k+1)&amp;lt;(k+1)^2\)&lt;/span&gt; and there&amp;rsquo;s simply no square number in between of two consecutive squares.&lt;/p&gt;
+
+&lt;p&gt;When &lt;span class=&#34;math inline&#34;&gt;\(n=3\)&lt;/span&gt;, it&amp;rsquo;s a little trickier but still we can handle it. Notice by Euclidean, &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; is coprime with both &lt;span class=&#34;math inline&#34;&gt;\(k-1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(k+1\)&lt;/span&gt; respectively and therefore also with &lt;span class=&#34;math inline&#34;&gt;\(k^1-1\)&lt;/span&gt;. This means &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; shares no common factors with &lt;span class=&#34;math inline&#34;&gt;\(k^2-1\)&lt;/span&gt;. Hence the product of the two has no duplicate factors and cannot be a perfect square.&lt;/p&gt;
+
+&lt;p&gt;When &lt;span class=&#34;math inline&#34;&gt;\(n=4\)&lt;/span&gt;, let &lt;span class=&#34;math inline&#34;&gt;\(x=k+1/2\)&lt;/span&gt; and we know the product can be written as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+(n-1)\cdot n\cdot (n+1)\cdot (n+2) &amp;amp;=
+\left(k-\frac{3}{2}\right)\left(k-\frac{1}{2}\right)\left(k+\frac{1}{2}\right)\left(k+\frac{3}{2}\right)\\&amp;amp;=
+\left(k^2-\frac{9}{4}\right)\left(k^2 - \frac{1}{4}\right) \\&amp;amp;=
+\left(k^2-\frac{5}{4} - 1\right)\left(k^2 - \frac{5}{4} + 1\right) = \left(k^2- \frac{5}{4}\right)^{\!\!2} - 1
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and thus by Euclidean (again) this product cannot be a perfect square. What about &lt;span class=&#34;math inline&#34;&gt;\(n=5\)&lt;/span&gt;? What about larger and even general &lt;span class=&#34;math inline&#34;&gt;\(n&amp;gt;1\)&lt;/span&gt;? It turns out to be an extremely hard one to answer but luckily, &lt;a href=&#34;https://en.wikipedia.org/wiki/Paul_Erdős&#34;&gt;Paul Erdös&lt;/a&gt; and &lt;a href=&#34;https://en.wikipedia.org/wiki/John_Selfridge&#34;&gt;John Selfridge&lt;/a&gt; gave a rigorous proof in their &lt;a href=&#34;https://www.renyi.hu/~p_erdos/1975-46.pdf&#34;&gt;paper&lt;/a&gt; published back in 1975. The conclusion, namely that the product of any two or more consecutive positive integers is never a perfect square, is merely a special case of their first result. Actually, theorem 1 in the paper states that the product of two or more consecutive positive integers is never a &lt;strong&gt;power&lt;/strong&gt;, i.e. can never be represented in the form of &lt;span class=&#34;math inline&#34;&gt;\(p^t\)&lt;/span&gt; where both &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; are positive integers.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
       <title>Continuous Integration in Blogging</title>
       <link>https://allenfrostline.com/blog/continuous-integration-blog/</link>
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
