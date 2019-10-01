@@ -7,8 +7,139 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Sat, 28 Sep 2019 08:40:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 30 Sep 2019 21:06:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Notes on Multivariate Data Analysis via Matrix Decomposition</title>
+      <link>https://allenfrostline.com/blog/notes-on-matrix-decomp/</link>
+      <pubDate>Mon, 30 Sep 2019 21:06:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/notes-on-matrix-decomp/</guid>
+      <description>
+        &lt;nav&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Notations&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;Matrix Multiplication&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_2&#34;&gt;Norms&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;Inner Products&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Eigenvalues and Eigenvectors&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;Singular Value Decomposition (SVD)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;style&gt;
+code {
+    background: darkred;
+    color: white;
+    border: 1px solid darkred;
+    border-radius: 3px;
+    padding: 0px 2px 2px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
+h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
+header h1:before {content: &#39;&#39;}
+&lt;/style&gt;
+
+&lt;p&gt;These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;Notations&lt;/h1&gt;
+
+&lt;p&gt;First let&amp;rsquo;s give some standard notations used in this course. Let&amp;rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_1&#34;&gt;Matrix Multiplication&lt;/h2&gt;
+
+&lt;p&gt;We denote a matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt;, with its entries defined as &lt;span class=&#34;math inline&#34;&gt;\([a_{ij}]_{i,j=1}^{m,n}\)&lt;/span&gt;. Similarly, we define &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}=[b_{jk}]_{j,k=1}^{n,p}\)&lt;/span&gt; and thus the multiplication is defined as &lt;span class=&#34;math inline&#34;&gt;\(\bs{AB} = [\sum_{j=1}^n a_{ij}b_{jk}]_{i,k=1}^{n,p}\)&lt;/span&gt;, which can also be represented in three other ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;vector form, using &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{b}\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;a matrix of products of &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{b}\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;a matrix of products of &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A special example of such representation: let&amp;rsquo;s assume&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{A}=[\bs{a}_1,\bs{a}_2,\ldots,\bs{a}_n]\in\R^{m\times n}\text{   and   }
+\bs{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;then we have right away &lt;span class=&#34;math inline&#34;&gt;\(\bs{AD}=[\bs{a}_id_i]_{i=1}^n\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Exercise&lt;/code&gt; With multiplication we care ranks of matrices. There is a quick conclusion: If &lt;span class=&#34;math inline&#34;&gt;\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{xy&#39;})=1\)&lt;/span&gt;. Conversely, if &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{A})=1\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{xy&#39;}=\bs{A}\)&lt;/span&gt;. Prove it.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_2&#34;&gt;Norms&lt;/h2&gt;
+
+&lt;p&gt;There are two types of norms in this course we consider:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(Euclidean) We define the &lt;span class=&#34;math inline&#34;&gt;\(l^1\)&lt;/span&gt;-norm as &lt;span class=&#34;math inline&#34;&gt;\(\norm{x}_1 = \sum_{i=1}^n |x_i|\)&lt;/span&gt;, define &lt;span class=&#34;math inline&#34;&gt;\(l^2\)&lt;/span&gt;-norm as &lt;span class=&#34;math inline&#34;&gt;\(\norm{x}_2 = \sqrt{\bs{x&#39;x}}\)&lt;/span&gt;, define &lt;span class=&#34;math inline&#34;&gt;\(l^{\infty}\)&lt;/span&gt;-norm as &lt;span class=&#34;math inline&#34;&gt;\(\norm{x}_{\infty} = \max_{1\le i \le n}\{|x_i|\}\)&lt;/span&gt;, and define the Mahalanobis norm as &lt;span class=&#34;math inline&#34;&gt;\(\norm{x}_A = \sqrt{\bs{x&#39;Ax}}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Frobenius) We define the Frobenius norm of a matrix as &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{A}}_F=\sqrt{\sum_{i=1}^m\sum_{j=1}^n a_{ij}^2}\)&lt;/span&gt;. The spectral 2-norm of a matrix is defined as &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{A}}_2=\max_{\bs{x}\neq \bs{0}} \norm{\bs{Ax}}_2 / \norm{\bs{x}}_2\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;Property&lt;/code&gt; What makes these norms?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{v}}=0\)&lt;/span&gt; iff. &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}=\bs{0}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\norm{\alpha \bs{v}} = |\alpha|\cdot\norm{\bs{v}}\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\alpha\in\R\)&lt;/span&gt; and any &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}\in\mathcal{V}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Triangular inequality) &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}, \bs{v}\in\mathcal{V}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Submultiplicative) &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{AB}}\le \norm{\bs{A}}\cdot \norm{\bs{B}}\)&lt;/span&gt; for every formable matrices &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;Exercise&lt;/code&gt; Try to prove them for Euclidean 2-norm, Frobenius norm and spectral 2-norm.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_3&#34;&gt;Inner Products&lt;/h2&gt;
+
+&lt;p&gt;There are two types of inner products we consider:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(Euclidean) We define the inner product of vectors &lt;span class=&#34;math inline&#34;&gt;\(\bs{x},\bs{y}\in\R^n\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(\bs{x&#39;y}=\sum_{i=1}^n x_iy_i\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Frobenius) We define the inner product of matrices &lt;span class=&#34;math inline&#34;&gt;\(\bs{A},\bs{B}\in\R^{m\times n}\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(\braket{\bs{A},\bs{B}}=\tr(\bs{A&#39;B})=\sum_{i=1}^m\sum_{j=1}^n a_{ij}b_{ij}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A famous inequality related to these inner products is the Cauchy-Schwarz inequality, which states&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(Euclidean) &lt;span class=&#34;math inline&#34;&gt;\(|\bs{x&#39;y}|\le \norm{\bs{x}}_2\cdot\norm{\bs{y}}_2\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{x,y}\in\R^n\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Frobenius) &lt;span class=&#34;math inline&#34;&gt;\(|\braket{\bs{A},\bs{B}}|\le\norm{\bs{A}}_F\cdot\norm{\bs{B}}_F\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{A},\bs{B}\in\R^{m\times n}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;toc_4&#34;&gt;Eigenvalues and Eigenvectors&lt;/h2&gt;
+
+&lt;p&gt;For square matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt;, if &lt;span class=&#34;math inline&#34;&gt;\(\bs{0}\neq \bs{x}\in\C^n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda\in\C\)&lt;/span&gt; is s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{Ax} = \lambda\bs{x}\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; is called an engenvalue of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{x}\)&lt;/span&gt; is called the &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;-engenvector of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ideally, we want a matrix to have &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; eigenvectors and &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; corresponding eigenvectors, linearly independent to each other. This is not always true.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt; have &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; eigenvalues iff. there exists an invertible &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\in\R^{n\times n}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}^{-1}\bs{A}\bs{X}=\bs{\Lambda}\)&lt;/span&gt;, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; is diagonizable. This gives &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{X}\bs{\Lambda}\bs{X}^{-1}\)&lt;/span&gt;, which is called the eigenvalue decomposition (EVD).&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; (Spectral Theorem for Symmetric Matrices) For symmetric matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt; there always exists an orthogonal matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}\)&lt;/span&gt;, namely &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}&#39;\bs{Q}=\bs{I}\)&lt;/span&gt;, that gives &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{Q\Lambda Q}&#39;\)&lt;/span&gt;, which is called the symmetric EVD, aka. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; being orthogonally diagonalizable.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Property&lt;/code&gt; We have several properties following the second theorem above. For all &lt;span class=&#34;math inline&#34;&gt;\(i=1,2,\ldots, n\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\bs{q}_i = \lambda_i \bs{q}_i\)&lt;/span&gt; (can be proved using &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}^{-1}=\bs{Q}&#39;\)&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{q}_i}_2=1\)&lt;/span&gt; (can be proved using &lt;span class=&#34;math inline&#34;&gt;\(\bs{QQ}&#39;=\bs{I}\)&lt;/span&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The second theorem above can also be represented as&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; If &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{A}&#39;\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; has &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; orthogonal eigenvectors.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_5&#34;&gt;Singular Value Decomposition (SVD)&lt;/h1&gt;
+
+&lt;p&gt;To be continued&amp;hellip;&lt;/p&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>行李箱</title>

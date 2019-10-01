@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Multivariate Data Analysis via Matrix Decomposition - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Multivariate Data Analysis via Matrix Decomposition - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on &amp;hellip;">
+      <meta property="og:description" content="These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <script async src="/js/load-typekit.js"></script>
+
+<script>
+(function(u, c) {
+  var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  o.src = u;
+  if (c) { o.addEventListener('load', function (e) { c(e); }); }
+  s.parentNode.insertBefore(o, s);
+})('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function() {
+  pangu.spacingPage();
+});
+</script>
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/notes-on-matrix-decomp.md" target="_blank">Edit</a></li>
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Notes on Multivariate Data Analysis via Matrix Decomposition</h1>
+
+
+<h3>
+2019-09-30</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Notations</a>
+<ul>
+<li><a href="#toc_1">Matrix Multiplication</a></li>
+
+<li><a href="#toc_2">Norms</a></li>
+
+<li><a href="#toc_3">Inner Products</a></li>
+
+<li><a href="#toc_4">Eigenvalues and Eigenvectors</a></li>
+</ul></li>
+
+<li><a href="#toc_5">Singular Value Decomposition (SVD)</a></li>
+</ul>
+
+</nav>
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border: 1px solid darkred;
+    border-radius: 3px;
+    padding: 0px 2px 2px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+
+<h1 id="toc_0">Notations</h1>
+
+<p>First let&rsquo;s give some standard notations used in this course. Let&rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.</p>
+
+<h2 id="toc_1">Matrix Multiplication</h2>
+
+<p>We denote a matrix <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span>, with its entries defined as <span class="math inline">\([a_{ij}]_{i,j=1}^{m,n}\)</span>. Similarly, we define <span class="math inline">\(\bs{B}=[b_{jk}]_{j,k=1}^{n,p}\)</span> and thus the multiplication is defined as <span class="math inline">\(\bs{AB} = [\sum_{j=1}^n a_{ij}b_{jk}]_{i,k=1}^{n,p}\)</span>, which can also be represented in three other ways:</p>
+
+<ul>
+<li>vector form, using <span class="math inline">\(\bs{a}\)</span> and <span class="math inline">\(\bs{b}\)</span></li>
+<li>a matrix of products of <span class="math inline">\(A\)</span> and <span class="math inline">\(\bs{b}\)</span></li>
+<li>a matrix of products of <span class="math inline">\(\bs{a}\)</span> and <span class="math inline">\(\bs{B}\)</span></li>
+</ul>
+
+<p>A special example of such representation: let&rsquo;s assume</p>
+<p><span class="math display">\[
+\bs{A}=[\bs{a}_1,\bs{a}_2,\ldots,\bs{a}_n]\in\R^{m\times n}\text{   and   }
+\bs{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},\]</span></p><p>then we have right away <span class="math inline">\(\bs{AD}=[\bs{a}_id_i]_{i=1}^n\)</span>.</p>
+
+<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <span class="math inline">\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span>, then <span class="math inline">\(\rank(\bs{xy'})=1\)</span>. Conversely, if <span class="math inline">\(\rank(\bs{A})=1\)</span>, then <span class="math inline">\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span> s.t. <span class="math inline">\(\bs{xy'}=\bs{A}\)</span>. Prove it.</p>
+
+<h2 id="toc_2">Norms</h2>
+
+<p>There are two types of norms in this course we consider:</p>
+
+<ul>
+<li>(Euclidean) We define the <span class="math inline">\(l^1\)</span>-norm as <span class="math inline">\(\norm{x}_1 = \sum_{i=1}^n |x_i|\)</span>, define <span class="math inline">\(l^2\)</span>-norm as <span class="math inline">\(\norm{x}_2 = \sqrt{\bs{x'x}}\)</span>, define <span class="math inline">\(l^{\infty}\)</span>-norm as <span class="math inline">\(\norm{x}_{\infty} = \max_{1\le i \le n}\{|x_i|\}\)</span>, and define the Mahalanobis norm as <span class="math inline">\(\norm{x}_A = \sqrt{\bs{x'Ax}}\)</span>.</li>
+<li>(Frobenius) We define the Frobenius norm of a matrix as <span class="math inline">\(\norm{\bs{A}}_F=\sqrt{\sum_{i=1}^m\sum_{j=1}^n a_{ij}^2}\)</span>. The spectral 2-norm of a matrix is defined as <span class="math inline">\(\norm{\bs{A}}_2=\max_{\bs{x}\neq \bs{0}} \norm{\bs{Ax}}_2 / \norm{\bs{x}}_2\)</span>.</li>
+</ul>
+
+<p><code>Property</code> What makes these norms?</p>
+
+<ul>
+<li><span class="math inline">\(\norm{\bs{v}}=0\)</span> iff. <span class="math inline">\(\bs{v}=\bs{0}\)</span>.</li>
+<li><span class="math inline">\(\norm{\alpha \bs{v}} = |\alpha|\cdot\norm{\bs{v}}\)</span> for any <span class="math inline">\(\alpha\in\R\)</span> and any <span class="math inline">\(\bs{v}\in\mathcal{V}\)</span>.</li>
+<li>(Triangular inequality) <span class="math inline">\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)</span> for any <span class="math inline">\(\bs{u}, \bs{v}\in\mathcal{V}\)</span>.</li>
+<li>(Submultiplicative) <span class="math inline">\(\norm{\bs{AB}}\le \norm{\bs{A}}\cdot \norm{\bs{B}}\)</span> for every formable matrices <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(\bs{B}\)</span>.</li>
+</ul>
+
+<p><code>Exercise</code> Try to prove them for Euclidean 2-norm, Frobenius norm and spectral 2-norm.</p>
+
+<h2 id="toc_3">Inner Products</h2>
+
+<p>There are two types of inner products we consider:</p>
+
+<ul>
+<li>(Euclidean) We define the inner product of vectors <span class="math inline">\(\bs{x},\bs{y}\in\R^n\)</span> as <span class="math inline">\(\bs{x'y}=\sum_{i=1}^n x_iy_i\)</span>.</li>
+<li>(Frobenius) We define the inner product of matrices <span class="math inline">\(\bs{A},\bs{B}\in\R^{m\times n}\)</span> as <span class="math inline">\(\braket{\bs{A},\bs{B}}=\tr(\bs{A'B})=\sum_{i=1}^m\sum_{j=1}^n a_{ij}b_{ij}\)</span>.</li>
+</ul>
+
+<p>A famous inequality related to these inner products is the Cauchy-Schwarz inequality, which states</p>
+
+<ul>
+<li>(Euclidean) <span class="math inline">\(|\bs{x'y}|\le \norm{\bs{x}}_2\cdot\norm{\bs{y}}_2\)</span> for any <span class="math inline">\(\bs{x,y}\in\R^n\)</span>.</li>
+<li>(Frobenius) <span class="math inline">\(|\braket{\bs{A},\bs{B}}|\le\norm{\bs{A}}_F\cdot\norm{\bs{B}}_F\)</span> for any <span class="math inline">\(\bs{A},\bs{B}\in\R^{m\times n}\)</span>.</li>
+</ul>
+
+<h2 id="toc_4">Eigenvalues and Eigenvectors</h2>
+
+<p>For square matrix <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span>, if <span class="math inline">\(\bs{0}\neq \bs{x}\in\C^n\)</span> and <span class="math inline">\(\lambda\in\C\)</span> is s.t. <span class="math inline">\(\bs{Ax} = \lambda\bs{x}\)</span>, then <span class="math inline">\(\lambda\)</span> is called an engenvalue of <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(\bs{x}\)</span> is called the <span class="math inline">\(\lambda\)</span>-engenvector of <span class="math inline">\(\bs{A}\)</span>.</p>
+
+<p>Ideally, we want a matrix to have <span class="math inline">\(n\)</span> eigenvectors and <span class="math inline">\(n\)</span> corresponding eigenvectors, linearly independent to each other. This is not always true.</p>
+
+<p><code>Theorem</code> <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> have <span class="math inline">\(n\)</span> eigenvalues iff. there exists an invertible <span class="math inline">\(\bs{X}\in\R^{n\times n}\)</span> s.t. <span class="math inline">\(\bs{X}^{-1}\bs{A}\bs{X}=\bs{\Lambda}\)</span>, i.e. <span class="math inline">\(\bs{A}\)</span> is diagonizable. This gives <span class="math inline">\(\bs{A}=\bs{X}\bs{\Lambda}\bs{X}^{-1}\)</span>, which is called the eigenvalue decomposition (EVD).</p>
+
+<p><code>Theorem</code> (Spectral Theorem for Symmetric Matrices) For symmetric matrix <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> there always exists an orthogonal matrix <span class="math inline">\(\bs{Q}\)</span>, namely <span class="math inline">\(\bs{Q}'\bs{Q}=\bs{I}\)</span>, that gives <span class="math inline">\(\bs{A}=\bs{Q\Lambda Q}'\)</span>, which is called the symmetric EVD, aka. <span class="math inline">\(\bs{A}\)</span> being orthogonally diagonalizable.</p>
+
+<p><code>Property</code> We have several properties following the second theorem above. For all <span class="math inline">\(i=1,2,\ldots, n\)</span></p>
+
+<ul>
+<li><span class="math inline">\(\bs{A}\bs{q}_i = \lambda_i \bs{q}_i\)</span> (can be proved using <span class="math inline">\(\bs{Q}^{-1}=\bs{Q}'\)</span>)</li>
+<li><span class="math inline">\(\norm{\bs{q}_i}_2=1\)</span> (can be proved using <span class="math inline">\(\bs{QQ}'=\bs{I}\)</span>)</li>
+</ul>
+
+<p>The second theorem above can also be represented as</p>
+
+<p><code>Theorem</code> If <span class="math inline">\(\bs{A}=\bs{A}'\)</span>, then <span class="math inline">\(\bs{A}\)</span> has <span class="math inline">\(n\)</span> orthogonal eigenvectors.</p>
+
+<h1 id="toc_5">Singular Value Decomposition (SVD)</h1>
+
+<p>To be continued&hellip;</p>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/suitcase/">行李箱</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/suitcase\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/notes-on-matrix-decomp.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
