@@ -40,9 +40,8 @@
 code {
     background: darkred;
     color: white;
-    border: 1px solid darkred;
     border-radius: 3px;
-    padding: 0px 2px 2px 2px;
+    padding: 0px 2px 1px 2px;
 }
 
 header.title {counter-reset: h1 -1}
