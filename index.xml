@@ -24408,7 +24408,7 @@ hexo init
       <guid>https://allenfrostline.com/vitae/</guid>
       <description>
         &lt;style&gt;
-.underline{ border-bottom: 1px dashed #000; width: 100%; display: block; }
+.underline { border-bottom: 1px dashed #000; width: 100%; display: block; }
 .main li, .main p {line-height: 1; padding: 0; margin: 2px 0}
 .main ul {margin-top: 0; margin-bottom: 0}
 .main table { line-height: 1.25; table-layout: fixed; width: 100%; text-align: justify; font-size: 1em; border: 0; overflow: visible; }
@@ -24605,11 +24605,13 @@ hexo init
 &lt;details&gt;&lt;summary&gt;蛋白曲奇&lt;/summary&gt;主要是为了处理其它烘焙产品剩下的蛋白。黄油 100 克（比一条 114 克略少）软化加糖粉 40 克打发，加盐 2 克继续打，蛋清 30 克分几次加入再打。低粉 100 克、玉米淀粉 25 克搅匀。裱花袋挤圈圈。烤箱 180 度（华氏 356）烤 10 到 12 分钟。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;豆豉蒸排骨&lt;/summary&gt;排骨浸泡焯水沥干，加姜丝、糖、酱油、蒜蓉、淀粉拌匀，加豆豉，蒸二十分钟。喜辣可放小尖椒段。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;辣子鸡丁&lt;/summary&gt;鸡腿肉切丁，加盐、料酒、酱油腌之。炸鸡块两遍。捞起后放姜蒜片、花椒辣椒炸出麻辣味，倒入鸡块，加白糖、鸡粉，撒葱段、白芝麻。放辣椒时视辣度量力而为，不要盲目听信菜谱里说的在辣椒堆里找鸡块很爽，要是辣椒本身就超辣，可能会辣出人命。&lt;/details&gt;
+&lt;details&gt;&lt;summary&gt;鲍汁排骨&lt;/summary&gt;排骨加盐和水（没过）抓5分钟，入清水浸泡1小时后挤干水分。加盐和1个蛋清拌匀，加酱汁（葱姜剁碎入鲍汁25g、生抽15g，拌胡椒粉、白糖、老抽、豆豉少许）腌制1小时。加淀粉拌匀，铺在白菜上蒸45分钟。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;黄焖鸡&lt;/summary&gt;鸡腿肉切块。冷油炒糖（白糖或冰糖），倒鸡块，炒，倒料酒，生姜和干辣椒，两勺酱油。如果汁水多就不要另加水，倒香菇片，白胡椒粉，盐，煮之。放青椒、味精，炒炒出锅。&lt;/details&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_3&#34;&gt;虾兵蟹将&lt;/h1&gt;
 
-&lt;p&gt;&lt;details&gt;&lt;summary&gt;清蒸鱼&lt;/summary&gt;鱼身划刀，抹盐巴、料酒，塞姜片腌10分钟。蒸15分钟后铺葱姜丝，加蒸鱼豉油，淋热油，出锅。&lt;/details&gt;
+&lt;p&gt;&lt;details&gt;&lt;summary&gt;大虾粉丝煲&lt;/summary&gt;8只大虾：虾头虾壳加料酒和少量水煮沸转小火焖20分钟，高汤过筛；虾身带尾两面煎上色（半熟）备用。热油爆香葱、姜、蒜、洋葱、小辣椒，加粉丝2捆（记得冲冷水晾干）后加虾高汤。入虾身，浇酱汁（砂糖大半勺，蚝油、酱油各两大勺，胡椒适量，盐一小撮）后小火焖6分钟。&lt;/details&gt;
+&lt;details&gt;&lt;summary&gt;清蒸鱼&lt;/summary&gt;鱼身划刀，抹盐巴、料酒，塞姜片腌10分钟。蒸15分钟后铺葱姜丝，加蒸鱼豉油，淋热油，出锅。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;炒花蛤&lt;/summary&gt;花蛤盐水吐沙洗净，开水1分钟取出再洗一遍。热锅冷油入姜、蒜、辣至炒香，加花蛤2-3分钟后加生抽、料酒、蚝油，加适量盐然后勾芡。加葱花，出锅。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;蒜蓉粉丝蒸扇贝&lt;/summary&gt;扇贝分离成壳和肉。壳刷净，肉用料酒腌制少许。粉丝入热水泡软，用筷子卷起来入扇贝壳。在粉丝上摆贝肉并撒少许蒜蓉。其余蒜蓉入油锅炒香至淡黄色，加盐和蒸鱼豉油淋在贝肉上。蒸5-6分钟出锅撒葱花、椒丝，淋热油。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;蛤蜊炖蛋&lt;/summary&gt;蛤蜊盐水吐沙洗净，姜水烧至打开并捞出（蛤蜊汤漂去浮沫备用）。鸡蛋加蛤蜊汤（两倍蛋液）打匀。蛤蜊装盘倒入蛋液蒸5-10分钟。&lt;/details&gt;&lt;/p&gt;
