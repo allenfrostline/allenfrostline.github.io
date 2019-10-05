@@ -7,8 +7,114 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Mon, 30 Sep 2019 21:06:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 04 Oct 2019 18:15:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Notes on Mathematical Market Microstructure</title>
+      <link>https://allenfrostline.com/blog/notes-on-microstructure/</link>
+      <pubDate>Fri, 04 Oct 2019 18:15:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/notes-on-microstructure/</guid>
+      <description>
+        &lt;nav&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Introduction&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;Definition of Market Microstructure&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_2&#34;&gt;Frog&amp;rsquo;s Eye View&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;Principle of Ma&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Characteristics of Transactions Data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;style&gt;
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
+h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
+header h1:before {content: &#39;&#39;}
+&lt;/style&gt;
+
+&lt;p&gt;Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In this section we start with an overview of market microstructure as a whole.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_1&#34;&gt;Definition of Market Microstructure&lt;/h2&gt;
+
+&lt;p&gt;Maureen O&amp;rsquo;Hara defines market microstructure as&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; the study of the process and outcomes of exchanging assets under explicit trading rules. While much of economics abstracts from the mechanics of trading, microstructure literature analyzes how specific trading mechanisms affect the price formation process.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;which is generally shown by high frequency trading.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_2&#34;&gt;Frog&amp;rsquo;s Eye View&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(Fundamental Assumption) &lt;a href=&#34;https://en.wikipedia.org/wiki/Central_limit_theorem&#34;&gt;Central Limit Theorem&lt;/a&gt; does not work. Price is not observable unless there&amp;rsquo;s a trade and thus neither &lt;em&gt;number&lt;/em&gt; or &lt;em&gt;size&lt;/em&gt; of price movements during a period of time is not garanteed. In fact, no matter how many points we sample from historical data, the mass distribution of price jumps has fatter tails than normal distribution, which means CLT is not working.&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;(Price Formation and Discovery) Last price is not necessarily an indicator of where it has now formed. Also, price discovery is a &lt;em&gt;destructive&lt;/em&gt; experiment involving unique counterpart.&lt;/li&gt;
+&lt;li&gt;(Uncertainty Principle) Like quantum mechanics, we can never measure &lt;em&gt;simultaneously&lt;/em&gt; price and its volatility manifested in a derivative product. Instead of a number, price is considered a distribution.&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;(The Two Slits Experiment) An order which passed through the previous slit may pass again or be submitted one of the following: hit, lift or join. This activity affacts the state of the trader&amp;rsquo;ss decision at subsequent times.&lt;/li&gt;
+&lt;li&gt;(Technology) Colocated servers; GPS antennas for timing; fiber optics vs. microwave&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;; Field-Programmable Gate Array (FPGA) and Graphics Processing Unit (GPU); big data.&lt;/li&gt;
+&lt;li&gt;(Regulation) &lt;a href=&#34;https://www.bloomberg.com/quicktake/spoofing&#34;&gt;Spoofing&lt;/a&gt; (also see figure below); Rule 610 (locking the market); Dodd-Frank Act&lt;a href=&#34;violation of bids and offers&#34;&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;(Future) Direct Market Access (DMA); dark pools; cost of connectivity; speed of light.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img alt=&#34;spoofing&#34; src=&#34;https://allenfrostline.com/images/notes-on-microstructure1.png&#34; style=&#34;width: min(100%, 300px)&#34;&gt;&lt;/src&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_3&#34;&gt;Principle of Ma&lt;/h2&gt;
+
+&lt;p&gt;Ma means empty, spatial void, and interval of space or time in Japanese. The Zen Principle of Ma, when in microstructure context, basically emphasizes that the more &amp;ldquo;micro&amp;rdquo; we go into the data, the more randomness we&amp;rsquo;ll observe.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_4&#34;&gt;Characteristics of Transactions Data&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Randomly spaced time intervals (Principle of Ma). Trading intensity contains important information.&lt;/li&gt;
+&lt;li&gt;Discrete-valued prices can only be multiples of tick size.&lt;/li&gt;
+&lt;li&gt;Diurnal patterns: periodic intensity. For example, high at the
+beginning and at the end of the trading session.&lt;/li&gt;
+&lt;li&gt;To observe microstructure time resolution currently needs to be in microseconds.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;toc_5&#34;&gt;To Be Continued&lt;/h1&gt;
+
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;One solution to cope with this discrepancy, is to allow infinite volatility. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+
+&lt;li id=&#34;fn:2&#34;&gt;Thanks to &lt;a href=&#34;https://en.wikipedia.org/wiki/Uncertainty_principle&#34;&gt;Heisenberg&lt;/a&gt;, we can gauge this uncertainty in quantum mechanics. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+
+&lt;li id=&#34;fn:3&#34;&gt;Microwave travels faster and easier to deploy, but suffers from less bandwidth and sensitivity to weather conditions. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>Notes on Multivariate Data Analysis via Matrix Decomposition</title>
@@ -23795,6 +23901,23 @@ plt.show()
 &lt;/ul&gt;
 
 &lt;/nav&gt;
+
+&lt;style&gt;
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
+h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
+header h1:before {content: &#39;&#39;}
+&lt;/style&gt;
+
 &lt;p&gt;These are the notes taken throughout my weekly meetings with Dr. Bekker at RuG. We&amp;rsquo;re using the econometrics book written by Fumio Hayashi&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in 2000 and mainly focused on the chapters about asymptotic theories. The book has covered almost every inch of classical econometrics and is by far the best advanced econometrics book in my mind. I&amp;rsquo;m sure I&amp;rsquo;ll go back to these notes from time to time.&lt;/p&gt;
 
 &lt;!-- more --&gt;

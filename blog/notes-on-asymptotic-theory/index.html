@@ -121,6 +121,23 @@
 </ul>
 
 </nav>
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+
 <p>These are the notes taken throughout my weekly meetings with Dr. Bekker at RuG. We&rsquo;re using the econometrics book written by Fumio Hayashi<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> in 2000 and mainly focused on the chapters about asymptotic theories. The book has covered almost every inch of classical econometrics and is by far the best advanced econometrics book in my mind. I&rsquo;m sure I&rsquo;ll go back to these notes from time to time.</p>
 
 <!-- more -->
