@@ -118,7 +118,18 @@
 <li><a href="#toc_4">Eigenvalues and Eigenvectors</a></li>
 </ul></li>
 
-<li><a href="#toc_5">Singular Value Decomposition (SVD)</a></li>
+<li><a href="#toc_5">Singular Value Decomposition (SVD)</a>
+<ul>
+<li><a href="#toc_6">Definition</a></li>
+
+<li><a href="#toc_7">Terminology</a></li>
+
+<li><a href="#toc_8">Three Forms of SVD</a></li>
+
+<li><a href="#toc_9">Applications of SVD</a></li>
+
+<li><a href="#toc_10">Existence of SVD</a></li>
+</ul></li>
 </ul>
 
 </nav>
@@ -176,7 +187,7 @@ header h1:before {content: ''}
 <ul>
 <li><span class="math inline">\(\norm{\bs{v}}=0\)</span> iff. <span class="math inline">\(\bs{v}=\bs{0}\)</span>.</li>
 <li><span class="math inline">\(\norm{\alpha \bs{v}} = |\alpha|\cdot\norm{\bs{v}}\)</span> for any <span class="math inline">\(\alpha\in\R\)</span> and any <span class="math inline">\(\bs{v}\in\mathcal{V}\)</span>.</li>
-<li>(Triangular inequality) <span class="math inline">\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)</span> for any <span class="math inline">\(\bs{u}, \bs{v}\in\mathcal{V}\)</span>.</li>
+<li>(Triangular Inequality) <span class="math inline">\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)</span> for any <span class="math inline">\(\bs{u}, \bs{v}\in\mathcal{V}\)</span>.</li>
 <li>(Submultiplicative) <span class="math inline">\(\norm{\bs{AB}}\le \norm{\bs{A}}\cdot \norm{\bs{B}}\)</span> for every formable matrices <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(\bs{B}\)</span>.</li>
 </ul>
 
@@ -206,7 +217,10 @@ header h1:before {content: ''}
 
 <p><code>Theorem</code> <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> have <span class="math inline">\(n\)</span> eigenvalues iff. there exists an invertible <span class="math inline">\(\bs{X}\in\R^{n\times n}\)</span> s.t. <span class="math inline">\(\bs{X}^{-1}\bs{A}\bs{X}=\bs{\Lambda}\)</span>, i.e. <span class="math inline">\(\bs{A}\)</span> is diagonizable. This gives <span class="math inline">\(\bs{A}=\bs{X}\bs{\Lambda}\bs{X}^{-1}\)</span>, which is called the eigenvalue decomposition (EVD).</p>
 
-<p><code>Theorem</code> (Spectral Theorem for Symmetric Matrices) For symmetric matrix <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> there always exists an orthogonal matrix <span class="math inline">\(\bs{Q}\)</span>, namely <span class="math inline">\(\bs{Q}'\bs{Q}=\bs{I}\)</span>, that gives <span class="math inline">\(\bs{A}=\bs{Q\Lambda Q}'\)</span>, which is called the symmetric EVD, aka. <span class="math inline">\(\bs{A}\)</span> being orthogonally diagonalizable.</p>
+<p><code>Theorem</code> (Spectral Theorem for Symmetric Matrices) For symmetric matrix <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> there always exists an orthogonal matrix <span class="math inline">\(\bs{Q}\)</span>, namely <span class="math inline">\(\bs{Q}'\bs{Q}=\bs{I}\)</span>, that gives</p>
+<p><span class="math display">\[
+\bs{A}=\bs{Q\Lambda Q}' = \sum_{i=1}^n \lambda_i \bs{q}_i \bs{q}_i'
+\]</span></p><p>where <span class="math inline">\(\bs{q}\)</span> are column vectors of <span class="math inline">\(\bs{Q}\)</span>. This is called the symmetric EVD, aka. <span class="math inline">\(\bs{A}\)</span> being orthogonally diagonalizable.</p>
 
 <p><code>Property</code> We have several properties following the second theorem above. For all <span class="math inline">\(i=1,2,\ldots, n\)</span></p>
 
@@ -221,7 +235,116 @@ header h1:before {content: ''}
 
 <h1 id="toc_5">Singular Value Decomposition (SVD)</h1>
 
-<p>To be continued&hellip;</p>
+<p>For general matrices, we have singular value decomposition.</p>
+
+<h2 id="toc_6">Definition</h2>
+
+<p>The most famous form of SVD is define as</p>
+<p><span class="math display">\[
+\bs{A} = \bs{U} \bs{\Sigma} \bs{V}'
+\]</span></p><p>where <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span>, <span class="math inline">\(\bs{U}\in\R^{m\times m}\)</span>, <span class="math inline">\(\bs{\Sigma}\in\R^{m\times n}\)</span> and <span class="math inline">\(\bs{V}\in\R^{n\times n}\)</span>. Specifically, both <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> are orthogonal (i.e. <span class="math inline">\(\bs{U}'\bs{U}=\bs{I}\)</span>, same for <span class="math inline">\(\bs{V}\)</span>) and <span class="math inline">\(\bs{\Sigma}\)</span> is diagonal. Usually, we choose the singular values to be non-decreasing, namely</p>
+<p><span class="math display">\[
+\bs{\Sigma}=\diag(\sigma_1,\sigma_2,\ldots,\sigma_{\min\{m,n\}})\quad\text{where}\quad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_{\min\{m,n\}}.
+\]</span></p>
+<h2 id="toc_7">Terminology</h2>
+
+<p>Here we define a list of terms that&rsquo;ll be used from time to time:</p>
+
+<ul>
+<li>(SVD) <span class="math inline">\(\bs{A} = \bs{U} \bs{\Sigma} \bs{V}'\)</span>.</li>
+<li>(Left Singular Vectors) Columns of <span class="math inline">\(\bs{U}\)</span>.</li>
+<li>(Right Singular Vectors) Columns of <span class="math inline">\(\bs{V}\)</span>.</li>
+<li>(Singular Values) Diagonal entries of <span class="math inline">\(\bs{\Sigma}\)</span>.</li>
+</ul>
+
+<h2 id="toc_8">Three Forms of SVD</h2>
+
+<p>Besides the regular SVD given above, we have the <strong>outer product SVD</strong>:</p>
+<p><span class="math display">\[
+\bs{A} = \sum_{i=1}^{\min\{m,n\}}\!\!\!\sigma_i \bs{u}_i \bs{v}_i'
+\]</span></p><p>and <strong>condensed SVD</strong>:</p>
+<p><span class="math display">\[
+\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'
+\]</span></p><p>where <span class="math inline">\(r=\rank(\bs{A})\)</span> is also the number of non-zero singular values. In this form, we have <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> with proper chunked <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span>.</p>
+
+<h2 id="toc_9">Applications of SVD</h2>
+
+<ul>
+<li>Compute projections</li>
+<li>Best rank-<span class="math inline">\(r\)</span> approximation: <span class="math inline">\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)</span></li>
+</ul>
+
+<p>We&rsquo;ll cover these techniques later.</p>
+
+<h2 id="toc_10">Existence of SVD</h2>
+
+<p><code>theorem</code> (Existence of SVD) Let <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> and <span class="math inline">\(r=\rank(\bs{A})\)</span>. Then <span class="math inline">\(\exists\ \bs{U}_r\in\R^{m\times r}\)</span>, <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> and <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> s.t. <span class="math inline">\(\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span> where <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span> are orthogonal and <span class="math inline">\(\bs{\Sigma}_r\)</span> is diagonal. This means condensed SVD exists and therefore the rest two forms.</p>
+
+<p><code>proof</code> Define symmetric <span class="math inline">\(\bs{W}\in\R^{(m+n)\times(m+n)}\)</span> as</p>
+<p><span class="math display">\[
+\bs{W} = \begin{bmatrix}
+\bs{0} &amp; \bs{A} \\
+\bs{A}' &amp; \bs{0}
+\end{bmatrix}
+\]</span></p><p>which has an orthogonal EVD as <span class="math inline">\(\bs{W} = \bs{Z}\bs{\Lambda}\bs{Z}'\)</span> where <span class="math inline">\(\bs{Z}'\bs{Z}=\bs{I}\)</span>. Now, assume <span class="math inline">\(\bs{z}\in\R^{m+n}\)</span> is an eigenvector of <span class="math inline">\(\bs{W}\)</span> corresponding to <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(\bs{W}\bs{z} = \lambda \bs{z}\)</span>. Denote the first <span class="math inline">\(m\)</span> entries of <span class="math inline">\(\bs{z}\)</span> as <span class="math inline">\(\bs{x}\)</span> and the rest <span class="math inline">\(\bs{y}\)</span>, which gives</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\bs{0} &amp; \bs{A}\\
+\bs{A}' &amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\bs{x} \\
+\bs{y}
+\end{bmatrix} = \lambda \begin{bmatrix}
+\bs{x} \\
+\bs{y}
+\end{bmatrix} \Rightarrow \begin{cases}
+\bs{Ay} = \lambda \bs{x},\\
+\bs{A}'\bs{x} = \lambda \bs{y}.
+\end{cases}
+\]</span></p><p>Using this results</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\bs{0} &amp; \bs{A}\\
+\bs{A}' &amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\bs{x} \\
+-\bs{y}
+\end{bmatrix} = \begin{bmatrix}
+-\bs{Ay} \\
+\bs{A}'\bs{y}
+\end{bmatrix} = \begin{bmatrix}
+-\lambda \bs{x}\\
+\lambda \bs{y}
+\end{bmatrix} = -\lambda\begin{bmatrix}
+\bs{x}\\
+-\bs{y}
+\end{bmatrix}
+\]</span></p><p>which means <span class="math inline">\(-\lambda\)</span> is also an engenvalue of <span class="math inline">\(\bs{W}\)</span>. Hence, we know</p>
+<p><span class="math display">\[
+\begin{align}
+\bs{W} &amp;= \bs{Z}\bs{\Lambda}\bs{Z}' = \bs{Z}_r\bs{\Lambda}_r\bs{Z}_r'\\
+&amp;= \begin{bmatrix}
+\bs{X} &amp; \bs{X}\\
+\bs{Y} &amp; -\bs{Y}
+\end{bmatrix} \begin{bmatrix}
+\bs{\Sigma} &amp; \bs{0}\\
+\bs{0} &amp; -\bs{\Sigma}
+\end{bmatrix} \begin{bmatrix}
+\bs{X} &amp; \bs{X}\\
+\bs{Y} &amp; -\bs{Y}
+\end{bmatrix}'\\
+&amp;= \begin{bmatrix}
+\bs{0} &amp; \bs{X}\bs{\Sigma}\bs{Y}'\\
+\bs{Y}\bs{\Sigma}\bs{X}' &amp; \bs{0}
+\end{bmatrix}.
+\end{align}
+\]</span></p><p>Therefore, we conclude <span class="math inline">\(\bs{A}=\bs{X}\bs{\Sigma}\bs{Y}'\)</span> where now all we need to prove is the orthogonality of <span class="math inline">\(\bs{X}\)</span> and <span class="math inline">\(\bs{Y}\)</span>. Let&rsquo;s take a look at <span class="math inline">\(\bs{z}=(\bs{x},\bs{y})\)</span> we just defined. Let</p>
+<p><span class="math display">\[
+\norm{\bs{z}}=\bs{z}'\bs{z}=\bs{x}'\bs{x} + \bs{y}'\bs{y} = 2.
+\]</span></p><p>From orthogonality of eigenvectors corresponding to different eigenvalues, we also know</p>
+<p><span class="math display">\[
+\bs{z}'\bar{\bs{z}} = \bs{x}'\bs{x} - \bs{y}'\bs{y} = 0
+\]</span></p><p>which altogether gives <span class="math inline">\(\norm{\bs{x}}=\norm{\bs{y}}=1\)</span>.<span style="float: right">Q.E.D.</span></p>
 
 
   <footer>

@@ -137,7 +137,18 @@ beginning and at the end of the trading session.&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Eigenvalues and Eigenvectors&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;Singular Value Decomposition (SVD)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;Singular Value Decomposition (SVD)&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_6&#34;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_7&#34;&gt;Terminology&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_8&#34;&gt;Three Forms of SVD&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_9&#34;&gt;Applications of SVD&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;Existence of SVD&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -195,7 +206,7 @@ header h1:before {content: &#39;&#39;}
 &lt;ul&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{v}}=0\)&lt;/span&gt; iff. &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}=\bs{0}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\norm{\alpha \bs{v}} = |\alpha|\cdot\norm{\bs{v}}\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\alpha\in\R\)&lt;/span&gt; and any &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}\in\mathcal{V}\)&lt;/span&gt;.&lt;/li&gt;
-&lt;li&gt;(Triangular inequality) &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}, \bs{v}\in\mathcal{V}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Triangular Inequality) &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{u} + \bs{v}} \le \norm{\bs{u}} + \norm{\bs{v}}\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}, \bs{v}\in\mathcal{V}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;li&gt;(Submultiplicative) &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{AB}}\le \norm{\bs{A}}\cdot \norm{\bs{B}}\)&lt;/span&gt; for every formable matrices &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -225,7 +236,10 @@ header h1:before {content: &#39;&#39;}
 
 &lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt; have &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; eigenvalues iff. there exists an invertible &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\in\R^{n\times n}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}^{-1}\bs{A}\bs{X}=\bs{\Lambda}\)&lt;/span&gt;, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; is diagonizable. This gives &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{X}\bs{\Lambda}\bs{X}^{-1}\)&lt;/span&gt;, which is called the eigenvalue decomposition (EVD).&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; (Spectral Theorem for Symmetric Matrices) For symmetric matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt; there always exists an orthogonal matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}\)&lt;/span&gt;, namely &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}&#39;\bs{Q}=\bs{I}\)&lt;/span&gt;, that gives &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{Q\Lambda Q}&#39;\)&lt;/span&gt;, which is called the symmetric EVD, aka. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; being orthogonally diagonalizable.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; (Spectral Theorem for Symmetric Matrices) For symmetric matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{n\times n}\)&lt;/span&gt; there always exists an orthogonal matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}\)&lt;/span&gt;, namely &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}&#39;\bs{Q}=\bs{I}\)&lt;/span&gt;, that gives&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{A}=\bs{Q\Lambda Q}&#39; = \sum_{i=1}^n \lambda_i \bs{q}_i \bs{q}_i&#39;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{q}\)&lt;/span&gt; are column vectors of &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}\)&lt;/span&gt;. This is called the symmetric EVD, aka. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; being orthogonally diagonalizable.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;Property&lt;/code&gt; We have several properties following the second theorem above. For all &lt;span class=&#34;math inline&#34;&gt;\(i=1,2,\ldots, n\)&lt;/span&gt;&lt;/p&gt;
 
@@ -240,7 +254,116 @@ header h1:before {content: &#39;&#39;}
 
 &lt;h1 id=&#34;toc_5&#34;&gt;Singular Value Decomposition (SVD)&lt;/h1&gt;
 
-&lt;p&gt;To be continued&amp;hellip;&lt;/p&gt;
+&lt;p&gt;For general matrices, we have singular value decomposition.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_6&#34;&gt;Definition&lt;/h2&gt;
+
+&lt;p&gt;The most famous form of SVD is define as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{A} = \bs{U} \bs{\Sigma} \bs{V}&#39;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\in\R^{m\times m}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\in\R^{m\times n}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\in\R^{n\times n}\)&lt;/span&gt;. Specifically, both &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; are orthogonal (i.e. &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}&#39;\bs{U}=\bs{I}\)&lt;/span&gt;, same for &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt;) and &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\)&lt;/span&gt; is diagonal. Usually, we choose the singular values to be non-decreasing, namely&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{\Sigma}=\diag(\sigma_1,\sigma_2,\ldots,\sigma_{\min\{m,n\}})\quad\text{where}\quad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_{\min\{m,n\}}.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&#34;toc_7&#34;&gt;Terminology&lt;/h2&gt;
+
+&lt;p&gt;Here we define a list of terms that&amp;rsquo;ll be used from time to time:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;(SVD) &lt;span class=&#34;math inline&#34;&gt;\(\bs{A} = \bs{U} \bs{\Sigma} \bs{V}&#39;\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Left Singular Vectors) Columns of &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Right Singular Vectors) Columns of &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;(Singular Values) Diagonal entries of &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;toc_8&#34;&gt;Three Forms of SVD&lt;/h2&gt;
+
+&lt;p&gt;Besides the regular SVD given above, we have the &lt;strong&gt;outer product SVD&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{A} = \sum_{i=1}^{\min\{m,n\}}\!\!\!\sigma_i \bs{u}_i \bs{v}_i&#39;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and &lt;strong&gt;condensed SVD&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r&#39;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(r=\rank(\bs{A})\)&lt;/span&gt; is also the number of non-zero singular values. In this form, we have &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}_r\in\R^{r\times r}\)&lt;/span&gt; with proper chunked &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_9&#34;&gt;Applications of SVD&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Compute projections&lt;/li&gt;
+&lt;li&gt;Best rank-&lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; approximation: &lt;span class=&#34;math inline&#34;&gt;\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We&amp;rsquo;ll cover these techniques later.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_10&#34;&gt;Existence of SVD&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;theorem&lt;/code&gt; (Existence of SVD) Let &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(r=\rank(\bs{A})\)&lt;/span&gt;. Then &lt;span class=&#34;math inline&#34;&gt;\(\exists\ \bs{U}_r\in\R^{m\times r}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\in\R^{n\times r}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}_r\in\R^{r\times r}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r&#39;\)&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\)&lt;/span&gt; are orthogonal and &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}_r\)&lt;/span&gt; is diagonal. This means condensed SVD exists and therefore the rest two forms.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;proof&lt;/code&gt; Define symmetric &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\in\R^{(m+n)\times(m+n)}\)&lt;/span&gt; as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{W} = \begin{bmatrix}
+\bs{0} &amp;amp; \bs{A} \\
+\bs{A}&#39; &amp;amp; \bs{0}
+\end{bmatrix}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which has an orthogonal EVD as &lt;span class=&#34;math inline&#34;&gt;\(\bs{W} = \bs{Z}\bs{\Lambda}\bs{Z}&#39;\)&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\bs{Z}&#39;\bs{Z}=\bs{I}\)&lt;/span&gt;. Now, assume &lt;span class=&#34;math inline&#34;&gt;\(\bs{z}\in\R^{m+n}\)&lt;/span&gt; is an eigenvector of &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\)&lt;/span&gt; corresponding to &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\bs{z} = \lambda \bs{z}\)&lt;/span&gt;. Denote the first &lt;span class=&#34;math inline&#34;&gt;\(m\)&lt;/span&gt; entries of &lt;span class=&#34;math inline&#34;&gt;\(\bs{z}\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(\bs{x}\)&lt;/span&gt; and the rest &lt;span class=&#34;math inline&#34;&gt;\(\bs{y}\)&lt;/span&gt;, which gives&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{bmatrix}
+\bs{0} &amp;amp; \bs{A}\\
+\bs{A}&#39; &amp;amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\bs{x} \\
+\bs{y}
+\end{bmatrix} = \lambda \begin{bmatrix}
+\bs{x} \\
+\bs{y}
+\end{bmatrix} \Rightarrow \begin{cases}
+\bs{Ay} = \lambda \bs{x},\\
+\bs{A}&#39;\bs{x} = \lambda \bs{y}.
+\end{cases}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Using this results&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{bmatrix}
+\bs{0} &amp;amp; \bs{A}\\
+\bs{A}&#39; &amp;amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\bs{x} \\
+-\bs{y}
+\end{bmatrix} = \begin{bmatrix}
+-\bs{Ay} \\
+\bs{A}&#39;\bs{y}
+\end{bmatrix} = \begin{bmatrix}
+-\lambda \bs{x}\\
+\lambda \bs{y}
+\end{bmatrix} = -\lambda\begin{bmatrix}
+\bs{x}\\
+-\bs{y}
+\end{bmatrix}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which means &lt;span class=&#34;math inline&#34;&gt;\(-\lambda\)&lt;/span&gt; is also an engenvalue of &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\)&lt;/span&gt;. Hence, we know&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\bs{W} &amp;amp;= \bs{Z}\bs{\Lambda}\bs{Z}&#39; = \bs{Z}_r\bs{\Lambda}_r\bs{Z}_r&#39;\\
+&amp;amp;= \begin{bmatrix}
+\bs{X} &amp;amp; \bs{X}\\
+\bs{Y} &amp;amp; -\bs{Y}
+\end{bmatrix} \begin{bmatrix}
+\bs{\Sigma} &amp;amp; \bs{0}\\
+\bs{0} &amp;amp; -\bs{\Sigma}
+\end{bmatrix} \begin{bmatrix}
+\bs{X} &amp;amp; \bs{X}\\
+\bs{Y} &amp;amp; -\bs{Y}
+\end{bmatrix}&#39;\\
+&amp;amp;= \begin{bmatrix}
+\bs{0} &amp;amp; \bs{X}\bs{\Sigma}\bs{Y}&#39;\\
+\bs{Y}\bs{\Sigma}\bs{X}&#39; &amp;amp; \bs{0}
+\end{bmatrix}.
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Therefore, we conclude &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{X}\bs{\Sigma}\bs{Y}&#39;\)&lt;/span&gt; where now all we need to prove is the orthogonality of &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{Y}\)&lt;/span&gt;. Let&amp;rsquo;s take a look at &lt;span class=&#34;math inline&#34;&gt;\(\bs{z}=(\bs{x},\bs{y})\)&lt;/span&gt; we just defined. Let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\norm{\bs{z}}=\bs{z}&#39;\bs{z}=\bs{x}&#39;\bs{x} + \bs{y}&#39;\bs{y} = 2.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;From orthogonality of eigenvectors corresponding to different eigenvalues, we also know&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{z}&#39;\bar{\bs{z}} = \bs{x}&#39;\bs{x} - \bs{y}&#39;\bs{y} = 0
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which altogether gives &lt;span class=&#34;math inline&#34;&gt;\(\norm{\bs{x}}=\norm{\bs{y}}=1\)&lt;/span&gt;.&lt;span style=&#34;float: right&#34;&gt;Q.E.D.&lt;/span&gt;&lt;/p&gt;
 
         
       </description>
