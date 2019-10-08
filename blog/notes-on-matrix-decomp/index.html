@@ -114,21 +114,30 @@
 <li><a href="#toc_2">Norms</a></li>
 
 <li><a href="#toc_3">Inner Products</a></li>
-
-<li><a href="#toc_4">Eigenvalues and Eigenvectors</a></li>
 </ul></li>
 
-<li><a href="#toc_5">Singular Value Decomposition (SVD)</a>
+<li><a href="#toc_4">Eigenvalue Decomposition (EVD)</a>
 <ul>
-<li><a href="#toc_6">Definition</a></li>
+<li><a href="#toc_5">Eigenvalues and Eigenvectors</a></li>
 
-<li><a href="#toc_7">Terminology</a></li>
+<li><a href="#toc_6">Existence of EVD</a></li>
 
-<li><a href="#toc_8">Three Forms of SVD</a></li>
+<li><a href="#toc_7">Properties of EVD</a></li>
+</ul></li>
 
-<li><a href="#toc_9">Applications of SVD</a></li>
+<li><a href="#toc_8">Singular Value Decomposition (SVD)</a>
+<ul>
+<li><a href="#toc_9">Definition</a></li>
 
-<li><a href="#toc_10">Existence of SVD</a></li>
+<li><a href="#toc_10">Terminology</a></li>
+
+<li><a href="#toc_11">Three Forms of SVD</a></li>
+
+<li><a href="#toc_12">Existence of SVD</a></li>
+
+<li><a href="#toc_13">Properties of SVD</a></li>
+
+<li><a href="#toc_14">Applications of SVD</a></li>
 </ul></li>
 </ul>
 
@@ -150,7 +159,7 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
 
 <h1 id="toc_0">Notations</h1>
 
@@ -209,11 +218,17 @@ header h1:before {content: ''}
 <li>(Frobenius) <span class="math inline">\(|\braket{\bs{A},\bs{B}}|\le\norm{\bs{A}}_F\cdot\norm{\bs{B}}_F\)</span> for any <span class="math inline">\(\bs{A},\bs{B}\in\R^{m\times n}\)</span>.</li>
 </ul>
 
-<h2 id="toc_4">Eigenvalues and Eigenvectors</h2>
+<h1 id="toc_4">Eigenvalue Decomposition (EVD)</h1>
+
+<p>The first matrix decomposition we&rsquo;re gonna talk about is the eigenvalue decomposition.</p>
+
+<h2 id="toc_5">Eigenvalues and Eigenvectors</h2>
 
 <p>For square matrix <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span>, if <span class="math inline">\(\bs{0}\neq \bs{x}\in\C^n\)</span> and <span class="math inline">\(\lambda\in\C\)</span> is s.t. <span class="math inline">\(\bs{Ax} = \lambda\bs{x}\)</span>, then <span class="math inline">\(\lambda\)</span> is called an engenvalue of <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(\bs{x}\)</span> is called the <span class="math inline">\(\lambda\)</span>-engenvector of <span class="math inline">\(\bs{A}\)</span>.</p>
 
 <p>Ideally, we want a matrix to have <span class="math inline">\(n\)</span> eigenvectors and <span class="math inline">\(n\)</span> corresponding eigenvectors, linearly independent to each other. This is not always true.</p>
+
+<h2 id="toc_6">Existence of EVD</h2>
 
 <p><code>Theorem</code> <span class="math inline">\(\bs{A}\in\R^{n\times n}\)</span> have <span class="math inline">\(n\)</span> eigenvalues iff. there exists an invertible <span class="math inline">\(\bs{X}\in\R^{n\times n}\)</span> s.t. <span class="math inline">\(\bs{X}^{-1}\bs{A}\bs{X}=\bs{\Lambda}\)</span>, i.e. <span class="math inline">\(\bs{A}\)</span> is diagonizable. This gives <span class="math inline">\(\bs{A}=\bs{X}\bs{\Lambda}\bs{X}^{-1}\)</span>, which is called the eigenvalue decomposition (EVD).</p>
 
@@ -221,6 +236,8 @@ header h1:before {content: ''}
 <p><span class="math display">\[
 \bs{A}=\bs{Q\Lambda Q}' = \sum_{i=1}^n \lambda_i \bs{q}_i \bs{q}_i'
 \]</span></p><p>where <span class="math inline">\(\bs{q}\)</span> are column vectors of <span class="math inline">\(\bs{Q}\)</span>. This is called the symmetric EVD, aka. <span class="math inline">\(\bs{A}\)</span> being orthogonally diagonalizable.</p>
+
+<h2 id="toc_7">Properties of EVD</h2>
 
 <p><code>Property</code> We have several properties following the second theorem above. For all <span class="math inline">\(i=1,2,\ldots, n\)</span></p>
 
@@ -233,11 +250,11 @@ header h1:before {content: ''}
 
 <p><code>Theorem</code> If <span class="math inline">\(\bs{A}=\bs{A}'\)</span>, then <span class="math inline">\(\bs{A}\)</span> has <span class="math inline">\(n\)</span> orthogonal eigenvectors.</p>
 
-<h1 id="toc_5">Singular Value Decomposition (SVD)</h1>
+<h1 id="toc_8">Singular Value Decomposition (SVD)</h1>
 
 <p>For general matrices, we have singular value decomposition.</p>
 
-<h2 id="toc_6">Definition</h2>
+<h2 id="toc_9">Definition</h2>
 
 <p>The most famous form of SVD is define as</p>
 <p><span class="math display">\[
@@ -246,7 +263,7 @@ header h1:before {content: ''}
 <p><span class="math display">\[
 \bs{\Sigma}=\diag(\sigma_1,\sigma_2,\ldots,\sigma_{\min\{m,n\}})\quad\text{where}\quad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_{\min\{m,n\}}.
 \]</span></p>
-<h2 id="toc_7">Terminology</h2>
+<h2 id="toc_10">Terminology</h2>
 
 <p>Here we define a list of terms that&rsquo;ll be used from time to time:</p>
 
@@ -257,7 +274,7 @@ header h1:before {content: ''}
 <li>(Singular Values) Diagonal entries of <span class="math inline">\(\bs{\Sigma}\)</span>.</li>
 </ul>
 
-<h2 id="toc_8">Three Forms of SVD</h2>
+<h2 id="toc_11">Three Forms of SVD</h2>
 
 <p>Besides the regular SVD given above, we have the <strong>outer product SVD</strong>:</p>
 <p><span class="math display">\[
@@ -267,20 +284,11 @@ header h1:before {content: ''}
 \bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'
 \]</span></p><p>where <span class="math inline">\(r=\rank(\bs{A})\)</span> is also the number of non-zero singular values. In this form, we have <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> with proper chunked <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span>.</p>
 
-<h2 id="toc_9">Applications of SVD</h2>
+<h2 id="toc_12">Existence of SVD</h2>
 
-<ul>
-<li>Compute projections</li>
-<li>Best rank-<span class="math inline">\(r\)</span> approximation: <span class="math inline">\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)</span></li>
-</ul>
+<p><code>Theorem</code> (Existence of SVD) Let <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> and <span class="math inline">\(r=\rank(\bs{A})\)</span>. Then <span class="math inline">\(\exists\ \bs{U}_r\in\R^{m\times r}\)</span>, <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> and <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> s.t. <span class="math inline">\(\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span> where <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span> are orthogonal and <span class="math inline">\(\bs{\Sigma}_r\)</span> is diagonal. This means condensed SVD exists and therefore the rest two forms.</p>
 
-<p>We&rsquo;ll cover these techniques later.</p>
-
-<h2 id="toc_10">Existence of SVD</h2>
-
-<p><code>theorem</code> (Existence of SVD) Let <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> and <span class="math inline">\(r=\rank(\bs{A})\)</span>. Then <span class="math inline">\(\exists\ \bs{U}_r\in\R^{m\times r}\)</span>, <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> and <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> s.t. <span class="math inline">\(\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span> where <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span> are orthogonal and <span class="math inline">\(\bs{\Sigma}_r\)</span> is diagonal. This means condensed SVD exists and therefore the rest two forms.</p>
-
-<p><code>proof</code> Define symmetric <span class="math inline">\(\bs{W}\in\R^{(m+n)\times(m+n)}\)</span> as</p>
+<p><code>Proof</code> Define symmetric <span class="math inline">\(\bs{W}\in\R^{(m+n)\times(m+n)}\)</span> as</p>
 <p><span class="math display">\[
 \bs{W} = \begin{bmatrix}
 \bs{0} &amp; \bs{A} \\
@@ -345,6 +353,38 @@ header h1:before {content: ''}
 <p><span class="math display">\[
 \bs{z}'\bar{\bs{z}} = \bs{x}'\bs{x} - \bs{y}'\bs{y} = 0
 \]</span></p><p>which altogether gives <span class="math inline">\(\norm{\bs{x}}=\norm{\bs{y}}=1\)</span>.<span style="float: right">Q.E.D.</span></p>
+
+<h2 id="toc_13">Properties of SVD</h2>
+
+<p><code>Property</code> There are several characteristics we have about SVD:</p>
+
+<ul>
+<li>The <span class="math inline">\(\bs{W}\)</span> decomposition above.</li>
+<li>The left singular vector <span class="math inline">\(\bs{v}\)</span> given by <span class="math inline">\(\bs{Au} = \sigma \bs{v}\)</span>, and the right singular vector <span class="math inline">\(\bs{u}\)</span> given by <span class="math inline">\(\bs{A}'\bs{v} = \sigma \bs{u}\)</span>.</li>
+<li>Relationship with eigenvectors/eigenvalues&hellip;
+
+<ul>
+<li>of <span class="math inline">\(\bs{A}'\bs{A}\)</span>: <span class="math inline">\(\bs{A}'\bs{A}\bs{u} = \sigma\bs{A}'\bs{v} = \sigma^2\bs{u}\)</span>.</li>
+<li>of <span class="math inline">\(\bs{AA}'\)</span>: <span class="math inline">\(\bs{AA}'\bs{v} = \sigma\bs{A}\bs{u} = \sigma^2\bs{v}\)</span>.</li>
+</ul></li>
+<li>Frobenius norms (<strong>eigenvalues cannot define a norm!</strong>):
+
+<ul>
+<li><span class="math inline">\(\norm{\bs{A}}_F^2 = \sum_{i,j=1}^{m,n}a_{ij}^2=\sum_{i=1}^r\sigma_i^2\)</span>.</li>
+<li><span class="math inline">\(\norm{\bs{A}}_2 = \max_{\bs{x}\neq 0} \norm{\bs{Ax}}_2 / \norm{\bs{x}}_2 = \sigma_1\)</span>.</li>
+</ul></li>
+</ul>
+
+<p><code>Exercise</code> Show how to use SVD to calculate these two norms.</p>
+
+<h2 id="toc_14">Applications of SVD</h2>
+
+<p>One of the most importance usages of SVD is <strong>computing projections</strong>. <span class="math inline">\(\bs{P}\in\R^{n\times n}\)</span> is a projection matrix iff. <span class="math inline">\(\bs{P}^2=\bs{P}\)</span>. More commonly, we consider orthogonal projection <span class="math inline">\(\bs{P}\)</span> that&rsquo;s also symmetric. Now let&rsquo;s consider dataset <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> where we have <span class="math inline">\(n\)</span> observations, each with <span class="math inline">\(m\)</span> dimensions. Suppose we want to project this dataset onto <span class="math inline">\(\bs{W}\subseteq\R^m\)</span> that has <span class="math inline">\(k\)</span> dimensions, i.e.</p>
+<p><span class="math display">\[
+\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=1_{i=j}
+\]</span></p><p>then the projection matrix would be <span class="math inline">\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'\)</span>.</p>
+
+<p>Another application is the <strong>best rank-<span class="math inline">\(r\)</span> approximation</strong>: <span class="math inline">\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)</span>. We&rsquo;ll cover this next week.</p>
 
 
   <footer>
