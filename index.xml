@@ -177,8 +177,12 @@ p_i = \frac{\exp(\bs{\beta X}_i)}{1 + \exp(\bs{\beta X}_i)}.
 S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=-1}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(g(\lambda_{\xi,i})\)&lt;/span&gt; is geometric distribution with parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{\xi,i}\)&lt;/span&gt; estimated from&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\bs{w}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\bs{w}_i)}{1 + \exp(\bs{\theta}_\xi\bs{w}_i)},  \quad \xi=u,d.
-\]&lt;/span&gt;&lt;/p&gt;
+\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\bs{W}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\bs{W}_i)}{1 + \exp(\bs{\theta}_\xi\bs{W}_i)},  \quad \xi=u,d.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;Examples&lt;/code&gt; We can choose features as below&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X}_i = (1, A_{i-1}),\ \bs{Z}_i=(1,D_{i-1})\ \text{and}\ \bs{W}_i = (1,S_{i-1}).
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;from which we can train a simple decomposition model using in-sample data.&lt;/p&gt;
+
 &lt;h1 id=&#34;toc_10&#34;&gt;To Be Continued&lt;/h1&gt;
 
 &lt;p&gt;&amp;hellip;&lt;/p&gt;
