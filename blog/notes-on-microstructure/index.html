@@ -116,9 +116,20 @@
 <li><a href="#toc_3">Principle of Ma</a></li>
 
 <li><a href="#toc_4">Characteristics of Transactions Data</a></li>
+
+<li><a href="#toc_5">Characteristics of Nonsynchronous Trading Data</a></li>
 </ul></li>
 
-<li><a href="#toc_5">To Be Continued</a></li>
+<li><a href="#toc_6">Models</a>
+<ul>
+<li><a href="#toc_7">Compound Poisson Model</a></li>
+
+<li><a href="#toc_8">Ordered Probit Model</a></li>
+
+<li><a href="#toc_9">Decomposition Model</a></li>
+</ul></li>
+
+<li><a href="#toc_10">To Be Continued</a></li>
 </ul>
 
 </nav>
@@ -139,7 +150,7 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>Following are my lecture notes from Prof. Yuri Balasanov&rsquo;s course Mathematical Market Microstructure.<span class="math inline">\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>Following are my lecture notes from Prof. Yuri Balasanov&rsquo;s course Mathematical Market Microstructure.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
 
 <h1 id="toc_0">Introduction</h1>
 
@@ -183,7 +194,81 @@ beginning and at the end of the trading session.</li>
 <li>To observe microstructure time resolution currently needs to be in microseconds.</li>
 </ul>
 
-<h1 id="toc_5">To Be Continued</h1>
+<h2 id="toc_5">Characteristics of Nonsynchronous Trading Data</h2>
+
+<ul>
+<li>Cross-correlation between stock returns at lag 1</li>
+<li>Autocorrelation at lag 1 in portfolio returns</li>
+<li>(Bid-Ask Bounce) Negative autocorrelations in returns of a single stock</li>
+</ul>
+
+<p><code>Example</code> Stocks A and B are independent. Stock A is traded more frequently than B. News arriving at the very end of day session will more likely a§ect stock A than B. Stock B will react more the next day. Then in daily prices there will be a 1-day lag due to di§erence in trading frequency even when the two stocks are independent.</p>
+
+<h1 id="toc_6">Models</h1>
+
+<p>In this section, we will introduce a series of mathematical models that explain the abovementioned nonsynchronous characteristics.</p>
+
+<h2 id="toc_7">Compound Poisson Model</h2>
+
+<p>Let <span class="math inline">\(r_t\)</span> be continuously compounded return at time <span class="math inline">\(t\)</span>. Assume that <span class="math inline">\(r_t\)</span> are i.i.d. latent variables, <span class="math inline">\(\E[r_t] = μ\)</span>, <span class="math inline">\(\V[r_t]=\sigma\)</span>. For each <span class="math inline">\(t\)</span> probability that the asset is not traded is <span class="math inline">\(\pi\)</span>. Let <span class="math inline">\(r_t^0\)</span> be the manifest return variable. If at <span class="math inline">\(t\)</span> there is no trade <span class="math inline">\(r_t^0 = 0\)</span>. If at <span class="math inline">\(t\)</span> there is a trade then <span class="math inline">\(r_t^0\)</span> is the cumulative return since the previous trade.</p>
+
+<p>It can be shown that</p>
+<p><span class="math display">\[
+\begin{align}
+&amp;\P[r_t^0=\textstyle{\sum_{i=0}^k} r_{t-i}] = \pi^2(1-\pi)^2,\quad\E[r_t^0] = \mu,\\&amp;\V[r_t^0]=\sigma^2+\frac{2\pi\mu^2}{1-\pi},\quad \Cov(r_t^0, r_{t-1}^0) = -\pi\mu^2.
+\end{align}
+\]</span></p><p>This simple model explains negative autocorrelation induced by nonsynchronous trading.</p>
+
+<h2 id="toc_8">Ordered Probit Model</h2>
+
+<p>Let <span class="math inline">\(y_t\)</span> be a latent variable depending on time. Observed variable is <span class="math inline">\(u_t\)</span>. Assume <span class="math inline">\(u_t\)</span> is an <strong>ordered</strong> <span class="math inline">\(k\)</span>-categorical variable:</p>
+<p><span class="math display">\[
+u_t = \begin{cases}
+u^{(0)} &amp; \text{if }y_t\in (-\infty,\theta_1),\\
+u^{(i)} &amp; \text{if }y_t\in [\theta_i,\theta_{i+1}),\ i=1,2,\ldots,k-1,\\
+u^{(k)} &amp; \text{if }y_t\in [\theta_k,\infty).
+\end{cases}
+\]</span></p><p>Variable <span class="math inline">\(y_t\)</span> is predicted using a linear model <span class="math inline">\(y_t=\bs{\beta}\bs{X}_t + \epsilon_t\)</span>, which gives</p>
+<p><span class="math display">\[
+\begin{align}
+\P[u_t=u^{(i)}\mid \bs{X}_t] &amp;= \P[\theta_{i-1}\le \bs{\beta}\bs{X}_t &lt; \theta_i\mid \bs{X}_t]\\
+&amp;= \begin{cases}
+\Phi\!\left(\frac{\theta_1-\bs{\beta X}_t}{\sigma_t}\right) &amp; i=0,\\
+\Phi\!\left(\frac{\theta_{i+1}-\bs{\beta X}_t}{\sigma_t}\right) - \Phi\!\left(\frac{\theta_{i}-\bs{\beta X}_t}{\sigma_t}\right) &amp; i=1,2,\ldots,k-1,\\
+1 - \Phi\!\left(\frac{\theta_{k}-\bs{\beta X}_t}{\sigma_t}\right) &amp;
+ i=k.
+\end{cases}
+\end{align}
+\]</span></p><p>Note here we assume <span class="math inline">\(\epsilon_t\sim\mathcal{N}(0,\sigma_t^2)\)</span> and thus applied <span class="math inline">\(\Phi(\cdot)\)</span> as link function, which explains why it&rsquo;s a Probit model.</p>
+
+<h2 id="toc_9">Decomposition Model</h2>
+
+<p>Assume the price change <span class="math inline">\(y_i = P_{t_i} - P_{t_{i-1}}\)</span> can be decomposed into product of three components:</p>
+
+<ul>
+<li>Indicator of price change <span class="math inline">\(A_i\in\{0,1\}\)</span>.</li>
+<li>Direction of price change <span class="math inline">\(D_i\in\{-1,+1\}\)</span>.</li>
+<li>Size of price change <span class="math inline">\(S_i\in\mathbb{N}_+\)</span>.</li>
+</ul>
+
+<p>Specifically, for <span class="math inline">\(p_i=\P[A_i=1]\)</span> we let</p>
+<p><span class="math display">\[
+\ln\left(\frac{p_i}{1-p_i}\right) = \bs{\beta X}_i\Rightarrow
+p_i = \frac{\exp(\bs{\beta X}_i)}{1 + \exp(\bs{\beta X}_i)}.
+\]</span></p><p>For <span class="math inline">\(\delta_i=\P[D_i=1\mid A_i=1]\)</span> we let</p>
+<p><span class="math display">\[
+\ln\left(\frac{\delta_i}{1-\delta_i}\right) = \bs{\gamma Z}_i\Rightarrow
+\delta_i = \frac{\exp(\bs{\gamma Z}_i)}{1 + \exp(\bs{\gamma Z}_i)}.
+\]</span></p><p>For <span class="math inline">\(S_i\)</span> we let</p>
+<p><span class="math display">\[
+S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=-1}
+\]</span></p><p>where <span class="math inline">\(g(\lambda_{\xi,i})\)</span> is geometric distribution with parameter <span class="math inline">\(\lambda_{\xi,i}\)</span> estimated from</p>
+<p><span class="math display">\[
+\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\bs{w}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\bs{w}_i)}{1 + \exp(\bs{\theta}_\xi\bs{w}_i)},  \quad \xi=u,d.
+\]</span></p>
+<h1 id="toc_10">To Be Continued</h1>
+
+<p>&hellip;</p>
 
 <div class="footnotes">
 

@@ -29,9 +29,20 @@
 &lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;Principle of Ma&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Characteristics of Transactions Data&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;Characteristics of Nonsynchronous Trading Data&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_6&#34;&gt;Models&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_7&#34;&gt;Compound Poisson Model&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_8&#34;&gt;Ordered Probit Model&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_9&#34;&gt;Decomposition Model&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -52,7 +63,7 @@ h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &
 header h1:before {content: &#39;&#39;}
 &lt;/style&gt;
 
-&lt;p&gt;Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_0&#34;&gt;Introduction&lt;/h1&gt;
 
@@ -96,7 +107,81 @@ beginning and at the end of the trading session.&lt;/li&gt;
 &lt;li&gt;To observe microstructure time resolution currently needs to be in microseconds.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;toc_5&#34;&gt;To Be Continued&lt;/h1&gt;
+&lt;h2 id=&#34;toc_5&#34;&gt;Characteristics of Nonsynchronous Trading Data&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cross-correlation between stock returns at lag 1&lt;/li&gt;
+&lt;li&gt;Autocorrelation at lag 1 in portfolio returns&lt;/li&gt;
+&lt;li&gt;(Bid-Ask Bounce) Negative autocorrelations in returns of a single stock&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;Example&lt;/code&gt; Stocks A and B are independent. Stock A is traded more frequently than B. News arriving at the very end of day session will more likely a§ect stock A than B. Stock B will react more the next day. Then in daily prices there will be a 1-day lag due to di§erence in trading frequency even when the two stocks are independent.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_6&#34;&gt;Models&lt;/h1&gt;
+
+&lt;p&gt;In this section, we will introduce a series of mathematical models that explain the abovementioned nonsynchronous characteristics.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_7&#34;&gt;Compound Poisson Model&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(r_t\)&lt;/span&gt; be continuously compounded return at time &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;. Assume that &lt;span class=&#34;math inline&#34;&gt;\(r_t\)&lt;/span&gt; are i.i.d. latent variables, &lt;span class=&#34;math inline&#34;&gt;\(\E[r_t] = μ\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\V[r_t]=\sigma\)&lt;/span&gt;. For each &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; probability that the asset is not traded is &lt;span class=&#34;math inline&#34;&gt;\(\pi\)&lt;/span&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(r_t^0\)&lt;/span&gt; be the manifest return variable. If at &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; there is no trade &lt;span class=&#34;math inline&#34;&gt;\(r_t^0 = 0\)&lt;/span&gt;. If at &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; there is a trade then &lt;span class=&#34;math inline&#34;&gt;\(r_t^0\)&lt;/span&gt; is the cumulative return since the previous trade.&lt;/p&gt;
+
+&lt;p&gt;It can be shown that&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+&amp;amp;\P[r_t^0=\textstyle{\sum_{i=0}^k} r_{t-i}] = \pi^2(1-\pi)^2,\quad\E[r_t^0] = \mu,\\&amp;amp;\V[r_t^0]=\sigma^2+\frac{2\pi\mu^2}{1-\pi},\quad \Cov(r_t^0, r_{t-1}^0) = -\pi\mu^2.
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;This simple model explains negative autocorrelation induced by nonsynchronous trading.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_8&#34;&gt;Ordered Probit Model&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(y_t\)&lt;/span&gt; be a latent variable depending on time. Observed variable is &lt;span class=&#34;math inline&#34;&gt;\(u_t\)&lt;/span&gt;. Assume &lt;span class=&#34;math inline&#34;&gt;\(u_t\)&lt;/span&gt; is an &lt;strong&gt;ordered&lt;/strong&gt; &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-categorical variable:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+u_t = \begin{cases}
+u^{(0)} &amp;amp; \text{if }y_t\in (-\infty,\theta_1),\\
+u^{(i)} &amp;amp; \text{if }y_t\in [\theta_i,\theta_{i+1}),\ i=1,2,\ldots,k-1,\\
+u^{(k)} &amp;amp; \text{if }y_t\in [\theta_k,\infty).
+\end{cases}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Variable &lt;span class=&#34;math inline&#34;&gt;\(y_t\)&lt;/span&gt; is predicted using a linear model &lt;span class=&#34;math inline&#34;&gt;\(y_t=\bs{\beta}\bs{X}_t + \epsilon_t\)&lt;/span&gt;, which gives&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\P[u_t=u^{(i)}\mid \bs{X}_t] &amp;amp;= \P[\theta_{i-1}\le \bs{\beta}\bs{X}_t &amp;lt; \theta_i\mid \bs{X}_t]\\
+&amp;amp;= \begin{cases}
+\Phi\!\left(\frac{\theta_1-\bs{\beta X}_t}{\sigma_t}\right) &amp;amp; i=0,\\
+\Phi\!\left(\frac{\theta_{i+1}-\bs{\beta X}_t}{\sigma_t}\right) - \Phi\!\left(\frac{\theta_{i}-\bs{\beta X}_t}{\sigma_t}\right) &amp;amp; i=1,2,\ldots,k-1,\\
+1 - \Phi\!\left(\frac{\theta_{k}-\bs{\beta X}_t}{\sigma_t}\right) &amp;amp;
+ i=k.
+\end{cases}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Note here we assume &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_t\sim\mathcal{N}(0,\sigma_t^2)\)&lt;/span&gt; and thus applied &lt;span class=&#34;math inline&#34;&gt;\(\Phi(\cdot)\)&lt;/span&gt; as link function, which explains why it&amp;rsquo;s a Probit model.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_9&#34;&gt;Decomposition Model&lt;/h2&gt;
+
+&lt;p&gt;Assume the price change &lt;span class=&#34;math inline&#34;&gt;\(y_i = P_{t_i} - P_{t_{i-1}}\)&lt;/span&gt; can be decomposed into product of three components:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Indicator of price change &lt;span class=&#34;math inline&#34;&gt;\(A_i\in\{0,1\}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;Direction of price change &lt;span class=&#34;math inline&#34;&gt;\(D_i\in\{-1,+1\}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;Size of price change &lt;span class=&#34;math inline&#34;&gt;\(S_i\in\mathbb{N}_+\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Specifically, for &lt;span class=&#34;math inline&#34;&gt;\(p_i=\P[A_i=1]\)&lt;/span&gt; we let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\ln\left(\frac{p_i}{1-p_i}\right) = \bs{\beta X}_i\Rightarrow
+p_i = \frac{\exp(\bs{\beta X}_i)}{1 + \exp(\bs{\beta X}_i)}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;For &lt;span class=&#34;math inline&#34;&gt;\(\delta_i=\P[D_i=1\mid A_i=1]\)&lt;/span&gt; we let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\ln\left(\frac{\delta_i}{1-\delta_i}\right) = \bs{\gamma Z}_i\Rightarrow
+\delta_i = \frac{\exp(\bs{\gamma Z}_i)}{1 + \exp(\bs{\gamma Z}_i)}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;For &lt;span class=&#34;math inline&#34;&gt;\(S_i\)&lt;/span&gt; we let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=-1}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(g(\lambda_{\xi,i})\)&lt;/span&gt; is geometric distribution with parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{\xi,i}\)&lt;/span&gt; estimated from&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\bs{w}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\bs{w}_i)}{1 + \exp(\bs{\theta}_\xi\bs{w}_i)},  \quad \xi=u,d.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;toc_10&#34;&gt;To Be Continued&lt;/h1&gt;
+
+&lt;p&gt;&amp;hellip;&lt;/p&gt;
 
 &lt;div class=&#34;footnotes&#34;&gt;
 
