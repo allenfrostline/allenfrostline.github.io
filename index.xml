@@ -263,7 +263,7 @@ h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &
 header h1:before {content: &#39;&#39;}
 &lt;/style&gt;
 
-&lt;p&gt;These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_0&#34;&gt;Notations&lt;/h1&gt;
 
@@ -485,7 +485,7 @@ header h1:before {content: &#39;&#39;}
 
 &lt;p&gt;One of the most importance usages of SVD is &lt;strong&gt;computing projections&lt;/strong&gt;. &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\in\R^{n\times n}\)&lt;/span&gt; is a projection matrix iff. &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}^2=\bs{P}\)&lt;/span&gt;. More commonly, we consider orthogonal projection &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\)&lt;/span&gt; that&amp;rsquo;s also symmetric. Now let&amp;rsquo;s consider dataset &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt; where we have &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; observations, each with &lt;span class=&#34;math inline&#34;&gt;\(m\)&lt;/span&gt; dimensions. Suppose we want to project this dataset onto &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\subseteq\R^m\)&lt;/span&gt; that has &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; dimensions, i.e.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i&#39;\bs{q}_j=1_{i=j}
+\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i&#39;\bs{q}_j=\1{i=j}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;then the projection matrix would be &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k&#39;\)&lt;/span&gt;.&lt;/p&gt;
 
 &lt;p&gt;Another application is the &lt;strong&gt;best rank-&lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; approximation&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)&lt;/span&gt;. We&amp;rsquo;ll cover this next week.&lt;/p&gt;

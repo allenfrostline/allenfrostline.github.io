@@ -159,7 +159,7 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
 
 <h1 id="toc_0">Notations</h1>
 
@@ -381,7 +381,7 @@ header h1:before {content: ''}
 
 <p>One of the most importance usages of SVD is <strong>computing projections</strong>. <span class="math inline">\(\bs{P}\in\R^{n\times n}\)</span> is a projection matrix iff. <span class="math inline">\(\bs{P}^2=\bs{P}\)</span>. More commonly, we consider orthogonal projection <span class="math inline">\(\bs{P}\)</span> that&rsquo;s also symmetric. Now let&rsquo;s consider dataset <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> where we have <span class="math inline">\(n\)</span> observations, each with <span class="math inline">\(m\)</span> dimensions. Suppose we want to project this dataset onto <span class="math inline">\(\bs{W}\subseteq\R^m\)</span> that has <span class="math inline">\(k\)</span> dimensions, i.e.</p>
 <p><span class="math display">\[
-\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=1_{i=j}
+\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=\1{i=j}
 \]</span></p><p>then the projection matrix would be <span class="math inline">\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'\)</span>.</p>
 
 <p>Another application is the <strong>best rank-<span class="math inline">\(r\)</span> approximation</strong>: <span class="math inline">\(\min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}\)</span>. We&rsquo;ll cover this next week.</p>
