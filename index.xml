@@ -40,22 +40,24 @@
 &lt;li&gt;&lt;a href=&#34;#toc_8&#34;&gt;Ordered Probit Model&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_9&#34;&gt;Decomposition Model&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;Hawkes Model&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;Stochastic Processes&lt;/a&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_11&#34;&gt;Stochastic Processes&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_11&#34;&gt;Markov Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_12&#34;&gt;Markov Process&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_12&#34;&gt;Point Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;Point Process&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;Poisson Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_14&#34;&gt;Poisson Process&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_14&#34;&gt;Cox Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;Cox Process&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;Hawkes Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;Hawkes Process&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_17&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -196,24 +198,28 @@ S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=
 \bs{X}_i = (1, A_{i-1}),\ \bs{Z}_i=(1,D_{i-1})\ \text{and}\ \bs{W}_i = (1,S_{i-1}).
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;from which we can train a simple decomposition model using in-sample data.&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_10&#34;&gt;Stochastic Processes&lt;/h1&gt;
+&lt;h2 id=&#34;toc_10&#34;&gt;Hawkes Model&lt;/h2&gt;
+
+&lt;p&gt;We can model the price as a compound Cox process and use Hawkes model to estimate it. For definition and detailed analysis check out the &lt;a href=&#34;#toc_11&#34;&gt;next section&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_11&#34;&gt;Stochastic Processes&lt;/h1&gt;
 
 &lt;p&gt;Let&amp;rsquo;s first define two basic processes: Markov process and point process.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_11&#34;&gt;Markov Process&lt;/h2&gt;
+&lt;h2 id=&#34;toc_12&#34;&gt;Markov Process&lt;/h2&gt;
 
 &lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is called a Markov process if&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \P[Y_t\le y\mid \F_s^Y] = \P[Y_t\le y\mid Y_s]
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\P\)&lt;/span&gt;-a.s. for all &lt;span class=&#34;math inline&#34;&gt;\(t\ge s\ge 0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y\in\R\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_12&#34;&gt;Point Process&lt;/h2&gt;
+&lt;h2 id=&#34;toc_13&#34;&gt;Point Process&lt;/h2&gt;
 
 &lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}\)&lt;/span&gt; be a set of all right-continuous non-decreasing integer-valued functions &lt;span class=&#34;math inline&#34;&gt;\(\{v(t):v_0= 0; t\ge 0\}\)&lt;/span&gt;. Any random variable &lt;span class=&#34;math inline&#34;&gt;\(N(t)\)&lt;/span&gt; with trajectories from &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}\)&lt;/span&gt; is called a point process. It can also be seen as the counting process of random events.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;Property&lt;/code&gt; (Stationarity) A point process is stationary if &lt;span class=&#34;math inline&#34;&gt;\(\Delta_s=N(s+t)-N(s)\)&lt;/span&gt; has the same distribution for all &lt;span class=&#34;math inline&#34;&gt;\(s\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_13&#34;&gt;Poisson Process&lt;/h2&gt;
+&lt;h2 id=&#34;toc_14&#34;&gt;Poisson Process&lt;/h2&gt;
 
 &lt;p&gt;Before defining the Poisson process, let&amp;rsquo;s review some basics about Poisson distribution.&lt;/p&gt;
 
@@ -270,7 +276,7 @@ u(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\lambda^{\alpha-1} e^{-\beta \
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(N_A(t) - N_A(s)\sim\text{Pois}(A_t-A_s)\)&lt;/span&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;toc_14&#34;&gt;Cox Process&lt;/h2&gt;
+&lt;h2 id=&#34;toc_15&#34;&gt;Cox Process&lt;/h2&gt;
 
 &lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t\ge 0\)&lt;/span&gt;, be a random process with trajectories from &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{A}\)&lt;/span&gt;. Cox process is a generalization of non-homogeneous Poisson process in which intensity measure can be stochastic in a certain way.&lt;/p&gt;
 
@@ -302,7 +308,7 @@ S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \]&lt;/span&gt;&lt;/p&gt;
-&lt;h2 id=&#34;toc_15&#34;&gt;Hawkes Process&lt;/h2&gt;
+&lt;h2 id=&#34;toc_16&#34;&gt;Hawkes Process&lt;/h2&gt;
 
 &lt;p&gt;A Hawkes process &lt;span class=&#34;math inline&#34;&gt;\(N_t\)&lt;/span&gt;, also known as a self-exciting counting process, is a simple point process whose conditional intensity can be expressed as&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
@@ -312,7 +318,7 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \end{array}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where  &lt;span class=&#34;math inline&#34;&gt;\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)&lt;/span&gt; is a kernel function which expresses the positive influence of past events &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; on the current value of the intensity process &lt;span class=&#34;math inline&#34;&gt;\(\lambda (t)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\mu (t)\)&lt;/span&gt; is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and &lt;span class=&#34;math inline&#34;&gt;\(\{ T_i : T_i &amp;lt; T_{i + 1} \} \in \mathbb{R}\)&lt;/span&gt; is the time of occurrence of the i-th event of the process.&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_16&#34;&gt;To Be Continued&lt;/h1&gt;
+&lt;h1 id=&#34;toc_17&#34;&gt;To Be Continued&lt;/h1&gt;
 
 &lt;p&gt;&amp;hellip;&lt;/p&gt;
 
