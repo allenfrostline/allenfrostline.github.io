@@ -138,9 +138,11 @@
 <li><a href="#toc_13">Poisson Process</a></li>
 
 <li><a href="#toc_14">Cox Process</a></li>
+
+<li><a href="#toc_15">Hawkes Process</a></li>
 </ul></li>
 
-<li><a href="#toc_15">To Be Continued</a></li>
+<li><a href="#toc_16">To Be Continued</a></li>
 </ul>
 
 </nav>
@@ -387,7 +389,17 @@ S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
 <p><span class="math display">\[
 D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \]</span></p>
-<h1 id="toc_15">To Be Continued</h1>
+<h2 id="toc_15">Hawkes Process</h2>
+
+<p>A Hawkes process <span class="math inline">\(N_t\)</span>, also known as a self-exciting counting process, is a simple point process whose conditional intensity can be expressed as</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+  \lambda (t) &amp; = \mu (t) + \int_{- \infty}^t \nu (t - s) d N_s\\
+  &amp; = \mu (t) + \sum_{T_k &lt; t} \nu (t - T_k)
+\end{array}
+\]</span></p><p>where  <span class="math inline">\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)</span> is a kernel function which expresses the positive influence of past events <span class="math inline">\(T_i\)</span> on the current value of the intensity process <span class="math inline">\(\lambda (t)\)</span>, <span class="math inline">\(\mu (t)\)</span> is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and <span class="math inline">\(\{ T_i : T_i &lt; T_{i + 1} \} \in \mathbb{R}\)</span> is the time of occurrence of the i-th event of the process.</p>
+
+<h1 id="toc_16">To Be Continued</h1>
 
 <p>&hellip;</p>
 

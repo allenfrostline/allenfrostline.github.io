@@ -51,9 +51,11 @@
 &lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;Poisson Process&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_14&#34;&gt;Cox Process&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;Hawkes Process&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -300,7 +302,17 @@ S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \]&lt;/span&gt;&lt;/p&gt;
-&lt;h1 id=&#34;toc_15&#34;&gt;To Be Continued&lt;/h1&gt;
+&lt;h2 id=&#34;toc_15&#34;&gt;Hawkes Process&lt;/h2&gt;
+
+&lt;p&gt;A Hawkes process &lt;span class=&#34;math inline&#34;&gt;\(N_t\)&lt;/span&gt;, also known as a self-exciting counting process, is a simple point process whose conditional intensity can be expressed as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{array}{ll}
+  \lambda (t) &amp;amp; = \mu (t) + \int_{- \infty}^t \nu (t - s) d N_s\\
+  &amp;amp; = \mu (t) + \sum_{T_k &amp;lt; t} \nu (t - T_k)
+\end{array}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where  &lt;span class=&#34;math inline&#34;&gt;\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)&lt;/span&gt; is a kernel function which expresses the positive influence of past events &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; on the current value of the intensity process &lt;span class=&#34;math inline&#34;&gt;\(\lambda (t)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\mu (t)\)&lt;/span&gt; is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and &lt;span class=&#34;math inline&#34;&gt;\(\{ T_i : T_i &amp;lt; T_{i + 1} \} \in \mathbb{R}\)&lt;/span&gt; is the time of occurrence of the i-th event of the process.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_16&#34;&gt;To Be Continued&lt;/h1&gt;
 
 &lt;p&gt;&amp;hellip;&lt;/p&gt;
 
