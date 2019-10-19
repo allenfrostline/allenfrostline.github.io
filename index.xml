@@ -35,14 +35,25 @@
 
 &lt;li&gt;&lt;a href=&#34;#toc_6&#34;&gt;Models&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_7&#34;&gt;Compound Poisson Model&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_7&#34;&gt;A Simple Model to Start With&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_8&#34;&gt;Ordered Probit Model&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_9&#34;&gt;Decomposition Model&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;Stochastic Processes&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_11&#34;&gt;Markov Process&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_12&#34;&gt;Point Process&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;Poisson Process&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_14&#34;&gt;Cox Process&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -63,7 +74,7 @@ h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &
 header h1:before {content: &#39;&#39;}
 &lt;/style&gt;
 
-&lt;p&gt;Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}\)&lt;/span&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_0&#34;&gt;Introduction&lt;/h1&gt;
 
@@ -121,7 +132,7 @@ beginning and at the end of the trading session.&lt;/li&gt;
 
 &lt;p&gt;In this section, we will introduce a series of mathematical models that explain the abovementioned nonsynchronous characteristics.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_7&#34;&gt;Compound Poisson Model&lt;/h2&gt;
+&lt;h2 id=&#34;toc_7&#34;&gt;A Simple Model to Start With&lt;/h2&gt;
 
 &lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(r_t\)&lt;/span&gt; be continuously compounded return at time &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;. Assume that &lt;span class=&#34;math inline&#34;&gt;\(r_t\)&lt;/span&gt; are i.i.d. latent variables, &lt;span class=&#34;math inline&#34;&gt;\(\E[r_t] = μ\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\V[r_t]=\sigma\)&lt;/span&gt;. For each &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; probability that the asset is not traded is &lt;span class=&#34;math inline&#34;&gt;\(\pi\)&lt;/span&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(r_t^0\)&lt;/span&gt; be the manifest return variable. If at &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; there is no trade &lt;span class=&#34;math inline&#34;&gt;\(r_t^0 = 0\)&lt;/span&gt;. If at &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; there is a trade then &lt;span class=&#34;math inline&#34;&gt;\(r_t^0\)&lt;/span&gt; is the cumulative return since the previous trade.&lt;/p&gt;
 
@@ -183,7 +194,113 @@ S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=
 \bs{X}_i = (1, A_{i-1}),\ \bs{Z}_i=(1,D_{i-1})\ \text{and}\ \bs{W}_i = (1,S_{i-1}).
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;from which we can train a simple decomposition model using in-sample data.&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_10&#34;&gt;To Be Continued&lt;/h1&gt;
+&lt;h1 id=&#34;toc_10&#34;&gt;Stochastic Processes&lt;/h1&gt;
+
+&lt;p&gt;Let&amp;rsquo;s first define two basic processes: Markov process and point process.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_11&#34;&gt;Markov Process&lt;/h2&gt;
+
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is called a Markov process if&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\P[Y_t\le y\mid \F_s^Y] = \P[Y_t\le y\mid Y_s]
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\P\)&lt;/span&gt;-a.s. for all &lt;span class=&#34;math inline&#34;&gt;\(t\ge s\ge 0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y\in\R\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_12&#34;&gt;Point Process&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}\)&lt;/span&gt; be a set of all right-continuous non-decreasing integer-valued functions &lt;span class=&#34;math inline&#34;&gt;\(\{v(t):v_0= 0; t\ge 0\}\)&lt;/span&gt;. Any random variable &lt;span class=&#34;math inline&#34;&gt;\(N(t)\)&lt;/span&gt; with trajectories from &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{N}\)&lt;/span&gt; is called a point process. It can also be seen as the counting process of random events.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Property&lt;/code&gt; (Stationarity) A point process is stationary if &lt;span class=&#34;math inline&#34;&gt;\(\Delta_s=N(s+t)-N(s)\)&lt;/span&gt; has the same distribution for all &lt;span class=&#34;math inline&#34;&gt;\(s\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_13&#34;&gt;Poisson Process&lt;/h2&gt;
+
+&lt;p&gt;Before defining the Poisson process, let&amp;rsquo;s review some basics about Poisson distribution.&lt;/p&gt;
+
+&lt;p&gt;(Poisson Distribution) We say &lt;span class=&#34;math inline&#34;&gt;\(N\sim\text{Pois}(\lambda)\)&lt;/span&gt; if&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\pi_{\lambda,k} \equiv \P[N=k] = \frac{\lambda^k e^{-\lambda}}{k!}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where it can be proved that &lt;span class=&#34;math inline&#34;&gt;\(\E[N]=\V[N]=\lambda\)&lt;/span&gt;. Poisson distribution is in fact a small probability limit of binomial distribution.&lt;/p&gt;
+
+&lt;p&gt;(Mixed Poisson Distribution) Let&amp;rsquo;s say &lt;span class=&#34;math inline&#34;&gt;\(N\sim \text{Pois}(\lambda t)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\Lambda\)&lt;/span&gt; be a random variable with distribution &lt;span class=&#34;math inline&#34;&gt;\(\text{U}\)&lt;/span&gt;. Now instead of sticking with constant &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;, assume random &lt;span class=&#34;math inline&#34;&gt;\(\Lambda\)&lt;/span&gt; as intensity and we have mixed Poisson distribution&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+p_k(t) \equiv \P[N=k] = \E\!\left[\frac{(\Lambda t)^k e^{-\Lambda t}}{k!}\right] =
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}\d \text{U} = 
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}u(\lambda)\d\lambda.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Extend this to the joint distribution of &lt;span class=&#34;math inline&#34;&gt;\((N,\Lambda)\)&lt;/span&gt; and we have&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\P[N=k,\Lambda\le x] = \int_0^x \frac{(\lambda t)^k e^{-\lambda t}}{k!} \d\text{U},\quad x \ge 0.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Assume&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\E[\Lambda] = \mu_{\Lambda},\quad \V[\Lambda] = \sigma_{\Lambda}^2
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\E[N] = t\mu_{\Lambda},\quad \V[N] = t\mu_{\Lambda} + t^2\sigma_{\Lambda}^2 \ge t\mu_{\Lambda}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;This is called over-dispersion (variance greater than expectation).&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Example&lt;/code&gt; If we use Gamma distribution as the structure distribution for a mixed Poisson distribution, then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+u(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\lambda^{\alpha-1} e^{-\beta \lambda}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\lambda \ge 0\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\alpha,\beta&amp;gt;0\)&lt;/span&gt; and&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\Gamma(\alpha) = \int_0^{\infty} x^{\alpha - 1}e^{-x}\d x,\quad \alpha &amp;gt; 0
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;with &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; being called the shape parameter and &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt; called the scale parameter. When &lt;span class=&#34;math inline&#34;&gt;\(\beta=1\)&lt;/span&gt; it&amp;rsquo;s a standard Gamma distribution; when &lt;span class=&#34;math inline&#34;&gt;\(\alpha=1\)&lt;/span&gt; it&amp;rsquo;s an exponential distribution; when &lt;span class=&#34;math inline&#34;&gt;\(\alpha=k\in\mathbb{N}_+\)&lt;/span&gt;, the distribution is the sum of &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; exponential r.v.s.&lt;/p&gt;
+
+&lt;p&gt;For &lt;span class=&#34;math inline&#34;&gt;\(\Lambda\sim\text{Gamma}(\alpha,\beta)\)&lt;/span&gt;, we have&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\E[\Lambda] = \mu_{\Lambda} = \frac{\alpha}{\beta},\quad\V[\Lambda] = \sigma_{\Lambda} = \frac{\alpha}{\beta^2}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and for the corresponding mixed distribution&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\P[N=k]
+&amp;amp;= \binom{\alpha+k-1}{k}\left(\frac{\beta}{\beta + k}\right)^{\alpha}\left(\frac{t}{\beta+t}\right)^k\\
+&amp;amp;\overset{\alpha=1}{=} \frac{\beta}{\beta+t}\left(\frac{t}{\beta+t}\right)^k
+\end{align}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;Definition&lt;/code&gt; (Poisson Process) A point process &lt;span class=&#34;math inline&#34;&gt;\(N(t)\)&lt;/span&gt; is called a Poisson process with intensity &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; if:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(N(t)\)&lt;/span&gt; has independent increments.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(N(t)-N(s)\sim\text{Pois}(\lambda(t-s))\)&lt;/span&gt; for any &lt;span class=&#34;math inline&#34;&gt;\(t\ge s\ge 0\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;Definition&lt;/code&gt; (Non-Homogeneous Poisson Process) A point process &lt;span class=&#34;math inline&#34;&gt;\(N_A(t)\)&lt;/span&gt; is called a non-homogeneous Poisson process with intensity measure &lt;span class=&#34;math inline&#34;&gt;\(A_t\in\mathcal{A}\)&lt;/span&gt; if&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(N_A(t)\)&lt;/span&gt; has independent increments.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(N_A(t) - N_A(s)\sim\text{Pois}(A_t-A_s)\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;toc_14&#34;&gt;Cox Process&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t\ge 0\)&lt;/span&gt;, be a random process with trajectories from &lt;span class=&#34;math inline&#34;&gt;\(\mathcal{A}\)&lt;/span&gt;. Cox process is a generalization of non-homogeneous Poisson process in which intensity measure can be stochastic in a certain way.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Definition&lt;/code&gt; (Cox Process) A point process &lt;span class=&#34;math inline&#34;&gt;\(N_{\Lambda}(t)\)&lt;/span&gt; is called Cox process with random intensity measure &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt; if for any realization &lt;span class=&#34;math inline&#34;&gt;\(A_t\)&lt;/span&gt; of &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt; the process &lt;span class=&#34;math inline&#34;&gt;\(N_{\Lambda}(t)\)&lt;/span&gt; is a non-homogeneous Poisson process with intensity measure &lt;span class=&#34;math inline&#34;&gt;\(A_t\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Definition of Cox process means that we can generate Cox process by first generating a trajectory of intensity measure &lt;span class=&#34;math inline&#34;&gt;\(A_t\)&lt;/span&gt; and then generating trajectory of &lt;span class=&#34;math inline&#34;&gt;\(N_{\Lambda}(t)\)&lt;/span&gt; as a trajectory of non-homogeneous Poisson process with intensity measure &lt;span class=&#34;math inline&#34;&gt;\(A_t\)&lt;/span&gt;. If &lt;span class=&#34;math inline&#34;&gt;\(N_1(t)\)&lt;/span&gt; is a homogeneous Poisson process with unit intensity independent of random intensity measure &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt; then Cox process &lt;span class=&#34;math inline&#34;&gt;\(N_{\Lambda}(t)\)&lt;/span&gt; is a superposition of &lt;span class=&#34;math inline&#34;&gt;\(N_1(t)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\)&lt;/span&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+N_{\Lambda}(t) = N_1(\Lambda_t),\quad t\ge 0.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;Definition&lt;/code&gt; (Compound Cox Process) Let &lt;span class=&#34;math inline&#34;&gt;\(X_1,X_2,\ldots\)&lt;/span&gt; be i.i.d. and have at least two moments, say &lt;span class=&#34;math inline&#34;&gt;\(\E[X]=a\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\V[X]=\sigma^2&amp;lt;\infty\)&lt;/span&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(N(t)=N(\Lambda_t)\)&lt;/span&gt; be a Cox process independent of &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt;, then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;is called a compound Cox process. It can be derived &lt;span class=&#34;math inline&#34;&gt;\(\E[S]=a\mu_{\Lambda}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\V[S]=(a^2+\sigma^2)\mu_{\Lambda} + a^2\sigma_{\Lambda}^2\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Particularly, when &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t = \lambda t\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(S(t)\)&lt;/span&gt; is a compound Poisson process.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; (Central Limit Theorem for Compound Cox Processes) Let &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\overset{p}{\to} \infty\)&lt;/span&gt;, for weak convergence to some random variable &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; given by&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\frac{S(t)}{\sigma_X\sqrt{\d t}}\to Z,\quad t\to \infty
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;it&amp;rsquo;s necessary and sufficient that&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\P[Z&amp;lt; z] = \int_0^{\infty}\Phi(zy^{-\frac{1}{2}})\d \P[U&amp;lt; u]=\E[\Phi(zU^{-\frac{1}{2}})]\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(z\in\R\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{\Lambda_t}{\d t}\to U\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t\to \infty\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note that the asymptotic distribution &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t / \d t\)&lt;/span&gt; does not depend on &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; but can still be stochastic. The limit distribution is not Gamma, but rather a mixed one that can be very heavy tailed in many cases, which explains why CLT doesn&amp;rsquo;t work in finance. &lt;strong&gt;In fact, CLT holds if and only if the limit distribution &lt;span class=&#34;math inline&#34;&gt;\(U\)&lt;/span&gt; is constant &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Example&lt;/code&gt; (Dynamic VaR) Assuming that cumulative intensity process &lt;span class=&#34;math inline&#34;&gt;\(\Lambda(t)\)&lt;/span&gt; is a Gamma process (i.e. a process starting from &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; with independent increments distributed as Gamma distribution) the &lt;span class=&#34;math inline&#34;&gt;\(q\)&lt;/span&gt;-level quantile of the maximum loss distribution is calculated as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;toc_15&#34;&gt;To Be Continued&lt;/h1&gt;
 
 &lt;p&gt;&amp;hellip;&lt;/p&gt;
 

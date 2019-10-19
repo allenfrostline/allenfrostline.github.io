@@ -122,14 +122,25 @@
 
 <li><a href="#toc_6">Models</a>
 <ul>
-<li><a href="#toc_7">Compound Poisson Model</a></li>
+<li><a href="#toc_7">A Simple Model to Start With</a></li>
 
 <li><a href="#toc_8">Ordered Probit Model</a></li>
 
 <li><a href="#toc_9">Decomposition Model</a></li>
 </ul></li>
 
-<li><a href="#toc_10">To Be Continued</a></li>
+<li><a href="#toc_10">Stochastic Processes</a>
+<ul>
+<li><a href="#toc_11">Markov Process</a></li>
+
+<li><a href="#toc_12">Point Process</a></li>
+
+<li><a href="#toc_13">Poisson Process</a></li>
+
+<li><a href="#toc_14">Cox Process</a></li>
+</ul></li>
+
+<li><a href="#toc_15">To Be Continued</a></li>
 </ul>
 
 </nav>
@@ -150,7 +161,7 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>Following are my lecture notes from Prof. Yuri Balasanov&rsquo;s course Mathematical Market Microstructure.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>Following are my lecture notes from Prof. Yuri Balasanov&rsquo;s course Mathematical Market Microstructure.<span class="math inline">\(\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}\)</span></p>
 
 <h1 id="toc_0">Introduction</h1>
 
@@ -208,7 +219,7 @@ beginning and at the end of the trading session.</li>
 
 <p>In this section, we will introduce a series of mathematical models that explain the abovementioned nonsynchronous characteristics.</p>
 
-<h2 id="toc_7">Compound Poisson Model</h2>
+<h2 id="toc_7">A Simple Model to Start With</h2>
 
 <p>Let <span class="math inline">\(r_t\)</span> be continuously compounded return at time <span class="math inline">\(t\)</span>. Assume that <span class="math inline">\(r_t\)</span> are i.i.d. latent variables, <span class="math inline">\(\E[r_t] = μ\)</span>, <span class="math inline">\(\V[r_t]=\sigma\)</span>. For each <span class="math inline">\(t\)</span> probability that the asset is not traded is <span class="math inline">\(\pi\)</span>. Let <span class="math inline">\(r_t^0\)</span> be the manifest return variable. If at <span class="math inline">\(t\)</span> there is no trade <span class="math inline">\(r_t^0 = 0\)</span>. If at <span class="math inline">\(t\)</span> there is a trade then <span class="math inline">\(r_t^0\)</span> is the cumulative return since the previous trade.</p>
 
@@ -270,7 +281,113 @@ S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=
 \bs{X}_i = (1, A_{i-1}),\ \bs{Z}_i=(1,D_{i-1})\ \text{and}\ \bs{W}_i = (1,S_{i-1}).
 \]</span></p><p>from which we can train a simple decomposition model using in-sample data.</p>
 
-<h1 id="toc_10">To Be Continued</h1>
+<h1 id="toc_10">Stochastic Processes</h1>
+
+<p>Let&rsquo;s first define two basic processes: Markov process and point process.</p>
+
+<h2 id="toc_11">Markov Process</h2>
+
+<p><span class="math inline">\(Y\)</span> is called a Markov process if</p>
+<p><span class="math display">\[
+\P[Y_t\le y\mid \F_s^Y] = \P[Y_t\le y\mid Y_s]
+\]</span></p><p><span class="math inline">\(\P\)</span>-a.s. for all <span class="math inline">\(t\ge s\ge 0\)</span> and <span class="math inline">\(y\in\R\)</span>.</p>
+
+<h2 id="toc_12">Point Process</h2>
+
+<p>Let <span class="math inline">\(\mathcal{N}\)</span> be a set of all right-continuous non-decreasing integer-valued functions <span class="math inline">\(\{v(t):v_0= 0; t\ge 0\}\)</span>. Any random variable <span class="math inline">\(N(t)\)</span> with trajectories from <span class="math inline">\(\mathcal{N}\)</span> is called a point process. It can also be seen as the counting process of random events.</p>
+
+<p><code>Property</code> (Stationarity) A point process is stationary if <span class="math inline">\(\Delta_s=N(s+t)-N(s)\)</span> has the same distribution for all <span class="math inline">\(s\)</span>.</p>
+
+<h2 id="toc_13">Poisson Process</h2>
+
+<p>Before defining the Poisson process, let&rsquo;s review some basics about Poisson distribution.</p>
+
+<p>(Poisson Distribution) We say <span class="math inline">\(N\sim\text{Pois}(\lambda)\)</span> if</p>
+<p><span class="math display">\[
+\pi_{\lambda,k} \equiv \P[N=k] = \frac{\lambda^k e^{-\lambda}}{k!}
+\]</span></p><p>where it can be proved that <span class="math inline">\(\E[N]=\V[N]=\lambda\)</span>. Poisson distribution is in fact a small probability limit of binomial distribution.</p>
+
+<p>(Mixed Poisson Distribution) Let&rsquo;s say <span class="math inline">\(N\sim \text{Pois}(\lambda t)\)</span> and <span class="math inline">\(\Lambda\)</span> be a random variable with distribution <span class="math inline">\(\text{U}\)</span>. Now instead of sticking with constant <span class="math inline">\(\lambda\)</span>, assume random <span class="math inline">\(\Lambda\)</span> as intensity and we have mixed Poisson distribution</p>
+<p><span class="math display">\[
+p_k(t) \equiv \P[N=k] = \E\!\left[\frac{(\Lambda t)^k e^{-\Lambda t}}{k!}\right] =
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}\d \text{U} = 
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}u(\lambda)\d\lambda.
+\]</span></p><p>Extend this to the joint distribution of <span class="math inline">\((N,\Lambda)\)</span> and we have</p>
+<p><span class="math display">\[
+\P[N=k,\Lambda\le x] = \int_0^x \frac{(\lambda t)^k e^{-\lambda t}}{k!} \d\text{U},\quad x \ge 0.
+\]</span></p><p>Assume</p>
+<p><span class="math display">\[
+\E[\Lambda] = \mu_{\Lambda},\quad \V[\Lambda] = \sigma_{\Lambda}^2
+\]</span></p><p>then</p>
+<p><span class="math display">\[
+\E[N] = t\mu_{\Lambda},\quad \V[N] = t\mu_{\Lambda} + t^2\sigma_{\Lambda}^2 \ge t\mu_{\Lambda}.
+\]</span></p><p>This is called over-dispersion (variance greater than expectation).</p>
+
+<p><code>Example</code> If we use Gamma distribution as the structure distribution for a mixed Poisson distribution, then</p>
+<p><span class="math display">\[
+u(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\lambda^{\alpha-1} e^{-\beta \lambda}
+\]</span></p><p>where <span class="math inline">\(\lambda \ge 0\)</span>, <span class="math inline">\(\alpha,\beta&gt;0\)</span> and</p>
+<p><span class="math display">\[
+\Gamma(\alpha) = \int_0^{\infty} x^{\alpha - 1}e^{-x}\d x,\quad \alpha &gt; 0
+\]</span></p><p>with <span class="math inline">\(\alpha\)</span> being called the shape parameter and <span class="math inline">\(\beta\)</span> called the scale parameter. When <span class="math inline">\(\beta=1\)</span> it&rsquo;s a standard Gamma distribution; when <span class="math inline">\(\alpha=1\)</span> it&rsquo;s an exponential distribution; when <span class="math inline">\(\alpha=k\in\mathbb{N}_+\)</span>, the distribution is the sum of <span class="math inline">\(k\)</span> exponential r.v.s.</p>
+
+<p>For <span class="math inline">\(\Lambda\sim\text{Gamma}(\alpha,\beta)\)</span>, we have</p>
+<p><span class="math display">\[
+\E[\Lambda] = \mu_{\Lambda} = \frac{\alpha}{\beta},\quad\V[\Lambda] = \sigma_{\Lambda} = \frac{\alpha}{\beta^2}
+\]</span></p><p>and for the corresponding mixed distribution</p>
+<p><span class="math display">\[
+\begin{align}
+\P[N=k]
+&amp;= \binom{\alpha+k-1}{k}\left(\frac{\beta}{\beta + k}\right)^{\alpha}\left(\frac{t}{\beta+t}\right)^k\\
+&amp;\overset{\alpha=1}{=} \frac{\beta}{\beta+t}\left(\frac{t}{\beta+t}\right)^k
+\end{align}.
+\]</span></p><p><code>Definition</code> (Poisson Process) A point process <span class="math inline">\(N(t)\)</span> is called a Poisson process with intensity <span class="math inline">\(\lambda\)</span> if:</p>
+
+<ul>
+<li><span class="math inline">\(N(t)\)</span> has independent increments.</li>
+<li><span class="math inline">\(N(t)-N(s)\sim\text{Pois}(\lambda(t-s))\)</span> for any <span class="math inline">\(t\ge s\ge 0\)</span>.</li>
+</ul>
+
+<p><code>Definition</code> (Non-Homogeneous Poisson Process) A point process <span class="math inline">\(N_A(t)\)</span> is called a non-homogeneous Poisson process with intensity measure <span class="math inline">\(A_t\in\mathcal{A}\)</span> if</p>
+
+<ul>
+<li><span class="math inline">\(N_A(t)\)</span> has independent increments.</li>
+<li><span class="math inline">\(N_A(t) - N_A(s)\sim\text{Pois}(A_t-A_s)\)</span>.</li>
+</ul>
+
+<h2 id="toc_14">Cox Process</h2>
+
+<p>Let <span class="math inline">\(\Lambda_t\)</span>, <span class="math inline">\(t\ge 0\)</span>, be a random process with trajectories from <span class="math inline">\(\mathcal{A}\)</span>. Cox process is a generalization of non-homogeneous Poisson process in which intensity measure can be stochastic in a certain way.</p>
+
+<p><code>Definition</code> (Cox Process) A point process <span class="math inline">\(N_{\Lambda}(t)\)</span> is called Cox process with random intensity measure <span class="math inline">\(\Lambda_t\)</span> if for any realization <span class="math inline">\(A_t\)</span> of <span class="math inline">\(\Lambda_t\)</span> the process <span class="math inline">\(N_{\Lambda}(t)\)</span> is a non-homogeneous Poisson process with intensity measure <span class="math inline">\(A_t\)</span>.</p>
+
+<p>Definition of Cox process means that we can generate Cox process by first generating a trajectory of intensity measure <span class="math inline">\(A_t\)</span> and then generating trajectory of <span class="math inline">\(N_{\Lambda}(t)\)</span> as a trajectory of non-homogeneous Poisson process with intensity measure <span class="math inline">\(A_t\)</span>. If <span class="math inline">\(N_1(t)\)</span> is a homogeneous Poisson process with unit intensity independent of random intensity measure <span class="math inline">\(\Lambda_t\)</span> then Cox process <span class="math inline">\(N_{\Lambda}(t)\)</span> is a superposition of <span class="math inline">\(N_1(t)\)</span> and <span class="math inline">\(\Lambda_t\)</span>:</p>
+<p><span class="math display">\[
+N_{\Lambda}(t) = N_1(\Lambda_t),\quad t\ge 0.
+\]</span></p><p><code>Definition</code> (Compound Cox Process) Let <span class="math inline">\(X_1,X_2,\ldots\)</span> be i.i.d. and have at least two moments, say <span class="math inline">\(\E[X]=a\)</span>, <span class="math inline">\(\V[X]=\sigma^2&lt;\infty\)</span>. Let <span class="math inline">\(N(t)=N(\Lambda_t)\)</span> be a Cox process independent of <span class="math inline">\(X\)</span>, then</p>
+<p><span class="math display">\[
+S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
+\]</span></p><p>is called a compound Cox process. It can be derived <span class="math inline">\(\E[S]=a\mu_{\Lambda}\)</span>, <span class="math inline">\(\V[S]=(a^2+\sigma^2)\mu_{\Lambda} + a^2\sigma_{\Lambda}^2\)</span>.</p>
+
+<p>Particularly, when <span class="math inline">\(\Lambda_t = \lambda t\)</span>, <span class="math inline">\(S(t)\)</span> is a compound Poisson process.</p>
+
+<p><code>Theorem</code> (Central Limit Theorem for Compound Cox Processes) Let <span class="math inline">\(\Lambda_t\overset{p}{\to} \infty\)</span>, for weak convergence to some random variable <span class="math inline">\(Z\)</span> given by</p>
+<p><span class="math display">\[
+\frac{S(t)}{\sigma_X\sqrt{\d t}}\to Z,\quad t\to \infty
+\]</span></p><p>it&rsquo;s necessary and sufficient that</p>
+
+<ul>
+<li><span class="math inline">\(\P[Z&lt; z] = \int_0^{\infty}\Phi(zy^{-\frac{1}{2}})\d \P[U&lt; u]=\E[\Phi(zU^{-\frac{1}{2}})]\)</span>, <span class="math inline">\(z\in\R\)</span>.</li>
+<li><span class="math inline">\(\frac{\Lambda_t}{\d t}\to U\)</span>, <span class="math inline">\(t\to \infty\)</span>.</li>
+</ul>
+
+<p>Note that the asymptotic distribution <span class="math inline">\(\Lambda_t / \d t\)</span> does not depend on <span class="math inline">\(t\)</span> but can still be stochastic. The limit distribution is not Gamma, but rather a mixed one that can be very heavy tailed in many cases, which explains why CLT doesn&rsquo;t work in finance. <strong>In fact, CLT holds if and only if the limit distribution <span class="math inline">\(U\)</span> is constant <span class="math inline">\(1\)</span></strong>.</p>
+
+<p><code>Example</code> (Dynamic VaR) Assuming that cumulative intensity process <span class="math inline">\(\Lambda(t)\)</span> is a Gamma process (i.e. a process starting from <span class="math inline">\(0\)</span> with independent increments distributed as Gamma distribution) the <span class="math inline">\(q\)</span>-level quantile of the maximum loss distribution is calculated as</p>
+<p><span class="math display">\[
+D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
+\]</span></p>
+<h1 id="toc_15">To Be Continued</h1>
 
 <p>&hellip;</p>
 
