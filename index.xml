@@ -429,6 +429,8 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 &lt;li&gt;&lt;a href=&#34;#toc_20&#34;&gt;Properties of Population PCs&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_21&#34;&gt;Definition of Sample PCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_22&#34;&gt;How to Calculate Sample PCA&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -828,6 +830,12 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 &lt;h2 id=&#34;toc_21&#34;&gt;Definition of Sample PCA&lt;/h2&gt;
 
 &lt;p&gt;Given &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; samples: &lt;span class=&#34;math inline&#34;&gt;\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)&lt;/span&gt;. Everything is just the same except being in sample notations, e.g. &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{X}}=\bs{X}&#39;\bs{1} / n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(S=(\bs{X}-\bar{\bs{X}}&#39;\bs{1})&#39;(\bs{X}-\bar{\bs{X}}&#39;\bs{1}) / (n-1)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_22&#34;&gt;How to Calculate Sample PCA&lt;/h2&gt;
+
+&lt;p&gt;In order to avoid loss of precision in calculating the &lt;span class=&#34;math inline&#34;&gt;\(\bs{S}\)&lt;/span&gt;, we do SVD instead of EVD, on the mean-centered sample matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}-\bs{1}\bar{\bs{X}}=\bs{U\Sigma V}&#39;\in\R^{n\times p}\)&lt;/span&gt;. Then it can be proved that the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th sample PC is given by &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_k\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(k=1,2,\ldots,p\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this case, we call &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; the &lt;strong&gt;loading matrix&lt;/strong&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(\bs{U\Sigma}\)&lt;/span&gt; the &lt;strong&gt;score matrix&lt;/strong&gt;.&lt;/p&gt;
 
         
       </description>

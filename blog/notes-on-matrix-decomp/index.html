@@ -153,6 +153,8 @@
 <li><a href="#toc_20">Properties of Population PCs</a></li>
 
 <li><a href="#toc_21">Definition of Sample PCA</a></li>
+
+<li><a href="#toc_22">How to Calculate Sample PCA</a></li>
 </ul></li>
 </ul>
 
@@ -552,6 +554,12 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <h2 id="toc_21">Definition of Sample PCA</h2>
 
 <p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)</span>. Everything is just the same except being in sample notations, e.g. <span class="math inline">\(\bar{\bs{X}}=\bs{X}'\bs{1} / n\)</span> and <span class="math inline">\(S=(\bs{X}-\bar{\bs{X}}'\bs{1})'(\bs{X}-\bar{\bs{X}}'\bs{1}) / (n-1)\)</span>.</p>
+
+<h2 id="toc_22">How to Calculate Sample PCA</h2>
+
+<p>In order to avoid loss of precision in calculating the <span class="math inline">\(\bs{S}\)</span>, we do SVD instead of EVD, on the mean-centered sample matrix <span class="math inline">\(\bs{X}-\bs{1}\bar{\bs{X}}=\bs{U\Sigma V}'\in\R^{n\times p}\)</span>. Then it can be proved that the <span class="math inline">\(k\)</span>-th sample PC is given by <span class="math inline">\(\bs{v}_k\)</span>, <span class="math inline">\(k=1,2,\ldots,p\)</span>.</p>
+
+<p>In this case, we call <span class="math inline">\(\bs{V}\)</span> the <strong>loading matrix</strong>, and <span class="math inline">\(\bs{U\Sigma}\)</span> the <strong>score matrix</strong>.</p>
 
 
   <footer>
