@@ -135,9 +135,24 @@
 
 <li><a href="#toc_12">Existence of SVD</a></li>
 
-<li><a href="#toc_13">Properties of SVD</a></li>
+<li><a href="#toc_13">How to Calculate SVD</a></li>
 
-<li><a href="#toc_14">Applications of SVD</a></li>
+<li><a href="#toc_14">Properties of SVD</a></li>
+
+<li><a href="#toc_15">Applications of SVD</a></li>
+</ul></li>
+
+<li><a href="#toc_16">Principle Component Analysis (PCA)</a>
+<ul>
+<li><a href="#toc_17">Three Basic Formulas</a></li>
+
+<li><a href="#toc_18">Definition of Population PCA</a></li>
+
+<li><a href="#toc_19">How to Calculate Population PCs</a></li>
+
+<li><a href="#toc_20">Properties of Population PCs</a></li>
+
+<li><a href="#toc_21">Definition of Sample PCA</a></li>
 </ul></li>
 </ul>
 
@@ -159,7 +174,7 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
 
 <h1 id="toc_0">Notations</h1>
 
@@ -191,7 +206,7 @@ header h1:before {content: ''}
 <li>(Frobenius) We define the Frobenius norm of a matrix as <span class="math inline">\(\norm{\bs{A}}_F=\sqrt{\sum_{i=1}^m\sum_{j=1}^n a_{ij}^2}\)</span>. The spectral 2-norm of a matrix is defined as <span class="math inline">\(\norm{\bs{A}}_2=\max_{\bs{x}\neq \bs{0}} \norm{\bs{Ax}}_2 / \norm{\bs{x}}_2\)</span>.</li>
 </ul>
 
-<p><code>Property</code> What makes these norms?</p>
+<p>Properties of these norms:</p>
 
 <ul>
 <li><span class="math inline">\(\norm{\bs{v}}=0\)</span> iff. <span class="math inline">\(\bs{v}=\bs{0}\)</span>.</li>
@@ -239,7 +254,7 @@ header h1:before {content: ''}
 
 <h2 id="toc_7">Properties of EVD</h2>
 
-<p><code>Property</code> We have several properties following the second theorem above. For all <span class="math inline">\(i=1,2,\ldots, n\)</span></p>
+<p>We have several properties following the second theorem above. For all <span class="math inline">\(i=1,2,\ldots, n\)</span></p>
 
 <ul>
 <li><span class="math inline">\(\bs{A}\bs{q}_i = \lambda_i \bs{q}_i\)</span> (can be proved using <span class="math inline">\(\bs{Q}^{-1}=\bs{Q}'\)</span>)</li>
@@ -288,7 +303,7 @@ header h1:before {content: ''}
 
 <p><code>Theorem</code> (Existence of SVD) Let <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> and <span class="math inline">\(r=\rank(\bs{A})\)</span>. Then <span class="math inline">\(\exists\ \bs{U}_r\in\R^{m\times r}\)</span>, <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> and <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> s.t. <span class="math inline">\(\bs{A} = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span> where <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span> are orthogonal and <span class="math inline">\(\bs{\Sigma}_r\)</span> is diagonal. This means condensed SVD exists and therefore the rest two forms.</p>
 
-<p><code>Proof</code> Define symmetric <span class="math inline">\(\bs{W}\in\R^{(m+n)\times(m+n)}\)</span> as</p>
+<p><strong>Proof</strong>. Define symmetric <span class="math inline">\(\bs{W}\in\R^{(m+n)\times(m+n)}\)</span> as</p>
 <p><span class="math display">\[
 \bs{W} = \begin{bmatrix}
 \bs{0} &amp; \bs{A} \\
@@ -354,9 +369,19 @@ header h1:before {content: ''}
 \bs{z}'\bar{\bs{z}} = \bs{x}'\bs{x} - \bs{y}'\bs{y} = 0
 \]</span></p><p>which altogether gives <span class="math inline">\(\norm{\bs{x}}=\norm{\bs{y}}=1\)</span>.<span style="float: right">Q.E.D.</span></p>
 
-<h2 id="toc_13">Properties of SVD</h2>
+<h2 id="toc_13">How to Calculate SVD</h2>
 
-<p><code>Property</code> There are several characteristics we have about SVD:</p>
+<p>Three steps to calculate the SVD of <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span>:</p>
+
+<ul>
+<li><span class="math inline">\(\bs{\Sigma}\)</span>: calculate eigenvalues of <span class="math inline">\(\bs{AA}'\)</span>, then let <span class="math inline">\(\bs{\Sigma}=\diag\{\sigma_1,\sigma_2,\ldots,\sigma_r\}\in\R^{m\times n}\)</span>.</li>
+<li><span class="math inline">\(\bs{U}\)</span>: calculate eigenvectors of <span class="math inline">\(\bs{AA}'\)</span>, then normalize them to norm <span class="math inline">\(1\)</span>, then <span class="math inline">\(\bs{U}=(\bs{u_1},\bs{u_2},\ldots,\bs{u}_m)\)</span>.</li>
+<li><span class="math inline">\(\bs{V}\)</span>: calculate eigenvectors of <span class="math inline">\(\bs{A}'\bs{A}\)</span>, then normalize them to norm <span class="math inline">\(1\)</span>, then <span class="math inline">\(\bs{V}=(\bs{v}_1,\bs{v}_2,\ldots,\bs{v}_n)\)</span>.</li>
+</ul>
+
+<h2 id="toc_14">Properties of SVD</h2>
+
+<p>There are several characteristics we have about SVD:</p>
 
 <ul>
 <li>The <span class="math inline">\(\bs{W}\)</span> decomposition above.</li>
@@ -377,90 +402,200 @@ header h1:before {content: ''}
 
 <p><code>Exercise</code> Show how to use SVD to calculate these two norms.</p>
 
-<h2 id="toc_14">Applications of SVD</h2>
+<h2 id="toc_15">Applications of SVD</h2>
 
-<p><ol>
+<ol>
 <li>
-One of the most importance usages of SVD is <strong>computing projections</strong>. <span class="math inline">\(\bs{P}\in\R^{n\times n}\)</span> is a projection matrix iff. <span class="math inline">\(\bs{P}^2=\bs{P}\)</span>. More commonly, we consider orthogonal projection <span class="math inline">\(\bs{P}\)</span> that&rsquo;s also symmetric. Now let&rsquo;s consider dataset <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> where we have <span class="math inline">\(n\)</span> observations, each with <span class="math inline">\(m\)</span> dimensions. Suppose we want to project this dataset onto <span class="math inline">\(\bs{W}\subseteq\R^m\)</span> that has <span class="math inline">\(k\)</span> dimensions, i.e.</p>
-<p><span class="math display">\[
-\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=\1{i=j}
-\]</span></p><p>then the projection matrix would be <span class="math inline">\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'\)</span>.
-</li></p>
+One of the most importance usages of SVD is **computing projections**. $\bs{P}\in\R^{n\times n}$ is a projection matrix iff. $\bs{P}^2=\bs{P}$. More commonly, we consider orthogonal projection $\bs{P}$ that's also symmetric. Now let's consider dataset $\bs{A}\in\R^{m\times n}$ where we have $n$ observations, each with $m$ dimensions. Suppose we want to project this dataset onto $\bs{W}\subseteq\R^m$ that has $k$ dimensions, i.e.
 
-<p><li>The <strong>nearest orthogonal matrix</strong> of <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> is given by</p>
-<p><span class="math display">\[
+$$
+\bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=\1{i=j}
+$$
+
+then the projection matrix would be $\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'$.
+</li>
+
+<li>The **nearest orthogonal matrix** of $\bs{A}\in\R^{p\times p}$ is given by
+
+$$
 \min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F
-\]</span></p><p>which solves if we have optima for</p>
-<p><span class="math display">\[
+$$
+
+which solves if we have optima for
+
+$$
 \begin{align}
-\min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &amp;=
-\min_{\bs{X}'\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})'(\bs{A}-\bs{X})]\\&amp;=
-\min_{\bs{X}'\bs{X}=\bs{I}}\tr[\bs{A}'\bs{A} - \bs{X}'\bs{A} - \bs{A}'\bs{X} + \bs{X}'\bs{X}]\\&amp;=
-\min_{\bs{X}'\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}'\bs{X}) - \tr(\bs{X}'\bs{A}) + \tr(\bs{X}'\bs{X})\\&amp;=
+\min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &=
+\min_{\bs{X}'\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})'(\bs{A}-\bs{X})]\\&=
+\min_{\bs{X}'\bs{X}=\bs{I}}\tr[\bs{A}'\bs{A} - \bs{X}'\bs{A} - \bs{A}'\bs{X} + \bs{X}'\bs{X}]\\&=
+\min_{\bs{X}'\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}'\bs{X}) - \tr(\bs{X}'\bs{A}) + \tr(\bs{X}'\bs{X})\\&=
 \norm{\bs{A}}_F^2 + n - 2\max_{\bs{X}'\bs{X}=\bs{I}} \tr(\bs{A}'\bs{X})
 \end{align}.
-\]</span></p><p>Now we try to solve</p>
-<p><span class="math display">\[
+$$
+
+Now we try to solve
+
+$$
 \max_{\bs{X}'\bs{X}=\bs{I}} \tr(\bs{A}'\bs{X})
-\]</span></p><p>and claim the solution is given by <span class="math inline">\(\bs{X} = \bs{U}\bs{V}'\)</span> where <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> are derived from SVD of <span class="math inline">\(\bs{A}\)</span>, namely <span class="math inline">\(\bs{A} = \bs{U\Sigma V}'\)</span>. Proof: We know</p>
-<p><span class="math display">\[
+$$
+
+and claim the solution is given by $\bs{X} = \bs{U}\bs{V}'$ where $\bs{U}$ and $\bs{V}$ are derived from SVD of $\bs{A}$, namely $\bs{A} = \bs{U\Sigma V}'$. Proof: We know
+
+$$
 \tr(\bs{A}'\bs{X}) = \tr(\bs{V}\bs{\Sigma}'\bs{U}'X) = \tr(\bs{\Sigma}'\bs{U}'\bs{X}\bs{V}) =: \tr(\bs{\Sigma}'\bs{Z})
-\]</span></p><p>where we define <span class="math inline">\(\bs{Z}\)</span> as the product of the three orthogonal matrices, which therefore is orthogonal: <span class="math inline">\(\bs{Z}'\bs{Z}=\bs{I}\)</span>.</p>
+$$
 
-<p>Orthogonality of <span class="math inline">\(\bs{Z}\)</span> gives <span class="math inline">\(\forall i\)</span></p>
-<p><span class="math display">\[
+where we define $\bs{Z}$ as the product of the three orthogonal matrices, which therefore is orthogonal: $\bs{Z}'\bs{Z}=\bs{I}$.
+
+Orthogonality of $\bs{Z}$ gives $\forall i$
+
+$$
 z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
-\]</span></p><p>Hence, (note all singular values are non-negative)</p>
-<p><span class="math display">\[
+$$
+
+Hence, (note all singular values are non-negative)
+
+$$
 \tr(\bs{\Sigma}'\bs{Z}) = \sum_{i=1}^p \sigma_i z_{ii} \le \sum_{i=1}^p \sigma_i
-\]</span></p><p>which gives optimal <span class="math inline">\(\bs{Z}^*=\bs{I}\)</span> and thus the solution follows.
-</li></p>
+$$
 
-<p><li>The <strong>orthogonal Procrustes problem</strong> seeks the solution to</p>
-<p><span class="math display">\[
+which gives optimal $\bs{Z}^*=\bs{I}$ and thus the solution follows.
+</li>
+
+<li>The **orthogonal Procrustes problem** seeks the solution to
+
+$$
 \min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{BX}}_F
-\]</span></p><p>which is, similar to the problem above, given by the SVD of <span class="math inline">\(\bs{BA}'=\bs{U\Sigma V}'\)</span>, namely <span class="math inline">\(\bs{X}=\bs{UV}'\)</span>.
-</li></p>
+$$
 
-<p><li>
-<strong>Nearest symmetric matrix</strong> for <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> seeks solution to <span class="math inline">\(\min\norm{\bs{A}-\bs{X}}_F\)</span>, which is simply</p>
-<p><span class="math display">\[
+which is, similar to the problem above, given by the SVD of $\bs{BA}'=\bs{U\Sigma V}'$, namely $\bs{X}=\bs{UV}'$.
+</li>
+
+<li>
+**Nearest symmetric matrix** for $\bs{A}\in\R^{p\times p}$ seeks solution to $\min\norm{\bs{A}-\bs{X}}_F$, which is simply
+
+$$
 \bs{X} = \frac{\bs{A}+\bs{A}'}{2}.
-\]</span></p><p>In order to prove it, write <span class="math inline">\(\bs{A}\)</span> in the form of</p>
-<p><span class="math display">\[
+$$
+
+In order to prove it, write $\bs{A}$ in the form of
+
+$$
 \bs{A} = \frac{\bs{A} + \bs{A}'}{2} + \frac{\bs{A} - \bs{A}'}{2} =: \bs{X} + \bs{Y}.
-\]</span></p><p>Notice <span class="math inline">\(\tr(\bs{X}'\bs{Y})=0\)</span>, hence by Pythagoras we know <span class="math inline">\(\bs{Y}\)</span> is the minimum we can find for the problem above.
-</li></p>
+$$
 
-<p><li><strong>Best rank-<span class="math inline">\(r\)</span> approximation</strong>. In order to find the best rank-<span class="math inline">\(r\)</span> approximation in Frobenius norm, we need solution to</p>
-<p><span class="math display">\[
+Notice $\tr(\bs{X}'\bs{Y})=0$, hence by Pythagoras we know $\bs{Y}$ is the minimum we can find for the problem above.
+</li>
+
+<li>**Best rank-$r$ approximation**. In order to find the best rank-$r$ approximation in Frobenius norm, we need solution to
+
+$$
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_F
-\]</span></p><p>which is merely <span class="math inline">\(\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span>. See condensed SVD above for notation.</p>
+$$
 
-<p>The best approximation in 2-norm, namely solution to</p>
-<p><span class="math display">\[
+which is merely $\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r'$. See condensed SVD above for notation.
+
+The best approximation in 2-norm, namely solution to
+
+$$
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_2,
-\]</span></p><p>is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose <span class="math inline">\(\exists \bs{B}\in\R^{n\times p}\)</span> s.t.</p>
-<p><span class="math display">\[
-\norm{\bs{A}-\bs{B}}_2 &lt; \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
-\]</span></p><p>Now choose <span class="math inline">\(\bs{w}\)</span> from kernel of <span class="math inline">\(\bs{B}\)</span> and we have</p>
-<p><span class="math display">\[
+$$
+
+is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose $\exists \bs{B}\in\R^{n\times p}$ s.t.
+
+$$
+\norm{\bs{A}-\bs{B}}_2 < \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
+$$
+
+Now choose $\bs{w}$ from kernel of $\bs{B}$ and we have
+
+$$
 \bs{Aw}=\bs{Aw}+\bs{0} = (\bs{A}-\bs{B})\bs{w}
-\]</span></p><p>and thus</p>
-<p><span class="math display">\[
+$$
+
+and thus
+
+$$
 \norm{\bs{Aw}}_2 = \norm{(\bs{A}-\bs{B})\bs{w}}_2 \le \norm{\bs{A}-\bs{B}}_2\cdot \norm{\bs{w}}_2
-&lt;\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
-\]</span></p><p>Meanwhile, note <span class="math inline">\(\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}\)</span>, assume particularly <span class="math inline">\(\bs{w}=\bs{v}_{r+1}\bs{\alpha}\)</span>, then</p>
-<p><span class="math display">\[
+<\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
+$$
+
+Meanwhile, note $\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}$, assume particularly $\bs{w}=\bs{v}_{r+1}\bs{\alpha}$, then
+
+$$
 \begin{align}
-\norm{\bs{Aw}}_2^2&amp;=\norm{\bs{U}\bs{\Sigma}\bs{V}'\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
-&amp;= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
+\norm{\bs{Aw}}_2^2&=\norm{\bs{U}\bs{\Sigma}\bs{V}'\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
+&= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
 \end{align}
-\]</span></p><p>Due to contradiction between eq. (1) and (2) we conclude such <span class="math inline">\(\bs{B}\)</span> doesn&rsquo;t exist.</p>
+$$
 
-<p></li></p>
+Due to contradiction between eq. (1) and (2) we conclude such $\bs{B}$ doesn't exist.
 
-<p></ol></p>
+</li>
+</ol>
+
+<h1 id="toc_16">Principle Component Analysis (PCA)</h1>
+
+<p>PCA is the most important matrix analysis tool. In this section we use <span class="math inline">\(\bs{X}=(X_1,X_2,\ldots,X_p)\)</span> to denote a vector of random variables. Being capitalized here means they are random variables rather than observations, and thus a capitalized bold symbol stands still for a vector.</p>
+
+<h2 id="toc_17">Three Basic Formulas</h2>
+
+<p>Expectation:</p>
+<p><span class="math display">\[
+\E[\bs{AX}] = \bs{A}\E[\bs{X}].
+\]</span></p><p>Variance:</p>
+<p><span class="math display">\[
+\Var[\bs{Ax}] = \bs{A}\Var[\bs{X}]\bs{A}'.
+\]</span></p><p>Covariance:</p>
+<p><span class="math display">\[
+\Cov[\bs{a}'\bs{X},\bs{b}'\bs{X}] = \bs{a}'\Var[\bs{X}]\bs{b}.
+\]</span></p>
+<h2 id="toc_18">Definition of Population PCA</h2>
+
+<p>Given <span class="math inline">\(\bs{X}:\Omega\to\R^p\)</span>, find <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> s.t.</p>
+
+<ul>
+<li><span class="math inline">\(Y_1,Y_2,\ldots,Y_p\)</span> are uncorrelated, where <span class="math inline">\(\bs{Y}=(Y_1,Y_2,\ldots,Y_p)=\bs{A}\bs{X}\)</span>.</li>
+<li><span class="math inline">\(Y_1,Y_2,\ldots,Y_p\)</span> have variances as large as possible.</li>
+</ul>
+
+<p>These two condisions can be described in equations as below:</p>
+
+<ul>
+<li><span class="math inline">\(\Cov[Y_i,Y_j]=\bs{O}\)</span> for all <span class="math inline">\(i\neq j\)</span>.</li>
+<li><span class="math inline">\(\Var[Y_i]\)</span> is maximized for all <span class="math inline">\(i=1,2,\ldots,p\)</span> (under the restraints that <span class="math inline">\(\norm{\bs{a}_j}=1\)</span> for all <span class="math inline">\(j=1,2,\ldots,p\)</span>).</li>
+</ul>
+
+<p><img alt="We choose Y_1 to maximize it's variance, and then Y_2" src="/images/notes-on-matrix-decomp1.png" style="width:min(300px, 100%)"></img></p>
+
+<p>These <span class="math inline">\(Y_1,Y_2,\ldots,Y_p\)</span> are called principle components of <span class="math inline">\(\bs{X}\)</span>.</p>
+
+<h2 id="toc_19">How to Calculate Population PCs</h2>
+
+<p>We can do it <strong>recursively</strong>:</p>
+
+<ul>
+<li>1st PC: for <span class="math inline">\(Y_1=\bs{a}_1'\bs{X}\)</span>, let <span class="math inline">\(\bs{a}_1=\arg\max\{\Var[\bs{a}_1'\bs{X}]\}\)</span> s.t. <span class="math inline">\(\norm{\bs{a}_1}=1\)</span>.</li>
+<li>2nd PC: for <span class="math inline">\(Y_2=\bs{a}_2'\bs{X}\)</span>, let <span class="math inline">\(\bs{a}_2=\arg\max\{\Var[\bs{a}_2'\bs{X}]\}\)</span> s.t. <span class="math inline">\(\norm{\bs{a}_2}=1\)</span>, <span class="math inline">\(\Cov[\bs{a}_1'\bs{X},\bs{a}_2'\bs{X}]=0\)</span>.</li>
+<li>3rd PC: for <span class="math inline">\(Y_3=\bs{a}_3'\bs{X}\)</span>, let <span class="math inline">\(\bs{a}_3=\arg\max\{\Var[\bs{a}_3'\bs{X}]\}\)</span> s.t. <span class="math inline">\(\norm{\bs{a}_3}=1\)</span>, <span class="math inline">\(\Cov[\bs{a}_1'\bs{X},\bs{a}_3'\bs{X}]=0\)</span> and <span class="math inline">\(\Cov[\bs{a}_2'\bs{X},\bs{a}_3'\bs{X}]=0\)</span>.</li>
+<li>&hellip;</li>
+</ul>
+
+<p>Or, we can do it <strong>analytically</strong> by the theorem below:</p>
+
+<p><code>Theorem</code> Let <span class="math inline">\(\bs{\Sigma}=\Cov[\bs{X}]\)</span> and let the EVD be <span class="math inline">\(\bs{\Sigma} = \bs{A}\bs{\Lambda}\bs{A}'\)</span>, then it can be proved that <span class="math inline">\(Y_k = \bs{a}_k'\bs{X}\)</span> is the <span class="math inline">\(k\)</span>-th PC.</p>
+
+<h2 id="toc_20">Properties of Population PCs</h2>
+
+<ol>
+<li> The total variance is not changed: $\sum \Var[X_i]=\sum\Var[Y_i]$. </li>
+<li> The proportion in variance of the $k$-th PC is $\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}$ where $\lambda_i$ is the $i$-th eigenvalue.</li>
+<li>The correlation $\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j$.</li>
+</ol>
+
+<h2 id="toc_21">Definition of Sample PCA</h2>
+
+<p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)</span>.</p>
 
 
   <footer>
