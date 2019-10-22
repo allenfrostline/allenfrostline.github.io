@@ -174,7 +174,21 @@ h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
 header h1:before {content: ''}
 </style>
 
-<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)</span></p>
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.
+<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+ \newcommand{Corr}{\text{Corr}}
+ \newcommand{E}{\text{E}}
+ \newcommand{Cov}{\text{Cov}}
+ \newcommand{Var}{\text{Var}}
+ \newcommand{span}{\text{span}}
+ \newcommand{bs}{\boldsymbol}
+ \newcommand{R}{\mathbb{R}}
+ \newcommand{rank}{\text{rank}}
+ \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+ \newcommand{diag}{\text{diag}}
+ \newcommand{tr}{\text{tr}}
+ \newcommand{braket}[1]{\left\langle#1\right\rangle}
+ \newcommand{C}{\mathbb{C}}\)</span></p>
 
 <h1 id="toc_0">Notations</h1>
 
@@ -404,135 +418,77 @@ header h1:before {content: ''}
 
 <h2 id="toc_15">Applications of SVD</h2>
 
-<ol>
-<li>
-One of the most importance usages of SVD is **computing projections**. $\bs{P}\in\R^{n\times n}$ is a projection matrix iff. $\bs{P}^2=\bs{P}$. More commonly, we consider orthogonal projection $\bs{P}$ that's also symmetric. Now let's consider dataset $\bs{A}\in\R^{m\times n}$ where we have $n$ observations, each with $m$ dimensions. Suppose we want to project this dataset onto $\bs{W}\subseteq\R^m$ that has $k$ dimensions, i.e.
-
-$$
+<p><strong>1) Projections</strong>. One of the most importance usages of SVD is computing projections. <span class="math inline">\(\bs{P}\in\R^{n\times n}\)</span> is a projection matrix iff. <span class="math inline">\(\bs{P}^2=\bs{P}\)</span>. More commonly, we consider orthogonal projection <span class="math inline">\(\bs{P}\)</span> that&rsquo;s also symmetric. Now let&rsquo;s consider dataset <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> where we have <span class="math inline">\(n\)</span> observations, each with <span class="math inline">\(m\)</span> dimensions. Suppose we want to project this dataset onto <span class="math inline">\(\bs{W}\subseteq\R^m\)</span> that has <span class="math inline">\(k\)</span> dimensions, i.e.</p>
+<p><span class="math display">\[
 \bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i'\bs{q}_j=\1{i=j}
-$$
+\]</span></p><p>then the projection matrix would be <span class="math inline">\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'\)</span>.</p>
 
-then the projection matrix would be $\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k'$.
-</li>
-
-<li>The **nearest orthogonal matrix** of $\bs{A}\in\R^{p\times p}$ is given by
-
-$$
+<p><strong>Nearest Orthogonal Matrix</strong>. The nearest orthogonal matrix of <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> is given by</p>
+<p><span class="math display">\[
 \min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F
-$$
-
-which solves if we have optima for
-
-$$
+\]</span></p><p>which solves if we have optima for</p>
+<p><span class="math display">\[
 \begin{align}
-\min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &=
-\min_{\bs{X}'\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})'(\bs{A}-\bs{X})]\\&=
-\min_{\bs{X}'\bs{X}=\bs{I}}\tr[\bs{A}'\bs{A} - \bs{X}'\bs{A} - \bs{A}'\bs{X} + \bs{X}'\bs{X}]\\&=
-\min_{\bs{X}'\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}'\bs{X}) - \tr(\bs{X}'\bs{A}) + \tr(\bs{X}'\bs{X})\\&=
+\min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &amp;=
+\min_{\bs{X}'\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})'(\bs{A}-\bs{X})]\\&amp;=
+\min_{\bs{X}'\bs{X}=\bs{I}}\tr[\bs{A}'\bs{A} - \bs{X}'\bs{A} - \bs{A}'\bs{X} + \bs{X}'\bs{X}]\\&amp;=
+\min_{\bs{X}'\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}'\bs{X}) - \tr(\bs{X}'\bs{A}) + \tr(\bs{X}'\bs{X})\\&amp;=
 \norm{\bs{A}}_F^2 + n - 2\max_{\bs{X}'\bs{X}=\bs{I}} \tr(\bs{A}'\bs{X})
 \end{align}.
-$$
-
-Now we try to solve
-
-$$
+\]</span></p><p>Now we try to solve</p>
+<p><span class="math display">\[
 \max_{\bs{X}'\bs{X}=\bs{I}} \tr(\bs{A}'\bs{X})
-$$
-
-and claim the solution is given by $\bs{X} = \bs{U}\bs{V}'$ where $\bs{U}$ and $\bs{V}$ are derived from SVD of $\bs{A}$, namely $\bs{A} = \bs{U\Sigma V}'$. Proof: We know
-
-$$
+\]</span></p><p>and claim the solution is given by <span class="math inline">\(\bs{X} = \bs{U}\bs{V}'\)</span> where <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> are derived from SVD of <span class="math inline">\(\bs{A}\)</span>, namely <span class="math inline">\(\bs{A} = \bs{U\Sigma V}'\)</span>. Proof: We know</p>
+<p><span class="math display">\[
 \tr(\bs{A}'\bs{X}) = \tr(\bs{V}\bs{\Sigma}'\bs{U}'X) = \tr(\bs{\Sigma}'\bs{U}'\bs{X}\bs{V}) =: \tr(\bs{\Sigma}'\bs{Z})
-$$
+\]</span></p><p>where we define <span class="math inline">\(\bs{Z}\)</span> as the product of the three orthogonal matrices, which therefore is orthogonal: <span class="math inline">\(\bs{Z}'\bs{Z}=\bs{I}\)</span>.</p>
 
-where we define $\bs{Z}$ as the product of the three orthogonal matrices, which therefore is orthogonal: $\bs{Z}'\bs{Z}=\bs{I}$.
-
-Orthogonality of $\bs{Z}$ gives $\forall i$
-
-$$
+<p>Orthogonality of <span class="math inline">\(\bs{Z}\)</span> gives <span class="math inline">\(\forall i\)</span></p>
+<p><span class="math display">\[
 z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
-$$
-
-Hence, (note all singular values are non-negative)
-
-$$
+\]</span></p><p>Hence, (note all singular values are non-negative)</p>
+<p><span class="math display">\[
 \tr(\bs{\Sigma}'\bs{Z}) = \sum_{i=1}^p \sigma_i z_{ii} \le \sum_{i=1}^p \sigma_i
-$$
+\]</span></p><p>which gives optimal <span class="math inline">\(\bs{Z}^*=\bs{I}\)</span> and thus the solution follows.</p>
 
-which gives optimal $\bs{Z}^*=\bs{I}$ and thus the solution follows.
-</li>
-
-<li>The **orthogonal Procrustes problem** seeks the solution to
-
-$$
+<p><strong>2) Orthogonal Procrustes Problem</strong>. This seeks the solution to</p>
+<p><span class="math display">\[
 \min_{\bs{X}'\bs{X}=\bs{I}}\norm{\bs{A}-\bs{BX}}_F
-$$
+\]</span></p><p>which is, similar to the problem above, given by the SVD of <span class="math inline">\(\bs{BA}'=\bs{U\Sigma V}'\)</span>, namely <span class="math inline">\(\bs{X}=\bs{UV}'\)</span>.</p>
 
-which is, similar to the problem above, given by the SVD of $\bs{BA}'=\bs{U\Sigma V}'$, namely $\bs{X}=\bs{UV}'$.
-</li>
-
-<li>
-**Nearest symmetric matrix** for $\bs{A}\in\R^{p\times p}$ seeks solution to $\min\norm{\bs{A}-\bs{X}}_F$, which is simply
-
-$$
+<p><strong>3) Nearest Symmetric Matrix</strong> for <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> seeks solution to <span class="math inline">\(\min\norm{\bs{A}-\bs{X}}_F\)</span>, which is simply</p>
+<p><span class="math display">\[
 \bs{X} = \frac{\bs{A}+\bs{A}'}{2}.
-$$
-
-In order to prove it, write $\bs{A}$ in the form of
-
-$$
+\]</span></p><p>In order to prove it, write <span class="math inline">\(\bs{A}\)</span> in the form of</p>
+<p><span class="math display">\[
 \bs{A} = \frac{\bs{A} + \bs{A}'}{2} + \frac{\bs{A} - \bs{A}'}{2} =: \bs{X} + \bs{Y}.
-$$
+\]</span></p><p>Notice <span class="math inline">\(\tr(\bs{X}'\bs{Y})=0\)</span>, hence by Pythagoras we know <span class="math inline">\(\bs{Y}\)</span> is the minimum we can find for the problem above.</p>
 
-Notice $\tr(\bs{X}'\bs{Y})=0$, hence by Pythagoras we know $\bs{Y}$ is the minimum we can find for the problem above.
-</li>
-
-<li>**Best rank-$r$ approximation**. In order to find the best rank-$r$ approximation in Frobenius norm, we need solution to
-
-$$
+<p><strong>4) Best Rank-<span class="math inline">\(r\)</span> Approximation</strong>. In order to find the best rank-<span class="math inline">\(r\)</span> approximation in Frobenius norm, we need solution to</p>
+<p><span class="math display">\[
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_F
-$$
+\]</span></p><p>which is merely <span class="math inline">\(\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r'\)</span>. See condensed SVD above for notation.</p>
 
-which is merely $\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r'$. See condensed SVD above for notation.
-
-The best approximation in 2-norm, namely solution to
-
-$$
+<p>The best approximation in 2-norm, namely solution to</p>
+<p><span class="math display">\[
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_2,
-$$
-
-is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose $\exists \bs{B}\in\R^{n\times p}$ s.t.
-
-$$
-\norm{\bs{A}-\bs{B}}_2 < \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
-$$
-
-Now choose $\bs{w}$ from kernel of $\bs{B}$ and we have
-
-$$
+\]</span></p><p>is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose <span class="math inline">\(\exists \bs{B}\in\R^{n\times p}\)</span> s.t.</p>
+<p><span class="math display">\[
+\norm{\bs{A}-\bs{B}}_2 &lt; \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
+\]</span></p><p>Now choose <span class="math inline">\(\bs{w}\)</span> from kernel of <span class="math inline">\(\bs{B}\)</span> and we have</p>
+<p><span class="math display">\[
 \bs{Aw}=\bs{Aw}+\bs{0} = (\bs{A}-\bs{B})\bs{w}
-$$
-
-and thus
-
-$$
+\]</span></p><p>and thus</p>
+<p><span class="math display">\[
 \norm{\bs{Aw}}_2 = \norm{(\bs{A}-\bs{B})\bs{w}}_2 \le \norm{\bs{A}-\bs{B}}_2\cdot \norm{\bs{w}}_2
-<\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
-$$
-
-Meanwhile, note $\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}$, assume particularly $\bs{w}=\bs{v}_{r+1}\bs{\alpha}$, then
-
-$$
+&lt;\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
+\]</span></p><p>Meanwhile, note <span class="math inline">\(\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}\)</span>, assume particularly <span class="math inline">\(\bs{w}=\bs{v}_{r+1}\bs{\alpha}\)</span>, then</p>
+<p><span class="math display">\[
 \begin{align}
-\norm{\bs{Aw}}_2^2&=\norm{\bs{U}\bs{\Sigma}\bs{V}'\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
-&= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
+\norm{\bs{Aw}}_2^2&amp;=\norm{\bs{U}\bs{\Sigma}\bs{V}'\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
+&amp;= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
 \end{align}
-$$
-
-Due to contradiction between eq. (1) and (2) we conclude such $\bs{B}$ doesn't exist.
-
-</li>
-</ol>
+\]</span></p><p>Due to contradiction between eq. (1) and (2) we conclude such <span class="math inline">\(\bs{B}\)</span> doesn&rsquo;t exist.</p>
 
 <h1 id="toc_16">Principle Component Analysis (PCA)</h1>
 
@@ -587,15 +543,15 @@ Due to contradiction between eq. (1) and (2) we conclude such $\bs{B}$ doesn't e
 
 <h2 id="toc_20">Properties of Population PCs</h2>
 
-<ol>
-<li> The total variance is not changed: $\sum \Var[X_i]=\sum\Var[Y_i]$. </li>
-<li> The proportion in variance of the $k$-th PC is $\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}$ where $\lambda_i$ is the $i$-th eigenvalue.</li>
-<li>The correlation $\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j$.</li>
-</ol>
+<ul>
+<li>The total variance is not changed: <span class="math inline">\(\sum \Var[X_i]=\sum\Var[Y_i]\)</span>. </li></li>
+<li>The proportion in variance of the <span class="math inline">\(k\)</span>-th PC is <span class="math inline">\(\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}\)</span> where <span class="math inline">\(\lambda_i\)</span> is the <span class="math inline">\(i\)</span>-th eigenvalue.</li></li>
+<li>The correlation <span class="math inline">\(\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j\)</span>.</li></li>
+</ul>
 
 <h2 id="toc_21">Definition of Sample PCA</h2>
 
-<p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)</span>.</p>
+<p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)</span>. Everything is just the same except being in sample notations, e.g. <span class="math inline">\(\bar{\bs{X}}=\bs{X}'\bs{1} / n\)</span> and <span class="math inline">\(S=(\bs{X}-\bar{\bs{X}}'\bs{1})'(\bs{X}-\bar{\bs{X}}'\bs{1}) / (n-1)\)</span>.</p>
 
 
   <footer>

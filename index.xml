@@ -450,7 +450,21 @@ h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &
 header h1:before {content: &#39;&#39;}
 &lt;/style&gt;
 
-&lt;p&gt;These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.
+&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+ \newcommand{Corr}{\text{Corr}}
+ \newcommand{E}{\text{E}}
+ \newcommand{Cov}{\text{Cov}}
+ \newcommand{Var}{\text{Var}}
+ \newcommand{span}{\text{span}}
+ \newcommand{bs}{\boldsymbol}
+ \newcommand{R}{\mathbb{R}}
+ \newcommand{rank}{\text{rank}}
+ \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+ \newcommand{diag}{\text{diag}}
+ \newcommand{tr}{\text{tr}}
+ \newcommand{braket}[1]{\left\langle#1\right\rangle}
+ \newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_0&#34;&gt;Notations&lt;/h1&gt;
 
@@ -680,135 +694,77 @@ header h1:before {content: &#39;&#39;}
 
 &lt;h2 id=&#34;toc_15&#34;&gt;Applications of SVD&lt;/h2&gt;
 
-&lt;ol&gt;
-&lt;li&gt;
-One of the most importance usages of SVD is **computing projections**. $\bs{P}\in\R^{n\times n}$ is a projection matrix iff. $\bs{P}^2=\bs{P}$. More commonly, we consider orthogonal projection $\bs{P}$ that&#39;s also symmetric. Now let&#39;s consider dataset $\bs{A}\in\R^{m\times n}$ where we have $n$ observations, each with $m$ dimensions. Suppose we want to project this dataset onto $\bs{W}\subseteq\R^m$ that has $k$ dimensions, i.e.
-
-$$
+&lt;p&gt;&lt;strong&gt;1) Projections&lt;/strong&gt;. One of the most importance usages of SVD is computing projections. &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\in\R^{n\times n}\)&lt;/span&gt; is a projection matrix iff. &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}^2=\bs{P}\)&lt;/span&gt;. More commonly, we consider orthogonal projection &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\)&lt;/span&gt; that&amp;rsquo;s also symmetric. Now let&amp;rsquo;s consider dataset &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt; where we have &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; observations, each with &lt;span class=&#34;math inline&#34;&gt;\(m\)&lt;/span&gt; dimensions. Suppose we want to project this dataset onto &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\subseteq\R^m\)&lt;/span&gt; that has &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; dimensions, i.e.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \bs{W} = \span\{\bs{q}_1,\bs{q}_2,\ldots,\bs{q}_k\},\quad \bs{q}_i&#39;\bs{q}_j=\1{i=j}
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;then the projection matrix would be &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k&#39;\)&lt;/span&gt;.&lt;/p&gt;
 
-then the projection matrix would be $\bs{P}_{\bs{W}}=\bs{Q}_k\bs{Q}_k&#39;$.
-&lt;/li&gt;
-
-&lt;li&gt;The **nearest orthogonal matrix** of $\bs{A}\in\R^{p\times p}$ is given by
-
-$$
+&lt;p&gt;&lt;strong&gt;Nearest Orthogonal Matrix&lt;/strong&gt;. The nearest orthogonal matrix of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{p\times p}\)&lt;/span&gt; is given by&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \min_{\bs{X}&#39;\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F
-$$
-
-which solves if we have optima for
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which solves if we have optima for&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \begin{align}
-\min_{\bs{X}&#39;\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &amp;=
-\min_{\bs{X}&#39;\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})&#39;(\bs{A}-\bs{X})]\\&amp;=
-\min_{\bs{X}&#39;\bs{X}=\bs{I}}\tr[\bs{A}&#39;\bs{A} - \bs{X}&#39;\bs{A} - \bs{A}&#39;\bs{X} + \bs{X}&#39;\bs{X}]\\&amp;=
-\min_{\bs{X}&#39;\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}&#39;\bs{X}) - \tr(\bs{X}&#39;\bs{A}) + \tr(\bs{X}&#39;\bs{X})\\&amp;=
+\min_{\bs{X}&#39;\bs{X}=\bs{I}}\norm{\bs{A}-\bs{X}}_F^2 &amp;amp;=
+\min_{\bs{X}&#39;\bs{X}=\bs{I}}\tr[(\bs{A}-\bs{X})&#39;(\bs{A}-\bs{X})]\\&amp;amp;=
+\min_{\bs{X}&#39;\bs{X}=\bs{I}}\tr[\bs{A}&#39;\bs{A} - \bs{X}&#39;\bs{A} - \bs{A}&#39;\bs{X} + \bs{X}&#39;\bs{X}]\\&amp;amp;=
+\min_{\bs{X}&#39;\bs{X}=\bs{I}} \norm{\bs{A}}_F^2 - \tr(\bs{A}&#39;\bs{X}) - \tr(\bs{X}&#39;\bs{A}) + \tr(\bs{X}&#39;\bs{X})\\&amp;amp;=
 \norm{\bs{A}}_F^2 + n - 2\max_{\bs{X}&#39;\bs{X}=\bs{I}} \tr(\bs{A}&#39;\bs{X})
 \end{align}.
-$$
-
-Now we try to solve
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Now we try to solve&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \max_{\bs{X}&#39;\bs{X}=\bs{I}} \tr(\bs{A}&#39;\bs{X})
-$$
-
-and claim the solution is given by $\bs{X} = \bs{U}\bs{V}&#39;$ where $\bs{U}$ and $\bs{V}$ are derived from SVD of $\bs{A}$, namely $\bs{A} = \bs{U\Sigma V}&#39;$. Proof: We know
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and claim the solution is given by &lt;span class=&#34;math inline&#34;&gt;\(\bs{X} = \bs{U}\bs{V}&#39;\)&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; are derived from SVD of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt;, namely &lt;span class=&#34;math inline&#34;&gt;\(\bs{A} = \bs{U\Sigma V}&#39;\)&lt;/span&gt;. Proof: We know&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \tr(\bs{A}&#39;\bs{X}) = \tr(\bs{V}\bs{\Sigma}&#39;\bs{U}&#39;X) = \tr(\bs{\Sigma}&#39;\bs{U}&#39;\bs{X}\bs{V}) =: \tr(\bs{\Sigma}&#39;\bs{Z})
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where we define &lt;span class=&#34;math inline&#34;&gt;\(\bs{Z}\)&lt;/span&gt; as the product of the three orthogonal matrices, which therefore is orthogonal: &lt;span class=&#34;math inline&#34;&gt;\(\bs{Z}&#39;\bs{Z}=\bs{I}\)&lt;/span&gt;.&lt;/p&gt;
 
-where we define $\bs{Z}$ as the product of the three orthogonal matrices, which therefore is orthogonal: $\bs{Z}&#39;\bs{Z}=\bs{I}$.
-
-Orthogonality of $\bs{Z}$ gives $\forall i$
-
-$$
+&lt;p&gt;Orthogonality of &lt;span class=&#34;math inline&#34;&gt;\(\bs{Z}\)&lt;/span&gt; gives &lt;span class=&#34;math inline&#34;&gt;\(\forall i\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
-$$
-
-Hence, (note all singular values are non-negative)
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Hence, (note all singular values are non-negative)&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \tr(\bs{\Sigma}&#39;\bs{Z}) = \sum_{i=1}^p \sigma_i z_{ii} \le \sum_{i=1}^p \sigma_i
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which gives optimal &lt;span class=&#34;math inline&#34;&gt;\(\bs{Z}^*=\bs{I}\)&lt;/span&gt; and thus the solution follows.&lt;/p&gt;
 
-which gives optimal $\bs{Z}^*=\bs{I}$ and thus the solution follows.
-&lt;/li&gt;
-
-&lt;li&gt;The **orthogonal Procrustes problem** seeks the solution to
-
-$$
+&lt;p&gt;&lt;strong&gt;2) Orthogonal Procrustes Problem&lt;/strong&gt;. This seeks the solution to&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \min_{\bs{X}&#39;\bs{X}=\bs{I}}\norm{\bs{A}-\bs{BX}}_F
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which is, similar to the problem above, given by the SVD of &lt;span class=&#34;math inline&#34;&gt;\(\bs{BA}&#39;=\bs{U\Sigma V}&#39;\)&lt;/span&gt;, namely &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}=\bs{UV}&#39;\)&lt;/span&gt;.&lt;/p&gt;
 
-which is, similar to the problem above, given by the SVD of $\bs{BA}&#39;=\bs{U\Sigma V}&#39;$, namely $\bs{X}=\bs{UV}&#39;$.
-&lt;/li&gt;
-
-&lt;li&gt;
-**Nearest symmetric matrix** for $\bs{A}\in\R^{p\times p}$ seeks solution to $\min\norm{\bs{A}-\bs{X}}_F$, which is simply
-
-$$
+&lt;p&gt;&lt;strong&gt;3) Nearest Symmetric Matrix&lt;/strong&gt; for &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{p\times p}\)&lt;/span&gt; seeks solution to &lt;span class=&#34;math inline&#34;&gt;\(\min\norm{\bs{A}-\bs{X}}_F\)&lt;/span&gt;, which is simply&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \bs{X} = \frac{\bs{A}+\bs{A}&#39;}{2}.
-$$
-
-In order to prove it, write $\bs{A}$ in the form of
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In order to prove it, write &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; in the form of&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \bs{A} = \frac{\bs{A} + \bs{A}&#39;}{2} + \frac{\bs{A} - \bs{A}&#39;}{2} =: \bs{X} + \bs{Y}.
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Notice &lt;span class=&#34;math inline&#34;&gt;\(\tr(\bs{X}&#39;\bs{Y})=0\)&lt;/span&gt;, hence by Pythagoras we know &lt;span class=&#34;math inline&#34;&gt;\(\bs{Y}\)&lt;/span&gt; is the minimum we can find for the problem above.&lt;/p&gt;
 
-Notice $\tr(\bs{X}&#39;\bs{Y})=0$, hence by Pythagoras we know $\bs{Y}$ is the minimum we can find for the problem above.
-&lt;/li&gt;
-
-&lt;li&gt;**Best rank-$r$ approximation**. In order to find the best rank-$r$ approximation in Frobenius norm, we need solution to
-
-$$
+&lt;p&gt;&lt;strong&gt;4) Best Rank-&lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; Approximation&lt;/strong&gt;. In order to find the best rank-&lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; approximation in Frobenius norm, we need solution to&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_F
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which is merely &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r&#39;\)&lt;/span&gt;. See condensed SVD above for notation.&lt;/p&gt;
 
-which is merely $\bs{X}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r&#39;$. See condensed SVD above for notation.
-
-The best approximation in 2-norm, namely solution to
-
-$$
+&lt;p&gt;The best approximation in 2-norm, namely solution to&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \min_{\rank(\bs{X})\le r} \norm{\bs{A}-\bs{X}}_2,
-$$
-
-is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose $\exists \bs{B}\in\R^{n\times p}$ s.t.
-
-$$
-\norm{\bs{A}-\bs{B}}_2 &lt; \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
-$$
-
-Now choose $\bs{w}$ from kernel of $\bs{B}$ and we have
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose &lt;span class=&#34;math inline&#34;&gt;\(\exists \bs{B}\in\R^{n\times p}\)&lt;/span&gt; s.t.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\norm{\bs{A}-\bs{B}}_2 &amp;lt; \norm{\bs{A}-\bs{X}}_2 = \sigma_{r+1}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Now choose &lt;span class=&#34;math inline&#34;&gt;\(\bs{w}\)&lt;/span&gt; from kernel of &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\)&lt;/span&gt; and we have&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \bs{Aw}=\bs{Aw}+\bs{0} = (\bs{A}-\bs{B})\bs{w}
-$$
-
-and thus
-
-$$
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and thus&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \norm{\bs{Aw}}_2 = \norm{(\bs{A}-\bs{B})\bs{w}}_2 \le \norm{\bs{A}-\bs{B}}_2\cdot \norm{\bs{w}}_2
-&lt;\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
-$$
-
-Meanwhile, note $\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}$, assume particularly $\bs{w}=\bs{v}_{r+1}\bs{\alpha}$, then
-
-$$
+&amp;lt;\sigma_{r+1}\norm{\bs{w}}_2\tag{1}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Meanwhile, note &lt;span class=&#34;math inline&#34;&gt;\(\bs{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\bs{W}\)&lt;/span&gt;, assume particularly &lt;span class=&#34;math inline&#34;&gt;\(\bs{w}=\bs{v}_{r+1}\bs{\alpha}\)&lt;/span&gt;, then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \begin{align}
-\norm{\bs{Aw}}_2^2&amp;=\norm{\bs{U}\bs{\Sigma}\bs{V}&#39;\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
-&amp;= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
+\norm{\bs{Aw}}_2^2&amp;amp;=\norm{\bs{U}\bs{\Sigma}\bs{V}&#39;\bs{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
+&amp;amp;= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\bs{w}}_2^2.\tag{2}
 \end{align}
-$$
-
-Due to contradiction between eq. (1) and (2) we conclude such $\bs{B}$ doesn&#39;t exist.
-
-&lt;/li&gt;
-&lt;/ol&gt;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Due to contradiction between eq. (1) and (2) we conclude such &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\)&lt;/span&gt; doesn&amp;rsquo;t exist.&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_16&#34;&gt;Principle Component Analysis (PCA)&lt;/h1&gt;
 
@@ -863,15 +819,15 @@ Due to contradiction between eq. (1) and (2) we conclude such $\bs{B}$ doesn&#39
 
 &lt;h2 id=&#34;toc_20&#34;&gt;Properties of Population PCs&lt;/h2&gt;
 
-&lt;ol&gt;
-&lt;li&gt; The total variance is not changed: $\sum \Var[X_i]=\sum\Var[Y_i]$. &lt;/li&gt;
-&lt;li&gt; The proportion in variance of the $k$-th PC is $\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}$ where $\lambda_i$ is the $i$-th eigenvalue.&lt;/li&gt;
-&lt;li&gt;The correlation $\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j$.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;The total variance is not changed: &lt;span class=&#34;math inline&#34;&gt;\(\sum \Var[X_i]=\sum\Var[Y_i]\)&lt;/span&gt;. &lt;/li&gt;&lt;/li&gt;
+&lt;li&gt;The proportion in variance of the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th PC is &lt;span class=&#34;math inline&#34;&gt;\(\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}\)&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\lambda_i\)&lt;/span&gt; is the &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;-th eigenvalue.&lt;/li&gt;&lt;/li&gt;
+&lt;li&gt;The correlation &lt;span class=&#34;math inline&#34;&gt;\(\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j\)&lt;/span&gt;.&lt;/li&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&#34;toc_21&#34;&gt;Definition of Sample PCA&lt;/h2&gt;
 
-&lt;p&gt;Given &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; samples: &lt;span class=&#34;math inline&#34;&gt;\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Given &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; samples: &lt;span class=&#34;math inline&#34;&gt;\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)&lt;/span&gt;. Everything is just the same except being in sample notations, e.g. &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{X}}=\bs{X}&#39;\bs{1} / n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(S=(\bs{X}-\bar{\bs{X}}&#39;\bs{1})&#39;(\bs{X}-\bar{\bs{X}}&#39;\bs{1}) / (n-1)\)&lt;/span&gt;.&lt;/p&gt;
 
         
       </description>
