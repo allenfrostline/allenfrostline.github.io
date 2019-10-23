@@ -140,21 +140,23 @@
 <li><a href="#toc_14">Properties of SVD</a></li>
 
 <li><a href="#toc_15">Applications of SVD</a></li>
+
+<li><a href="#toc_16">Orthonormal Bases for Four Subspaces using SVD</a></li>
 </ul></li>
 
-<li><a href="#toc_16">Principle Component Analysis (PCA)</a>
+<li><a href="#toc_17">Principle Component Analysis (PCA)</a>
 <ul>
-<li><a href="#toc_17">Three Basic Formulas</a></li>
+<li><a href="#toc_18">Three Basic Formulas</a></li>
 
-<li><a href="#toc_18">Definition of Population PCA</a></li>
+<li><a href="#toc_19">Definition of Population PCA</a></li>
 
-<li><a href="#toc_19">How to Calculate Population PCs</a></li>
+<li><a href="#toc_20">How to Calculate Population PCs</a></li>
 
-<li><a href="#toc_20">Properties of Population PCs</a></li>
+<li><a href="#toc_21">Properties of Population PCs</a></li>
 
-<li><a href="#toc_21">Definition of Sample PCA</a></li>
+<li><a href="#toc_22">Definition of Sample PCA</a></li>
 
-<li><a href="#toc_22">How to Calculate Sample PCA</a></li>
+<li><a href="#toc_23">How to Calculate Sample PCA</a></li>
 </ul></li>
 </ul>
 
@@ -395,6 +397,8 @@ header h1:before {content: ''}
 <li><span class="math inline">\(\bs{V}\)</span>: calculate eigenvectors of <span class="math inline">\(\bs{A}'\bs{A}\)</span>, then normalize them to norm <span class="math inline">\(1\)</span>, then <span class="math inline">\(\bs{V}=(\bs{v}_1,\bs{v}_2,\ldots,\bs{v}_n)\)</span>.</li>
 </ul>
 
+<p><strong>Remark</strong>: Alternatively you may use formula <span class="math inline">\(\bs{U}=\bs{AV\Sigma}^{-1}\Rightarrow \bs{u}_i=\bs{Av}_i/\sigma_i\)</span>.</p>
+
 <h2 id="toc_14">Properties of SVD</h2>
 
 <p>There are several characteristics we have about SVD:</p>
@@ -492,11 +496,24 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 \end{align}
 \]</span></p><p>Due to contradiction between eq. (1) and (2) we conclude such <span class="math inline">\(\bs{B}\)</span> doesn&rsquo;t exist.</p>
 
-<h1 id="toc_16">Principle Component Analysis (PCA)</h1>
+<h2 id="toc_16">Orthonormal Bases for Four Subspaces using SVD</h2>
+
+<p>SVD can be used to get orthonormal bases for each of the four subspaces: the column space <span class="math inline">\(C(\bs{A})\)</span>, the null space <span class="math inline">\(N(\bs{A})\)</span>, the row space <span class="math inline">\(C(\bs{A}')\)</span>, and the left null space <span class="math inline">\(N(\bs{A}')\)</span>.</p>
+
+<ul>
+<li><span class="math inline">\(\bs{U}_r\)</span> forms a basis of <span class="math inline">\(C(\bs{A})\)</span>.</li>
+<li><span class="math inline">\(\bar{\bs{U}}_r\)</span> forms a basis of <span class="math inline">\(N(\bs{A}')\)</span>.</li>
+<li><span class="math inline">\(\bs{V}_r\)</span> forms a basis of <span class="math inline">\(C(\bs{A}')\)</span>.</li>
+<li><span class="math inline">\(\bar{\bs{V}}_r\)</span> forms a basis of <span class="math inline">\(N(\bs{A}')\)</span>.</li>
+</ul>
+
+<p>See <a href="https://allenfrostline.com/four-spaces-svd">this post</a> for detailed proof.</p>
+
+<h1 id="toc_17">Principle Component Analysis (PCA)</h1>
 
 <p>PCA is the most important matrix analysis tool. In this section we use <span class="math inline">\(\bs{X}=(X_1,X_2,\ldots,X_p)\)</span> to denote a vector of random variables. Being capitalized here means they are random variables rather than observations, and thus a capitalized bold symbol stands still for a vector.</p>
 
-<h2 id="toc_17">Three Basic Formulas</h2>
+<h2 id="toc_18">Three Basic Formulas</h2>
 
 <p>Expectation:</p>
 <p><span class="math display">\[
@@ -508,7 +525,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <p><span class="math display">\[
 \Cov[\bs{a}'\bs{X},\bs{b}'\bs{X}] = \bs{a}'\Var[\bs{X}]\bs{b}.
 \]</span></p>
-<h2 id="toc_18">Definition of Population PCA</h2>
+<h2 id="toc_19">Definition of Population PCA</h2>
 
 <p>Given <span class="math inline">\(\bs{X}:\Omega\to\R^p\)</span>, find <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span> s.t.</p>
 
@@ -528,7 +545,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 
 <p>These <span class="math inline">\(Y_1,Y_2,\ldots,Y_p\)</span> are called principle components of <span class="math inline">\(\bs{X}\)</span>.</p>
 
-<h2 id="toc_19">How to Calculate Population PCs</h2>
+<h2 id="toc_20">How to Calculate Population PCs</h2>
 
 <p>We can do it <strong>recursively</strong>:</p>
 
@@ -543,7 +560,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 
 <p><code>Theorem</code> Let <span class="math inline">\(\bs{\Sigma}=\Cov[\bs{X}]\)</span> and let the EVD be <span class="math inline">\(\bs{\Sigma} = \bs{A}\bs{\Lambda}\bs{A}'\)</span>, then it can be proved that <span class="math inline">\(Y_k = \bs{a}_k'\bs{X}\)</span> is the <span class="math inline">\(k\)</span>-th PC.</p>
 
-<h2 id="toc_20">Properties of Population PCs</h2>
+<h2 id="toc_21">Properties of Population PCs</h2>
 
 <ul>
 <li>The total variance is not changed: <span class="math inline">\(\sum \Var[X_i]=\sum\Var[Y_i]\)</span>. </li></li>
@@ -551,11 +568,11 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <li>The correlation <span class="math inline">\(\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j\)</span>.</li></li>
 </ul>
 
-<h2 id="toc_21">Definition of Sample PCA</h2>
+<h2 id="toc_22">Definition of Sample PCA</h2>
 
 <p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}\)</span>. Everything is just the same except being in sample notations, e.g. <span class="math inline">\(\bar{\bs{X}}=\bs{X}'\bs{1} / n\)</span> and <span class="math inline">\(S=(\bs{X}-\bar{\bs{X}}'\bs{1})'(\bs{X}-\bar{\bs{X}}'\bs{1}) / (n-1)\)</span>.</p>
 
-<h2 id="toc_22">How to Calculate Sample PCA</h2>
+<h2 id="toc_23">How to Calculate Sample PCA</h2>
 
 <p>In order to avoid loss of precision in calculating the <span class="math inline">\(\bs{S}\)</span>, we do SVD instead of EVD, on the mean-centered sample matrix <span class="math inline">\(\bs{X}-\bs{1}\bar{\bs{X}}=\bs{U\Sigma V}'\in\R^{n\times p}\)</span>. Then it can be proved that the <span class="math inline">\(k\)</span>-th sample PC is given by <span class="math inline">\(\bs{v}_k\)</span>, <span class="math inline">\(k=1,2,\ldots,p\)</span>.</p>
 

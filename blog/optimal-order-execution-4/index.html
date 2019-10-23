@@ -141,7 +141,7 @@ Q^*(t) = Q\cdot \left(1 - \frac{t}{T^*}\right)^2
 \]</span></p><p>where <span class="math inline">\(Q\equiv Q(0)\)</span> is the total and initial quantity to execute, and the optimal liquidation horizon <span class="math inline">\(T^*\)</span> is given by</p>
 <p><span class="math display">\[
 T^* = \sqrt{\frac{4Q\eta}{\lambda\sigma}}.
-\]</span></p><p>Here, <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\lambda\)</span> are exogenous parameters and <span class="math inline">\(\sigma\)</span> is estimated from the price time series (see the <a href="http://allenfrostline.com/2018/05/05/estimation-geometric-brownian-motion/">previous post</a>) within <span class="math inline">\(K\)</span> time units, given by</p>
+\]</span></p><p>Here, <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\lambda\)</span> are exogenous parameters and <span class="math inline">\(\sigma\)</span> is estimated from the price time series (see the <a href="http://allenfrostline.com/estimation-geometric-brownian-motion/">previous post</a>) within <span class="math inline">\(K\)</span> time units, given by</p>
 <p><span class="math display">\[
 \hat{\sigma}^2 = \frac{\sum_{i=1}^n (\Delta_i - \hat{\mu}_{\Delta})^2}{(n-1)\tau}
 \]</span></p><p>where <span class="math inline">\(\\{\Delta_i\\}\)</span> are the first order differences of the stock price using <span class="math inline">\(\tau\)</span> as sample period, <span class="math inline">\(n\equiv\lfloor K / \tau\rfloor\)</span> is the length of the array, and</p>
