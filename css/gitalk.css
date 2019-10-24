@@ -1009,11 +1009,15 @@
     margin-top: 0.75em;
   }
 
-  .gt-btn-public {
+  .gt-container .gt-header-controls .gt-btn .gt-btn-public {
     float: left;
   }
 
-  .gt-btn-preview .gt-btn-login {
+  .gt-container .gt-header-controls .gt-btn .gt-btn-preview {
+    float: right;
+  }
+
+  .gt-container .gt-header-controls .gt-btn .gt-btn-login {
     float: right;
   }
 
