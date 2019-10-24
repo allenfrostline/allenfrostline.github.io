@@ -1160,26 +1160,8 @@
 @media (max-width:479px) {
   .gt-container .gt-header-controls .gt-btn {
     float: none;
-    width: calc(50% - .8em);
+    width: 100%;
     margin-top: 0.75em;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-public {
-    float: left;
-    margin-right: 0;
-    margin-left: .75em;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-preview {
-    float: right;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-login {
-    float: left;
-    margin-left: 0;
-    margin-right: .75em;
   }
 
 }
