@@ -1010,13 +1010,11 @@
   }
 
   .gt-btn-public {
-    margin-left: 0;
-    margin-right: .5em;
+    float: left;
   }
 
   .gt-btn-preview .gt-btn-login {
-    margin-left: .5em;
-    margin-right: 0;
+    float: right;
   }
 
 }
