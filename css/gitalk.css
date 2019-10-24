@@ -1159,7 +1159,7 @@
 
 @media (max-width:479px) {
   .gt-container .gt-header-controls .gt-btn {
-    width: calc(50% - .3em);
+    width: calc(50% - 1em);
     margin-top: 0.75em;
   }
 
