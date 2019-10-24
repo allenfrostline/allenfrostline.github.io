@@ -1002,32 +1002,6 @@
   margin-left: 8px;
 }
 
-@media (max-width:479px) {
-  .gt-container .gt-header-controls .gt-btn {
-    width: calc(50% - .3em);
-    margin-top: 0.75em;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-public {
-    float: left;
-    margin-right: 0;
-    margin-left: .5em;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-preview {
-    float: right;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .gt-container .gt-header-controls .gt-btn .gt-btn-login {
-    float: right;
-    margin-left: 0;
-    margin-right: .5em;
-  }
-
-}
-
 .gt-container:after {
   content: '';
   position: fixed;
@@ -1179,6 +1153,32 @@
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
+  }
+
+}
+
+@media (max-width:479px) {
+  .gt-container .gt-header-controls .gt-btn {
+    width: calc(50% - .3em);
+    margin-top: 0.75em;
+  }
+
+  .gt-container .gt-header-controls .gt-btn .gt-btn-public {
+    float: left;
+    margin-right: 0;
+    margin-left: .5em;
+  }
+
+  .gt-container .gt-header-controls .gt-btn .gt-btn-preview {
+    float: right;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .gt-container .gt-header-controls .gt-btn .gt-btn-login {
+    float: right;
+    margin-left: 0;
+    margin-right: .5em;
   }
 
 }
