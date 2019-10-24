@@ -1002,6 +1002,15 @@
   margin-left: 8px;
 }
 
+@media (max-width:479px) {
+  .gt-container .gt-header-controls .gt-btn {
+    float: none;
+    width: 100%;
+    margin: 0.75em 0 0;
+  }
+
+}
+
 .gt-container:after {
   content: '';
   position: fixed;
@@ -1153,15 +1162,6 @@
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
-  }
-
-}
-
-@media (max-width:479px) {
-  .gt-container .gt-header-controls .gt-btn {
-    float: none;
-    width: 100%;
-    margin-top: 0.75em;
   }
 
 }
