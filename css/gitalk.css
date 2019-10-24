@@ -1011,14 +1011,20 @@
 
   .gt-container .gt-header-controls .gt-btn .gt-btn-public {
     float: left;
+    margin-right: 0;
+    margin-left: .5em;
   }
 
   .gt-container .gt-header-controls .gt-btn .gt-btn-preview {
     float: right;
+    margin-left: 0;
+    margin-right: .5em;
   }
 
   .gt-container .gt-header-controls .gt-btn .gt-btn-login {
     float: right;
+    margin-right: 0;
+    margin-left: .5em;
   }
 
 }
