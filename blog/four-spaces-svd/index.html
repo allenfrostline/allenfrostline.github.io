@@ -15,8 +15,8 @@
 
     
       
-      <meta property="description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces:\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}} \newcommand{Corr}{\text{Corr}} &amp;hellip;">
-      <meta property="og:description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces:\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}} \newcommand{Corr}{\text{Corr}} &amp;hellip;">
+      <meta property="description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space \(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}} &amp;hellip;">
+      <meta property="og:description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space \(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}} &amp;hellip;">
       
     
 
@@ -107,19 +107,34 @@
 <nav>
 
 <ul>
-<li><a href="#toc_0">Notations</a></li>
+<li><a href="#toc_0">Columns Space <span class="math inline">\(C(\bs{A})\)</span></a></li>
 
-<li><a href="#toc_1">Columns Space <span class="math inline">\(C(\bs{A})\)</span></a></li>
+<li><a href="#toc_1">Row Space <span class="math inline">\(C(\bs{A}')\)</span></a></li>
 
-<li><a href="#toc_2">Row Space <span class="math inline">\(C(\bs{A}')\)</span></a></li>
+<li><a href="#toc_2">Null Space <span class="math inline">\(N(\bs{A})\)</span></a></li>
 
-<li><a href="#toc_3">Null Space <span class="math inline">\(N(\bs{A})\)</span></a></li>
-
-<li><a href="#toc_4">Left Null Space <span class="math inline">\(N(\bs{A}')\)</span></a></li>
+<li><a href="#toc_3">Left Null Space <span class="math inline">\(N(\bs{A}')\)</span></a></li>
 </ul>
 
 </nav>
-<p>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces:<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+
+<p>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space <span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
  \newcommand{Corr}{\text{Corr}}
  \newcommand{E}{\text{E}}
  \newcommand{Cov}{\text{Cov}}
@@ -132,9 +147,7 @@
  \newcommand{diag}{\text{diag}}
  \newcommand{tr}{\text{tr}}
  \newcommand{braket}[1]{\left\langle#1\right\rangle}
- \newcommand{C}{\mathbb{C}}\)</span> the column space <span class="math inline">\(C(\bs{A})\)</span>, the null space <span class="math inline">\(N(\bs{A})\)</span>, the row space <span class="math inline">\(C(\bs{A}')\)</span>, and the left null space <span class="math inline">\(N(\bs{A}')\)</span>.</p>
-
-<h1 id="toc_0">Notations</h1>
+ \newcommand{C}{\mathbb{C}}C(\bs{A})\)</span>, the null space <span class="math inline">\(N(\bs{A})\)</span>, the row space <span class="math inline">\(C(\bs{A}')\)</span>, and the left null space <span class="math inline">\(N(\bs{A}')\)</span>.</p>
 
 <p>In this post, we denote SVD of matrix <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> as</p>
 <p><span class="math display">\[
@@ -151,7 +164,7 @@
 \end{bmatrix}' = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'
 \]</span></p><p>where <span class="math inline">\(r=\rank(A)\)</span>; <span class="math inline">\(\bs{U}_r\in\R^{m\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{U}\)</span>, <span class="math inline">\(\hat{\bs{U}}_r\in\R^{m\times (m-r)}\)</span> is the complement of <span class="math inline">\(\bs{U}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>; <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> is the top-left square block of <span class="math inline">\(\bs{\Sigma}\)</span>; <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{V}\)</span>, <span class="math inline">\(\hat{\bs{V}}_r\in\R^{n\times(n-r)}\)</span> is the complement of <span class="math inline">\(\bs{V}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>. Note that orthonormality still holds for <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span>, and that now <span class="math inline">\(\bs{\Sigma}_r\)</span> is square and invertible.</p>
 
-<h1 id="toc_1">Columns Space <span class="math inline">\(C(\bs{A})\)</span></h1>
+<h1 id="toc_0">Columns Space <span class="math inline">\(C(\bs{A})\)</span></h1>
 
 <p><strong>Claim</strong>: <span class="math inline">\(\bs{U}_r\)</span> forms a basis of <span class="math inline">\(C(\bs{A})\)</span>. We prove it as follows.</p>
 
@@ -163,7 +176,7 @@
 \bs{u} = \bs{U}_r\bs{x} = \bs{A}\bs{V}_r\bs{\Sigma}_r^{-1}\bs{x} := \bs{A}\bs{x}^* \in C(\bs{A}).
 \]</span></p><p>Therefore, we conclude that <span class="math inline">\(C(\bs{A})=C(\bs{U}_r)\)</span>.<span style="float: right">Q.E.D.</span></p>
 
-<h1 id="toc_2">Row Space <span class="math inline">\(C(\bs{A}')\)</span></h1>
+<h1 id="toc_1">Row Space <span class="math inline">\(C(\bs{A}')\)</span></h1>
 
 <p><strong>Claim</strong>: <span class="math inline">\(\bs{V}_r\)</span> gives a basis of <span class="math inline">\(C(\bs{A}')\)</span>.</p>
 
@@ -172,7 +185,7 @@
 \bs{A}' = \bs{V}_r\bs{\Sigma}_r\bs{U}_r',
 \]</span></p><p>the conclusion follows right away from the previous one.<span style="float: right">Q.E.D.</span></p>
 
-<h1 id="toc_3">Null Space <span class="math inline">\(N(\bs{A})\)</span></h1>
+<h1 id="toc_2">Null Space <span class="math inline">\(N(\bs{A})\)</span></h1>
 
 <p><strong>Claim</strong>: <span class="math inline">\(\bar{\bs{V}}_r\)</span> forms a basis of <span class="math inline">\(N(\bs{A})\)</span>.</p>
 
@@ -195,7 +208,7 @@
 \end{bmatrix} \Rightarrow \bs{A}\bar{\bs{V}}_r = \bs{O}
 \]</span></p><p>which means <span class="math inline">\(\bar{\bs{V}}_r\in N(\bs{A})\)</span>. Meanwhile, since <span class="math inline">\(\bar{\bs{V}}_r\)</span> is orthonormal with <span class="math inline">\(\rank(\bar{\bs{V}}_r) = n-r = \dim(N(\bs{A}))\)</span>, we conclude that <span class="math inline">\(\bar{\bs{V}}_r\)</span> forms a basis of <span class="math inline">\(N(\bs{A})\)</span>.<span style="float: right">Q.E.D.</span></p>
 
-<h1 id="toc_4">Left Null Space <span class="math inline">\(N(\bs{A}')\)</span></h1>
+<h1 id="toc_3">Left Null Space <span class="math inline">\(N(\bs{A}')\)</span></h1>
 
 <p><strong>Claim</strong>: <span class="math inline">\(\bar{\bs{U}}_r\)</span> gives a basis of <span class="math inline">\(N(\bs{A}')\)</span>.</p>
 

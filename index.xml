@@ -20,19 +20,34 @@
         &lt;nav&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Notations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Columns Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;Columns Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;Row Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_2&#34;&gt;Row Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_2&#34;&gt;Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Left Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;Left Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
-&lt;p&gt;The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces:&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+
+&lt;style&gt;
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
+h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
+header h1:before {content: &#39;&#39;}
+&lt;/style&gt;
+
+&lt;p&gt;The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space &lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
  \newcommand{Corr}{\text{Corr}}
  \newcommand{E}{\text{E}}
  \newcommand{Cov}{\text{Cov}}
@@ -45,9 +60,7 @@
  \newcommand{diag}{\text{diag}}
  \newcommand{tr}{\text{tr}}
  \newcommand{braket}[1]{\left\langle#1\right\rangle}
- \newcommand{C}{\mathbb{C}}\)&lt;/span&gt; the column space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;, the null space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;, the row space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;, and the left null space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;.&lt;/p&gt;
-
-&lt;h1 id=&#34;toc_0&#34;&gt;Notations&lt;/h1&gt;
+ \newcommand{C}{\mathbb{C}}C(\bs{A})\)&lt;/span&gt;, the null space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;, the row space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;, and the left null space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;.&lt;/p&gt;
 
 &lt;p&gt;In this post, we denote SVD of matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\in\R^{m\times n}\)&lt;/span&gt; as&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
@@ -64,7 +77,7 @@
 \end{bmatrix}&#39; = \bs{U}_r\bs{\Sigma}_r\bs{V}_r&#39;
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(r=\rank(A)\)&lt;/span&gt;; &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\in\R^{m\times r}\)&lt;/span&gt; is the block consisting of the first &lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; columns &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{U}}_r\in\R^{m\times (m-r)}\)&lt;/span&gt; is the complement of &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt;; &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}_r\in\R^{r\times r}\)&lt;/span&gt; is the top-left square block of &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\)&lt;/span&gt;; &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\in\R^{n\times r}\)&lt;/span&gt; is the block consisting of the first &lt;span class=&#34;math inline&#34;&gt;\(r\)&lt;/span&gt; columns &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{V}}_r\in\R^{n\times(n-r)}\)&lt;/span&gt; is the complement of &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\)&lt;/span&gt; from &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt;. Note that orthonormality still holds for &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\)&lt;/span&gt;, and that now &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}_r\)&lt;/span&gt; is square and invertible.&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_1&#34;&gt;Columns Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;toc_0&#34;&gt;Columns Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Claim&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}_r\)&lt;/span&gt; forms a basis of &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})\)&lt;/span&gt;. We prove it as follows.&lt;/p&gt;
 
@@ -76,7 +89,7 @@
 \bs{u} = \bs{U}_r\bs{x} = \bs{A}\bs{V}_r\bs{\Sigma}_r^{-1}\bs{x} := \bs{A}\bs{x}^* \in C(\bs{A}).
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Therefore, we conclude that &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A})=C(\bs{U}_r)\)&lt;/span&gt;.&lt;span style=&#34;float: right&#34;&gt;Q.E.D.&lt;/span&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_2&#34;&gt;Row Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;toc_1&#34;&gt;Row Space &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Claim&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}_r\)&lt;/span&gt; gives a basis of &lt;span class=&#34;math inline&#34;&gt;\(C(\bs{A}&#39;)\)&lt;/span&gt;.&lt;/p&gt;
 
@@ -85,7 +98,7 @@
 \bs{A}&#39; = \bs{V}_r\bs{\Sigma}_r\bs{U}_r&#39;,
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;the conclusion follows right away from the previous one.&lt;span style=&#34;float: right&#34;&gt;Q.E.D.&lt;/span&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_3&#34;&gt;Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;toc_2&#34;&gt;Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Claim&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{V}}_r\)&lt;/span&gt; forms a basis of &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;.&lt;/p&gt;
 
@@ -108,7 +121,7 @@
 \end{bmatrix} \Rightarrow \bs{A}\bar{\bs{V}}_r = \bs{O}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which means &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{V}}_r\in N(\bs{A})\)&lt;/span&gt;. Meanwhile, since &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{V}}_r\)&lt;/span&gt; is orthonormal with &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bar{\bs{V}}_r) = n-r = \dim(N(\bs{A}))\)&lt;/span&gt;, we conclude that &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{V}}_r\)&lt;/span&gt; forms a basis of &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A})\)&lt;/span&gt;.&lt;span style=&#34;float: right&#34;&gt;Q.E.D.&lt;/span&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_4&#34;&gt;Left Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;toc_3&#34;&gt;Left Null Space &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Claim&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{U}}_r\)&lt;/span&gt; gives a basis of &lt;span class=&#34;math inline&#34;&gt;\(N(\bs{A}&#39;)\)&lt;/span&gt;.&lt;/p&gt;
 

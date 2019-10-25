@@ -33,7 +33,7 @@ h1 a {color: #000}
 body { width: 960px; margin: 0 auto; padding: 30px 0; }
 
 /* Masthead */
-.masthead { position: fixed; padding: 10px 50px 20px 10px; float: left; width: 200px; background: #fff; height: 100vh; box-shadow: 5px 5px 5px #eee;}
+.masthead { position: fixed; padding: 10px 50px 20px 10px; float: left; width: 200px; background: #fff; height: 100vh; box-shadow: -5px 5px 5px #eee;}
 .masthead h1 { margin-top: 0; margin-bottom: 34px; padding: 0; text-align: center; font-size: 46px; line-height: 58px; }
 .masthead h1 a { border-bottom: none; }
 .masthead .tagline { font-style: italic; text-align: right; }
@@ -97,7 +97,7 @@ img[src$="#border"] { border: 1px solid #eee; box-shadow: 5px 5px 5px #eee; }
 /* Small Screen */
 @media screen and (max-width:1200px) {
   .main {width: 100%; margin: auto; padding: 10px; padding-top: 180px}
-  .masthead { position: relative; width: 100vw; height: 100%; padding: 10px 0 20px; text-align: center; margin: 10px auto; }
+  .masthead { position: relative; width: 100%; height: 100%; padding: 10px 0 20px; text-align: center; margin: 10px auto; }
   .masthead .tagline { text-align: center; }
   .masthead .menu { width: 100vw; direction: ltr; max-width: 100%; margin: 0 auto}
   .masthead .menu ul { text-align: left; margin: 0; padding: 0; }
