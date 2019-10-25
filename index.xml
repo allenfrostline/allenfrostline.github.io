@@ -469,10 +469,10 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 
 &lt;p&gt;A Hawkes process &lt;span class=&#34;math inline&#34;&gt;\(N_t\)&lt;/span&gt;, also known as a self-exciting counting process, is a simple point process whose conditional intensity can be expressed as&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-\begin{array}{ll}
-  \lambda (t) &amp;amp; = \mu (t) + \int_{- \infty}^t \nu (t - s) d N_s\\
-  &amp;amp; = \mu (t) + \sum_{T_k &amp;lt; t} \nu (t - T_k)
-\end{array}
+\begin{align}
+\lambda(t) &amp;amp;= \mu (t) + \int_{- \infty}^t \nu (t - s) d N_s\\
+&amp;amp;= \mu (t) + \sum_{T_k &amp;lt; t} \nu (t - T_k)
+\end{align}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where  &lt;span class=&#34;math inline&#34;&gt;\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)&lt;/span&gt; is a kernel function which expresses the positive influence of past events &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; on the current value of the intensity process &lt;span class=&#34;math inline&#34;&gt;\(\lambda (t)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\mu (t)\)&lt;/span&gt; is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and &lt;span class=&#34;math inline&#34;&gt;\(\{ T_i : T_i &amp;lt; T_{i + 1} \} \in \mathbb{R}\)&lt;/span&gt; is the time of occurrence of the i-th event of the process.&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_17&#34;&gt;To Be Continued&lt;/h1&gt;
