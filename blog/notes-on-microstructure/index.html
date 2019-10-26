@@ -381,12 +381,12 @@ S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
 
 <p><code>Theorem</code> (Central Limit Theorem for Compound Cox Processes) Let <span class="math inline">\(\Lambda_t\overset{p}{\to} \infty\)</span>, for weak convergence to some random variable <span class="math inline">\(Z\)</span> given by</p>
 <p><span class="math display">\[
-\frac{S(t)}{\sigma_X\sqrt{\d t}}\to Z,\quad t\to \infty
-\]</span></p><p>it&rsquo;s necessary and sufficient that</p>
+\frac{S(t)}{\sigma_X\sqrt{d(t)}}\to Z,\quad t\to \infty
+\]</span></p><p>where <span class="math inline">\(d(t)\)</span> is a strictly increasing function on time <span class="math inline">\(t\)</span> and <span class="math inline">\(d(t)\equiv t\)</span> when we assume calendar time i.e. time flowing minute by minute, it&rsquo;s necessary and sufficient that</p>
 
 <ul>
 <li><span class="math inline">\(\P[Z&lt; z] = \int_0^{\infty}\Phi(zy^{-\frac{1}{2}})\d \P[U&lt; u]=\E[\Phi(zU^{-\frac{1}{2}})]\)</span>, <span class="math inline">\(z\in\R\)</span>.</li>
-<li><span class="math inline">\(\frac{\Lambda_t}{\d t}\to U\)</span>, <span class="math inline">\(t\to \infty\)</span>.</li>
+<li><span class="math inline">\(\frac{\Lambda_t}{d(t)}\to U\)</span>, <span class="math inline">\(t\to \infty\)</span>.</li>
 </ul>
 
 <p>Note that the asymptotic distribution <span class="math inline">\(\Lambda_t / \d t\)</span> does not depend on <span class="math inline">\(t\)</span> but can still be stochastic. The limit distribution is not Gamma, but rather a mixed one that can be very heavy tailed in many cases, which explains why CLT doesn&rsquo;t work in finance. <strong>In fact, CLT holds if and only if the limit distribution <span class="math inline">\(U\)</span> is constant <span class="math inline">\(1\)</span></strong>.</p>

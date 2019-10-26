@@ -451,12 +451,12 @@ S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
 
 &lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; (Central Limit Theorem for Compound Cox Processes) Let &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t\overset{p}{\to} \infty\)&lt;/span&gt;, for weak convergence to some random variable &lt;span class=&#34;math inline&#34;&gt;\(Z\)&lt;/span&gt; given by&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-\frac{S(t)}{\sigma_X\sqrt{\d t}}\to Z,\quad t\to \infty
-\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;it&amp;rsquo;s necessary and sufficient that&lt;/p&gt;
+\frac{S(t)}{\sigma_X\sqrt{d(t)}}\to Z,\quad t\to \infty
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(d(t)\)&lt;/span&gt; is a strictly increasing function on time &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(d(t)\equiv t\)&lt;/span&gt; when we assume calendar time i.e. time flowing minute by minute, it&amp;rsquo;s necessary and sufficient that&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\P[Z&amp;lt; z] = \int_0^{\infty}\Phi(zy^{-\frac{1}{2}})\d \P[U&amp;lt; u]=\E[\Phi(zU^{-\frac{1}{2}})]\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(z\in\R\)&lt;/span&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{\Lambda_t}{\d t}\to U\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t\to \infty\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\frac{\Lambda_t}{d(t)}\to U\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t\to \infty\)&lt;/span&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Note that the asymptotic distribution &lt;span class=&#34;math inline&#34;&gt;\(\Lambda_t / \d t\)&lt;/span&gt; does not depend on &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; but can still be stochastic. The limit distribution is not Gamma, but rather a mixed one that can be very heavy tailed in many cases, which explains why CLT doesn&amp;rsquo;t work in finance. &lt;strong&gt;In fact, CLT holds if and only if the limit distribution &lt;span class=&#34;math inline&#34;&gt;\(U\)&lt;/span&gt; is constant &lt;span class=&#34;math inline&#34;&gt;\(1\)&lt;/span&gt;&lt;/strong&gt;.&lt;/p&gt;
