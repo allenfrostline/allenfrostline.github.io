@@ -49,9 +49,7 @@ y = np.sin(x) * 5
 source = ColumnDataSource(data=dict(x=x, y=y))
 
 plot = figure(y_range=(-10, 10), plot_width=400, plot_height=200)
-
 plot.line(&#39;x&#39;, &#39;y&#39;, source=source, line_width=3, line_alpha=0.6)
-
 callback = CustomJS(args=dict(source=source), code=&amp;quot;&amp;quot;&amp;quot;
     var data = source.data;
     var A = amp.value;
@@ -82,12 +80,11 @@ layout = gridplot([[plot], [widgetbox(amp_slider, freq_slider, phase_slider, off
                  sizing_mode=&#39;scale_width&#39;, toolbar_location=None)
 
 script, div = components(layout)
-
-script = &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
-         &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
-         &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
-         &#39;\n&#39; + script + &#39;\n&#39; + div
-pyperclip.copy(script)
+content = &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
+          &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
+          &#39;&amp;lt;script src=&amp;quot;https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&#39; + \
+          &#39;\n&#39; + script + &#39;\n&#39; + div
+pyperclip.copy(content)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;script src=&#34;https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js&#34;&gt;&lt;/script&gt;&lt;script src=&#34;https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js&#34;&gt;&lt;/script&gt;&lt;script src=&#34;https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js&#34;&gt;&lt;/script&gt;
