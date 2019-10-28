@@ -16323,7 +16323,7 @@ OE.info(10, 3.6405, 0.02, 1)
     </item>
     
     <item>
-      <title>Parameter Estimation of Brownian motions by Method of Moments</title>
+      <title>Parameter Estimation of Brownian Motions by Method of Moments</title>
       <link>https://allenfrostline.com/blog/estimation-brownian-motion/</link>
       <pubDate>Sat, 05 May 2018 12:22:10 +0000</pubDate>
       
@@ -16460,28 +16460,28 @@ result
 
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;E(mu_hat)&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;E(&lt;span class=&#34;math inline&#34;&gt;\(\hat{\mu}\)&lt;/span&gt;)&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;1.994533e-03&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;2.000000e-03&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;0.222191&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;Var(mu_hat)&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Var(&lt;span class=&#34;math inline&#34;&gt;\(\hat{\mu}\)&lt;/span&gt;)&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;4.010866e-07&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;3.924000e-07&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;-&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;E(sigma2_hat)&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;E(&lt;span class=&#34;math inline&#34;&gt;\(\hat{\sigma}^2\)&lt;/span&gt;)&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;3.596733e-03&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;3.600000e-03&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;0.201573&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;Var(sigma2_hat)&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Var(&lt;span class=&#34;math inline&#34;&gt;\(\hat{\sigma}^2\)&lt;/span&gt;)&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;1.308537e-07&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;1.296000e-07&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;-&lt;/td&gt;
