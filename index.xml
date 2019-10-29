@@ -667,7 +667,7 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 
 &lt;li&gt;&lt;a href=&#34;#toc_17&#34;&gt;Principle Component Analysis (PCA)&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_18&#34;&gt;Three Basic Formulas&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_18&#34;&gt;Three Basic Formulas (for Population Analysis)&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_19&#34;&gt;Definition of Population PCA&lt;/a&gt;&lt;/li&gt;
 
@@ -678,6 +678,10 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 &lt;li&gt;&lt;a href=&#34;#toc_22&#34;&gt;Definition of Sample PCA&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_23&#34;&gt;How to Calculate Sample PCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_24&#34;&gt;Definition of Variable PCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_25&#34;&gt;Application of PCA: Sample Factor Analysis (FA)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -1034,7 +1038,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 
 &lt;p&gt;PCA is the most important matrix analysis tool. In this section we use &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}=(X_1,X_2,\ldots,X_p)\)&lt;/span&gt; to denote a vector of random variables. Being capitalized here means they are random variables rather than observations, and thus a capitalized bold symbol stands still for a vector.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_18&#34;&gt;Three Basic Formulas&lt;/h2&gt;
+&lt;h2 id=&#34;toc_18&#34;&gt;Three Basic Formulas (for Population Analysis)&lt;/h2&gt;
 
 &lt;p&gt;Expectation:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
@@ -1097,7 +1101,35 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 
 &lt;p&gt;In order to avoid loss of precision in calculating the &lt;span class=&#34;math inline&#34;&gt;\(\bs{S}\)&lt;/span&gt;, we do SVD instead of EVD, on the mean-centered sample matrix &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}-\bs{1}\bar{\bs{X}}=\bs{U\Sigma V}&#39;\in\R^{n\times p}\)&lt;/span&gt;. Then it can be proved that the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th sample PC is given by &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_k\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(k=1,2,\ldots,p\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;p&gt;In this case, we call &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; the &lt;strong&gt;loading matrix&lt;/strong&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(\bs{U\Sigma}\)&lt;/span&gt; the &lt;strong&gt;score matrix&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Remarks&lt;/strong&gt;: In this case, we call &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; the &lt;strong&gt;loading matrix&lt;/strong&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(\bs{U\Sigma}:=\bs{T}\)&lt;/span&gt; the &lt;strong&gt;score matrix&lt;/strong&gt;. The &lt;strong&gt;PCA scatter plot&lt;/strong&gt; is thereby the projection onto the PCs, i.e. the columns of &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt;. Specifically, the coordinates are gonna be &lt;span class=&#34;math inline&#34;&gt;\(\{(t_{ij}, t_{ik})\in\R^2: i=1,2,\ldots, n\}\)&lt;/span&gt; namely the selected first columns of the score matrix. This is identical to manually projecting &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; onto selected columns of &lt;span class=&#34;math inline&#34;&gt;\(\bs{Q}\)&lt;/span&gt; (the principle components) as it can be proved that &lt;span class=&#34;math inline&#34;&gt;\(t_{ij}=\bs{x}_i&#39;\bs{q}_j\)&lt;/span&gt;. However, by using SVD we avoid miss-calculating the eigenvalues in low precision systems.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_24&#34;&gt;Definition of Variable PCA&lt;/h2&gt;
+
+&lt;p&gt;This is merely population PCA on &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}&#39;\in\R^{p\times n}\)&lt;/span&gt;. Transposing &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; swaps the roles of the number of variables and the size of population. The SVD now becomes&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X}&#39; = \bs{V\Sigma U}&#39;
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where we now instead call &lt;span class=&#34;math inline&#34;&gt;\(\bs{V\Sigma}\)&lt;/span&gt; the &lt;span class=&#34;math inline&#34;&gt;\(\bs{T}\)&lt;/span&gt; variable.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Remarks&lt;/strong&gt;: By plotting &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; against &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}\)&lt;/span&gt; we get PCA scatter plot; by plotting &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; against &lt;span class=&#34;math inline&#34;&gt;\(\bs{U}\)&lt;/span&gt; on the same piece of paper where draw this PCA scatter plot, we get the so-called &lt;strong&gt;biplot&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_25&#34;&gt;Application of PCA: Sample Factor Analysis (FA)&lt;/h2&gt;
+
+&lt;p&gt;One sentence to summarize it: sample factor analysis &lt;strong&gt;equals&lt;/strong&gt; PCA. In formula, FA is trying to write &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\in\R^p\)&lt;/span&gt; into&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X} = \bs{\mu} + \bs{LF} + \bs{\varepsilon}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{\mu}\in\R^p\)&lt;/span&gt; are &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; means of features (aka. &lt;strong&gt;alphas&lt;/strong&gt;), &lt;span class=&#34;math inline&#34;&gt;\(\bs{L}\in\R^{p\times m}\)&lt;/span&gt; are loadings (aka. &lt;strong&gt;betas&lt;/strong&gt;) and &lt;span class=&#34;math inline&#34;&gt;\(\bs{F}\in\R^m\)&lt;/span&gt; are called the factors.&lt;/p&gt;
+
+&lt;p&gt;There are some assumptions:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(m\ll p\)&lt;/span&gt; (describing a lot of features in few factors).&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\E[\bs{F}] = 0\)&lt;/span&gt; (means are captured already by &lt;span class=&#34;math inline&#34;&gt;\(\bs{\mu}\)&lt;/span&gt;), &lt;span class=&#34;math inline&#34;&gt;\(\Cov[\bs{F}]=\bs{I}\)&lt;/span&gt; (factors are uncorrelated).&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\E[\bs{\varepsilon}]=0\)&lt;/span&gt; (residuals are zero-meaned), &lt;span class=&#34;math inline&#34;&gt;\(\Cov[\bs{\varepsilon}]=\Xi\)&lt;/span&gt; is diagonal (residuals are uncorrelated).&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\Cov[\bs{\varepsilon},\bs{F}]=\E[\bs{\varepsilon F}&#39;]=\bs{O}\)&lt;/span&gt; (&lt;span class=&#34;math inline&#34;&gt;\(
+\bs{\varepsilon}\)&lt;/span&gt; is uncorrelated with &lt;span class=&#34;math inline&#34;&gt;\(\bs{F}\)&lt;/span&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With these assumptions we have &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}=\bs{LL}&#39;+\bs{\Xi}\)&lt;/span&gt;.&lt;/p&gt;
 
         
       </description>
