@@ -7,8 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Wed, 30 Oct 2019 20:44:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 31 Oct 2019 10:15:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>黄桃罐头</title>
+      <link>https://allenfrostline.com/blog/canned-yellow-peach/</link>
+      <pubDate>Thu, 31 Oct 2019 10:15:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/canned-yellow-peach/</guid>
+      <description>
+        &lt;p&gt;好多年没吃黄桃罐头了，上次去HMart碰巧看见就买了一罐，美名其曰回忆童年。黄桃罐头，顾名思义就是黄桃渍在一罐糖水中间，除了糖分，还有防腐剂、合成色素、香精……任何您能想到的父母在怂恿您不点外卖、只吃家里（蔬）菜的时候提到过的东西。但这些事情，八九岁的人是不会在意的。八九岁的我只在乎这桃子甜不甜，不在乎自己的后半生甜不甜。小时尔尔，现在面对这样一个卡路里C4、防腐剂大头，二十多岁的我却仍毫不犹豫买下了它并供之以高台数周之久，而后又毕恭毕敬特意挑了万圣节的早上吃它，又是为什么呢？&lt;/p&gt;
+
+&lt;p&gt;大概是因为它好吃吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://allenfrostline.com/images/canned-yellow-peach.png&#34; style=&#34;max-width: min(100%, 300px)&#34;&gt;&lt;/img&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>Adding a Python 2.7 Kernel in Jupyter</title>
