@@ -142,9 +142,9 @@
 <li><a href="#toc_15">Cox Process</a></li>
 
 <li><a href="#toc_16">Hawkes Process</a></li>
-</ul></li>
 
-<li><a href="#toc_17">To Be Continued</a></li>
+<li><a href="#toc_17">Branching Process</a></li>
+</ul></li>
 </ul>
 
 </nav>
@@ -405,9 +405,23 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \end{align}
 \]</span></p><p>where  <span class="math inline">\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)</span> is a kernel function which expresses the positive influence of past events <span class="math inline">\(T_i\)</span> on the current value of the intensity process <span class="math inline">\(\lambda (t)\)</span>, <span class="math inline">\(\mu (t)\)</span> is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and <span class="math inline">\(\{ T_i : T_i &lt; T_{i + 1} \} \in \mathbb{R}\)</span> is the time of occurrence of the i-th event of the process.</p>
 
-<h1 id="toc_17">To Be Continued</h1>
+<p>Specifically, when we use exponential decay with parameter (which is also the most famous type of Hawkes processes), the formulation becomes</p>
+<p><span class="math display">\[
+\Lambda_t = \lambda + \sum_{0\le T_k\le t} \alpha \exp[-\beta(t-T_k)],\quad t\ge 0.
+\]</span></p>
+<h2 id="toc_17">Branching Process</h2>
 
-<p>&hellip;</p>
+<p>Consider a random model for population growth in the absence of spatial or any other resource constraints. In such population of individuals in every generation <span class="math inline">\(n=0,1,2,\ldots\)</span>, each individual produces a random number <span class="math inline">\(h\)</span> of children in the next generation, independently of other individuals.<sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">4</a></sup> The probability distribution function for children in the next generation is often called the offspring distribution and is given by <span class="math inline">\(p_i=\P[h=i]\)</span> for <span class="math inline">\(i=1,2,\ldots\)</span>.</p>
+
+<p>There can be two cases:</p>
+
+<ul>
+<li><p>(w/o immigration) This Markov chain has only one absorbing state, i.e. <span class="math inline">\(0\)</span> and all other states are transient if <span class="math inline">\(p_0&gt;0\)</span>. <strong>The population either dies out or goes to infinity</strong>.</p></li>
+
+<li><p>(w/ immigration) If we assume immigrants join the population by Pois<span class="math inline">\((\lambda)\)</span>, and say that the offspring distribution for immigrants are Binom<span class="math inline">\((1,p)\)</span>, then the total number of new immigrant children follows Pois<span class="math inline">\((\frac{\lambda}{1-p})\)</span>. In this case, <strong>there is possibility of a limiting distribution for the population size</strong>.</p></li>
+</ul>
+
+<p>Hawkes process can be seen as a branching process with immigration. For Hawkes process the <strong>branching ratio</strong> is defined as the ratio of <span class="math inline">\(\alpha\)</span> the excitability to <span class="math inline">\(\beta\)</span> the decay.</p>
 
 <div class="footnotes">
 
@@ -419,6 +433,8 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 <li id="fn:2">Thanks to <a href="https://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg</a>, we can gauge this uncertainty in quantum mechanics. <a class="footnote-return" href="#fnref:2">↩︎</a></li>
 
 <li id="fn:3">Microwave travels faster and easier to deploy, but suffers from less bandwidth and sensitivity to weather conditions. <a class="footnote-return" href="#fnref:3">↩︎</a></li>
+
+<li id="fn:5">This model was introduced by F. Galton, in late 1800s, to study the disappearance of aristocratic family names; in this case <span class="math inline">\(p_i\)</span> was interpreted as the probability that a man has <span class="math inline">\(i\)</span> sons. <a class="footnote-return" href="#fnref:5">↩︎</a></li>
 </ol>
 
 </div>

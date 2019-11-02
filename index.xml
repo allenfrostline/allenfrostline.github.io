@@ -423,9 +423,9 @@ header h1:before {content: &#39;&#39;}
 &lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;Cox Process&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;Hawkes Process&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_17&#34;&gt;To Be Continued&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_17&#34;&gt;Branching Process&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -686,9 +686,23 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 \end{align}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where  &lt;span class=&#34;math inline&#34;&gt;\(\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+\)&lt;/span&gt; is a kernel function which expresses the positive influence of past events &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; on the current value of the intensity process &lt;span class=&#34;math inline&#34;&gt;\(\lambda (t)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\mu (t)\)&lt;/span&gt; is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and &lt;span class=&#34;math inline&#34;&gt;\(\{ T_i : T_i &amp;lt; T_{i + 1} \} \in \mathbb{R}\)&lt;/span&gt; is the time of occurrence of the i-th event of the process.&lt;/p&gt;
 
-&lt;h1 id=&#34;toc_17&#34;&gt;To Be Continued&lt;/h1&gt;
+&lt;p&gt;Specifically, when we use exponential decay with parameter (which is also the most famous type of Hawkes processes), the formulation becomes&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\Lambda_t = \lambda + \sum_{0\le T_k\le t} \alpha \exp[-\beta(t-T_k)],\quad t\ge 0.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&#34;toc_17&#34;&gt;Branching Process&lt;/h2&gt;
 
-&lt;p&gt;&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Consider a random model for population growth in the absence of spatial or any other resource constraints. In such population of individuals in every generation &lt;span class=&#34;math inline&#34;&gt;\(n=0,1,2,\ldots\)&lt;/span&gt;, each individual produces a random number &lt;span class=&#34;math inline&#34;&gt;\(h\)&lt;/span&gt; of children in the next generation, independently of other individuals.&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; The probability distribution function for children in the next generation is often called the offspring distribution and is given by &lt;span class=&#34;math inline&#34;&gt;\(p_i=\P[h=i]\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(i=1,2,\ldots\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;There can be two cases:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;(w/o immigration) This Markov chain has only one absorbing state, i.e. &lt;span class=&#34;math inline&#34;&gt;\(0\)&lt;/span&gt; and all other states are transient if &lt;span class=&#34;math inline&#34;&gt;\(p_0&amp;gt;0\)&lt;/span&gt;. &lt;strong&gt;The population either dies out or goes to infinity&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;(w/ immigration) If we assume immigrants join the population by Pois&lt;span class=&#34;math inline&#34;&gt;\((\lambda)\)&lt;/span&gt;, and say that the offspring distribution for immigrants are Binom&lt;span class=&#34;math inline&#34;&gt;\((1,p)\)&lt;/span&gt;, then the total number of new immigrant children follows Pois&lt;span class=&#34;math inline&#34;&gt;\((\frac{\lambda}{1-p})\)&lt;/span&gt;. In this case, &lt;strong&gt;there is possibility of a limiting distribution for the population size&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hawkes process can be seen as a branching process with immigration. For Hawkes process the &lt;strong&gt;branching ratio&lt;/strong&gt; is defined as the ratio of &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; the excitability to &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt; the decay.&lt;/p&gt;
 
 &lt;div class=&#34;footnotes&#34;&gt;
 
@@ -700,6 +714,8 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 &lt;li id=&#34;fn:2&#34;&gt;Thanks to &lt;a href=&#34;https://en.wikipedia.org/wiki/Uncertainty_principle&#34;&gt;Heisenberg&lt;/a&gt;, we can gauge this uncertainty in quantum mechanics. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
 
 &lt;li id=&#34;fn:3&#34;&gt;Microwave travels faster and easier to deploy, but suffers from less bandwidth and sensitivity to weather conditions. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+
+&lt;li id=&#34;fn:5&#34;&gt;This model was introduced by F. Galton, in late 1800s, to study the disappearance of aristocratic family names; in this case &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; was interpreted as the probability that a man has &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; sons. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;/div&gt;
