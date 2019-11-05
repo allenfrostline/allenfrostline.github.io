@@ -162,6 +162,15 @@
 
 <li><a href="#toc_25">Application of PCA: Sample Factor Analysis (FA)</a></li>
 </ul></li>
+
+<li><a href="#toc_26">Canonical Correlation Analysis (CCA)</a>
+<ul>
+<li><a href="#toc_27">Notations for Population CCA</a></li>
+
+<li><a href="#toc_28">Definition of Population CCA</a></li>
+
+<li><a href="#toc_29">Properties of Population CCA</a></li>
+</ul></li>
 </ul>
 
 </nav>
@@ -217,7 +226,7 @@ header h1:before {content: ''}
 \bs{A}=[\bs{a}_1,\bs{a}_2,\ldots,\bs{a}_n]\in\R^{m\times n}\text{   and   }
 \bs{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},\]</span></p><p>then we have right away <span class="math inline">\(\bs{AD}=[\bs{a}_id_i]_{i=1}^n\)</span>.</p>
 
-<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <span class="math inline">\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span>, then <span class="math inline">\(\rank(\bs{xy'})=1\)</span>. Conversely, if <span class="math inline">\(\rank(\bs{A})=1\)</span>, then <span class="math inline">\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span> s.t. <span class="math inline">\(\bs{xy'}=\bs{A}\)</span>. Prove it.</p>
+<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <span class="math inline">\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span>, then <span class="math inline">\(\rank(\bs{YX'})=1\)</span>. Conversely, if <span class="math inline">\(\rank(\bs{A})=1\)</span>, then <span class="math inline">\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span> s.t. <span class="math inline">\(\bs{xy'}=\bs{A}\)</span>. Prove it.</p>
 
 <h2 id="toc_2">Norms</h2>
 
@@ -609,6 +618,96 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 </ul>
 
 <p>With these assumptions we have <span class="math inline">\(\bs{\Sigma}=\bs{LL}'+\bs{\Xi}\)</span>.</p>
+
+<h1 id="toc_26">Canonical Correlation Analysis (CCA)</h1>
+
+<p>Similar to PCA, we try to introduce CCA in two ways, namely w.r.t. a population and a sample.</p>
+
+<h2 id="toc_27">Notations for Population CCA</h2>
+
+<p>Assume <span class="math inline">\(p\le q\)</span> (important!!!). Given <span class="math inline">\(\bs{X}\in\R^p\)</span> and <span class="math inline">\(\bs{Y}\in\R^q\)</span>, define</p>
+<p><span class="math display">\[
+\mu_{\bs{X}} = \E[\bs{X}]\in\R^p\quad\text{and}\quad
+\mu_{\bs{Y}} = \E[\bs{Y}]\in\R^q
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\bs{\Sigma}_{\bs{X}} = \Cov[\bs{X}]\in\R^{p\times p}\quad\text{and}\quad
+\bs{\Sigma}_{\bs{Y}} = \Cov[\bs{Y}]\in\R^{q\times q}.
+\]</span></p><p>Furthermore, define</p>
+<p><span class="math display">\[
+\bs{\Sigma}_{\bs{XY}} = \Cov[\bs{X},\bs{Y}]=\E[(\bs{X}-\mu_{\bs{X}})(\bs{Y}-\mu_{\bs{Y}})']\in\R^{p\times q}
+\]</span></p><p>and</p>
+<p><span class="math display">\[
+\bs{\Sigma}_{\bs{YX}} = \Cov[\bs{Y},\bs{X}]=\E[(\bs{Y}-\mu_{\bs{Y}})(\bs{X}-\mu_{\bs{X}})']\in\R^{q\times p}.
+\]</span></p><p>Also, let</p>
+<p><span class="math display">\[
+\bs{W} = \begin{bmatrix}
+\bs{X}\\\bs{Y}
+\end{bmatrix} \in \R^{p+q}.
+\]</span></p><p>Then with this notation we know given <span class="math inline">\(\bs{a}\in\R^p\)</span> and <span class="math inline">\(\bs{b}\in\R^q\)</span>, how expectation, variance and covariance (ans thus correlation) are represented for <span class="math inline">\(U=\bs{a}'\bs{X}\)</span> and <span class="math inline">\(V=\bs{b}'\bs{Y}\)</span>.</p>
+
+<h2 id="toc_28">Definition of Population CCA</h2>
+
+<p>We calculate canonical correlation variables iteratively:</p>
+
+<ul>
+<li><span class="math inline">\((U_1,V_1)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1\}\)</span>.</li>
+<li><span class="math inline">\((U_2,V_2)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_1]=\Cov[V,V_1]=\Cov[V,U_1]=\Cov[U,V_1]=0\}\)</span>.</li>
+<li>&hellip;</li>
+<li><span class="math inline">\((U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k\}\)</span>.</li>
+</ul>
+
+<p>We call <span class="math inline">\(\rho_k=\Corr[U_k,V_k]\)</span> as the <span class="math inline">\(k\)</span>-th population <strong>canonical correlation</strong>. We call <span class="math inline">\(\bs{a}_k=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{u}_k\)</span> and <span class="math inline">\(\bs{b}=\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{v}_k\)</span> as the population canonical vectors.</p>
+
+<p><code>Theorem</code> Suppose <span class="math inline">\(p\le q\)</span>, let <span class="math inline">\(\Gamma_{\bs{XY}}=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{\Sigma}_{\bs{XY}}\bs{\Sigma}_{\bs{Y}}^{-1/2}\in\R^{p\times q}\)</span> and the condensed SVD be<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></p>
+<p><span class="math display">\[
+\bs{\Gamma}_{\bs{XY}} = \begin{bmatrix}
+\bs{u}_1 &amp; \bs{u}_2, &amp; \ldots &amp; \bs{u}_p
+\end{bmatrix}\begin{bmatrix}
+\sigma_1 &amp; \cdots &amp; \cdots &amp; \bs{O} \\
+\vdots &amp; \sigma_2 &amp; \cdots &amp; \vdots \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\bs{O} &amp; \cdots &amp; \cdots &amp; \sigma_p
+\end{bmatrix}\begin{bmatrix}
+\bs{v}_1'\\ \bs{v}_2' \\ \vdots \\ \bs{v}_p'
+\end{bmatrix}
+\]</span></p><p>which gives</p>
+<p><span class="math display">\[
+\bs{U}_k = \bs{u}_k'\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{X}\quad\text{and}\quad
+\bs{V}_k = \bs{v}_k'\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{Y}
+\]</span></p><p>and that <span class="math inline">\(\rho_k=\sigma_k\)</span>.</p>
+
+<h2 id="toc_29">Properties of Population CCA</h2>
+
+<p>The canonical correlation variables have the following three basic properties:</p>
+
+<ul>
+<li><span class="math inline">\(\Cov[U_i,U_j]=\1{i=j}\)</span>.</li>
+<li><span class="math inline">\(\Cov[V_i,V_j]=\1{i=j}\)</span>.</li>
+<li><span class="math inline">\(\Cov[U_i,V_j]=\1{i=j} \sigma_i\)</span>.</li>
+</ul>
+
+<p><code>Theorem</code> Let <span class="math inline">\(\tilde{\bs{X}}=\bs{MX}+\bs{c}\)</span> be the affine transformation of <span class="math inline">\(\bs{X}\)</span>. Similarly let <span class="math inline">\(\tilde{\bs{Y}}=\bs{NY}+\bs{d}\)</span>. Then by using CCA, the results from analyzing <span class="math inline">\((\tilde{\bs{X}},\tilde{\bs{Y}})\)</span> remains unchanged as <span class="math inline">\((\bs{X},\bs{Y})\)</span>, namely <strong>CCA is affine invariant</strong>.</p>
+
+<p>Based on this theorem we have the following properties:</p>
+
+<ul>
+<li>The canonical correlations between <span class="math inline">\(\tilde{\bs{X}}\)</span> and <span class="math inline">\(\tilde{\bs{Y}}\)</span> are identical to those between <span class="math inline">\(\bs{X}\)</span> and <span class="math inline">\(\bs{Y}\)</span>.</li>
+<li>The canonical correlation vectors are <strong>not</strong> the same. They now becomes <span class="math inline">\(\tilde{\bs{a}_k}=(\bs{M}')^{-1}\bs{a}_k\)</span> and <span class="math inline">\(\tilde{\bs{b}_k}=(\bs{N}')^{-1}\bs{b}_k\)</span>.</li>
+<li>By using covariances <span class="math inline">\(\bs{\Sigma}\)</span> or correlations <span class="math inline">\(\bs{P}\)</span> makes <strong>no difference</strong> in canonical analysis<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This is <strong>not true</strong> for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.</li>
+</ul>
+
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">Every symmetric positive definite matrix has a square root given by <span class="math inline">\(\bs{A}^{1/2} = \bs{Q}\bs{\Lambda}^{1/2}\bs{Q}'\)</span> where <span class="math inline">\(\bs{A}=\bs{Q\Lambda Q}'\)</span> is the EVD of <span class="math inline">\(\bs{A}\)</span>. <a class="footnote-return" href="#fnref:1">↩︎</a></li>
+
+<li id="fn:2">Essentially there&rsquo;s no difference. However, in fact the canonical correlation vectors are scaled by <span class="math inline">\(\bs{V}^{-1/2}_{\bs{X}}\)</span> and <span class="math inline">\(\bs{V}^{-1/2}_{\bs{Y}}\)</span> respectively. <a class="footnote-return" href="#fnref:2">↩︎</a></li>
+</ol>
+
+</div>
 
 
   <footer>
