@@ -797,6 +797,16 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 &lt;li&gt;&lt;a href=&#34;#toc_28&#34;&gt;Definition of Population CCA&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_29&#34;&gt;Properties of Population CCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_30&#34;&gt;Example of Calculating Population CCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_31&#34;&gt;Notations for Sample CCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_32&#34;&gt;Definition of Sample CCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_33&#34;&gt;Properties of Sample CCA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_34&#34;&gt;Example of Calculating Sample CCA&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -1281,10 +1291,8 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((U_1,V_1)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1\}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((U_2,V_2)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_1]=\Cov[V,V_1]=\Cov[V,U_1]=\Cov[U,V_1]=0\}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;li&gt;&amp;hellip;&lt;/li&gt;
-&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k\}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k-1\}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;We call &lt;span class=&#34;math inline&#34;&gt;\(\rho_k=\Corr[U_k,V_k]\)&lt;/span&gt; as the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th population &lt;strong&gt;canonical correlation&lt;/strong&gt;. We call &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}_k=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{u}_k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{b}=\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{v}_k\)&lt;/span&gt; as the population canonical vectors.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; Suppose &lt;span class=&#34;math inline&#34;&gt;\(p\le q\)&lt;/span&gt;, let &lt;span class=&#34;math inline&#34;&gt;\(\Gamma_{\bs{XY}}=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{\Sigma}_{\bs{XY}}\bs{\Sigma}_{\bs{Y}}^{-1/2}\in\R^{p\times q}\)&lt;/span&gt; and the condensed SVD be&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
@@ -1304,6 +1312,8 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 \bs{V}_k = \bs{v}_k&#39;\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{Y}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and that &lt;span class=&#34;math inline&#34;&gt;\(\rho_k=\sigma_k\)&lt;/span&gt;.&lt;/p&gt;
 
+&lt;p&gt;We call &lt;span class=&#34;math inline&#34;&gt;\(\rho_k=\Corr[U_k,V_k]\)&lt;/span&gt; as the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th population &lt;strong&gt;canonical correlation&lt;/strong&gt;. We call &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}_k=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{u}_k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{b}_k=\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{v}_k\)&lt;/span&gt; as the population canonical vectors.&lt;/p&gt;
+
 &lt;h2 id=&#34;toc_29&#34;&gt;Properties of Population CCA&lt;/h2&gt;
 
 &lt;p&gt;The canonical correlation variables have the following three basic properties:&lt;/p&gt;
@@ -1321,8 +1331,109 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 &lt;ul&gt;
 &lt;li&gt;The canonical correlations between &lt;span class=&#34;math inline&#34;&gt;\(\tilde{\bs{X}}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tilde{\bs{Y}}\)&lt;/span&gt; are identical to those between &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{Y}\)&lt;/span&gt;.&lt;/li&gt;
 &lt;li&gt;The canonical correlation vectors are &lt;strong&gt;not&lt;/strong&gt; the same. They now becomes &lt;span class=&#34;math inline&#34;&gt;\(\tilde{\bs{a}_k}=(\bs{M}&#39;)^{-1}\bs{a}_k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tilde{\bs{b}_k}=(\bs{N}&#39;)^{-1}\bs{b}_k\)&lt;/span&gt;.&lt;/li&gt;
-&lt;li&gt;By using covariances &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\)&lt;/span&gt; or correlations &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\)&lt;/span&gt; makes &lt;strong&gt;no difference&lt;/strong&gt; in canonical analysis&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This is &lt;strong&gt;not true&lt;/strong&gt; for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.&lt;/li&gt;
+&lt;li&gt;By using covariances &lt;span class=&#34;math inline&#34;&gt;\(\bs{\Sigma}\)&lt;/span&gt; or correlations &lt;span class=&#34;math inline&#34;&gt;\(\bs{P}\)&lt;/span&gt; makes &lt;strong&gt;no difference&lt;/strong&gt; in CCA&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This is &lt;strong&gt;not true&lt;/strong&gt; for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&#34;toc_30&#34;&gt;Example of Calculating Population CCA&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;rsquo;s assume &lt;span class=&#34;math inline&#34;&gt;\(p=q=2\)&lt;/span&gt;, let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{P}_{\bs{X}} = \begin{bmatrix}
+1 &amp;amp; \alpha \\ \alpha &amp;amp; 1
+\end{bmatrix},\quad
+\bs{P}_{\bs{Y}} = \begin{bmatrix}
+1 &amp;amp; \gamma\\ \gamma &amp;amp; 1
+\end{bmatrix}\quad\text{and}\quad
+\bs{P}_{\bs{XY}} = \begin{bmatrix}
+\beta &amp;amp; \beta \\
+\beta &amp;amp; \beta
+\end{bmatrix}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;with  &lt;span class=&#34;math inline&#34;&gt;\(|\alpha| &amp;lt; 1\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(|\gamma| &amp;lt; 1\)&lt;/span&gt;. In order to find the 1st canonical correction of &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{Y}\)&lt;/span&gt;, we first check&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\det(\bs{P}_{\bs{X}}) = 1 - \alpha^2 &amp;gt; 0\quad\text{and}\quad
+\det(\bs{P}_{\bs{Y}}) = 1 - \gamma^2 &amp;gt; 0.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Therefore, we may calculate&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{H}_{\bs{XY}} = \bs{P}_{\bs{X}}^{-1}\bs{P}_{\bs{XY}}\bs{P}_{\bs{Y}}^{-1}\bs{P}_{\bs{XY}} =
+\frac{\beta}{1-\alpha^2}\begin{bmatrix}
+1 &amp;amp; -\alpha \\ -\alpha &amp;amp; 1
+\end{bmatrix}\begin{bmatrix}
+1 &amp;amp; 1 \\ 1 &amp;amp; 1 
+\end{bmatrix} = \frac{2\beta^2}{(1+\alpha)(1+\gamma)}\bs{1}\bs{1}&#39;.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;It&amp;rsquo;s easy to show that &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1= 2\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda_2=0\)&lt;/span&gt; are the two eigenvalues of &lt;span class=&#34;math inline&#34;&gt;\(\bs{11}&#39;\)&lt;/span&gt; and thus the 1st canonical correction is&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\rho_1 = \sqrt{\frac{4\beta^2}{(1+\alpha)(1+\gamma)}} = \frac{2\beta}{\sqrt{(1+\alpha)(1+\gamma)}}.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&#34;toc_31&#34;&gt;Notations for Sample CCA&lt;/h2&gt;
+
+&lt;p&gt;Given &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; samples: &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}=\{\bs{X}(\omega_1), \bs{X}(\omega_2), \ldots, \bs{X}(\omega_n)\}\in\R^{n\times p}\)&lt;/span&gt; and similarly &lt;span class=&#34;math inline&#34;&gt;\(\bs{Y}\in\R^{n\times q}\)&lt;/span&gt;. Everything is just the same except being in sample notations, e.g. &lt;span class=&#34;math inline&#34;&gt;\(\bar{\bs{X}}=\bs{X}&#39;\bs{1} / n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(S_{\bs{X}}=(\bs{X}-\bar{\bs{X}}&#39;\bs{1})&#39;(\bs{X}-\bar{\bs{X}}&#39;\bs{1}) / (n-1)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Besides the regular notations, here we also define &lt;span class=&#34;math inline&#34;&gt;\(r_{\bs{XY}}(\bs{a},\bs{b})\)&lt;/span&gt; as the sample correlation of &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}&#39;\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{b}&#39;\bs{Y}\)&lt;/span&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+r_{\bs{XY}}(\bs{a},\bs{b}) = \frac{\bs{a}&#39;\bs{S}_{\bs{XY}}\bs{b}}{\sqrt{\bs{a}&#39;\bs{S}_{\bs{X}}\bs{a}}\sqrt{\bs{b}&#39;\bs{S}_{\bs{Y}}\bs{b}}}.
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&#34;toc_32&#34;&gt;Definition of Sample CCA&lt;/h2&gt;
+
+&lt;p&gt;Same as population CCA, we give sample CCA iteratively (except that here we&amp;rsquo;re talking about canonical correlation vectors directly):&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((\hat{\bs{a}}_1,\hat{\bs{b}}_1)=\arg\max\{\bs{a}&#39;\bs{S}_{\bs{XY}}\bs{b}:\bs{a}&#39;\bs{S}_{\bs{X}}\bs{a}=\bs{b}&#39;\bs{S}_{\bs{Y}}\bs{b}=1\}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((\hat{\bs{a}}_2,\hat{\bs{b}}_2)=\arg\max\{\bs{a}&#39;\bs{S}_{\bs{XY}}\bs{b}:\bs{a}&#39;\bs{S}_{\bs{X}}\bs{a}=\bs{b}&#39;\bs{S}_{\bs{Y}}\bs{b}=1,\bs{a}&#39;\bs{S}_{X}\hat{\bs{a}}_1=\bs{b}&#39;\bs{S}_{\bs{Y}}\hat{\bs{b}}_1=\bs{a}&#39;\bs{S}_{\bs{XY}}\hat{\bs{b}}_1=\bs{b}&#39;\bs{S}_{\bs{YX}}\hat{\bs{a}}_1=0\}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\((\hat{\bs{a}}_k,\hat{\bs{b}}_k)=\arg\max\{\bs{a}&#39;\bs{S}_{\bs{XY}}\bs{b}:\bs{a}&#39;\bs{S}_{\bs{X}}\bs{a}=\bs{b}&#39;\bs{S}_{\bs{Y}}\bs{b}=1,\bs{a}&#39;\bs{S}_{X}\hat{\bs{a}}_i=\bs{b}&#39;\bs{S}_{\bs{Y}}\hat{\bs{b}}_i=\bs{a}&#39;\bs{S}_{\bs{XY}}\hat{\bs{b}}_i=\bs{b}&#39;\bs{S}_{\bs{YX}}\hat{\bs{a}}_i=0\}\ \ \forall i=1,2,\ldots,k-1\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; Given &lt;span class=&#34;math inline&#34;&gt;\(p\le q\)&lt;/span&gt;, let &lt;span class=&#34;math inline&#34;&gt;\(\bs{G}_{\bs{XY}} = \bs{S}_{\bs{X}}^{-1/2}\bs{S}_{\bs{XY}}\bs{S}_{\bs{Y}}^{-1/2}\in\R^{p\times q}
+\)&lt;/span&gt; and the SVD be&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{G}_{\bs{XY}} = \begin{bmatrix}
+\bs{u}_1 &amp;amp; \bs{u}_2 &amp;amp; \cdots &amp;amp; \bs{u}_p
+\end{bmatrix}\begin{bmatrix}
+\sigma_1 &amp;amp; \cdots &amp;amp; \cdots &amp;amp; \bs{O} \\
+\vdots &amp;amp; \sigma_2 &amp;amp; \cdots &amp;amp; \vdots \\
+\vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+\bs{O} &amp;amp; \cdots &amp;amp; \cdots &amp;amp; \sigma_p
+\end{bmatrix}\begin{bmatrix}
+\bs{v}_1&#39; \\ \bs{v}_2&#39; \\ \vdots \\ \bs{v}_p&#39;
+\end{bmatrix}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Then we have&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\hat{\bs{a}}_k = \bs{S}_{\bs{X}}^{-1/2} \bs{u}_k\in\R^p\quad \text{and}\quad
+\hat{\bs{b}}_k = \bs{S}_{\bs{Y}}^{-1/2} \bs{v}_k\in\R^q.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In addition,&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+r_k = r_{\bs{XY}}(\hat{\bs{a}}_k, \hat{\bs{b}}_k) = \sigma_k.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;We call &lt;span class=&#34;math inline&#34;&gt;\(r_k\)&lt;/span&gt; the &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;-th sample canonical correlation. Also, &lt;span class=&#34;math inline&#34;&gt;\(\bs{Xa}_k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{Yb}_k\)&lt;/span&gt; are called the score vectors.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_33&#34;&gt;Properties of Sample CCA&lt;/h2&gt;
+
+&lt;p&gt;Everything with population CCA, including the affine invariance, holds with sample CCA, too.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_34&#34;&gt;Example of Calculating Sample CCA&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(p=q=2\)&lt;/span&gt;, let&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X}=\begin{bmatrix}
+\text{head length of son1}\\
+\text{head breath of son1}
+\end{bmatrix}=\begin{bmatrix}
+l_1\\b_1
+\end{bmatrix}\quad\text{and}\quad
+\bs{Y}=\begin{bmatrix}
+\text{head length of son2}\\
+\text{head breath of son2}
+\end{bmatrix}=\begin{bmatrix}
+l_2\\b_2
+\end{bmatrix}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Assume there&amp;rsquo;re &lt;span class=&#34;math inline&#34;&gt;\(25\)&lt;/span&gt; families, each having &lt;span class=&#34;math inline&#34;&gt;\(2\)&lt;/span&gt; sons. The &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\)&lt;/span&gt; matrix is therefore&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{W} = \begin{bmatrix}
+\bs{l}_1 &amp;amp; \bs{b}_1 &amp;amp; \bs{l}_2 &amp;amp; \bs{b}_2
+\end{bmatrix}\in\R^{25\times 4}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In addition, we may also calculate the correlations &lt;span class=&#34;math inline&#34;&gt;\(\bs{R}_{\bs{X}}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\bs{R}_{\bs{Y}}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{R}_{\bs{XY}}\)&lt;/span&gt;, from which we have &lt;span class=&#34;math inline&#34;&gt;\(\bs{G}_{\bs{XY}}\)&lt;/span&gt; given by&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{G}_{\bs{XY}} = \bs{R}_{\bs{X}}^{-1/2}\bs{R}_{\bs{XY}}\bs{R}_{\bs{Y}}^{-1/2}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which gives the sample canonical correlations &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(r_2\)&lt;/span&gt; (in most cases &lt;span class=&#34;math inline&#34;&gt;\(r_1\ll r_2\)&lt;/span&gt;). In the meantime, we have &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_{1,2}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_{1,2}\)&lt;/span&gt; and because of significant difference in scale of &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(r_2\)&lt;/span&gt;, we don&amp;rsquo;t care about &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_2\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_2\)&lt;/span&gt;. From &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_1\)&lt;/span&gt; we can calculate &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{a}}_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{b}}_2\)&lt;/span&gt;, which indicate the linear relationship between the features. Specifically, the high correlation &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; tells that &lt;span class=&#34;math inline&#34;&gt;\(\hat{U}_1=\hat{\bs{a}}_1\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{V}_1=\hat{\bs{b}}_1\bs{Y}\)&lt;/span&gt;, which are essentially the &amp;ldquo;girths&amp;rdquo; (height &lt;span class=&#34;math inline&#34;&gt;\(+\)&lt;/span&gt; breath) of sons&amp;rsquo; faces, are highly correlated. In comparison, data shows that &lt;span class=&#34;math inline&#34;&gt;\(\hat{U}_2\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{V}_2\)&lt;/span&gt;, which describes the &amp;ldquo;shapes&amp;rdquo; (height &lt;span class=&#34;math inline&#34;&gt;\(-\)&lt;/span&gt; breath) of sons&amp;rsquo; faces, are poorly correlated.&lt;/p&gt;
 
 &lt;div class=&#34;footnotes&#34;&gt;
 
@@ -1331,7 +1442,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 &lt;ol&gt;
 &lt;li id=&#34;fn:1&#34;&gt;Every symmetric positive definite matrix has a square root given by &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}^{1/2} = \bs{Q}\bs{\Lambda}^{1/2}\bs{Q}&#39;\)&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bs{Q\Lambda Q}&#39;\)&lt;/span&gt; is the EVD of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt;. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
 
-&lt;li id=&#34;fn:2&#34;&gt;Essentially there&amp;rsquo;s no difference. However, in fact the canonical correlation vectors are scaled by &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}^{-1/2}_{\bs{X}}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}^{-1/2}_{\bs{Y}}\)&lt;/span&gt; respectively. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;In fact the canonical correlation vectors are scaled by &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}^{-1/2}_{\bs{X}}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{V}^{-1/2}_{\bs{Y}}\)&lt;/span&gt; respectively. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;/div&gt;

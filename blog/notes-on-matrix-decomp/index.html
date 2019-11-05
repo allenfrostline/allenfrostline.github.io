@@ -170,6 +170,16 @@
 <li><a href="#toc_28">Definition of Population CCA</a></li>
 
 <li><a href="#toc_29">Properties of Population CCA</a></li>
+
+<li><a href="#toc_30">Example of Calculating Population CCA</a></li>
+
+<li><a href="#toc_31">Notations for Sample CCA</a></li>
+
+<li><a href="#toc_32">Definition of Sample CCA</a></li>
+
+<li><a href="#toc_33">Properties of Sample CCA</a></li>
+
+<li><a href="#toc_34">Example of Calculating Sample CCA</a></li>
 </ul></li>
 </ul>
 
@@ -654,10 +664,8 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <li><span class="math inline">\((U_1,V_1)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1\}\)</span>.</li>
 <li><span class="math inline">\((U_2,V_2)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_1]=\Cov[V,V_1]=\Cov[V,U_1]=\Cov[U,V_1]=0\}\)</span>.</li>
 <li>&hellip;</li>
-<li><span class="math inline">\((U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k\}\)</span>.</li>
+<li><span class="math inline">\((U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k-1\}\)</span>.</li>
 </ul>
-
-<p>We call <span class="math inline">\(\rho_k=\Corr[U_k,V_k]\)</span> as the <span class="math inline">\(k\)</span>-th population <strong>canonical correlation</strong>. We call <span class="math inline">\(\bs{a}_k=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{u}_k\)</span> and <span class="math inline">\(\bs{b}=\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{v}_k\)</span> as the population canonical vectors.</p>
 
 <p><code>Theorem</code> Suppose <span class="math inline">\(p\le q\)</span>, let <span class="math inline">\(\Gamma_{\bs{XY}}=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{\Sigma}_{\bs{XY}}\bs{\Sigma}_{\bs{Y}}^{-1/2}\in\R^{p\times q}\)</span> and the condensed SVD be<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup></p>
 <p><span class="math display">\[
@@ -677,6 +685,8 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 \bs{V}_k = \bs{v}_k'\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{Y}
 \]</span></p><p>and that <span class="math inline">\(\rho_k=\sigma_k\)</span>.</p>
 
+<p>We call <span class="math inline">\(\rho_k=\Corr[U_k,V_k]\)</span> as the <span class="math inline">\(k\)</span>-th population <strong>canonical correlation</strong>. We call <span class="math inline">\(\bs{a}_k=\bs{\Sigma}_{\bs{X}}^{-1/2}\bs{u}_k\)</span> and <span class="math inline">\(\bs{b}_k=\bs{\Sigma}_{\bs{Y}}^{-1/2}\bs{v}_k\)</span> as the population canonical vectors.</p>
+
 <h2 id="toc_29">Properties of Population CCA</h2>
 
 <p>The canonical correlation variables have the following three basic properties:</p>
@@ -694,8 +704,109 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <ul>
 <li>The canonical correlations between <span class="math inline">\(\tilde{\bs{X}}\)</span> and <span class="math inline">\(\tilde{\bs{Y}}\)</span> are identical to those between <span class="math inline">\(\bs{X}\)</span> and <span class="math inline">\(\bs{Y}\)</span>.</li>
 <li>The canonical correlation vectors are <strong>not</strong> the same. They now becomes <span class="math inline">\(\tilde{\bs{a}_k}=(\bs{M}')^{-1}\bs{a}_k\)</span> and <span class="math inline">\(\tilde{\bs{b}_k}=(\bs{N}')^{-1}\bs{b}_k\)</span>.</li>
-<li>By using covariances <span class="math inline">\(\bs{\Sigma}\)</span> or correlations <span class="math inline">\(\bs{P}\)</span> makes <strong>no difference</strong> in canonical analysis<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This is <strong>not true</strong> for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.</li>
+<li>By using covariances <span class="math inline">\(\bs{\Sigma}\)</span> or correlations <span class="math inline">\(\bs{P}\)</span> makes <strong>no difference</strong> in CCA<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This is <strong>not true</strong> for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.</li>
 </ul>
+
+<h2 id="toc_30">Example of Calculating Population CCA</h2>
+
+<p>Let&rsquo;s assume <span class="math inline">\(p=q=2\)</span>, let</p>
+<p><span class="math display">\[
+\bs{P}_{\bs{X}} = \begin{bmatrix}
+1 &amp; \alpha \\ \alpha &amp; 1
+\end{bmatrix},\quad
+\bs{P}_{\bs{Y}} = \begin{bmatrix}
+1 &amp; \gamma\\ \gamma &amp; 1
+\end{bmatrix}\quad\text{and}\quad
+\bs{P}_{\bs{XY}} = \begin{bmatrix}
+\beta &amp; \beta \\
+\beta &amp; \beta
+\end{bmatrix}
+\]</span></p><p>with  <span class="math inline">\(|\alpha| &lt; 1\)</span>, <span class="math inline">\(|\gamma| &lt; 1\)</span>. In order to find the 1st canonical correction of <span class="math inline">\(\bs{X}\)</span> and <span class="math inline">\(\bs{Y}\)</span>, we first check</p>
+<p><span class="math display">\[
+\det(\bs{P}_{\bs{X}}) = 1 - \alpha^2 &gt; 0\quad\text{and}\quad
+\det(\bs{P}_{\bs{Y}}) = 1 - \gamma^2 &gt; 0.
+\]</span></p><p>Therefore, we may calculate</p>
+<p><span class="math display">\[
+\bs{H}_{\bs{XY}} = \bs{P}_{\bs{X}}^{-1}\bs{P}_{\bs{XY}}\bs{P}_{\bs{Y}}^{-1}\bs{P}_{\bs{XY}} =
+\frac{\beta}{1-\alpha^2}\begin{bmatrix}
+1 &amp; -\alpha \\ -\alpha &amp; 1
+\end{bmatrix}\begin{bmatrix}
+1 &amp; 1 \\ 1 &amp; 1 
+\end{bmatrix} = \frac{2\beta^2}{(1+\alpha)(1+\gamma)}\bs{1}\bs{1}'.
+\]</span></p><p>It&rsquo;s easy to show that <span class="math inline">\(\lambda_1= 2\)</span> and <span class="math inline">\(\lambda_2=0\)</span> are the two eigenvalues of <span class="math inline">\(\bs{11}'\)</span> and thus the 1st canonical correction is</p>
+<p><span class="math display">\[
+\rho_1 = \sqrt{\frac{4\beta^2}{(1+\alpha)(1+\gamma)}} = \frac{2\beta}{\sqrt{(1+\alpha)(1+\gamma)}}.
+\]</span></p>
+<h2 id="toc_31">Notations for Sample CCA</h2>
+
+<p>Given <span class="math inline">\(n\)</span> samples: <span class="math inline">\(\bs{X}=\{\bs{X}(\omega_1), \bs{X}(\omega_2), \ldots, \bs{X}(\omega_n)\}\in\R^{n\times p}\)</span> and similarly <span class="math inline">\(\bs{Y}\in\R^{n\times q}\)</span>. Everything is just the same except being in sample notations, e.g. <span class="math inline">\(\bar{\bs{X}}=\bs{X}'\bs{1} / n\)</span> and <span class="math inline">\(S_{\bs{X}}=(\bs{X}-\bar{\bs{X}}'\bs{1})'(\bs{X}-\bar{\bs{X}}'\bs{1}) / (n-1)\)</span>.</p>
+
+<p>Besides the regular notations, here we also define <span class="math inline">\(r_{\bs{XY}}(\bs{a},\bs{b})\)</span> as the sample correlation of <span class="math inline">\(\bs{a}'\bs{X}\)</span> and <span class="math inline">\(\bs{b}'\bs{Y}\)</span>:</p>
+<p><span class="math display">\[
+r_{\bs{XY}}(\bs{a},\bs{b}) = \frac{\bs{a}'\bs{S}_{\bs{XY}}\bs{b}}{\sqrt{\bs{a}'\bs{S}_{\bs{X}}\bs{a}}\sqrt{\bs{b}'\bs{S}_{\bs{Y}}\bs{b}}}.
+\]</span></p>
+<h2 id="toc_32">Definition of Sample CCA</h2>
+
+<p>Same as population CCA, we give sample CCA iteratively (except that here we&rsquo;re talking about canonical correlation vectors directly):</p>
+
+<ul>
+<li><span class="math inline">\((\hat{\bs{a}}_1,\hat{\bs{b}}_1)=\arg\max\{\bs{a}'\bs{S}_{\bs{XY}}\bs{b}:\bs{a}'\bs{S}_{\bs{X}}\bs{a}=\bs{b}'\bs{S}_{\bs{Y}}\bs{b}=1\}\)</span>.</li>
+<li><span class="math inline">\((\hat{\bs{a}}_2,\hat{\bs{b}}_2)=\arg\max\{\bs{a}'\bs{S}_{\bs{XY}}\bs{b}:\bs{a}'\bs{S}_{\bs{X}}\bs{a}=\bs{b}'\bs{S}_{\bs{Y}}\bs{b}=1,\bs{a}'\bs{S}_{X}\hat{\bs{a}}_1=\bs{b}'\bs{S}_{\bs{Y}}\hat{\bs{b}}_1=\bs{a}'\bs{S}_{\bs{XY}}\hat{\bs{b}}_1=\bs{b}'\bs{S}_{\bs{YX}}\hat{\bs{a}}_1=0\}\)</span>.</li>
+<li>&hellip;</li>
+<li><span class="math inline">\((\hat{\bs{a}}_k,\hat{\bs{b}}_k)=\arg\max\{\bs{a}'\bs{S}_{\bs{XY}}\bs{b}:\bs{a}'\bs{S}_{\bs{X}}\bs{a}=\bs{b}'\bs{S}_{\bs{Y}}\bs{b}=1,\bs{a}'\bs{S}_{X}\hat{\bs{a}}_i=\bs{b}'\bs{S}_{\bs{Y}}\hat{\bs{b}}_i=\bs{a}'\bs{S}_{\bs{XY}}\hat{\bs{b}}_i=\bs{b}'\bs{S}_{\bs{YX}}\hat{\bs{a}}_i=0\}\ \ \forall i=1,2,\ldots,k-1\)</span>.</li>
+</ul>
+
+<p><code>Theorem</code> Given <span class="math inline">\(p\le q\)</span>, let <span class="math inline">\(\bs{G}_{\bs{XY}} = \bs{S}_{\bs{X}}^{-1/2}\bs{S}_{\bs{XY}}\bs{S}_{\bs{Y}}^{-1/2}\in\R^{p\times q}
+\)</span> and the SVD be</p>
+<p><span class="math display">\[
+\bs{G}_{\bs{XY}} = \begin{bmatrix}
+\bs{u}_1 &amp; \bs{u}_2 &amp; \cdots &amp; \bs{u}_p
+\end{bmatrix}\begin{bmatrix}
+\sigma_1 &amp; \cdots &amp; \cdots &amp; \bs{O} \\
+\vdots &amp; \sigma_2 &amp; \cdots &amp; \vdots \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\bs{O} &amp; \cdots &amp; \cdots &amp; \sigma_p
+\end{bmatrix}\begin{bmatrix}
+\bs{v}_1' \\ \bs{v}_2' \\ \vdots \\ \bs{v}_p'
+\end{bmatrix}.
+\]</span></p><p>Then we have</p>
+<p><span class="math display">\[
+\hat{\bs{a}}_k = \bs{S}_{\bs{X}}^{-1/2} \bs{u}_k\in\R^p\quad \text{and}\quad
+\hat{\bs{b}}_k = \bs{S}_{\bs{Y}}^{-1/2} \bs{v}_k\in\R^q.
+\]</span></p><p>In addition,</p>
+<p><span class="math display">\[
+r_k = r_{\bs{XY}}(\hat{\bs{a}}_k, \hat{\bs{b}}_k) = \sigma_k.
+\]</span></p><p>We call <span class="math inline">\(r_k\)</span> the <span class="math inline">\(k\)</span>-th sample canonical correlation. Also, <span class="math inline">\(\bs{Xa}_k\)</span> and <span class="math inline">\(\bs{Yb}_k\)</span> are called the score vectors.</p>
+
+<h2 id="toc_33">Properties of Sample CCA</h2>
+
+<p>Everything with population CCA, including the affine invariance, holds with sample CCA, too.</p>
+
+<h2 id="toc_34">Example of Calculating Sample CCA</h2>
+
+<p>Let <span class="math inline">\(p=q=2\)</span>, let</p>
+<p><span class="math display">\[
+\bs{X}=\begin{bmatrix}
+\text{head length of son1}\\
+\text{head breath of son1}
+\end{bmatrix}=\begin{bmatrix}
+l_1\\b_1
+\end{bmatrix}\quad\text{and}\quad
+\bs{Y}=\begin{bmatrix}
+\text{head length of son2}\\
+\text{head breath of son2}
+\end{bmatrix}=\begin{bmatrix}
+l_2\\b_2
+\end{bmatrix}.
+\]</span></p><p>Assume there&rsquo;re <span class="math inline">\(25\)</span> families, each having <span class="math inline">\(2\)</span> sons. The <span class="math inline">\(\bs{W}\)</span> matrix is therefore</p>
+<p><span class="math display">\[
+\bs{W} = \begin{bmatrix}
+\bs{l}_1 &amp; \bs{b}_1 &amp; \bs{l}_2 &amp; \bs{b}_2
+\end{bmatrix}\in\R^{25\times 4}.
+\]</span></p><p>In addition, we may also calculate the correlations <span class="math inline">\(\bs{R}_{\bs{X}}\)</span>, <span class="math inline">\(\bs{R}_{\bs{Y}}\)</span> and <span class="math inline">\(\bs{R}_{\bs{XY}}\)</span>, from which we have <span class="math inline">\(\bs{G}_{\bs{XY}}\)</span> given by</p>
+<p><span class="math display">\[
+\bs{G}_{\bs{XY}} = \bs{R}_{\bs{X}}^{-1/2}\bs{R}_{\bs{XY}}\bs{R}_{\bs{Y}}^{-1/2}
+\]</span></p><p>which gives the sample canonical correlations <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> (in most cases <span class="math inline">\(r_1\ll r_2\)</span>). In the meantime, we have <span class="math inline">\(\bs{u}_{1,2}\)</span> and <span class="math inline">\(\bs{v}_{1,2}\)</span> and because of significant difference in scale of <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, we don&rsquo;t care about <span class="math inline">\(\bs{u}_2\)</span> and <span class="math inline">\(\bs{v}_2\)</span>. From <span class="math inline">\(\bs{u}_1\)</span> and <span class="math inline">\(\bs{v}_1\)</span> we can calculate <span class="math inline">\(\hat{\bs{a}}_1\)</span> and <span class="math inline">\(\hat{\bs{b}}_2\)</span>, which indicate the linear relationship between the features. Specifically, the high correlation <span class="math inline">\(r_1\)</span> tells that <span class="math inline">\(\hat{U}_1=\hat{\bs{a}}_1\bs{X}\)</span> and <span class="math inline">\(\hat{V}_1=\hat{\bs{b}}_1\bs{Y}\)</span>, which are essentially the &ldquo;girths&rdquo; (height <span class="math inline">\(+\)</span> breath) of sons&rsquo; faces, are highly correlated. In comparison, data shows that <span class="math inline">\(\hat{U}_2\)</span> and <span class="math inline">\(\hat{V}_2\)</span>, which describes the &ldquo;shapes&rdquo; (height <span class="math inline">\(-\)</span> breath) of sons&rsquo; faces, are poorly correlated.</p>
 
 <div class="footnotes">
 
@@ -704,7 +815,7 @@ z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
 <ol>
 <li id="fn:1">Every symmetric positive definite matrix has a square root given by <span class="math inline">\(\bs{A}^{1/2} = \bs{Q}\bs{\Lambda}^{1/2}\bs{Q}'\)</span> where <span class="math inline">\(\bs{A}=\bs{Q\Lambda Q}'\)</span> is the EVD of <span class="math inline">\(\bs{A}\)</span>. <a class="footnote-return" href="#fnref:1">↩︎</a></li>
 
-<li id="fn:2">Essentially there&rsquo;s no difference. However, in fact the canonical correlation vectors are scaled by <span class="math inline">\(\bs{V}^{-1/2}_{\bs{X}}\)</span> and <span class="math inline">\(\bs{V}^{-1/2}_{\bs{Y}}\)</span> respectively. <a class="footnote-return" href="#fnref:2">↩︎</a></li>
+<li id="fn:2">In fact the canonical correlation vectors are scaled by <span class="math inline">\(\bs{V}^{-1/2}_{\bs{X}}\)</span> and <span class="math inline">\(\bs{V}^{-1/2}_{\bs{Y}}\)</span> respectively. <a class="footnote-return" href="#fnref:2">↩︎</a></li>
 </ol>
 
 </div>
