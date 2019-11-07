@@ -86,12 +86,10 @@
 (\kappa\bs{R}\odot\bs{R})_{ij} \equiv \kappa \bs{R}^{\circ 2}_{ij} := \P\{\ \text{showdown}\mid\text{hand}\ (i,j)\ \},\quad\kappa\in(0,1)
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{R}^{\circ 2}\)&lt;/span&gt; is the Hadamard power of &lt;span class=&#34;math inline&#34;&gt;\(2\)&lt;/span&gt;, namely elementwise square of &lt;span class=&#34;math inline&#34;&gt;\(\bs{R}\)&lt;/span&gt;. By Bayes&amp;rsquo; rule again we know&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-\begin{align}
-\bs{S}_{ij} &amp;amp;:= \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
+\bs{S}_{ij} = \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
 \frac{\P\{\ \text{showdown}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{showdown}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}}
-\\&amp;amp;= \frac{(\kappa\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}&#39;(\kappa\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
+= \frac{(\kappa\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}&#39;(\kappa\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
 = \frac{(\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}&#39;(\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
-\end{align}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;or simply&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \bs{S} = \frac{\bs{R}^{\circ 2}\odot\bs{P}}{\bs{\iota}&#39;(\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}.\tag{3}

@@ -173,12 +173,10 @@
 (\kappa\bs{R}\odot\bs{R})_{ij} \equiv \kappa \bs{R}^{\circ 2}_{ij} := \P\{\ \text{showdown}\mid\text{hand}\ (i,j)\ \},\quad\kappa\in(0,1)
 \]</span></p><p>where <span class="math inline">\(\bs{R}^{\circ 2}\)</span> is the Hadamard power of <span class="math inline">\(2\)</span>, namely elementwise square of <span class="math inline">\(\bs{R}\)</span>. By Bayes&rsquo; rule again we know</p>
 <p><span class="math display">\[
-\begin{align}
-\bs{S}_{ij} &amp;:= \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
+\bs{S}_{ij} = \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
 \frac{\P\{\ \text{showdown}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{showdown}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}}
-\\&amp;= \frac{(\kappa\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}'(\kappa\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
+= \frac{(\kappa\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}'(\kappa\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
 = \frac{(\bs{R}^{\circ 2}\odot\bs{P})_{ij}}{\bs{\iota}'(\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}
-\end{align}
 \]</span></p><p>or simply</p>
 <p><span class="math display">\[
 \bs{S} = \frac{\bs{R}^{\circ 2}\odot\bs{P}}{\bs{\iota}'(\bs{R}^{\circ 2}\odot\bs{P})\bs{\iota}}.\tag{3}
