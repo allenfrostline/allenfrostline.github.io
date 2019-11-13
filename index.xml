@@ -7,8 +7,64 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Tue, 05 Nov 2019 10:11:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 08 Nov 2019 18:09:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Notes on Mathematical Market Microstructure (2)</title>
+      <link>https://allenfrostline.com/blog/notes-on-microstructure-2/</link>
+      <pubDate>Fri, 08 Nov 2019 18:09:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/notes-on-microstructure-2/</guid>
+      <description>
+        &lt;nav&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;References&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;style&gt;
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
+h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
+header h1:before {content: &#39;&#39;}
+&lt;/style&gt;
+
+&lt;p&gt;Following the previous course by Prof. Yuri, below are my lecture notes from Prof. Hongsong Chow&amp;rsquo;s course Mathematical Market Microstructure (from an optimization perspective).&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;This course provides a balanced view on theoretical framework for solving optimal execution strategies design problems and practical aspects of implementating such strategies in liquid product trading.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_1&#34;&gt;References&lt;/h1&gt;
+
+&lt;p&gt;The following books/articles are suggested:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;O&amp;rsquo;hara, Maureen. &lt;em&gt;Market microstructure theory&lt;/em&gt;. Wiley, 1997.
+Harvard.&lt;/li&gt;
+&lt;li&gt;Hasbrouck, Joel. &lt;em&gt;Empirical market microstructure: The institutions, economics, and econometrics of securities trading&lt;/em&gt;. Oxford University Press, 2007.&lt;/li&gt;
+&lt;li&gt;Harris, Larry. &lt;em&gt;Trading and exchanges: Market microstructure for practitioners&lt;/em&gt;. OUP USA, 2003.&lt;/li&gt;
+&lt;li&gt;Pham, Huyên. &lt;em&gt;Continuous-time stochastic control and optimization with financial applications&lt;/em&gt;. Vol. 61. Springer Science &amp;amp; Business Media, 2009.&lt;/li&gt;
+&lt;li&gt;Bouchaud, Jean-Philippe, J. Doyne Farmer, and Fabrizio Lillo. &lt;em&gt;How markets slowly digest changes in supply and demand&lt;/em&gt;. In Handbook of financial markets: dynamics and evolution, pp. 57-160. North-Holland, 2009.&lt;/li&gt;
+&lt;/ul&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>Texas Hold&#39;em Series (6): Range Estimation</title>
@@ -531,11 +587,11 @@ header h1:before {content: &#39;&#39;}
     </item>
     
     <item>
-      <title>Notes on Mathematical Market Microstructure</title>
-      <link>https://allenfrostline.com/blog/notes-on-microstructure/</link>
+      <title>Notes on Mathematical Market Microstructure (1)</title>
+      <link>https://allenfrostline.com/blog/notes-on-microstructure-1/</link>
       <pubDate>Fri, 04 Oct 2019 18:15:00 +0000</pubDate>
       
-      <guid>https://allenfrostline.com/blog/notes-on-microstructure/</guid>
+      <guid>https://allenfrostline.com/blog/notes-on-microstructure-1/</guid>
       <description>
         &lt;nav&gt;
 
@@ -960,6 +1016,17 @@ D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
 
 &lt;li&gt;&lt;a href=&#34;#toc_34&#34;&gt;Example of Calculating Sample CCA&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_35&#34;&gt;Linear Discriminant Analysis (LDA)&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_36&#34;&gt;Notations for LDA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_37&#34;&gt;Definition of LDA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_38&#34;&gt;Classification Rule of LDA&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_39&#34;&gt;Population LDA for Binary Classification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/nav&gt;
@@ -1015,7 +1082,7 @@ header h1:before {content: &#39;&#39;}
 \bs{A}=[\bs{a}_1,\bs{a}_2,\ldots,\bs{a}_n]\in\R^{m\times n}\text{   and   }
 \bs{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;then we have right away &lt;span class=&#34;math inline&#34;&gt;\(\bs{AD}=[\bs{a}_id_i]_{i=1}^n\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;Exercise&lt;/code&gt; With multiplication we care ranks of matrices. There is a quick conclusion: If &lt;span class=&#34;math inline&#34;&gt;\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{YX&#39;})=1\)&lt;/span&gt;. Conversely, if &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{A})=1\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{xy&#39;}=\bs{A}\)&lt;/span&gt;. Prove it.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Exercise&lt;/code&gt; With multiplication we care ranks of matrices. There is a quick conclusion: If &lt;span class=&#34;math inline&#34;&gt;\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{yx&#39;})=1\)&lt;/span&gt;. Conversely, if &lt;span class=&#34;math inline&#34;&gt;\(\rank(\bs{A})=1\)&lt;/span&gt;, then &lt;span class=&#34;math inline&#34;&gt;\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)&lt;/span&gt; s.t. &lt;span class=&#34;math inline&#34;&gt;\(\bs{xy&#39;}=\bs{A}\)&lt;/span&gt;. Prove it.&lt;/p&gt;
 
 &lt;h2 id=&#34;toc_2&#34;&gt;Norms&lt;/h2&gt;
 
@@ -1587,6 +1654,103 @@ l_2\\b_2
 \bs{G}_{\bs{XY}} = \bs{R}_{\bs{X}}^{-1/2}\bs{R}_{\bs{XY}}\bs{R}_{\bs{Y}}^{-1/2}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which gives the sample canonical correlations &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(r_2\)&lt;/span&gt; (in most cases &lt;span class=&#34;math inline&#34;&gt;\(r_1\ll r_2\)&lt;/span&gt;). In the meantime, we have &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_{1,2}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_{1,2}\)&lt;/span&gt; and because of significant difference in scale of &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(r_2\)&lt;/span&gt;, we don&amp;rsquo;t care about &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_2\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_2\)&lt;/span&gt;. From &lt;span class=&#34;math inline&#34;&gt;\(\bs{u}_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_1\)&lt;/span&gt; we can calculate &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{a}}_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{\bs{b}}_2\)&lt;/span&gt;, which indicate the linear relationship between the features. Specifically, the high correlation &lt;span class=&#34;math inline&#34;&gt;\(r_1\)&lt;/span&gt; tells that &lt;span class=&#34;math inline&#34;&gt;\(\hat{U}_1=\hat{\bs{a}}_1\bs{X}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{V}_1=\hat{\bs{b}}_1\bs{Y}\)&lt;/span&gt;, which are essentially the &amp;ldquo;girths&amp;rdquo; (height &lt;span class=&#34;math inline&#34;&gt;\(+\)&lt;/span&gt; breath) of sons&amp;rsquo; faces, are highly correlated. In comparison, data shows that &lt;span class=&#34;math inline&#34;&gt;\(\hat{U}_2\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\hat{V}_2\)&lt;/span&gt;, which describes the &amp;ldquo;shapes&amp;rdquo; (height &lt;span class=&#34;math inline&#34;&gt;\(-\)&lt;/span&gt; breath) of sons&amp;rsquo; faces, are poorly correlated.&lt;/p&gt;
 
+&lt;h1 id=&#34;toc_35&#34;&gt;Linear Discriminant Analysis (LDA)&lt;/h1&gt;
+
+&lt;p&gt;Different from the unsupervised learning algorithms we&amp;rsquo;ve been discussing in the previous sections, like PCA, FA and CCA, LDA is a supervised classification method in that the number of classes to be divided into is specified explicitly.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_36&#34;&gt;Notations for LDA&lt;/h2&gt;
+
+&lt;p&gt;Assume &lt;span class=&#34;math inline&#34;&gt;\(g\)&lt;/span&gt; different classes &lt;span class=&#34;math inline&#34;&gt;\(C_1,C_2,\ldots,C_g\)&lt;/span&gt;. We try to solve the problem asking for the optimal division of &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; rows of &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\in\R^{n\times p}\)&lt;/span&gt; into &lt;span class=&#34;math inline&#34;&gt;\(g\)&lt;/span&gt; parts: for each &lt;span class=&#34;math inline&#34;&gt;\(i=1,2,\ldots,g\)&lt;/span&gt; denote&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X}_i = \begin{bmatrix}
+\bs{x}_{i,1}&#39;\\
+\bs{x}_{i,2}&#39;\\
+\vdots\\
+\bs{x}_{i,n_i}&#39;
+\end{bmatrix}\in\R^{n_i\times p}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;with &lt;span class=&#34;math inline&#34;&gt;\(\sum_{i=1}^g n_i=g\)&lt;/span&gt;, then given &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}\in\R^p\)&lt;/span&gt; we can define&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{X}_i\bs{a} =: \bs{y}_i \in \R^{n_i},\quad i=1,2,\ldots,g.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Now, recall the mean-centering matrix&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{H} = \bs{I} - \frac{\bs{\iota}\bs{\iota}&#39;}{\bs{\iota}&#39;\bs{\iota}}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which provides handy feature that centers a vector by its mean: for any &lt;span class=&#34;math inline&#34;&gt;\(\bs{X}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{HX} = \bs{X} - \bs{\iota}&#39;\bar{\bs{X}}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;With &lt;span class=&#34;math inline&#34;&gt;\(\bs{H}\)&lt;/span&gt; we also have the &lt;strong&gt;total sum-of-squares&lt;/strong&gt; as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{T} = \bs{X}&#39;\bs{HX} = \bs{X}&#39;\left(\bs{I}-\frac{\bs{\iota}\bs{\iota}&#39;}{\bs{\iota}&#39;\bs{\iota}}\right)\bs{X} = (n-1)\bs{S}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Similarly we define &lt;span class=&#34;math inline&#34;&gt;\(\bs{H}_i\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}_i=\bs{X}_i&#39;\bs{H}_i\bs{X}_i\)&lt;/span&gt; for each &lt;span class=&#34;math inline&#34;&gt;\(i=1,2,\ldots,g\)&lt;/span&gt; and thus&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\sum_{i=1}^g \bs{y}_i&#39;\bs{H}_i\bs{y}_i =
+\sum_{i=1}^g \bs{a}&#39;\bs{X}_i&#39;\bs{H}_i\bs{X}_i\bs{a} =
+\bs{a}&#39; \left(\sum_{i=1}^g \bs{X}_i&#39;\bs{H}_i\bs{X}_i\right) \bs{a} =
+\bs{a}&#39;\sum_{i=1}^g \bs{W}_i\bs{a} =:\bs{a}&#39;\bs{W}\bs{a}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\in\R^{p\times p}\)&lt;/span&gt; is known as the &lt;strong&gt;within-group sum-of-squares&lt;/strong&gt;. Finally, check&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{align}
+\sum_{i=1}^g n_i (\bar{\bs{y}}_i-\bar{\bs{y}})^2 &amp;amp;=
+\sum_{i=1}^g n_i (\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a})^2 =
+\sum_{i=1}^g n_i (\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a})&#39;(\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a}) \\&amp;amp;=
+\bs{a}&#39; \left[\sum_{i=1}^g n_i (\bar{\bs{X}}_i - \bar{\bs{X}})&#39;(\bar{\bs{X}}_i - \bar{\bs{X}})\right] \bs{a} =:
+\bs{a}&#39;\bs{B}\bs{a}
+\end{align}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where we define &lt;span class=&#34;math inline&#34;&gt;\(\bs{B}\in\R^{p\times p}\)&lt;/span&gt; as the &lt;strong&gt;between-group sum-of-squares&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; For any &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}\in\R^p\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\bs{a}&#39;\bs{T}\bs{a} = \bs{a}&#39;\bs{B}\bs{a} + \bs{a}&#39;\bs{W}\bs{a}\)&lt;/span&gt;. However, &lt;span class=&#34;math inline&#34;&gt;\(\bs{T}\neq \bs{B}+\bs{W}\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_37&#34;&gt;Definition of LDA&lt;/h2&gt;
+
+&lt;p&gt;First let&amp;rsquo;s give the &lt;a href=&#34;https://en.wikipedia.org/wiki/Ronald_Fisher&#34;&gt;Fisher&lt;/a&gt; Linear Discriminant Function&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+f(\bs{a}) = \frac{\bs{a}&#39;\bs{B}\bs{a}}{\bs{a}&#39;\bs{W}\bs{a}}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;by maximizing which, Fisher states, gives the optimal classification.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Theorem&lt;/code&gt; Suppose &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}\in\R^{p\times p}\)&lt;/span&gt; is nonsingular, let &lt;span class=&#34;math inline&#34;&gt;\(\bs{q}_1\in\R^p\)&lt;/span&gt; be the principle eigenvector of &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}^{-1}\bs{B}\)&lt;/span&gt; corresponding to &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1=\lambda_{\max}(\bs{W}^{-1}\bs{B})\)&lt;/span&gt;, then it can be shown that &lt;span class=&#34;math inline&#34;&gt;\(\bs{q}_1=\arg\max_{\bs{a}}f(\bs{a})\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1=\max_{\bs{a}}f(\bs{a})\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Proof.&lt;/strong&gt; We know&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\max_{\bs{a}} \frac{\bs{a}&#39;\bs{B}\bs{a}}{\bs{a}&#39;\bs{W}\bs{a}} =
+\max_{\bs{a}&#39;\bs{W}\bs{a}=1} \bs{a}&#39;\bs{B}\bs{a} =
+\max_{\bs{b}&#39;\bs{b}=1} \bs{b}&#39;\bs{W}^{-1/2}\bs{B}\bs{W}^{-1/2}\bs{b} =
+\lambda_{\max}(\bs{W}^{-1/2}\bs{B}\bs{W}^{-1/2}) = \lambda_{\max}(\bs{W}^{-1}\bs{B}).
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Therefore, we have the maximum &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1\)&lt;/span&gt; and thereby we find the maxima &lt;span class=&#34;math inline&#34;&gt;\(\bs{q}_1\)&lt;/span&gt;.&lt;span style=&#34;float: right&#34;&gt;Q.E.D.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Remark&lt;/strong&gt;: &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\bs{q}_1\)&lt;/span&gt; can also be seen as the solutions to&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{B}\bs{x} = \lambda \bs{W}\bs{x},\quad \bs{x}\neq\bs{0}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which is known as a &lt;strong&gt;generalized eigenvalue problem&lt;/strong&gt; since it reduces to the usual case when &lt;span class=&#34;math inline&#34;&gt;\(\bs{W}=\bs{I}\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_38&#34;&gt;Classification Rule of LDA&lt;/h2&gt;
+
+&lt;p&gt;Given a new data point &lt;span class=&#34;math inline&#34;&gt;\(\bs{t}\in\R^p\)&lt;/span&gt; we find&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+i = \underset{j=1,2,\ldots,g}{\arg\min} |\bs{q}_1&#39;(\bs{t}-\bar{\bs{X}_j})|
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and assign &lt;span class=&#34;math inline&#34;&gt;\(\bs{t}\)&lt;/span&gt; to class &lt;span class=&#34;math inline&#34;&gt;\(C_j\)&lt;/span&gt;. This essentially the heuristic behind Fisher&amp;rsquo;s LDA.&lt;/p&gt;
+
+&lt;p&gt;There is no general formulae for &lt;span class=&#34;math inline&#34;&gt;\(g\)&lt;/span&gt;-class LDA, but we do have one for specifically &lt;span class=&#34;math inline&#34;&gt;\(g=2\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;toc_39&#34;&gt;Population LDA for Binary Classification&lt;/h2&gt;
+
+&lt;p&gt;The population linear discriminant function is&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+f(\bs{a}) = \frac{\sigma_{\text{between}}}{\sigma_{\text{within}}} =
+\frac{(\bs{a}&#39;\bs{\mu}_1 - \bs{a}&#39;\bs{\mu}-2)^2}{\bs{a}&#39;\bs{\Sigma}_1\bs{a} + \bs{a}&#39;\bs{\Sigma}_2\bs{a}} =
+\frac{[\bs{a}&#39;(\bs{\mu}_1-\bs{\mu}_2)]^2}{\bs{a}&#39;(\bs{\Sigma}_1+\bs{\Sigma}_2)\bs{a}}
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;which solves to&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\bs{q}_1 = (\bs{\Sigma}_1 + \bs{\Sigma}_2)^{-1}(\bs{\mu}_1-\bs{\mu}_2) :=
+\bs{\Sigma}^{-1}(\bs{\mu}_1-\bs{\mu}_2)
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;and the threshold&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+c=\frac{1}{2}(\bs{\mu}_1&#39;\bs{\Sigma}^{-1}\bs{\mu}_1 - \bs{\mu}_2&#39;\bs{\Sigma}^{-1}\bs{\mu}_2).
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The classification is therefore given by&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+C(\bs{t}) = \begin{cases}
+C_1\ &amp;amp; \text{if}\quad\bs{q}_1&#39;\bs{t} &amp;gt; c,\\
+C_2\ &amp;amp; \text{if}\quad\bs{q}_1&#39;\bs{t} &amp;lt; c.\\
+\end{cases}
+\]&lt;/span&gt;&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 
 &lt;hr /&gt;

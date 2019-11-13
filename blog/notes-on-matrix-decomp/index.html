@@ -181,6 +181,17 @@
 
 <li><a href="#toc_34">Example of Calculating Sample CCA</a></li>
 </ul></li>
+
+<li><a href="#toc_35">Linear Discriminant Analysis (LDA)</a>
+<ul>
+<li><a href="#toc_36">Notations for LDA</a></li>
+
+<li><a href="#toc_37">Definition of LDA</a></li>
+
+<li><a href="#toc_38">Classification Rule of LDA</a></li>
+
+<li><a href="#toc_39">Population LDA for Binary Classification</a></li>
+</ul></li>
 </ul>
 
 </nav>
@@ -236,7 +247,7 @@ header h1:before {content: ''}
 \bs{A}=[\bs{a}_1,\bs{a}_2,\ldots,\bs{a}_n]\in\R^{m\times n}\text{   and   }
 \bs{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},\]</span></p><p>then we have right away <span class="math inline">\(\bs{AD}=[\bs{a}_id_i]_{i=1}^n\)</span>.</p>
 
-<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <span class="math inline">\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span>, then <span class="math inline">\(\rank(\bs{YX'})=1\)</span>. Conversely, if <span class="math inline">\(\rank(\bs{A})=1\)</span>, then <span class="math inline">\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span> s.t. <span class="math inline">\(\bs{xy'}=\bs{A}\)</span>. Prove it.</p>
+<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <span class="math inline">\(\bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span>, then <span class="math inline">\(\rank(\bs{yx'})=1\)</span>. Conversely, if <span class="math inline">\(\rank(\bs{A})=1\)</span>, then <span class="math inline">\(\exists\ \bs{x}\neq \bs{0}, \bs{y}\neq \bs{0}\)</span> s.t. <span class="math inline">\(\bs{xy'}=\bs{A}\)</span>. Prove it.</p>
 
 <h2 id="toc_2">Norms</h2>
 
@@ -808,6 +819,103 @@ l_2\\b_2
 \bs{G}_{\bs{XY}} = \bs{R}_{\bs{X}}^{-1/2}\bs{R}_{\bs{XY}}\bs{R}_{\bs{Y}}^{-1/2}
 \]</span></p><p>which gives the sample canonical correlations <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> (in most cases <span class="math inline">\(r_1\ll r_2\)</span>). In the meantime, we have <span class="math inline">\(\bs{u}_{1,2}\)</span> and <span class="math inline">\(\bs{v}_{1,2}\)</span> and because of significant difference in scale of <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, we don&rsquo;t care about <span class="math inline">\(\bs{u}_2\)</span> and <span class="math inline">\(\bs{v}_2\)</span>. From <span class="math inline">\(\bs{u}_1\)</span> and <span class="math inline">\(\bs{v}_1\)</span> we can calculate <span class="math inline">\(\hat{\bs{a}}_1\)</span> and <span class="math inline">\(\hat{\bs{b}}_2\)</span>, which indicate the linear relationship between the features. Specifically, the high correlation <span class="math inline">\(r_1\)</span> tells that <span class="math inline">\(\hat{U}_1=\hat{\bs{a}}_1\bs{X}\)</span> and <span class="math inline">\(\hat{V}_1=\hat{\bs{b}}_1\bs{Y}\)</span>, which are essentially the &ldquo;girths&rdquo; (height <span class="math inline">\(+\)</span> breath) of sons&rsquo; faces, are highly correlated. In comparison, data shows that <span class="math inline">\(\hat{U}_2\)</span> and <span class="math inline">\(\hat{V}_2\)</span>, which describes the &ldquo;shapes&rdquo; (height <span class="math inline">\(-\)</span> breath) of sons&rsquo; faces, are poorly correlated.</p>
 
+<h1 id="toc_35">Linear Discriminant Analysis (LDA)</h1>
+
+<p>Different from the unsupervised learning algorithms we&rsquo;ve been discussing in the previous sections, like PCA, FA and CCA, LDA is a supervised classification method in that the number of classes to be divided into is specified explicitly.</p>
+
+<h2 id="toc_36">Notations for LDA</h2>
+
+<p>Assume <span class="math inline">\(g\)</span> different classes <span class="math inline">\(C_1,C_2,\ldots,C_g\)</span>. We try to solve the problem asking for the optimal division of <span class="math inline">\(n\)</span> rows of <span class="math inline">\(\bs{X}\in\R^{n\times p}\)</span> into <span class="math inline">\(g\)</span> parts: for each <span class="math inline">\(i=1,2,\ldots,g\)</span> denote</p>
+<p><span class="math display">\[
+\bs{X}_i = \begin{bmatrix}
+\bs{x}_{i,1}'\\
+\bs{x}_{i,2}'\\
+\vdots\\
+\bs{x}_{i,n_i}'
+\end{bmatrix}\in\R^{n_i\times p}
+\]</span></p><p>with <span class="math inline">\(\sum_{i=1}^g n_i=g\)</span>, then given <span class="math inline">\(\bs{a}\in\R^p\)</span> we can define</p>
+<p><span class="math display">\[
+\bs{X}_i\bs{a} =: \bs{y}_i \in \R^{n_i},\quad i=1,2,\ldots,g.
+\]</span></p><p>Now, recall the mean-centering matrix</p>
+<p><span class="math display">\[
+\bs{H} = \bs{I} - \frac{\bs{\iota}\bs{\iota}'}{\bs{\iota}'\bs{\iota}}
+\]</span></p><p>which provides handy feature that centers a vector by its mean: for any <span class="math inline">\(\bs{X}\)</span></p>
+<p><span class="math display">\[
+\bs{HX} = \bs{X} - \bs{\iota}'\bar{\bs{X}}.
+\]</span></p><p>With <span class="math inline">\(\bs{H}\)</span> we also have the <strong>total sum-of-squares</strong> as</p>
+<p><span class="math display">\[
+\bs{T} = \bs{X}'\bs{HX} = \bs{X}'\left(\bs{I}-\frac{\bs{\iota}\bs{\iota}'}{\bs{\iota}'\bs{\iota}}\right)\bs{X} = (n-1)\bs{S}.
+\]</span></p><p>Similarly we define <span class="math inline">\(\bs{H}_i\)</span> and <span class="math inline">\(\bs{W}_i=\bs{X}_i'\bs{H}_i\bs{X}_i\)</span> for each <span class="math inline">\(i=1,2,\ldots,g\)</span> and thus</p>
+<p><span class="math display">\[
+\sum_{i=1}^g \bs{y}_i'\bs{H}_i\bs{y}_i =
+\sum_{i=1}^g \bs{a}'\bs{X}_i'\bs{H}_i\bs{X}_i\bs{a} =
+\bs{a}' \left(\sum_{i=1}^g \bs{X}_i'\bs{H}_i\bs{X}_i\right) \bs{a} =
+\bs{a}'\sum_{i=1}^g \bs{W}_i\bs{a} =:\bs{a}'\bs{W}\bs{a}
+\]</span></p><p>where <span class="math inline">\(\bs{W}\in\R^{p\times p}\)</span> is known as the <strong>within-group sum-of-squares</strong>. Finally, check</p>
+<p><span class="math display">\[
+\begin{align}
+\sum_{i=1}^g n_i (\bar{\bs{y}}_i-\bar{\bs{y}})^2 &amp;=
+\sum_{i=1}^g n_i (\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a})^2 =
+\sum_{i=1}^g n_i (\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a})'(\bar{\bs{X}}_i\bs{a}-\bar{\bs{X}}\bs{a}) \\&amp;=
+\bs{a}' \left[\sum_{i=1}^g n_i (\bar{\bs{X}}_i - \bar{\bs{X}})'(\bar{\bs{X}}_i - \bar{\bs{X}})\right] \bs{a} =:
+\bs{a}'\bs{B}\bs{a}
+\end{align}
+\]</span></p><p>where we define <span class="math inline">\(\bs{B}\in\R^{p\times p}\)</span> as the <strong>between-group sum-of-squares</strong>.</p>
+
+<p><code>Theorem</code> For any <span class="math inline">\(\bs{a}\in\R^p\)</span>, <span class="math inline">\(\bs{a}'\bs{T}\bs{a} = \bs{a}'\bs{B}\bs{a} + \bs{a}'\bs{W}\bs{a}\)</span>. However, <span class="math inline">\(\bs{T}\neq \bs{B}+\bs{W}\)</span>.</p>
+
+<h2 id="toc_37">Definition of LDA</h2>
+
+<p>First let&rsquo;s give the <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">Fisher</a> Linear Discriminant Function</p>
+<p><span class="math display">\[
+f(\bs{a}) = \frac{\bs{a}'\bs{B}\bs{a}}{\bs{a}'\bs{W}\bs{a}}
+\]</span></p><p>by maximizing which, Fisher states, gives the optimal classification.</p>
+
+<p><code>Theorem</code> Suppose <span class="math inline">\(\bs{W}\in\R^{p\times p}\)</span> is nonsingular, let <span class="math inline">\(\bs{q}_1\in\R^p\)</span> be the principle eigenvector of <span class="math inline">\(\bs{W}^{-1}\bs{B}\)</span> corresponding to <span class="math inline">\(\lambda_1=\lambda_{\max}(\bs{W}^{-1}\bs{B})\)</span>, then it can be shown that <span class="math inline">\(\bs{q}_1=\arg\max_{\bs{a}}f(\bs{a})\)</span> and <span class="math inline">\(\lambda_1=\max_{\bs{a}}f(\bs{a})\)</span>.</p>
+
+<p><strong>Proof.</strong> We know</p>
+<p><span class="math display">\[
+\max_{\bs{a}} \frac{\bs{a}'\bs{B}\bs{a}}{\bs{a}'\bs{W}\bs{a}} =
+\max_{\bs{a}'\bs{W}\bs{a}=1} \bs{a}'\bs{B}\bs{a} =
+\max_{\bs{b}'\bs{b}=1} \bs{b}'\bs{W}^{-1/2}\bs{B}\bs{W}^{-1/2}\bs{b} =
+\lambda_{\max}(\bs{W}^{-1/2}\bs{B}\bs{W}^{-1/2}) = \lambda_{\max}(\bs{W}^{-1}\bs{B}).
+\]</span></p><p>Therefore, we have the maximum <span class="math inline">\(\lambda_1\)</span> and thereby we find the maxima <span class="math inline">\(\bs{q}_1\)</span>.<span style="float: right">Q.E.D.</span></p>
+
+<p><strong>Remark</strong>: <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(\bs{q}_1\)</span> can also be seen as the solutions to</p>
+<p><span class="math display">\[
+\bs{B}\bs{x} = \lambda \bs{W}\bs{x},\quad \bs{x}\neq\bs{0}
+\]</span></p><p>which is known as a <strong>generalized eigenvalue problem</strong> since it reduces to the usual case when <span class="math inline">\(\bs{W}=\bs{I}\)</span>.</p>
+
+<h2 id="toc_38">Classification Rule of LDA</h2>
+
+<p>Given a new data point <span class="math inline">\(\bs{t}\in\R^p\)</span> we find</p>
+<p><span class="math display">\[
+i = \underset{j=1,2,\ldots,g}{\arg\min} |\bs{q}_1'(\bs{t}-\bar{\bs{X}_j})|
+\]</span></p><p>and assign <span class="math inline">\(\bs{t}\)</span> to class <span class="math inline">\(C_j\)</span>. This essentially the heuristic behind Fisher&rsquo;s LDA.</p>
+
+<p>There is no general formulae for <span class="math inline">\(g\)</span>-class LDA, but we do have one for specifically <span class="math inline">\(g=2\)</span>.</p>
+
+<h2 id="toc_39">Population LDA for Binary Classification</h2>
+
+<p>The population linear discriminant function is</p>
+<p><span class="math display">\[
+f(\bs{a}) = \frac{\sigma_{\text{between}}}{\sigma_{\text{within}}} =
+\frac{(\bs{a}'\bs{\mu}_1 - \bs{a}'\bs{\mu}-2)^2}{\bs{a}'\bs{\Sigma}_1\bs{a} + \bs{a}'\bs{\Sigma}_2\bs{a}} =
+\frac{[\bs{a}'(\bs{\mu}_1-\bs{\mu}_2)]^2}{\bs{a}'(\bs{\Sigma}_1+\bs{\Sigma}_2)\bs{a}}
+\]</span></p><p>which solves to</p>
+<p><span class="math display">\[
+\bs{q}_1 = (\bs{\Sigma}_1 + \bs{\Sigma}_2)^{-1}(\bs{\mu}_1-\bs{\mu}_2) :=
+\bs{\Sigma}^{-1}(\bs{\mu}_1-\bs{\mu}_2)
+\]</span></p><p>and the threshold</p>
+<p><span class="math display">\[
+c=\frac{1}{2}(\bs{\mu}_1'\bs{\Sigma}^{-1}\bs{\mu}_1 - \bs{\mu}_2'\bs{\Sigma}^{-1}\bs{\mu}_2).
+\]</span></p><p>The classification is therefore given by</p>
+<p><span class="math display">\[
+C(\bs{t}) = \begin{cases}
+C_1\ &amp; \text{if}\quad\bs{q}_1'\bs{t} &gt; c,\\
+C_2\ &amp; \text{if}\quad\bs{q}_1'\bs{t} &lt; c.\\
+\end{cases}
+\]</span></p>
 <div class="footnotes">
 
 <hr />
@@ -826,7 +934,7 @@ l_2\\b_2
 <br><br>
 <nav class="post-nav">
   <span class="nav-prev">&larr; <a href="/blog/suitcase/">行李箱</a></span>
-  <span class="nav-next"><a href="/blog/notes-on-microstructure/">Notes on Mathematical Market Microstructure</a> &rarr;</span>
+  <span class="nav-next"><a href="/blog/notes-on-microstructure-1/">Notes on Mathematical Market Microstructure (1)</a> &rarr;</span>
 </nav>
 
 <script type="text/javascript">
@@ -839,7 +947,7 @@ document.addEventListener('keyup', function(e) {
     
   } else if (e.which == 39) {  
     
-    url = '\/blog\/notes-on-microstructure\/';
+    url = '\/blog\/notes-on-microstructure-1\/';
     
   }
   if (url) window.location = url;
