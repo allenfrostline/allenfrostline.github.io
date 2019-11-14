@@ -7,8 +7,84 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Fri, 08 Nov 2019 18:09:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 14 Nov 2019 13:56:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Josephus Problem</title>
+      <link>https://allenfrostline.com/blog/josephus-problem/</link>
+      <pubDate>Thu, 14 Nov 2019 13:56:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/josephus-problem/</guid>
+      <description>
+        &lt;nav&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Special Case: &lt;span class=&#34;math inline&#34;&gt;\(k=1\)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;General Case&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+&lt;p&gt;A terribly large number of hostages, say &lt;span class=&#34;math inline&#34;&gt;\(n=1000\)&lt;/span&gt; people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the &lt;span class=&#34;math inline&#34;&gt;\(k=4\)&lt;/span&gt;-th people to the left of him/her. Since the queue is circular, when it comes to the people standing on the leftmost spots, the next person to be killed may be from the first several ones as the procedure can repeat untill there&amp;rsquo;s only one person alive. This problem is named after &lt;a href=&#34;https://en.wikipedia.org/wiki/Flavius_Josephus&#34;&gt;Flavius Josephus&lt;/a&gt;, a Jewish historian living in the 1st century. According to Josephus&amp;rsquo; account of the siege of Yodfat, he and his 40 soldiers were trapped in a cave by Roman invaders and faced with the aforementioned dilemma except that his problem was easier with &lt;span class=&#34;math inline&#34;&gt;\((n,k)=(41,1)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://allenfrostline.com/images/josephus.png&#34; style=&#34;max-width: min(100%, 200px)&#34;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;We call it a dilemma because there is one opportunity where Josephus can live, and finding the only spot that stands till the end is not easy. In the illustration above shows a simple example when there&amp;rsquo;re &lt;span class=&#34;math inline&#34;&gt;\(n=8\)&lt;/span&gt; people in the circle. Let&amp;rsquo;s say &lt;span class=&#34;math inline&#34;&gt;\(k=1\)&lt;/span&gt;, namely a hostage always kills the person standing right to the left of him/her. Person 1 first kills person 2, and then person 3 kills 4 and so on. The procedure is as follows (numbers in red mean dead people):&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1, 2, 3, 4, 5, 6, 7, 8 (before start)&lt;/li&gt;
+&lt;li&gt;1, &lt;span style=&#34;color:red&#34;&gt;2&lt;/span&gt;, 3, &lt;span style=&#34;color:red&#34;&gt;4&lt;/span&gt;, 5, &lt;span style=&#34;color:red&#34;&gt;6&lt;/span&gt;, 7, &lt;span style=&#34;color:red&#34;&gt;8&lt;/span&gt; (1st round)&lt;/li&gt;
+&lt;li&gt;1, &lt;span style=&#34;color:red&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;4&lt;/span&gt;, 5, &lt;span style=&#34;color:red&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;7&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;8&lt;/span&gt; (2nd round)&lt;/li&gt;
+&lt;li&gt;1, &lt;span style=&#34;color:red&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;7&lt;/span&gt;, &lt;span style=&#34;color:red&#34;&gt;8&lt;/span&gt; (3rd round, end of killing)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So in the case &lt;span class=&#34;math inline&#34;&gt;\((n,k)=(8,1)\)&lt;/span&gt;, Josephus should stand on the 1st spot. Let&amp;rsquo;s denote this as &lt;span class=&#34;math inline&#34;&gt;\(f(8,1)=1\)&lt;/span&gt; just to make it look more mathematical. The general Josephus problem, therefore, becomes finding &lt;span class=&#34;math inline&#34;&gt;\(\forall n,k\in\mathbb{N}_+\)&lt;/span&gt; the optimal index&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;span class=&#34;math inline&#34;&gt;\(f(n,k)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_0&#34;&gt;Special Case: &lt;span class=&#34;math inline&#34;&gt;\(k=1\)&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p&gt;There exists a closed-form solution when &lt;span class=&#34;math inline&#34;&gt;\(k=1\)&lt;/span&gt;, and I&amp;rsquo;d like to share with you here the intuition behind it. Consider the cases where &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; is some power of &lt;span class=&#34;math inline&#34;&gt;\(2\)&lt;/span&gt;, e.g. &lt;span class=&#34;math inline&#34;&gt;\(n=2,4,8,16,\ldots\)&lt;/span&gt; Like the example above, you&amp;rsquo;ll notice that a problem of some higher power of &lt;span class=&#34;math inline&#34;&gt;\(2\)&lt;/span&gt;, say &lt;span class=&#34;math inline&#34;&gt;\(n=8\equiv 2^3\)&lt;/span&gt;, reduces to the sub-power one that is &lt;span class=&#34;math inline&#34;&gt;\(n=4\equiv 2^2\)&lt;/span&gt; and so forth. It can be easily proved by mathematical induction that whenever &lt;span class=&#34;math inline&#34;&gt;\(n=2^m\)&lt;/span&gt; for some &lt;span class=&#34;math inline&#34;&gt;\(m\ge 1\)&lt;/span&gt;, the last one standing is always person 1.&lt;/p&gt;
+
+&lt;p&gt;With the result above we may tackle problems that are slightly more general, i.e. &lt;span class=&#34;math inline&#34;&gt;\(2^m &amp;lt; n &amp;lt; 2^{m+1}\)&lt;/span&gt; for some &lt;span class=&#34;math inline&#34;&gt;\(m\ge 1\)&lt;/span&gt;. Notice by reverse thinking the problem will always reduce to the case &lt;span class=&#34;math inline&#34;&gt;\(n=2^m\)&lt;/span&gt; as we&amp;rsquo;re killing people one by one, and at that moment we know the first person who kills is the person who lives till the end. There&amp;rsquo;re in total &lt;span class=&#34;math inline&#34;&gt;\(n-2^m\)&lt;/span&gt; people died before our winner wields his sword against his ally. Since&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+n &amp;lt; 2^{m+1} \Rightarrow 2n - 2^{m+1} &amp;lt; n \Rightarrow n - 2^m &amp;lt; \left\lfloor\frac{n}{2}\right\rfloor,
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;we know the 1st round is not yet finished and thus the winner is&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+f(n,k) = 2(n-2^m)+1 = 2(n-2^{\lfloor\log_2 n\rfloor})+1.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;As a conclusion, if Josephus is smart enough to come up with this solution, he should choose the &lt;span class=&#34;math inline&#34;&gt;\(2\times(41-32)+1=19\)&lt;/span&gt;-th place.&lt;/p&gt;
+
+&lt;h1 id=&#34;toc_1&#34;&gt;General Case&lt;/h1&gt;
+
+&lt;p&gt;There is unfortunately no general solution for any &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;. However, with the help of a computer we may come up with an algorithm that simulates the process in &lt;span class=&#34;math inline&#34;&gt;\(O(n)\)&lt;/span&gt; time, regardless of &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;. The Python codes are as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def Josephus(n, k):
+    player = list(range(1, n + 1))
+    idx_prev = 0
+    while True:
+        if len(player) == 1: return player[0]
+        idx = (k + idx_prev) % len(player)
+        player.pop(idx)
+        idx_prev = idx
+
+
+Josephus(1000, 4)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This prints 763, which is the answer to the first question above.&lt;/p&gt;
+
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;I&amp;rsquo;m using 1-index in this post, namely the indices start with 1 rather than 0. &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;↩︎&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;/div&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>Notes on Mathematical Market Microstructure (2)</title>

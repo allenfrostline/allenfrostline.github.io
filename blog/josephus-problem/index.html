@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Josephus Problem - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Josephus Problem - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="A terribly large number of hostages, say \(n=1000\) people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the \(k=4\)-th &amp;hellip;">
+      <meta property="og:description" content="A terribly large number of hostages, say \(n=1000\) people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the \(k=4\)-th &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <script async src="/js/load-typekit.js"></script>
+
+<script>
+(function(u, c) {
+  var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  o.src = u;
+  if (c) { o.addEventListener('load', function (e) { c(e); }); }
+  s.parentNode.insertBefore(o, s);
+})('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function() {
+  pangu.spacingPage();
+});
+</script>
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  
+
+
+
+
+
+
+<li><a href="https://github.com/allenfrostline/Backup-of-Whiteboard/edit/master/content/blog/josephus-problem.md" target="_blank">Edit</a></li>
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Josephus Problem</h1>
+
+
+<h3>
+2019-11-14</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Special Case: <span class="math inline">\(k=1\)</span></a></li>
+
+<li><a href="#toc_1">General Case</a></li>
+</ul>
+
+</nav>
+<p>A terribly large number of hostages, say <span class="math inline">\(n=1000\)</span> people, are standing in a circle. The terrorists claim that once the circle is formed, they&rsquo;ll ask the poor people to kill the <span class="math inline">\(k=4\)</span>-th people to the left of him/her. Since the queue is circular, when it comes to the people standing on the leftmost spots, the next person to be killed may be from the first several ones as the procedure can repeat untill there&rsquo;s only one person alive. This problem is named after <a href="https://en.wikipedia.org/wiki/Flavius_Josephus">Flavius Josephus</a>, a Jewish historian living in the 1st century. According to Josephus&rsquo; account of the siege of Yodfat, he and his 40 soldiers were trapped in a cave by Roman invaders and faced with the aforementioned dilemma except that his problem was easier with <span class="math inline">\((n,k)=(41,1)\)</span>.</p>
+
+<p><img src="/images/josephus.png" style="max-width: min(100%, 200px)"></img></p>
+
+<p>We call it a dilemma because there is one opportunity where Josephus can live, and finding the only spot that stands till the end is not easy. In the illustration above shows a simple example when there&rsquo;re <span class="math inline">\(n=8\)</span> people in the circle. Let&rsquo;s say <span class="math inline">\(k=1\)</span>, namely a hostage always kills the person standing right to the left of him/her. Person 1 first kills person 2, and then person 3 kills 4 and so on. The procedure is as follows (numbers in red mean dead people):</p>
+
+<ul>
+<li>1, 2, 3, 4, 5, 6, 7, 8 (before start)</li>
+<li>1, <span style="color:red">2</span>, 3, <span style="color:red">4</span>, 5, <span style="color:red">6</span>, 7, <span style="color:red">8</span> (1st round)</li>
+<li>1, <span style="color:red">2</span>, <span style="color:red">3</span>, <span style="color:red">4</span>, 5, <span style="color:red">6</span>, <span style="color:red">7</span>, <span style="color:red">8</span> (2nd round)</li>
+<li>1, <span style="color:red">2</span>, <span style="color:red">3</span>, <span style="color:red">4</span>, <span style="color:red">5</span>, <span style="color:red">6</span>, <span style="color:red">7</span>, <span style="color:red">8</span> (3rd round, end of killing)</li>
+</ul>
+
+<p>So in the case <span class="math inline">\((n,k)=(8,1)\)</span>, Josephus should stand on the 1st spot. Let&rsquo;s denote this as <span class="math inline">\(f(8,1)=1\)</span> just to make it look more mathematical. The general Josephus problem, therefore, becomes finding <span class="math inline">\(\forall n,k\in\mathbb{N}_+\)</span> the optimal index<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> <span class="math inline">\(f(n,k)\)</span>.</p>
+
+<h1 id="toc_0">Special Case: <span class="math inline">\(k=1\)</span></h1>
+
+<p>There exists a closed-form solution when <span class="math inline">\(k=1\)</span>, and I&rsquo;d like to share with you here the intuition behind it. Consider the cases where <span class="math inline">\(n\)</span> is some power of <span class="math inline">\(2\)</span>, e.g. <span class="math inline">\(n=2,4,8,16,\ldots\)</span> Like the example above, you&rsquo;ll notice that a problem of some higher power of <span class="math inline">\(2\)</span>, say <span class="math inline">\(n=8\equiv 2^3\)</span>, reduces to the sub-power one that is <span class="math inline">\(n=4\equiv 2^2\)</span> and so forth. It can be easily proved by mathematical induction that whenever <span class="math inline">\(n=2^m\)</span> for some <span class="math inline">\(m\ge 1\)</span>, the last one standing is always person 1.</p>
+
+<p>With the result above we may tackle problems that are slightly more general, i.e. <span class="math inline">\(2^m &lt; n &lt; 2^{m+1}\)</span> for some <span class="math inline">\(m\ge 1\)</span>. Notice by reverse thinking the problem will always reduce to the case <span class="math inline">\(n=2^m\)</span> as we&rsquo;re killing people one by one, and at that moment we know the first person who kills is the person who lives till the end. There&rsquo;re in total <span class="math inline">\(n-2^m\)</span> people died before our winner wields his sword against his ally. Since</p>
+<p><span class="math display">\[
+n &lt; 2^{m+1} \Rightarrow 2n - 2^{m+1} &lt; n \Rightarrow n - 2^m &lt; \left\lfloor\frac{n}{2}\right\rfloor,
+\]</span></p><p>we know the 1st round is not yet finished and thus the winner is</p>
+<p><span class="math display">\[
+f(n,k) = 2(n-2^m)+1 = 2(n-2^{\lfloor\log_2 n\rfloor})+1.
+\]</span></p><p>As a conclusion, if Josephus is smart enough to come up with this solution, he should choose the <span class="math inline">\(2\times(41-32)+1=19\)</span>-th place.</p>
+
+<h1 id="toc_1">General Case</h1>
+
+<p>There is unfortunately no general solution for any <span class="math inline">\(n\)</span> and <span class="math inline">\(k\)</span>. However, with the help of a computer we may come up with an algorithm that simulates the process in <span class="math inline">\(O(n)\)</span> time, regardless of <span class="math inline">\(k\)</span>. The Python codes are as follows:</p>
+
+<pre><code class="language-python">def Josephus(n, k):
+    player = list(range(1, n + 1))
+    idx_prev = 0
+    while True:
+        if len(player) == 1: return player[0]
+        idx = (k + idx_prev) % len(player)
+        player.pop(idx)
+        idx_prev = idx
+
+
+Josephus(1000, 4)
+</code></pre>
+
+<p>This prints 763, which is the answer to the first question above.</p>
+
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">I&rsquo;m using 1-index in this post, namely the indices start with 1 rather than 0. <a class="footnote-return" href="#fnref:1">↩︎</a></li>
+</ol>
+
+</div>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/notes-on-microstructure-2/">Notes on Mathematical Market Microstructure (2)</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/notes-on-microstructure-2\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/josephus-problem.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
