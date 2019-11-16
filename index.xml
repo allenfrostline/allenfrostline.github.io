@@ -13210,13 +13210,13 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;li&gt;&lt;a href=&#34;#toc_2&#34;&gt;FX Spot Price&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Spot Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_3&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Spot Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_4&#34;&gt;Value of a Spot Contract&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_5&#34;&gt;Zero-Coupon Bonds&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_6&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_6&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_7&#34;&gt;Value of a Forward Contract&lt;/a&gt;&lt;/li&gt;
 
@@ -13226,18 +13226,18 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;li&gt;&lt;a href=&#34;#toc_10&#34;&gt;Implied Yields&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_11&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_11&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_12&#34;&gt;Value of a Swap Contract&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Option Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_13&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Option Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_14&#34;&gt;Value of an Option Contract&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_15&#34;&gt;Pricing in Practice&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Spot Contract&lt;/span&gt;: Dates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_16&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Spot Contract&lt;/span&gt;: Dates&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_17&#34;&gt;Currency Pairs (CCY1/CCY2)&lt;/a&gt;&lt;/li&gt;
 
@@ -13253,7 +13253,7 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;li&gt;&lt;a href=&#34;#toc_23&#34;&gt;Interest Rate used with FX Forwards&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_24&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_24&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_25&#34;&gt;Forward Point&lt;/a&gt;&lt;/li&gt;
 
@@ -13261,7 +13261,7 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;li&gt;&lt;a href=&#34;#toc_27&#34;&gt;Implied Yields with Interest Rates&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href=&#34;#toc_28&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#toc_28&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;a href=&#34;#toc_29&#34;&gt;Risks For Spot, Forward and Swap&lt;/a&gt;&lt;/li&gt;
 
@@ -13305,7 +13305,7 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;p&gt;The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) &lt;span class=&#34;math inline&#34;&gt;\(1 = S_t\)&lt;/span&gt;. Which is equivalent to &lt;span class=&#34;math inline&#34;&gt;\(1/S_t = 1\)&lt;/span&gt;. We say &lt;span class=&#34;math inline&#34;&gt;\(S_t\)&lt;/span&gt; is a price in domestic terms.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_3&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Spot Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_3&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Spot Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;Selling&lt;/strong&gt; domestic currency to &lt;strong&gt;buy&lt;/strong&gt; foreign currencies.&lt;/p&gt;
 
@@ -13325,7 +13325,7 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 &lt;li&gt;Domestic: &lt;span class=&#34;math inline&#34;&gt;\(P^f(t,T) =\exp[-(T-t)r^f(t, T)]\)&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;toc_6&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_6&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;Executing a spot contract at time &lt;span class=&#34;math inline&#34;&gt;\(T\)&lt;/span&gt; with given contract rate &lt;span class=&#34;math inline&#34;&gt;\(R\)&lt;/span&gt;.&lt;/p&gt;
 
@@ -13371,7 +13371,7 @@ P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}&#39;\bs{v} = \bs{eDe&#39;v} \
 
 &lt;p&gt;From the CIP we have &lt;span class=&#34;math inline&#34;&gt;\(P^f = P^d \cdot F/S_t\)&lt;/span&gt;, which gives &lt;span class=&#34;math inline&#34;&gt;\(r^f = r^d - \log(F/S_t) / (T-t)\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_11&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_11&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;Swapping a forward contract (&lt;span class=&#34;math inline&#34;&gt;\(T_1\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(R_1\)&lt;/span&gt;) for another (&lt;span class=&#34;math inline&#34;&gt;\(T_2\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(R_2\)&lt;/span&gt;).&lt;/p&gt;
 
@@ -13390,7 +13390,7 @@ PV_S = \frac{\partial PV}{\partial S} = (P^{f1} - P^{f2})N = \left[\exp(-r^{f1}(
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 PV_S = P^f\cdot N = \exp[-r^f(T-t)]\cdot N \approx N.
 \]&lt;/span&gt;&lt;/p&gt;
-&lt;h2 id=&#34;toc_13&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Option Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_13&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Option Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;The right (but not obligation) to exhcange &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; units of foreign currency for &lt;span class=&#34;math inline&#34;&gt;\(N\cdot K\)&lt;/span&gt; units of domestic currency at time &lt;span class=&#34;math inline&#34;&gt;\(T\)&lt;/span&gt;. This is to say, we call the right to buy foreign currency as a foreign call, but in the meantime, also a domestic put.&lt;/p&gt;
 
@@ -13419,7 +13419,7 @@ $$&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_15&#34;&gt;Pricing in Practice&lt;/h1&gt;
 
-&lt;h2 id=&#34;toc_16&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Spot Contract&lt;/span&gt;: Dates&lt;/h2&gt;
+&lt;h2 id=&#34;toc_16&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Spot Contract&lt;/span&gt;: Dates&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;Trade date&lt;/strong&gt; is when the terms of the transaction are agreed. Currency trading is a global, 24-hour market. The &amp;ldquo;trading day&amp;rdquo; ends at 5pm New York time. &lt;strong&gt;Value date&lt;/strong&gt; is when cash flows occur, i.e., when currencies are delivered. Value date for spot transactions is &amp;ldquo;T+2&amp;rdquo; for most currency pairs. However, spot value date is &amp;ldquo;T+1&amp;rdquo; for USD versus CAD, RUB, TRY, PHP.&lt;/p&gt;
 
@@ -13514,7 +13514,7 @@ $$&lt;/p&gt;
 
 &lt;p&gt;It&amp;rsquo;s neither of the interest rates of the two currencies. Instead, people use the deposit rate in this case, specifically in terms of USD, it&amp;rsquo;s the Eurodollar deposit rate, or LIBOR.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_24&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_24&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Forward Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;Contracts with any delivery date (a.k.a. value date) other than spot are considered forward. Standard delivery dates may be in weeks or months, and otherwise called &amp;ldquo;broken&amp;rdquo;. Specifically, we call the contract &amp;ldquo;cash&amp;rdquo; if its delivery date is today, and &amp;ldquo;tom&amp;rdquo; if it&amp;rsquo;s tomorrow. FX forwards are OTC (over-the-counter).&lt;/p&gt;
 
@@ -13536,7 +13536,7 @@ $$&lt;/p&gt;
 R^f = \frac{(S/F)\times(1  +R_d\times\text{days}/360) - 1}{\text{days}/360}
 \]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where we assume the rates are not compounded.&lt;/p&gt;
 
-&lt;h2 id=&#34;toc_28&#34;&gt;&lt;span style=&#34;color:red&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;toc_28&#34;&gt;&lt;span style=&#34;color:#b80000&#34;&gt;FX Swap Contract&lt;/span&gt;&lt;/h2&gt;
 
 &lt;p&gt;Contracts that alter the value date on an existing trade by simultaneously
 executing two forward transactions.&lt;/p&gt;
@@ -13581,7 +13581,7 @@ executing two forward transactions.&lt;/p&gt;
 
 &lt;p&gt;We define: &lt;span class=&#34;math inline&#34;&gt;\(\text{swap point} = \text{far rate} - \text{near rate}\)&lt;/span&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;span style=&#34;color:red&#34;&gt;To be continued.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:#b80000&#34;&gt;To be continued.&lt;/span&gt;&lt;/p&gt;
 
         
       </description>

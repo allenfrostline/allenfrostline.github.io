@@ -113,13 +113,13 @@
 
 <li><a href="#toc_2">FX Spot Price</a></li>
 
-<li><a href="#toc_3"><span style="color:red">FX Spot Contract</span></a></li>
+<li><a href="#toc_3"><span style="color:#b80000">FX Spot Contract</span></a></li>
 
 <li><a href="#toc_4">Value of a Spot Contract</a></li>
 
 <li><a href="#toc_5">Zero-Coupon Bonds</a></li>
 
-<li><a href="#toc_6"><span style="color:red">FX Forward Contract</span></a></li>
+<li><a href="#toc_6"><span style="color:#b80000">FX Forward Contract</span></a></li>
 
 <li><a href="#toc_7">Value of a Forward Contract</a></li>
 
@@ -129,18 +129,18 @@
 
 <li><a href="#toc_10">Implied Yields</a></li>
 
-<li><a href="#toc_11"><span style="color:red">FX Swap Contract</span></a></li>
+<li><a href="#toc_11"><span style="color:#b80000">FX Swap Contract</span></a></li>
 
 <li><a href="#toc_12">Value of a Swap Contract</a></li>
 
-<li><a href="#toc_13"><span style="color:red">FX Option Contract</span></a></li>
+<li><a href="#toc_13"><span style="color:#b80000">FX Option Contract</span></a></li>
 
 <li><a href="#toc_14">Value of an Option Contract</a></li>
 </ul></li>
 
 <li><a href="#toc_15">Pricing in Practice</a>
 <ul>
-<li><a href="#toc_16"><span style="color:red">FX Spot Contract</span>: Dates</a></li>
+<li><a href="#toc_16"><span style="color:#b80000">FX Spot Contract</span>: Dates</a></li>
 
 <li><a href="#toc_17">Currency Pairs (CCY1/CCY2)</a></li>
 
@@ -156,7 +156,7 @@
 
 <li><a href="#toc_23">Interest Rate used with FX Forwards</a></li>
 
-<li><a href="#toc_24"><span style="color:red">FX Forward Contract</span></a></li>
+<li><a href="#toc_24"><span style="color:#b80000">FX Forward Contract</span></a></li>
 
 <li><a href="#toc_25">Forward Point</a></li>
 
@@ -164,7 +164,7 @@
 
 <li><a href="#toc_27">Implied Yields with Interest Rates</a></li>
 
-<li><a href="#toc_28"><span style="color:red">FX Swap Contract</span></a></li>
+<li><a href="#toc_28"><span style="color:#b80000">FX Swap Contract</span></a></li>
 
 <li><a href="#toc_29">Risks For Spot, Forward and Swap</a></li>
 
@@ -208,7 +208,7 @@
 
 <p>The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) <span class="math inline">\(1 = S_t\)</span>. Which is equivalent to <span class="math inline">\(1/S_t = 1\)</span>. We say <span class="math inline">\(S_t\)</span> is a price in domestic terms.</p>
 
-<h2 id="toc_3"><span style="color:red">FX Spot Contract</span></h2>
+<h2 id="toc_3"><span style="color:#b80000">FX Spot Contract</span></h2>
 
 <p><strong>Selling</strong> domestic currency to <strong>buy</strong> foreign currencies.</p>
 
@@ -228,7 +228,7 @@
 <li>Domestic: <span class="math inline">\(P^f(t,T) =\exp[-(T-t)r^f(t, T)]\)</span></li>
 </ul>
 
-<h2 id="toc_6"><span style="color:red">FX Forward Contract</span></h2>
+<h2 id="toc_6"><span style="color:#b80000">FX Forward Contract</span></h2>
 
 <p>Executing a spot contract at time <span class="math inline">\(T\)</span> with given contract rate <span class="math inline">\(R\)</span>.</p>
 
@@ -274,7 +274,7 @@
 
 <p>From the CIP we have <span class="math inline">\(P^f = P^d \cdot F/S_t\)</span>, which gives <span class="math inline">\(r^f = r^d - \log(F/S_t) / (T-t)\)</span>.</p>
 
-<h2 id="toc_11"><span style="color:red">FX Swap Contract</span></h2>
+<h2 id="toc_11"><span style="color:#b80000">FX Swap Contract</span></h2>
 
 <p>Swapping a forward contract (<span class="math inline">\(T_1\)</span>, <span class="math inline">\(R_1\)</span>) for another (<span class="math inline">\(T_2\)</span>, <span class="math inline">\(R_2\)</span>).</p>
 
@@ -293,7 +293,7 @@ PV_S = \frac{\partial PV}{\partial S} = (P^{f1} - P^{f2})N = \left[\exp(-r^{f1}(
 <p><span class="math display">\[
 PV_S = P^f\cdot N = \exp[-r^f(T-t)]\cdot N \approx N.
 \]</span></p>
-<h2 id="toc_13"><span style="color:red">FX Option Contract</span></h2>
+<h2 id="toc_13"><span style="color:#b80000">FX Option Contract</span></h2>
 
 <p>The right (but not obligation) to exhcange <span class="math inline">\(N\)</span> units of foreign currency for <span class="math inline">\(N\cdot K\)</span> units of domestic currency at time <span class="math inline">\(T\)</span>. This is to say, we call the right to buy foreign currency as a foreign call, but in the meantime, also a domestic put.</p>
 
@@ -322,7 +322,7 @@ $$</p>
 
 <h1 id="toc_15">Pricing in Practice</h1>
 
-<h2 id="toc_16"><span style="color:red">FX Spot Contract</span>: Dates</h2>
+<h2 id="toc_16"><span style="color:#b80000">FX Spot Contract</span>: Dates</h2>
 
 <p><strong>Trade date</strong> is when the terms of the transaction are agreed. Currency trading is a global, 24-hour market. The &ldquo;trading day&rdquo; ends at 5pm New York time. <strong>Value date</strong> is when cash flows occur, i.e., when currencies are delivered. Value date for spot transactions is &ldquo;T+2&rdquo; for most currency pairs. However, spot value date is &ldquo;T+1&rdquo; for USD versus CAD, RUB, TRY, PHP.</p>
 
@@ -417,7 +417,7 @@ $$</p>
 
 <p>It&rsquo;s neither of the interest rates of the two currencies. Instead, people use the deposit rate in this case, specifically in terms of USD, it&rsquo;s the Eurodollar deposit rate, or LIBOR.</p>
 
-<h2 id="toc_24"><span style="color:red">FX Forward Contract</span></h2>
+<h2 id="toc_24"><span style="color:#b80000">FX Forward Contract</span></h2>
 
 <p>Contracts with any delivery date (a.k.a. value date) other than spot are considered forward. Standard delivery dates may be in weeks or months, and otherwise called &ldquo;broken&rdquo;. Specifically, we call the contract &ldquo;cash&rdquo; if its delivery date is today, and &ldquo;tom&rdquo; if it&rsquo;s tomorrow. FX forwards are OTC (over-the-counter).</p>
 
@@ -439,7 +439,7 @@ $$</p>
 R^f = \frac{(S/F)\times(1  +R_d\times\text{days}/360) - 1}{\text{days}/360}
 \]</span></p><p>where we assume the rates are not compounded.</p>
 
-<h2 id="toc_28"><span style="color:red">FX Swap Contract</span></h2>
+<h2 id="toc_28"><span style="color:#b80000">FX Swap Contract</span></h2>
 
 <p>Contracts that alter the value date on an existing trade by simultaneously
 executing two forward transactions.</p>
@@ -484,7 +484,7 @@ executing two forward transactions.</p>
 
 <p>We define: <span class="math inline">\(\text{swap point} = \text{far rate} - \text{near rate}\)</span>.</p>
 
-<p><span style="color:red">To be continued.</span></p>
+<p><span style="color:#b80000">To be continued.</span></p>
 
 
   <footer>
