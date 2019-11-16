@@ -7,8 +7,75 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2019</copyright>
-    <lastBuildDate>Thu, 14 Nov 2019 13:56:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 17:13:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Eigenvectors from Eigenvalues?</title>
+      <link>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</link>
+      <pubDate>Fri, 15 Nov 2019 17:13:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</guid>
+      <description>
+        &lt;p&gt;The &lt;a href=&#34;https://arxiv.org/abs/1908.03795&#34;&gt;paper&lt;/a&gt; uploaded yesterday by &lt;a href=&#34;https://peterdenton.github.io&#34;&gt;Peter Denton&lt;/a&gt;, &lt;a href=&#34;https://home.fnal.gov/~parke&#34;&gt;Stephen Parke&lt;/a&gt;, &lt;a href=&#34;https://www.math.ucla.edu/~tao&#34;&gt;Terence Tao&lt;/a&gt; and &lt;a href=&#34;https://physics.uchicago.edu/people/profile/xining-zhang&#34;&gt;Xining Zhang&lt;/a&gt; has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&amp;rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&amp;rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&amp;rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&amp;rsquo;s &lt;a href=&#34;https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors&#34;&gt;blog&lt;/a&gt; and have no intention of arguing on the correctness of the theorem.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+ \newcommand{Corr}{\text{Corr}}
+ \newcommand{E}{\text{E}}
+ \newcommand{Cov}{\text{Cov}}
+ \newcommand{Var}{\text{Var}}
+ \newcommand{span}{\text{span}}
+ \newcommand{bs}{\boldsymbol}
+ \newcommand{R}{\mathbb{R}}
+ \newcommand{R}{\mathbb{C}}
+ \newcommand{rank}{\text{rank}}
+ \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+ \newcommand{diag}{\text{diag}}
+ \newcommand{tr}{\text{tr}}
+ \newcommand{braket}[1]{\left\langle#1\right\rangle}
+ \newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;The theorem in the paper reads:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Theorem&lt;/strong&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; be an &lt;span class=&#34;math inline&#34;&gt;\(n\times n\)&lt;/span&gt; Hermitian matrix with eigenvalues &lt;span class=&#34;math inline&#34;&gt;\(\{\lambda_i(\bs{A}):i=1,2,\ldots,n\}\)&lt;/span&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_i\)&lt;/span&gt; be a unit eigenvector corresponding to &lt;span class=&#34;math inline&#34;&gt;\(\lambda_i(\bs{A})\)&lt;/span&gt; and let &lt;span class=&#34;math inline&#34;&gt;\(v_{i,j}\)&lt;/span&gt; be the &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;-th entry of this vector. Then&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+|v_{i,j}|^2 \prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{A})] = \prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{M}_j)]
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\bs{M}_j\)&lt;/span&gt; is the &lt;span class=&#34;math inline&#34;&gt;\((n-1)\times(n-1)\)&lt;/span&gt; Hermitian matrix by removing the &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;-th row and column from &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt;. Namely, given the denominator is non-zero, the following can be used to calculate any eigenvector from pre-calculated eigenvalues:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+|v_{i,j}|^2 = \frac{\prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{M}_j)]}{\prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{A})]}.
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The statement of this theorem restricts our universe to only Hermitian matrices, namely matrices that are (symmetrically) self-adjoint: &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}=\bar{\bs{A}&#39;}\)&lt;/span&gt;. &lt;span style=&#34;color:#b80000&#34;&gt;&lt;strong&gt;This is so strong an assumption that most machine learning problems are out of our consideration except e.g. EVD-related ones for covariance matrices.&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Algorithm1&lt;/strong&gt;. The theorem gives the following algorithm right out-of-box:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function v_ij(lambda_A: Array[n-1], lambda_M: Array[n-1]) {
+    numerator = 1
+    denominator = 1
+    for (k = 1...n) {
+        if (k == i) continue
+        numerator *= (lambda_A[i] - lambda_M[k])
+        denominator *= (lambda_A[i] - lambda_A[k])
+    }
+    return (numerator / denominator)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Time complexity of this algorithm: &lt;span class=&#34;math inline&#34;&gt;\(O(n)\)&lt;/span&gt;, which means the time complexity for the whole eigenvector &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_i\)&lt;/span&gt; would be &lt;span class=&#34;math inline&#34;&gt;\(O(n^2)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Algorithm2&lt;/strong&gt;: As a comparison, let&amp;rsquo;s see how the classical algorithm works in calculating eigenvectors:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function v_i(A: Array[n-1][n-1], lambda_A: Array[n-1]) {
+    T = A - I * lambda_A[i]  # O(n^2)
+    v_i = solve(D * v == 0)  # O(f(u))
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(f(u)\)&lt;/span&gt; is a strictly monotonically increasing function of the required precision &lt;span class=&#34;math inline&#34;&gt;\(u\)&lt;/span&gt;. This precision is pre-determined for the Newton-Raphson method when solving the high-degree polynomial equation &lt;span class=&#34;math inline&#34;&gt;\(\bs{Dv}=\bs{0}\)&lt;/span&gt;. For &lt;span class=&#34;math inline&#34;&gt;\(n\ll 1\)&lt;/span&gt;, it&amp;rsquo;s acceptable that &lt;span class=&#34;math inline&#34;&gt;\(O(f(u))\ll O(n^2)\)&lt;/span&gt; and thus the time complexity of the original algorithm is also &lt;span class=&#34;math inline&#34;&gt;\(O(n^2)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Therefore, with all eigenvalues given, the time complexity of the new algorithm is identical to the classical one. &lt;span style=&#34;color: #b80000&#34;&gt;&lt;strong&gt;However, if we take into consideration the time spent on finding the &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; eigenvalues of &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n(n-1)\)&lt;/span&gt; eigenvalues of &lt;span class=&#34;math inline&#34;&gt;\(\{\bs{M}_j:j=1,2,\ldots,n\}\)&lt;/span&gt;, the new algorithm is in fact doing not less but even more calculation, and as each procedure takes &lt;span class=&#34;math inline&#34;&gt;\(O(n^2)\)&lt;/span&gt; time, this extra cost is non-negligible.&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;As a conclusion, despite the novelty of using only eigenvalues as inputs, the new paper is not actually &amp;ldquo;overturning&amp;rdquo; the way most of us are used to when calculating the eigenvectors, as some media has mistakenly reported. It is true that the very beauty comes from simplicity, but nothing lasts when the world loses its rationality.&lt;/p&gt;
+
+        
+      </description>
+    </item>
     
     <item>
       <title>Josephus Problem</title>
