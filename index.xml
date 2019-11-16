@@ -17,8 +17,9 @@
       
       <guid>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</guid>
       <description>
-        &lt;p&gt;The &lt;a href=&#34;https://arxiv.org/abs/1908.03795&#34;&gt;paper&lt;/a&gt; uploaded yesterday by &lt;a href=&#34;https://peterdenton.github.io&#34;&gt;Peter Denton&lt;/a&gt;, &lt;a href=&#34;https://home.fnal.gov/~parke&#34;&gt;Stephen Parke&lt;/a&gt;, &lt;a href=&#34;https://www.math.ucla.edu/~tao&#34;&gt;Terence Tao&lt;/a&gt; and &lt;a href=&#34;https://physics.uchicago.edu/people/profile/xining-zhang&#34;&gt;Xining Zhang&lt;/a&gt; has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&amp;rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&amp;rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&amp;rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&amp;rsquo;s &lt;a href=&#34;https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors&#34;&gt;blog&lt;/a&gt; and have no intention of arguing on the correctness of the theorem.
-&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+        &lt;p&gt;The &lt;a href=&#34;https://arxiv.org/abs/1908.03795&#34;&gt;paper&lt;/a&gt; uploaded yesterday by &lt;a href=&#34;https://peterdenton.github.io&#34;&gt;Peter Denton&lt;/a&gt;, &lt;a href=&#34;https://home.fnal.gov/~parke&#34;&gt;Stephen Parke&lt;/a&gt;, &lt;a href=&#34;https://www.math.ucla.edu/~tao&#34;&gt;Terence Tao&lt;/a&gt; and &lt;a href=&#34;https://physics.uchicago.edu/people/profile/xining-zhang&#34;&gt;Xining Zhang&lt;/a&gt; has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&amp;rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&amp;rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&amp;rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&amp;rsquo;s &lt;a href=&#34;https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors&#34;&gt;blog&lt;/a&gt; and have no intention of arguing on the correctness of the theorem.&lt;/p&gt;
+
+&lt;p&gt;The theorem in the paper reads:&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
  \newcommand{Corr}{\text{Corr}}
  \newcommand{E}{\text{E}}
  \newcommand{Cov}{\text{Cov}}
@@ -33,8 +34,6 @@
  \newcommand{tr}{\text{tr}}
  \newcommand{braket}[1]{\left\langle#1\right\rangle}
  \newcommand{C}{\mathbb{C}}\)&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;The theorem in the paper reads:&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Theorem&lt;/strong&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(\bs{A}\)&lt;/span&gt; be an &lt;span class=&#34;math inline&#34;&gt;\(n\times n\)&lt;/span&gt; Hermitian matrix with eigenvalues &lt;span class=&#34;math inline&#34;&gt;\(\{\lambda_i(\bs{A}):i=1,2,\ldots,n\}\)&lt;/span&gt;. Let &lt;span class=&#34;math inline&#34;&gt;\(\bs{v}_i\)&lt;/span&gt; be a unit eigenvector corresponding to &lt;span class=&#34;math inline&#34;&gt;\(\lambda_i(\bs{A})\)&lt;/span&gt; and let &lt;span class=&#34;math inline&#34;&gt;\(v_{i,j}\)&lt;/span&gt; be the &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;-th entry of this vector. Then&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[

@@ -109,8 +109,9 @@
 
 
 
-<p>The <a href="https://arxiv.org/abs/1908.03795">paper</a> uploaded yesterday by <a href="https://peterdenton.github.io">Peter Denton</a>, <a href="https://home.fnal.gov/~parke">Stephen Parke</a>, <a href="https://www.math.ucla.edu/~tao">Terence Tao</a> and <a href="https://physics.uchicago.edu/people/profile/xining-zhang">Xining Zhang</a> has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&rsquo;s <a href="https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors">blog</a> and have no intention of arguing on the correctness of the theorem.
-<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
+<p>The <a href="https://arxiv.org/abs/1908.03795">paper</a> uploaded yesterday by <a href="https://peterdenton.github.io">Peter Denton</a>, <a href="https://home.fnal.gov/~parke">Stephen Parke</a>, <a href="https://www.math.ucla.edu/~tao">Terence Tao</a> and <a href="https://physics.uchicago.edu/people/profile/xining-zhang">Xining Zhang</a> has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&rsquo;s <a href="https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors">blog</a> and have no intention of arguing on the correctness of the theorem.</p>
+
+<p>The theorem in the paper reads:<span class="math inline">\(\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}
  \newcommand{Corr}{\text{Corr}}
  \newcommand{E}{\text{E}}
  \newcommand{Cov}{\text{Cov}}
@@ -125,8 +126,6 @@
  \newcommand{tr}{\text{tr}}
  \newcommand{braket}[1]{\left\langle#1\right\rangle}
  \newcommand{C}{\mathbb{C}}\)</span></p>
-
-<p>The theorem in the paper reads:</p>
 
 <p><strong>Theorem</strong>. Let <span class="math inline">\(\bs{A}\)</span> be an <span class="math inline">\(n\times n\)</span> Hermitian matrix with eigenvalues <span class="math inline">\(\{\lambda_i(\bs{A}):i=1,2,\ldots,n\}\)</span>. Let <span class="math inline">\(\bs{v}_i\)</span> be a unit eigenvector corresponding to <span class="math inline">\(\lambda_i(\bs{A})\)</span> and let <span class="math inline">\(v_{i,j}\)</span> be the <span class="math inline">\(j\)</span>-th entry of this vector. Then</p>
 <p><span class="math display">\[
