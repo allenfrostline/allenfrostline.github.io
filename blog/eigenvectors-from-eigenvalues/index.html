@@ -149,7 +149,7 @@
 }
 </code></pre>
 
-<p>Time complexity of this algorithm: <span class="math inline">\(O(n)\)</span>, which means the time complexity for the whole eigenvector <span class="math inline">\(\bs{v}_i\)</span> would be <span class="math inline">\(O(n^2)\)</span>.</p>
+<p>Time complexity of this algorithm: <span class="math inline">\(O(n)\)</span>, which means the time complexity for the whole eigenvector <span class="math inline">\(\bs{v}_i\)</span> would be <span class="math inline">\(O(n^2)\)</span> and <span class="math inline">\(O(n^3)\)</span> if we&rsquo;re looking for all eigenvectors.</p>
 
 <p><strong>Algorithm2</strong>: As a comparison, let&rsquo;s see how the classical algorithm works in calculating eigenvectors:</p>
 
@@ -159,9 +159,9 @@
 }
 </code></pre>
 
-<p>where <span class="math inline">\(f(u)\)</span> is a strictly monotonically increasing function of the required precision <span class="math inline">\(u\)</span>. This precision is pre-determined for the Newton-Raphson method when solving the high-degree polynomial equation <span class="math inline">\(\bs{Dv}=\bs{0}\)</span>. For <span class="math inline">\(n\ll 1\)</span>, it&rsquo;s acceptable that <span class="math inline">\(O(f(u))\ll O(n^2)\)</span> and thus the time complexity of the original algorithm is also <span class="math inline">\(O(n^2)\)</span>.</p>
+<p>where <span class="math inline">\(f(u)\)</span> is a strictly monotonically increasing function of the required precision <span class="math inline">\(u\)</span>. This precision is pre-determined for the numerical method of solving the high-dimensional polynomial system <span class="math inline">\(\bs{Dv}=\bs{0}\)</span> (the closed-form solution e.g. Gaussian elimination or LU decomposition requires <span class="math inline">\(O(n^3+3n^2)\)</span> time). For <span class="math inline">\(n\gg 1\)</span>, it can be proved that <span class="math inline">\(O(f(u))\ll O(n^2)\)</span> and thus the time complexity of the original algorithm is also <span class="math inline">\(O(n^2)\)</span> for each eigenvector, and <span class="math inline">\(O(n^3)\)</span> for all of them.</p>
 
-<p>Therefore, with all eigenvalues given, the time complexity of the new algorithm is identical to the classical one. <span style="color: #b80000"><strong>However, if we take into consideration the time spent on finding the <span class="math inline">\(n\)</span> eigenvalues of <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(n(n-1)\)</span> eigenvalues of <span class="math inline">\(\{\bs{M}_j:j=1,2,\ldots,n\}\)</span>, the new algorithm is in fact doing not less but even more calculation, and as each procedure takes <span class="math inline">\(O(n^2)\)</span> time, this extra cost is non-negligible.</strong></span></p>
+<p>Therefore, with all eigenvalues given, the time complexity of the new algorithm is identical to the classical one. <span style="color: #b80000"><strong>However, if we take into consideration the time spent on finding the <span class="math inline">\(n\)</span> eigenvalues of <span class="math inline">\(\bs{A}\)</span> and <span class="math inline">\(n(n-1)\)</span> eigenvalues of <span class="math inline">\(\{\bs{M}_j:j=1,2,\ldots,n\}\)</span>, the new algorithm is in fact doing not less but even more calculation, and as each eigenvalue costs us <span class="math inline">\(O(n^3)\)</span> time, this is just non-negligible.</strong></span></p>
 
 <p>As a conclusion, despite the novelty of using only eigenvalues as inputs, the new paper is not actually &ldquo;overturning&rdquo; the way most of us are used to when calculating the eigenvectors, as some media has mistakenly reported. It is true that the very beauty comes from simplicity, but nothing lasts when the world loses its rationality.</p>
 
