@@ -154,62 +154,6 @@ Josephus(1000, 4)
     </item>
     
     <item>
-      <title>Notes on Mathematical Market Microstructure (2)</title>
-      <link>https://allenfrostline.com/blog/notes-on-microstructure-2/</link>
-      <pubDate>Fri, 08 Nov 2019 18:09:00 +0000</pubDate>
-      
-      <guid>https://allenfrostline.com/blog/notes-on-microstructure-2/</guid>
-      <description>
-        &lt;nav&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#toc_0&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;a href=&#34;#toc_1&#34;&gt;References&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;style&gt;
-code {
-    background: darkred;
-    color: white;
-    border-radius: 3px;
-    padding: 0px 2px 1px 2px;
-}
-
-header.title {counter-reset: h1 -1}
-h1 {counter-reset: h2}
-
-h1:before {counter-increment: h1; content: counter(h1) &#39;. &#39;}
-h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &#39;. &#39;}
-header h1:before {content: &#39;&#39;}
-&lt;/style&gt;
-
-&lt;p&gt;Following the previous course by Prof. Yuri, below are my lecture notes from Prof. Hongsong Chow&amp;rsquo;s course Mathematical Market Microstructure (from an optimization perspective).&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}\)&lt;/span&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;toc_0&#34;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;This course provides a balanced view on theoretical framework for solving optimal execution strategies design problems and practical aspects of implementating such strategies in liquid product trading.&lt;/p&gt;
-
-&lt;h1 id=&#34;toc_1&#34;&gt;References&lt;/h1&gt;
-
-&lt;p&gt;The following books/articles are suggested:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;O&amp;rsquo;hara, Maureen. &lt;em&gt;Market microstructure theory&lt;/em&gt;. Wiley, 1997.
-Harvard.&lt;/li&gt;
-&lt;li&gt;Hasbrouck, Joel. &lt;em&gt;Empirical market microstructure: The institutions, economics, and econometrics of securities trading&lt;/em&gt;. Oxford University Press, 2007.&lt;/li&gt;
-&lt;li&gt;Harris, Larry. &lt;em&gt;Trading and exchanges: Market microstructure for practitioners&lt;/em&gt;. OUP USA, 2003.&lt;/li&gt;
-&lt;li&gt;Pham, Huyên. &lt;em&gt;Continuous-time stochastic control and optimization with financial applications&lt;/em&gt;. Vol. 61. Springer Science &amp;amp; Business Media, 2009.&lt;/li&gt;
-&lt;li&gt;Bouchaud, Jean-Philippe, J. Doyne Farmer, and Fabrizio Lillo. &lt;em&gt;How markets slowly digest changes in supply and demand&lt;/em&gt;. In Handbook of financial markets: dynamics and evolution, pp. 57-160. North-Holland, 2009.&lt;/li&gt;
-&lt;/ul&gt;
-
-        
-      </description>
-    </item>
-    
-    <item>
       <title>Texas Hold&#39;em Series (6): Range Estimation</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-6/</link>
       <pubDate>Tue, 05 Nov 2019 10:11:00 +0000</pubDate>
@@ -730,11 +674,11 @@ header h1:before {content: &#39;&#39;}
     </item>
     
     <item>
-      <title>Notes on Mathematical Market Microstructure (1)</title>
-      <link>https://allenfrostline.com/blog/notes-on-microstructure-1/</link>
+      <title>Notes on Mathematical Market Microstructure</title>
+      <link>https://allenfrostline.com/blog/notes-on-microstructure/</link>
       <pubDate>Fri, 04 Oct 2019 18:15:00 +0000</pubDate>
       
-      <guid>https://allenfrostline.com/blog/notes-on-microstructure-1/</guid>
+      <guid>https://allenfrostline.com/blog/notes-on-microstructure/</guid>
       <description>
         &lt;nav&gt;
 
