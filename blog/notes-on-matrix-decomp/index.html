@@ -192,6 +192,8 @@
 
 <li><a href="#toc_39">Population LDA for Binary Classification</a></li>
 </ul></li>
+
+<li><a href="#toc_40">MDS and CA</a></li>
 </ul>
 
 </nav>
@@ -916,6 +918,17 @@ C_1\ &amp; \text{if}\quad\bs{q}_1'\bs{t} &gt; c,\\
 C_2\ &amp; \text{if}\quad\bs{q}_1'\bs{t} &lt; c.\\
 \end{cases}
 \]</span></p>
+<h1 id="toc_40">MDS and CA</h1>
+
+<p>Variable matrix decomposition methods provide different classes of data analysis tools:</p>
+
+<ul>
+<li>Based on SVD we have PCA, FA, HITS and LSI for general <span class="math inline">\(\bs{A}\in\R^{n\times p}\)</span>.</li>
+<li>Based on EVD we have CCA and MDS for <span class="math inline">\(\bs{A}\in\R^{p\times p}\)</span>, symmetric.</li>
+<li>Based on generalized EVD (GEVD) we have LDA for <span class="math inline">\(\bs{A},\bs{B}\in\R^{p\times p}\)</span>, both symmetric.</li>
+<li>Finally, based on generalized SVD (GSVD) we have CA for <span class="math inline">\(\bs{A}=\bs{U\Sigma}\bs{V}'\in\R^{n\times p}\)</span> where we instead of orthonormality of <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> assume <span class="math inline">\(\bs{U}'\bs{D}_1\bs{U}=\bs{I}\)</span> and <span class="math inline">\(\bs{V}'\bs{D}_2\bs{V}=\bs{I}\)</span> for diagonal <span class="math inline">\(\bs{D}_1\in\R^{n\times n}\)</span> and <span class="math inline">\(\bs{D}_2\in\R^{p\times p}\)</span>.</li>
+</ul>
+
 <div class="footnotes">
 
 <hr />
