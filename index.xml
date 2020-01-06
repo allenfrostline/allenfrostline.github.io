@@ -6070,7 +6070,7 @@ S_t = S_0 \exp\left\{\left(\mu -\frac{\sigma}{2}\right)t + \sigma W_t + J_t\righ
 
 &lt;h1 id=&#34;toc_3&#34;&gt;The Heston Stochastic Volatility Process&lt;/h1&gt;
 
-&lt;p&gt;In the early 1990&amp;rsquo;s Steven Heston introduced this model where volatilities, different from the original GBM, are no longer constant. In the Heston model, volatilities evolve according to the Cox-Ingersoll-Ross process with a mean-reverting essense. As there&amp;rsquo;re now two stochastic processes, we need two (potentially correlated) Wiener processes. The SDE is now&lt;/p&gt;
+&lt;p&gt;In the early 1990s Steven Heston introduced this model where volatilities, different from the original GBM, are no longer constant. In the Heston model, volatilities evolve according to the Cox-Ingersoll-Ross process with a mean-reverting essense. As there&amp;rsquo;re now two stochastic processes, we need two (potentially correlated) Wiener processes. The SDE is now&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 \begin{align*}
 \d W_t^S\d W_t^V &amp;amp;= \rho\d t &amp;amp; \text{(Correlated Wiener)}\\
