@@ -90,7 +90,10 @@ h2:before {counter-increment: h2; content: counter(h1) &#39;.&#39; counter(h2) &
 header h1:before {content: &#39;&#39;}
 &lt;/style&gt;
 
-&lt;p&gt;While the 2019-nCoV is spreading crazily around the globe, I&amp;rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these diseases.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{P}{\text{P}}\newcommand{d}{\text{d}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;While the 2019-nCoV is spreading crazily around the globe, I&amp;rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these diseases.&lt;span class=&#34;math inline&#34;&gt;\(\newcommand{P}{\text{P}}\newcommand{d}{\text{d}}\)&lt;/span&gt;
+The most famous ones are referred to as &lt;a href=&#34;https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology&#34;&gt;compartmental models&lt;/a&gt; where the total population is divided into several compartments with assumptions upon transition rates between these Markov states. The model was first introduced in the early 20th century in literature like &lt;a href=&#34;https://royalsocietypublishing.org/doi/abs/10.1098/rspa.1927.0118&#34;&gt;Kermack and McKendrick (1927)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/globalcitizen/2019-wuhan-coronavirus-data/raw/master/data-sources/dxy/data/latest-animation.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;toc_0&#34;&gt;Background Knowledge&lt;/h1&gt;
 
