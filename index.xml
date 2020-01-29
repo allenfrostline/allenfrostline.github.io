@@ -11,7 +11,7 @@
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>SEIR Epidemic Models</title>
+      <title>Compartmental Epidemic Models</title>
       <link>https://allenfrostline.com/blog/epidemic-models/</link>
       <pubDate>Wed, 29 Jan 2020 03:12:00 +0000</pubDate>
       
