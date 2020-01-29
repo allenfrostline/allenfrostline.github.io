@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>SEIR Epidemic Models - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="SEIR Epidemic Models - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="While the 2019-nCoV is spreading crazily around the globe, I&amp;rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these &amp;hellip;">
+      <meta property="og:description" content="While the 2019-nCoV is spreading crazily around the globe, I&amp;rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <script async src="/js/load-typekit.js"></script>
+
+<script>
+(function(u, c) {
+  var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  o.src = u;
+  if (c) { o.addEventListener('load', function (e) { c(e); }); }
+  s.parentNode.insertBefore(o, s);
+})('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function() {
+  pangu.spacingPage();
+});
+</script>
+<link rel="stylesheet" href="/css/custom.css" />
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>SEIR Epidemic Models</h1>
+
+
+<h3>
+2020-01-29</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+<nav>
+
+<ul>
+<li><a href="#toc_0">Background Knowledge</a>
+<ul>
+<li><a href="#toc_1">Notations</a></li>
+
+<li><a href="#toc_2">Solution to a Special ODE</a></li>
+</ul></li>
+
+<li><a href="#toc_3">SI Model</a>
+<ul>
+<li><a href="#toc_4">SI w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_5">SI w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_6">SIS Model</a>
+<ul>
+<li><a href="#toc_7">SIS w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_8">SIS w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_9">SIR Model</a>
+<ul>
+<li><a href="#toc_10">SIR w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_11">SIR w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_12">SIRS Model</a>
+<ul>
+<li><a href="#toc_13">SIRS w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_14">SIRS w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_15">SEIR Model</a>
+<ul>
+<li><a href="#toc_16">SEIR w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_17">SEIR w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_18">SEIRS Model</a>
+<ul>
+<li><a href="#toc_19">SEIRS w/o Vital Dynamics</a></li>
+
+<li><a href="#toc_20">SEIRS w/ Vital Dynamics</a></li>
+</ul></li>
+
+<li><a href="#toc_21">Visualization</a></li>
+</ul>
+
+</nav>
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+
+<p>While the 2019-nCoV is spreading crazily around the globe, I&rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these diseases.<span class="math inline">\(\newcommand{P}{\text{P}}\newcommand{d}{\text{d}}\)</span></p>
+
+<h1 id="toc_0">Background Knowledge</h1>
+
+<p>Before we start walking through the models, let&rsquo;s first introduce some basic yet necessary knowledge.</p>
+
+<h2 id="toc_1">Notations</h2>
+
+<p>The most basic stochastic epidemic models involve four variables:</p>
+
+<ul>
+<li><span class="math inline">\(S_t\)</span>: susceptible people (i.e. healthy people)</li>
+<li><span class="math inline">\(E_t\)</span>: exposed people (who&rsquo;re infected but not yet infectious)</li>
+<li><span class="math inline">\(I_t\)</span>: infectious people</li>
+<li><span class="math inline">\(R_t\)</span>: recovered people (who&rsquo;re immune to the disease)</li>
+<li><span class="math inline">\(N_t\)</span>: total population</li>
+</ul>
+
+<p>We have</p>
+<p><span class="math display">\[
+N_t = S_t + I_t + R_t
+\]</span></p><p>and <span class="math inline">\(N_t\equiv N\)</span> within a short period of time (assuming no vital population dynamics).</p>
+
+<p>In the meantime, we have parameters in these models as below:</p>
+
+<ul>
+<li><span class="math inline">\(\beta\)</span>: infectious rate, which represents the probability of transmitting disease between a susceptible and an infectious individual.</li>
+<li><span class="math inline">\(\gamma=1/D\)</span>: recovery rate, which is determined by the average duration <span class="math inline">\(D\)</span> of infection.</li>
+<li><span class="math inline">\(\sigma\)</span>: incubation rate, which is the rate of latent individuals becoming infectious (average duration of incubation is <span class="math inline">\(1/\sigma\)</span>).</li>
+<li><span class="math inline">\(\xi\)</span>: this represents the rate which recovered individuals return to the susceptible statue due to loss of immunity</li>
+<li><span class="math inline">\(\mu\)</span>: birth rate</li>
+<li><span class="math inline">\(\nu\)</span>: death rate (among infectious people)</li>
+</ul>
+
+<h2 id="toc_2">Solution to a Special ODE</h2>
+
+<p><strong>Claim.</strong> The solution to ODE</p>
+<p><span class="math display">\[
+\frac{\d x_t}{\d t} + a_1 x_t + a_2 x_t^2 = 0\quad (a_1\neq 0, a_2\neq 0)
+\]</span></p><p>with initial condition <span class="math inline">\(x_0\)</span> given, is</p>
+<p><span class="math display">\[
+x_t = \frac{\exp(-a_1 t)}{1/x_0 - [\exp(-a_1 t) - 1]a_2/a_1}.
+\]</span></p><p><strong>Proof.</strong> We have</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\frac{\d x_t}{\d t} + a_1 x_t + a_2 x_t^2 = 0\\
+\Rightarrow&amp; -\frac{\d}{\d t}\left(\frac{1}{x_t}\right) + a_1 \left(\frac{1}{x_t}\right) + a_2 = 0
+\end{align*}
+\]</span></p><p>which, by letting <span class="math inline">\(y_t:=1/x_t\)</span>, is</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\frac{\d y_t}{\d t} - a_1 y_t = a_2\\
+\Rightarrow&amp; \frac{\d }{\d t}[\exp(-a_1 t) y] = a_2 \exp(-a_1 t).
+\end{align*}
+\]</span></p><p>Integrate both sides and</p>
+<p><span class="math display">\[
+\exp(-a_1 t) y_t - y_0 = [1-\exp(-a_1 t)]a_2/a_1.
+\]</span></p><p>Therefore, by substituting <span class="math inline">\(x_t=1/y_t\)</span> and <span class="math inline">\(x_0=1/y_0\)</span> we have</p>
+<p><span class="math display">\[
+x_t = \frac{\exp(-a_1 t)}{1/x_0 + [1 - \exp(-a_1 t)]a_2/a_1}
+\]</span></p><p>which is exactly the formula given in the claim.<span style="float: right">Q.E.D.</span></p>
+
+<h1 id="toc_3">SI Model</h1>
+
+<p>SI model is the simplest among its siblings: there&rsquo;re only susceptible and infectious people in our problem and they together form a closed-loop Markov chain. <span class="math inline">\(\newcommand{P}{\text{P}}\newcommand{d}{\text{d}}\)</span>When there are no vital population dynamics, we have</p>
+
+<h2 id="toc_4">SI w/o Vital Dynamics</h2>
+<p><span class="math display">\[
+\frac{\d I_t}{\d t} = -\frac{\d S_t}{\d t} = \frac{\beta S_tI_t}{N_t}
+\]</span></p><p>where <span class="math inline">\(N_t = S_t + I_t\equiv N\)</span> remains a constant. We have closed-form solution as follows</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{I_t = \frac{N_tI_0}{I_0 + S_0\exp(-\beta t)}}\\
+S_t = N_t - I_t
+\end{cases}
+\]</span></p><p>which indicates <span class="math inline">\(S_t\to 0\)</span> with time, i.e. under this setting the total population becomes infected eventually.</p>
+
+<h2 id="toc_5">SI w/ Vital Dynamics</h2>
+
+<p>With significant birth or death happening, we need to adjust our model s.t. the two rates, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\nu\)</span>, are taken into consideration. The ODE then becomes</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t}=\frac{\beta S_t I_t}{N_t} - \nu I_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t=S_t+I_t\)</span> is not a constant any more. Instead of a closed-form solution, here we&rsquo;re more interest in the stationary distribution. When</p>
+<p><span class="math display">\[
+\mu=\nu=\frac{\beta S_t}{N_t} = \beta\left(1 - \frac{I_t}{N_t}\right)
+\]</span></p><p>we know the final epidemic size is (in percentage)</p>
+<p><span class="math display">\[
+\lim_{t\to\infty}\frac{I_t}{N_t} = \left(1 - \frac{\nu}{\beta}\right)_{\!\!+}.
+\]</span></p>
+<h1 id="toc_6">SIS Model</h1>
+
+<p>Notice in the SI model we didn&rsquo;t consider the possibility that a infectious person can recover and become susceptible again. By assuming so and taking the recovery rate <span class="math inline">\(\gamma\)</span> into our model, we have</p>
+
+<h2 id="toc_7">SIS w/o Vital Dynamics</h2>
+<p><span class="math display">\[
+\frac{\d I_t}{\d t} = -\frac{\d S_t}{\d t} = \frac{\beta S_tI_t}{N_t} - \gamma I_t
+\]</span></p><p>where <span class="math inline">\(N_t=S_t+I_t\equiv N\)</span> is a constant. The solution is</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{I_t = \frac{\varphi N_tI_0}{[\varphi N_t - I_0\beta]\exp(-\varphi t)+1}}\\
+S_t = N_t - I_t
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(\varphi=\beta-\gamma\)</span>. The asymptotic epidemic size is</p>
+<p><span class="math display">\[
+\lim_{t\to\infty} \frac{I_t}{N_t} = \left(1 - \frac{\gamma}{\beta}\right)_{\!\!+}.
+\]</span></p>
+<h2 id="toc_8">SIS w/ Vital Dynamics</h2>
+
+<p>With birth and death, the SIS model becomes</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t + \gamma I_t - \frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t}=\frac{\beta S_t I_t}{N_t} - \nu I_t - \gamma I_t}
+\end{cases}
+\]</span></p><p>and by solving <span class="math inline">\(\d I_t/\d t=0\)</span> we have the asymptotic epidemic size</p>
+<p><span class="math display">\[
+\lim_{t\to\infty}\frac{I_t}{N_t} = \left(1 - \frac{\gamma+\nu}{\beta}\right)_{\!\!+}.
+\]</span></p>
+<h1 id="toc_9">SIR Model</h1>
+
+<p>Now we consider a third state of people: recovered. These people have recovered from the disease and will never be susceptible again thanks to immunity.</p>
+
+<h2 id="toc_10">SIR w/o Vital Dynamics</h2>
+
+<p>First we assume no vital dynamics. The model, where <span class="math inline">\(N_t=S_t+I_t+R_t\equiv N\)</span>, now becomes</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t}
+\end{cases}
+\]</span></p><p>which have no closed-form solution but still we can find its asymptotics. It can be proved that <span class="math inline">\(I_t\to 0\)</span> with time (i.e. all infectious people will recover eventually) and the epidemic size attains its maximum at <span class="math inline">\((1-\gamma/\beta)_+\)</span>, which coincides with the limit from the SIS model.</p>
+
+<h2 id="toc_11">SIR w/ Vital Dynamics</h2>
+
+<p>When including potential vital dynamics into the SIR model, the ODE becomes</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \nu I_t - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t}
+\end{cases}
+\]</span></p><p>which, just like without the dynamics, has no known closed-form solution. Moreover, since new births can bring new susceptible individuals to the population, the disease doesn&rsquo;t die out like in the previous case. Instead, it will attain its maximum at <span class="math inline">\([1-(\gamma+\nu)/\beta]_+\)</span> and eventually reach a stationary state at <span class="math inline">\([\nu/(\nu+\gamma)-\nu/\beta]_+\)</span>.</p>
+
+<h1 id="toc_12">SIRS Model</h1>
+
+<p>The SIR model assumes people carry lifelong immunity to a disease upon recovery; this is the case for a variety of diseases. For another class of airborne diseases, for example seasonal influenza, an individual&rsquo;s immunity may wane over time. In this case, the SIRS model is used to allow recovered individuals to return to a susceptible state.</p>
+
+<h2 id="toc_13">SIRS w/o Vital Dynamics</h2>
+
+<p>The model is</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = - \frac{\beta S_t I_t}{N_t} + \xi R_t}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \xi R_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t = S_t+ I_t + R_t \equiv N\)</span> is a constant. If there is sufficient influx to the susceptible population, at equilibrium the dynamics will be in an endemic state with damped oscillation due to people losing immunity after a period of time and becoming susceptible again.</p>
+
+<h2 id="toc_14">SIRS w/ Vital Dynamics</h2>
+
+<p>We can also add vital dynamics into the SIRS model. The ODE becomes</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t} + \xi R_t}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \nu I_t - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \xi R_t - \nu R_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t=S_t+I_t+R_t\)</span>.</p>
+
+<p>The stationary distributions of the SIRS models, despite the oscillation, can be derived in the exactly same way as we discussed above.</p>
+
+<h1 id="toc_15">SEIR Model</h1>
+
+<p>Finally let&rsquo;s introduce the last epidemic state, i.e. being exposed. In this category of epidemic models, individuals experience a long incubation period when they&rsquo;re infected but not yet infectious to others.</p>
+
+<h2 id="toc_16">SEIR w/o Vital Dynamics</h2>
+
+<p>Without considering birth or death, we may assume model as follows</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t = S_t + E_t + I_t + R_t\equiv N\)</span> is a constant.</p>
+
+<h2 id="toc_17">SEIR w/ Vital Dynamics</h2>
+
+<p>Similar to SIR with vital dynamics, the SEIR model gives an oscillated convergence towards a steady state should we allow for birth and death to be significant:</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t=S_t + E_t + I_t + R_t\)</span>.</p>
+
+<h1 id="toc_18">SEIRS Model</h1>
+
+<p>In the SIER model we assume people carry lifelong immunity to a disease, which in many cases is not true. By introducing an outflow from R to S we have SEIRS model.</p>
+
+<h2 id="toc_19">SEIRS w/o Vital Dynamics</h2>
+
+<p>The ODE is</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = \xi R_t-\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t-\xi R_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t = S_t + E_t + I_t + R_t\equiv N\)</span> is a constant.</p>
+
+<h2 id="toc_20">SEIRS w/ Vital Dynamics</h2>
+
+<p>The ODE is</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t + \xi R_t-\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\\
+\displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t - \xi R_t}
+\end{cases}
+\]</span></p><p>where <span class="math inline">\(N_t=S_t + E_t + I_t + R_t\)</span>.</p>
+
+<h1 id="toc_21">Visualization</h1>
+
+<p>Below is a simple visualization of the SEIRS model which you can interactive with. To reset the plot together with all sliders, simple double-click anywhere on the figure.</p>
+
+<pre><code class="language-python"># import packages
+import pyperclip
+import numpy as np
+from bokeh.embed import components
+from bokeh.events import DoubleTap
+from bokeh.io import show, output_notebook
+from bokeh.layouts import gridplot, column
+from bokeh.models import CustomJS, Slider, Legend, Range1d
+from bokeh.plotting import figure, output_file, show, ColumnDataSource
+
+
+# plot settings
+output_format = 'plot'  # 'script' or 'plot'
+
+# model settings
+s0, e0, i0, r0 = .90, .08, .01, .01
+beta = .60
+gamma = .01
+sigma = .20
+xi = .01
+mu = .001
+nu = .002
+T = 100
+
+# bokeh plotting
+t = np.arange(T + 1)
+
+
+def iterate(beta, gamma, sigma, xi, mu, nu):
+    global s, e, i, r
+    n = s + e + i + r
+    ds = n * mu + xi * r - s * (nu + beta * i)
+    de = s * beta * i - e * (nu + sigma)
+    di = e * sigma - i * (nu + gamma)
+    dr = i * gamma - r * (nu + xi)
+    s += ds
+    e += de
+    i += di
+    r += dr
+    return s, e, i, r
+
+
+def simulate(initial_states, parameters):
+    global s, e, i, r
+    s, e, i, r = initial_states
+    beta, gamma, sigma, xi, mu, nu = parameters
+    return zip(*[iterate(beta, gamma, sigma, xi, mu, nu) for _ in t])
+
+s, e, i, r = simulate([s0, e0, i0, r0], [beta, gamma, sigma, xi, mu, nu])
+
+output_notebook(hide_banner=True)
+source = ColumnDataSource(data=dict(t=t, s=s, e=e, i=i, r=r))
+
+p = figure(
+    x_range=Range1d(0, T + 1, bounds=(0, T)),
+    y_range=Range1d(0, 1.1, bounds=(0, 1)),
+    plot_width=400, plot_height=200, tools=''
+)
+handlers = p.varea_stack(['s', 'e', 'i', 'r'], x='t', color=['#97D52D', '#FFB108', '#850606', '#83635C'], source=source)
+handler_s, handler_e, handler_i, handler_r = handlers
+p.outline_line_alpha = 0
+p.xgrid.grid_line_color = None
+p.ygrid.grid_line_color = None
+p.xaxis.major_label_text_font = 'Palatino'
+p.yaxis.major_label_text_font = 'Palatino'
+p.xaxis.major_label_text_font_size = '10pt'
+p.yaxis.major_label_text_font_size = '10pt'
+p.xaxis.axis_label_text_font = 'Palatino'
+p.yaxis.axis_label_text_font = 'Palatino'
+p.xaxis.axis_label_text_font_size = '12pt'
+p.yaxis.axis_label_text_font_size = '12pt'
+p.xaxis.axis_label = 'Time (days)'
+p.yaxis.axis_label = 'Population (%)'
+p.title.text = 'SEIRS Model'
+p.title.text_font = 'Palatino'
+p.title.text_font_size = '15pt'
+p.title.align = 'center'
+
+legend = Legend(items=[
+    ('Susceptible', [handler_s]),
+    ('Exposed', [handler_e]),
+    ('Infectious', [handler_i]),
+    ('Recovered', [handler_r])
+], location='center', orientation='horizontal')
+legend.label_text_font = 'Palatino'
+legend.label_text_font_size = '10pt'
+legend.background_fill_alpha = 0
+legend.border_line_alpha = 0
+p.add_layout(legend, 'above')
+
+e0_slider = Slider(start=0, end=25, value=e0, step=1, title='Initial Exposed (%)')
+i0_slider = Slider(start=0, end=25, value=i0, step=1, title='Initial Infectious (%)')
+r0_slider = Slider(start=0, end=25, value=r0, step=1, title='Initial Recovered (%)')
+beta_slider = Slider(start=0, end=1, value=beta, step=.01, title='beta')
+gamma_slider = Slider(start=0, end=1, value=gamma, step=.01, title='gamma')
+sigma_slider = Slider(start=0, end=1, value=sigma, step=.01, title='sigma')
+xi_slider = Slider(start=0, end=1, value=xi, step=.01, title='xi')
+mu_slider = Slider(start=0, end=.01, value=mu, step=.001, title='mu', format='0[.]000')
+nu_slider = Slider(start=0, end=.01, value=nu, step=.001, title='nu', format='0[.]000')
+
+func_js = '''
+    const data = source.data;
+    var t = data['t'];
+    var s = data['s']; var _s = s0;
+    var e = data['e']; var _e = e0;
+    var i = data['i']; var _i = i0;
+    var r = data['r']; var _r = r0;
+    
+    var ds, de, di, dr;
+    for (var j = 0; j &lt; t.length; j++) {
+        s[j] = _s;
+        e[j] = _e;
+        i[j] = _i;
+        r[j] = _r;
+
+        nj = _s + _e + _i + _r;
+        ds = nj * mu + xi * _r - _s * (nu + beta * _i);
+        de = _s * beta * _i - _e * (nu + sigma);
+        di = _e * sigma - _i * (nu + gamma);
+        dr = _i * gamma - _r * (nu + xi);
+
+        _s += ds;
+        _e += de;
+        _i += di;
+        _r += dr;
+    }
+    source.change.emit();
+    p.reset.emit();
+'''
+
+callback = CustomJS(
+    args=dict(
+        p=p, source=source,
+        e0_slider=e0_slider, i0_slider=i0_slider, r0_slider=r0_slider,
+        beta_slider=beta_slider, gamma_slider=gamma_slider, sigma_slider=sigma_slider,
+        xi_slider=xi_slider, mu_slider=mu_slider, nu_slider=nu_slider
+    ),
+    code='''
+    var e0 = e0_slider.value / 100;
+    var i0 = i0_slider.value / 100;
+    var r0 = r0_slider.value / 100;
+    var s0 = 1 - e0 - i0 - r0;
+    var beta = beta_slider.value;
+    var gamma = gamma_slider.value;
+    var sigma = sigma_slider.value;
+    var xi = xi_slider.value;
+    var mu = mu_slider.value;
+    var nu = nu_slider.value;
+    ''' + func_js
+)
+
+e0_slider.js_on_change('value', callback)
+i0_slider.js_on_change('value', callback)
+r0_slider.js_on_change('value', callback)
+beta_slider.js_on_change('value', callback)
+gamma_slider.js_on_change('value', callback)
+sigma_slider.js_on_change('value', callback)
+xi_slider.js_on_change('value', callback)
+mu_slider.js_on_change('value', callback)
+nu_slider.js_on_change('value', callback)
+
+
+p.js_on_event(DoubleTap, CustomJS(
+    args=dict(
+        p=p, source=source,
+        s0=s0, e0=e0, i0=i0, r0=r0,
+        beta=beta, gamma=gamma, sigma=sigma, xi=xi, mu=mu, nu=nu,
+        e0_slider=e0_slider, i0_slider=i0_slider, r0_slider=r0_slider,
+        beta_slider=beta_slider, gamma_slider=gamma_slider, sigma_slider=sigma_slider,
+        xi_slider=xi_slider, mu_slider=mu_slider, nu_slider=nu_slider
+    ),
+    code='''
+    e0_slider.value = e0 * 100;
+    i0_slider.value = i0 * 100;
+    r0_slider.value = r0 * 100;
+    beta_slider.value = beta;
+    gamma_slider.value = gamma;
+    sigma_slider.value = sigma;
+    xi_slider.value = xi;
+    mu_slider.value = mu;
+    nu_slider.value = nu;
+    ''' + func_js
+))
+
+c = column(
+    i0_slider, e0_slider, r0_slider,
+    beta_slider, gamma_slider, sigma_slider, xi_slider, mu_slider, nu_slider
+)
+
+layout = gridplot(
+    [[p], [c]],
+    sizing_mode='scale_width', toolbar_location=None, toolbar_options=dict(logo=None)
+)
+
+
+# output in the desired format
+if output_format == 'plot':
+    show(layout)
+elif output_format == 'script':
+    script, div = components(layout)
+    script = '&lt;script src=&quot;https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js&quot;&gt;&lt;/script&gt;' + \
+             '&lt;script src=&quot;https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js&quot;&gt;&lt;/script&gt;' + \
+             '&lt;script src=&quot;https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js&quot;&gt;&lt;/script&gt;' + \
+             script + '\n' + div
+    pyperclip.copy(script)
+else:
+    raise ValueError('unknown output format')
+</code></pre>
+
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js"></script><script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js"></script><script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js"></script>
+<script type="text/javascript">
+    (function() {
+          var fn = function() {
+            Bokeh.safely(function() {
+              (function(root) {
+                function embed_document(root) {
+                  
+                var docs_json = '{"8a06f610-e97c-4659-a903-cfee0e52734a":{"roots":{"references":[{"attributes":{"background_fill_alpha":{"value":0},"border_line_alpha":{"value":0},"items":[{"id":"42368","type":"LegendItem"},{"id":"42369","type":"LegendItem"},{"id":"42370","type":"LegendItem"},{"id":"42371","type":"LegendItem"}],"label_text_font":"Palatino","label_text_font_size":{"value":"10pt"},"location":"center","orientation":"horizontal"},"id":"42367","type":"Legend"},{"attributes":{"fields":["s","e","i"]},"id":"42341","type":"Stack"},{"attributes":{"align":"center","text":"SEIRS Model","text_font":"Palatino","text_font_size":{"value":"15pt"}},"id":"42363","type":"Title"},{"attributes":{},"id":"42386","type":"BasicTickFormatter"},{"attributes":{"fill_color":"#FFB108","x":{"field":"t"},"y1":{"expr":{"id":"42337","type":"Stack"}},"y2":{"expr":{"id":"42338","type":"Stack"}}},"id":"42349","type":"VArea"},{"attributes":{"callback":null,"end":25,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"title":"Initial Infectious (%)","value":0.01},"id":"42373","type":"Slider"},{"attributes":{"fields":["s","e"]},"id":"42338","type":"Stack"},{"attributes":{"fill_alpha":0.1,"fill_color":"#1f77b4","x":{"field":"t"},"y1":{"expr":{"id":"42337","type":"Stack"}},"y2":{"expr":{"id":"42338","type":"Stack"}}},"id":"42350","type":"VArea"},{"attributes":{"fields":["s","e","i"]},"id":"42340","type":"Stack"},{"attributes":{"fields":["s","e","i","r"]},"id":"42342","type":"Stack"},{"attributes":{"callback":null,"end":1,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.01,"title":"beta","value":0.6},"id":"42375","type":"Slider"},{"attributes":{},"id":"42388","type":"BasicTickFormatter"},{"attributes":{},"id":"42391","type":"UnionRenderers"},{"attributes":{"data_source":{"id":"42314","type":"ColumnDataSource"},"glyph":{"id":"42349","type":"VArea"},"hover_glyph":null,"muted_glyph":null,"name":"e","nonselection_glyph":{"id":"42350","type":"VArea"},"selection_glyph":null,"view":{"id":"42352","type":"CDSView"}},"id":"42351","type":"GlyphRenderer"},{"attributes":{"fill_alpha":0.1,"fill_color":"#1f77b4","x":{"field":"t"},"y1":{"expr":{"id":"42341","type":"Stack"}},"y2":{"expr":{"id":"42342","type":"Stack"}}},"id":"42360","type":"VArea"},{"attributes":{"callback":null,"data":{"e":[0.06924,0.06913399919999999,0.07596550618788164,0.08778312900716644,0.10358573170178176,0.12281819349003634,0.14504761052108806,0.16973737215307866,0.1960790030327594,0.22287533675877808,0.24849474036335037,0.27093210361889364,0.2880098819556982,0.29772170155333316,0.29866088619983083,0.29040787167928084,0.2737189471288523,0.2504077830455879,0.22293777703404305,0.1938775324334175,0.16542312263958703,0.13912844928964666,0.11586510212463576,0.09594020423780483,0.07927520367883592,0.06557393811589984,0.05444761135854705,0.04549330271419527,0.03833600788258322,0.03264672206676858,0.02814674282377617,0.02460501172419077,0.021832529110853344,0.019676000781527758,0.018011755479616715,0.01674035848659328,0.01578203515211257,0.015072873641656012,0.014561718374833306,0.014207650280103745,0.013977953853595739,0.013846482409586486,0.013792346271871599,0.013798861499415106,0.013852708107455767,0.01394325639313056,0.01406202797363822,0.01420226468633708,0.014358583805120652,0.014526702307407349,0.014703216367854835,0.014885425016820516,0.015071189114916297,0.01525881856712895,0.015446982118012527,0.015634635203716166,0.015820962243648012,0.01600533047979243,0.0161872530514818,0.016366359456914278,0.016542371923222794,0.01671508650308962,0.016884357952679174,0.017050087634952867,0.01721221384376456,0.0173707040651316,0.01752554878882251,0.017676756560764475,0.017824350028640284,0.017968362782523454,0.01810883683197579,0.018245820592688904,0.018379367281077096,0.01850953363549187,0.018636378898942173,0.018759964011179794,0.01888035096839426,0.018997602317074255,0.019111780755247235,0.019222948819637257,0.019331168641547387,0.01943650175769021,0.01953900896492681,0.019638750210067085,0.019735784507640984,0.019830169879957837,0.019921963314899066,0.020011220737793878,0.020097996994452427,0.020182345843012112,0.02026431995271886,0.020343970908138984,0.020421349217597078,0.020496504324875996,0.020569484623407873,0.02064033747234015,0.020709109213984753,0.020775845192258363,0.020840589771801803,0.020903386357530782,0.020964277414421868],"i":[0.02588,0.03941744,0.05277123055999999,0.06733107703085632,0.08407972990791933,0.10378791948938065,0.12710610315351537,0.1545903520198908,0.18668274222626785,0.22365834992610453,0.2655495170787469,0.31206187094647203,0.3625035492188931,0.415755483019406,0.4703107575338398,0.5243992056833998,0.5761879895510552,0.624017523102213,0.6666108694341041,0.7031990944077035,0.7335362117614945,0.757818401748274,0.776550270785224,0.7904046879607285,0.8001078725527607,0.8063616188178948,0.8098000670152601,0.8109719884827864,0.8103389851638321,0.8082821189183828,0.8051120779047158,0.8010800815346145,0.7963881229010373,0.7911979712483955,0.7856387957497203,0.779813481296647,0.7738037912184058,0.7676745527542075,0.7614770328494882,0.755251652130261,0.7490301623607186,0.7428373911831091,0.736692638970829,0.7306107965575535,0.7246032392987458,0.718678542048652,0.7128430508226943,0.7071013398075496,0.7014565766671265,0.6959108145081451,0.6904652251955288,0.6851202857667534,0.6798759273409165,0.6747316540358088,0.6696866379008048,0.6647397946695977,0.6598898441743057,0.6551353584929437,0.6504748002869869,0.6459065532938394,0.6414289465456962,0.6370402735717924,0.6327388075895488,0.6285228134890101,0.6243905572541325,0.6203403133358358,0.6163703703888321,0.6124790357019306,0.6086646385856603,0.6049255329283605,0.6012600990897249,0.5976667452670433,0.5941439084423766,0.5906900549972836,0.5873036810644146,0.58398331267143,0.5807275057216088,0.5775348458466284,0.5744039481598837,0.5713334569330145,0.5683220452137457,0.5653684143994903,0.5624712937782345,0.559629440045881,0.5568416368073439,0.5541066940671839,0.5514234477143692,0.5487907590047766,0.546207514044278,0.5436726232746372,0.5411850209639439,0.5387436647029203,0.536347534908113,0.5339956343327351,0.5316869875857175,0.5294206406593704,0.527195660465926,0.5250111343831319,0.5228661698089859,0.5207598937256385,0.518691452272437],"r":[0.009980000000000001,0.010119040000000001,0.01039178592,0.01079479679456,0.011338570003333843,0.01204330446237303,0.01293666400371836,0.014052485067208893,0.015429758766601295,0.017111429083664757,0.019142675433921827,0.021568458499502233,0.024430255706972926,0.02776212813067818,0.031586537423304105,0.03591060654956285,0.040723671327802094,0.045996867167379024,0.05168507999239261,0.057730967726824935,0.06407018705818007,0.07063670693109686,0.07736725046540643,0.08420434616767379,0.09109794089326899,0.09800584432807737,0.10489339038431938,0.11173267036986015,0.11850159821024969,0.12518296888336503,0.13176359444594848,0.13823355209164426,0.14458555028189068,0.15081440490751838,0.1569166117611121,0.16289000037747595,0.1687334551859127,0.17444669163586582,0.1800300768637775,0.18548448626990705,0.19081118895597077,0.1960117563121063,0.20108798914819212,0.2060418596681221,0.21087546531768017,0.21559099212685548,0.22019068564181973,0.22467682792234484,0.22905171938535218,0.23331766451939923,0.23747696069024787,0.24153188941392018,0.24548470959862068,0.2493376523568464,0.25309291706892234,0.25675266844310335,0.2603190343684821,0.2637941043978034,0.26717992872995916,0.2704785175880695,0.2736918409099511,0.27682182828448865,0.2798703690807927,0.2828393127277187,0.28573046910987615,0.28854560905309895,0.2912864648778201,0.2939547310031746,0.2965520645881558,0.29908008619895454,0.3015403804938507,0.30393449691882174,0.3062639504084663,0.30853022208798847,0.31073475997290545,0.31287897966387473,0.31496426503462255,0.31699196891142317,0.3189634137429524,0.3208798922596358,0.3227426681218503,0.3245529765565256,0.3263120249818422,0.32802099361984244,0.32968103609686317,0.3312932800317743,0.3328588276120648,0.3343787561578637,0.3358541186740171,0.3372859443903717,0.3386752392904336,0.3400229866285878,0.341330147436074,0.3425976610159222,0.3438264454270585,0.34501739795779096,0.34617139558889115,0.34728929544648374,0.34837193524495724,0.3494201337201076,0.3504346910527227],"s":[0.8939,0.8793305208000001,0.8578744763321184,0.8300969931684173,0.7960059583919642,0.7553655625732041,0.7079305873566574,0.6536477348297658,0.5928444121002456,0.526399764441201,0.4558679024535195,0.38350334742934117,0.31213402783215066,0.2448513242955838,0.1845463652050274,0.13340175790339653,0.09250471436611479,0.06173001373627063,0.03993630840385942,0.02538127026158888,0.0161791545054436,0.01064590931972301,0.007468614446185546,0.005724748217423198,0.004816695472181049,0.004381013622577647,0.0042070237114387385,0.004176782810253893,0.00422577837605369,0.004319157394569631,0.004438121121382382,0.004572430409077539,0.004716382389986243,0.004866685161642154,0.005021344046535572,0.005179078369231467,0.005339014054986581,0.005500519284076971,0.005663114590391472,0.005826422055540189,0.005990135354791039,0.006154001179749153,0.0063178070625736875,0.006481372946922357,0.0066445450574592335,0.006807191254921599,0.006969197403583838,0.007130464463662822,0.007290906125415178,0.007450446862079816,0.007609020315202909,0.007766567948771459,0.007923037923665858,0.008078384154357108,0.008232565517287375,0.008385545186004881,0.008537290072483817,0.008687770357521274,0.008836959095904885,0.008984831884345198,0.009131366582075173,0.009276543075613647,0.00942034308052863,0.009562749974164165,0.009703748654246698,0.009843325419091506,0.009981467865809977,0.01011816480349373,0.010253406178837621,0.010387183012074292,0.01051948734143953,0.010650312174679925,0.010779651446360667,0.010907499979938543,0.011033853453739592,0.01115870837012723,0.011282062027269547,0.011403912493017497,0.011524258580491857,0.011643099825049009,0.01176043646235575,0.011876269407353646,0.011990600233935233,0.012103431155189233,0.012214765004100805,0.012324605214616851,0.012432955803006181,0.01253982134946073,0.012645206979897428,0.012749118347931373,0.012851561616999985,0.012952543442625085,0.013052070954805813,0.013150151740540003,0.013246793826475391,0.013342005661695017,0.013435796100643419,0.013528174386201956,0.013619150132922836,0.013708733310432288,0.013796934227013906],"t":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]},"selected":{"id":"42390","type":"Selection"},"selection_policy":{"id":"42391","type":"UnionRenderers"}},"id":"42314","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"42314","type":"ColumnDataSource"},"glyph":{"id":"42359","type":"VArea"},"hover_glyph":null,"muted_glyph":null,"name":"r","nonselection_glyph":{"id":"42360","type":"VArea"},"selection_glyph":null,"view":{"id":"42362","type":"CDSView"}},"id":"42361","type":"GlyphRenderer"},{"attributes":{"fields":["s","e"]},"id":"42339","type":"Stack"},{"attributes":{"fill_color":"#83635C","x":{"field":"t"},"y1":{"expr":{"id":"42341","type":"Stack"}},"y2":{"expr":{"id":"42342","type":"Stack"}}},"id":"42359","type":"VArea"},{"attributes":{"axis_label":"Population (%)","axis_label_text_font":"Palatino","axis_label_text_font_size":{"value":"12pt"},"formatter":{"id":"42388","type":"BasicTickFormatter"},"major_label_text_font":"Palatino","major_label_text_font_size":{"value":"10pt"},"ticker":{"id":"42330","type":"BasicTicker"}},"id":"42329","type":"LinearAxis"},{"attributes":{"fill_color":"#850606","x":{"field":"t"},"y1":{"expr":{"id":"42339","type":"Stack"}},"y2":{"expr":{"id":"42340","type":"Stack"}}},"id":"42354","type":"VArea"},{"attributes":{"bounds":[0,1],"callback":null,"end":1.1},"id":"42316","type":"Range1d"},{"attributes":{"label":{"value":"Susceptible"},"renderers":[{"id":"42346","type":"GlyphRenderer"}]},"id":"42368","type":"LegendItem"},{"attributes":{"source":{"id":"42314","type":"ColumnDataSource"}},"id":"42352","type":"CDSView"},{"attributes":{"bounds":[0,100],"callback":null,"end":101},"id":"42315","type":"Range1d"},{"attributes":{"callback":null,"end":25,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"title":"Initial Exposed (%)","value":0.08},"id":"42372","type":"Slider"},{"attributes":{"fields":["s"]},"id":"42336","type":"Stack"},{"attributes":{},"id":"42320","type":"LinearScale"},{"attributes":{"callback":null,"end":25,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"title":"Initial Recovered (%)","value":0.01},"id":"42374","type":"Slider"},{"attributes":{"callback":null,"end":1,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.01,"title":"gamma","value":0.01},"id":"42376","type":"Slider"},{"attributes":{},"id":"42390","type":"Selection"},{"attributes":{"source":{"id":"42314","type":"ColumnDataSource"}},"id":"42357","type":"CDSView"},{"attributes":{"dimension":1,"grid_line_color":null,"ticker":{"id":"42330","type":"BasicTicker"}},"id":"42333","type":"Grid"},{"attributes":{"callback":null,"end":1,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.01,"title":"sigma","value":0.2},"id":"42377","type":"Slider"},{"attributes":{"source":{"id":"42314","type":"ColumnDataSource"}},"id":"42347","type":"CDSView"},{"attributes":{"fill_color":"#97D52D","x":{"field":"t"},"y1":{"expr":{"id":"42335","type":"Stack"}},"y2":{"expr":{"id":"42336","type":"Stack"}}},"id":"42344","type":"VArea"},{"attributes":{"data_source":{"id":"42314","type":"ColumnDataSource"},"glyph":{"id":"42344","type":"VArea"},"hover_glyph":null,"muted_glyph":null,"name":"s","nonselection_glyph":{"id":"42345","type":"VArea"},"selection_glyph":null,"view":{"id":"42347","type":"CDSView"}},"id":"42346","type":"GlyphRenderer"},{"attributes":{"callback":null,"end":0.01,"format":"0[.]000","js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.001,"title":"nu","value":0.002},"id":"42380","type":"Slider"},{"attributes":{"label":{"value":"Exposed"},"renderers":[{"id":"42351","type":"GlyphRenderer"}]},"id":"42369","type":"LegendItem"},{"attributes":{"callback":null,"end":0.01,"format":"0[.]000","js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.001,"title":"mu","value":0.001},"id":"42379","type":"Slider"},{"attributes":{"children":[[{"id":"42317","subtype":"Figure","type":"Plot"},0,0],[{"id":"42383","type":"Column"},1,0]],"sizing_mode":"scale_width"},"id":"42402","type":"GridBox"},{"attributes":{},"id":"42322","type":"LinearScale"},{"attributes":{"callback":null,"end":1,"js_property_callbacks":{"change:value":[{"id":"42381","type":"CustomJS"}]},"start":0,"step":0.01,"title":"xi","value":0.01},"id":"42378","type":"Slider"},{"attributes":{"fill_alpha":0.1,"fill_color":"#1f77b4","x":{"field":"t"},"y1":{"expr":{"id":"42335","type":"Stack"}},"y2":{"expr":{"id":"42336","type":"Stack"}}},"id":"42345","type":"VArea"},{"attributes":{"label":{"value":"Infectious"},"renderers":[{"id":"42356","type":"GlyphRenderer"}]},"id":"42370","type":"LegendItem"},{"attributes":{"above":[{"id":"42367","type":"Legend"}],"below":[{"id":"42324","type":"LinearAxis"}],"center":[{"id":"42328","type":"Grid"},{"id":"42333","type":"Grid"}],"js_event_callbacks":{"doubletap":[{"id":"42382","type":"CustomJS"}]},"left":[{"id":"42329","type":"LinearAxis"}],"outline_line_alpha":{"value":0},"plot_height":200,"plot_width":400,"renderers":[{"id":"42346","type":"GlyphRenderer"},{"id":"42351","type":"GlyphRenderer"},{"id":"42356","type":"GlyphRenderer"},{"id":"42361","type":"GlyphRenderer"}],"sizing_mode":"scale_width","title":{"id":"42363","type":"Title"},"toolbar":{"id":"42334","type":"Toolbar"},"toolbar_location":null,"x_range":{"id":"42315","type":"Range1d"},"x_scale":{"id":"42320","type":"LinearScale"},"y_range":{"id":"42316","type":"Range1d"},"y_scale":{"id":"42322","type":"LinearScale"}},"id":"42317","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"42325","type":"BasicTicker"},{"attributes":{"label":{"value":"Recovered"},"renderers":[{"id":"42361","type":"GlyphRenderer"}]},"id":"42371","type":"LegendItem"},{"attributes":{"fields":[]},"id":"42335","type":"Stack"},{"attributes":{"fill_alpha":0.1,"fill_color":"#1f77b4","x":{"field":"t"},"y1":{"expr":{"id":"42339","type":"Stack"}},"y2":{"expr":{"id":"42340","type":"Stack"}}},"id":"42355","type":"VArea"},{"attributes":{},"id":"42330","type":"BasicTicker"},{"attributes":{"args":{"beta_slider":{"id":"42375","type":"Slider"},"e0_slider":{"id":"42372","type":"Slider"},"gamma_slider":{"id":"42376","type":"Slider"},"i0_slider":{"id":"42373","type":"Slider"},"mu_slider":{"id":"42379","type":"Slider"},"nu_slider":{"id":"42380","type":"Slider"},"p":{"id":"42317","subtype":"Figure","type":"Plot"},"r0_slider":{"id":"42374","type":"Slider"},"sigma_slider":{"id":"42377","type":"Slider"},"source":{"id":"42314","type":"ColumnDataSource"},"xi_slider":{"id":"42378","type":"Slider"}},"code":"\\n    var e0 = e0_slider.value / 100;\\n    var i0 = i0_slider.value / 100;\\n    var r0 = r0_slider.value / 100;\\n    var s0 = 1 - e0 - i0 - r0;\\n    var beta = beta_slider.value;\\n    var gamma = gamma_slider.value;\\n    var sigma = sigma_slider.value;\\n    var xi = xi_slider.value;\\n    var mu = mu_slider.value;\\n    var nu = nu_slider.value;\\n    \\n    const data = source.data;\\n    var t = data[&#x27;t&#x27;];\\n    var s = data[&#x27;s&#x27;]; var _s = s0;\\n    var e = data[&#x27;e&#x27;]; var _e = e0;\\n    var i = data[&#x27;i&#x27;]; var _i = i0;\\n    var r = data[&#x27;r&#x27;]; var _r = r0;\\n    \\n    var ds, de, di, dr;\\n    for (var j = 0; j &lt; t.length; j++) {\\n        s[j] = _s;\\n        e[j] = _e;\\n        i[j] = _i;\\n        r[j] = _r;\\n\\n        nj = _s + _e + _i + _r;\\n        ds = nj * mu + xi * _r - _s * (nu + beta * _i);\\n        de = _s * beta * _i - _e * (nu + sigma);\\n        di = _e * sigma - _i * (nu + gamma);\\n        dr = _i * gamma - _r * (nu + xi);\\n\\n        _s += ds;\\n        _e += de;\\n        _i += di;\\n        _r += dr;\\n    }\\n    source.change.emit();\\n    p.reset.emit();\\n"},"id":"42381","type":"CustomJS"},{"attributes":{"args":{"beta":0.6,"beta_slider":{"id":"42375","type":"Slider"},"e0":0.08,"e0_slider":{"id":"42372","type":"Slider"},"gamma":0.01,"gamma_slider":{"id":"42376","type":"Slider"},"i0":0.01,"i0_slider":{"id":"42373","type":"Slider"},"mu":0.001,"mu_slider":{"id":"42379","type":"Slider"},"nu":0.002,"nu_slider":{"id":"42380","type":"Slider"},"p":{"id":"42317","subtype":"Figure","type":"Plot"},"r0":0.01,"r0_slider":{"id":"42374","type":"Slider"},"s0":0.9,"sigma":0.2,"sigma_slider":{"id":"42377","type":"Slider"},"source":{"id":"42314","type":"ColumnDataSource"},"xi":0.01,"xi_slider":{"id":"42378","type":"Slider"}},"code":"\\n    e0_slider.value = e0 * 100;\\n    i0_slider.value = i0 * 100;\\n    r0_slider.value = r0 * 100;\\n    beta_slider.value = beta;\\n    gamma_slider.value = gamma;\\n    sigma_slider.value = sigma;\\n    xi_slider.value = xi;\\n    mu_slider.value = mu;\\n    nu_slider.value = nu;\\n    \\n    const data = source.data;\\n    var t = data[&#x27;t&#x27;];\\n    var s = data[&#x27;s&#x27;]; var _s = s0;\\n    var e = data[&#x27;e&#x27;]; var _e = e0;\\n    var i = data[&#x27;i&#x27;]; var _i = i0;\\n    var r = data[&#x27;r&#x27;]; var _r = r0;\\n    \\n    var ds, de, di, dr;\\n    for (var j = 0; j &lt; t.length; j++) {\\n        s[j] = _s;\\n        e[j] = _e;\\n        i[j] = _i;\\n        r[j] = _r;\\n\\n        nj = _s + _e + _i + _r;\\n        ds = nj * mu + xi * _r - _s * (nu + beta * _i);\\n        de = _s * beta * _i - _e * (nu + sigma);\\n        di = _e * sigma - _i * (nu + gamma);\\n        dr = _i * gamma - _r * (nu + xi);\\n\\n        _s += ds;\\n        _e += de;\\n        _i += di;\\n        _r += dr;\\n    }\\n    source.change.emit();\\n    p.reset.emit();\\n"},"id":"42382","type":"CustomJS"},{"attributes":{"fields":["s"]},"id":"42337","type":"Stack"},{"attributes":{"data_source":{"id":"42314","type":"ColumnDataSource"},"glyph":{"id":"42354","type":"VArea"},"hover_glyph":null,"muted_glyph":null,"name":"i","nonselection_glyph":{"id":"42355","type":"VArea"},"selection_glyph":null,"view":{"id":"42357","type":"CDSView"}},"id":"42356","type":"GlyphRenderer"},{"attributes":{"children":[{"id":"42373","type":"Slider"},{"id":"42372","type":"Slider"},{"id":"42374","type":"Slider"},{"id":"42375","type":"Slider"},{"id":"42376","type":"Slider"},{"id":"42377","type":"Slider"},{"id":"42378","type":"Slider"},{"id":"42379","type":"Slider"},{"id":"42380","type":"Slider"}],"sizing_mode":"scale_width"},"id":"42383","type":"Column"},{"attributes":{"axis_label":"Time (days)","axis_label_text_font":"Palatino","axis_label_text_font_size":{"value":"12pt"},"formatter":{"id":"42386","type":"BasicTickFormatter"},"major_label_text_font":"Palatino","major_label_text_font_size":{"value":"10pt"},"ticker":{"id":"42325","type":"BasicTicker"}},"id":"42324","type":"LinearAxis"},{"attributes":{"grid_line_color":null,"ticker":{"id":"42325","type":"BasicTicker"}},"id":"42328","type":"Grid"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto"},"id":"42334","type":"Toolbar"},{"attributes":{"source":{"id":"42314","type":"ColumnDataSource"}},"id":"42362","type":"CDSView"}],"root_ids":["42402"]},"title":"Bokeh Application","version":"1.4.0"}}';
+                var render_items = [{"docid":"8a06f610-e97c-4659-a903-cfee0e52734a","roots":{"42402":"f9ba13c7-9f19-4ed6-bbc2-06daefe7fc01"}}];
+                root.Bokeh.embed.embed_items(docs_json, render_items);
+              
+                }
+                if (root.Bokeh !== undefined) {
+                  embed_document(root);
+                } else {
+                  var attempts = 0;
+                  var timer = setInterval(function(root) {
+                    if (root.Bokeh !== undefined) {
+                      clearInterval(timer);
+                      embed_document(root);
+                    } else {
+                      attempts++;
+                      if (attempts > 100) {
+                        clearInterval(timer);
+                        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                      }
+                    }
+                  }, 10, root)
+                }
+              })(window);
+            });
+          };
+          if (document.readyState != "loading") fn();
+          else document.addEventListener("DOMContentLoaded", fn);
+        })();
+</script>
+
+<p><div class="bk-root" id="f9ba13c7-9f19-4ed6-bbc2-06daefe7fc01" data-root-id="42402"></div></p>
+
+
+  <footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/to-the-2020s-2/">写在2020年的第二十七天</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/to-the-2020s-2\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+<script src="/js/gitalk.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: '8f880a91b82796d2ce14',
+    clientSecret: 'dc2c450f9bd7fba631ce51de266a12684a729e89',
+    repo: 'allenfrostline.github.io',
+    owner: 'allenfrostline',
+    admin: ['allenfrostline'],
+    id: 'blog\/epidemic-models.md', 
+    distractionFreeMode: false, 
+    pagerDirection: 'first'
+  });
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('gitalk-container').innerHTML = 'Gitalk comments not available by default when the website is previewed locally.';
+      return;
+    }
+    gitalk.render('gitalk-container');
+  })();
+</script>
+ 
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/no-highlight.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: [],
+    preferredFonts: "inherit",
+    undefinedFamily: "inherit",
+    linebreaks: {
+      automatic: true
+    }
+  }
+});
+</script>
+
+
+  
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  
+  
+  
+  </footer>
+  </article>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-93356635-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+
