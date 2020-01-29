@@ -101,7 +101,7 @@ The most famous ones are referred to as &lt;a href=&#34;https://en.wikipedia.org
 
 &lt;h2 id=&#34;toc_1&#34;&gt;Notations&lt;/h2&gt;
 
-&lt;p&gt;The most basic stochastic epidemic models involve four variables:&lt;/p&gt;
+&lt;p&gt;The compartmental model, as the name indicates, involve four compartments:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(S_t\)&lt;/span&gt;: susceptible people (i.e. healthy people)&lt;/li&gt;
