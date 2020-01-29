@@ -383,7 +383,9 @@ p = figure(
     y_range=Range1d(0, 1.1, bounds=(0, 1)),
     plot_width=400, plot_height=200, tools=&#39;&#39;
 )
-handlers = p.varea_stack([&#39;s&#39;, &#39;e&#39;, &#39;i&#39;, &#39;r&#39;], x=&#39;t&#39;, color=[&#39;#97D52D&#39;, &#39;#FFB108&#39;, &#39;#850606&#39;, &#39;#83635C&#39;], source=source)
+handlers = p.varea_stack(
+    [&#39;s&#39;, &#39;e&#39;, &#39;i&#39;, &#39;r&#39;], x=&#39;t&#39;, source=source,
+    color=[&#39;#97D52D&#39;, &#39;#FFB108&#39;, &#39;#850606&#39;, &#39;#83635C&#39;])
 handler_s, handler_e, handler_i, handler_r = handlers
 p.outline_line_alpha = 0
 p.xgrid.grid_line_color = None
