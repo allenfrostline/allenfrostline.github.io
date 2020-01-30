@@ -326,7 +326,7 @@ S_t = N_t - I_t
 
 &lt;h1 id=&#34;toc_21&#34;&gt;Visualization&lt;/h1&gt;
 
-&lt;p&gt;Below is a simple visualization of the SEIRS model which you can interactive with. To reset the plot together with all sliders, simple double-click anywhere on the figure.&lt;/p&gt;
+&lt;p&gt;Below is a simple visualization of the SEIRS model which you can interactive with. To reset the plot together with all sliders, simply double-click anywhere on the figure.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# import packages
 import pyperclip
