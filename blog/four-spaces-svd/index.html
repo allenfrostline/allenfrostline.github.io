@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -175,7 +181,7 @@ header h1:before {content: ''}
  \newcommand{Cov}{\text{Cov}}
  \newcommand{Var}{\text{Var}}
  \newcommand{span}{\text{span}}
- \newcommand{bs}{\boldsymbol}
+ \newcommand{bs}{\mathbf}
  \newcommand{R}{\mathbb{R}}
  \newcommand{rank}{\text{rank}}
  \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
@@ -186,18 +192,18 @@ header h1:before {content: ''}
 
 <p>In this post, we denote SVD of matrix <span class="math inline">\(\bs{A}\in\R^{m\times n}\)</span> as</p>
 <p><span class="math display">\[
-\bs{A} = \bs{U}\bs{\Sigma}\bs{V}'
-\]</span></p><p>where <span class="math inline">\(\bs{U}\in\R^{m\times m}\)</span>, <span class="math inline">\(\bs{\Sigma}\in\R^{m\times n}\)</span> and <span class="math inline">\(\bs{V}\in\R^{n\times n}\)</span>. <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> are orthonormal, namely <span class="math inline">\(\bs{U}'\bs{U}=\bs{V}'\bs{V}=\bs{I}\)</span>. <span class="math inline">\(\bs{\Sigma}\)</span> is diagonal (despite being rectangle), which means all entries <span class="math inline">\(\sigma_{ij}\)</span> are zero if <span class="math inline">\(i\neq j\)</span>. <span class="math inline">\(\bs{V}'\)</span> means transposition of <span class="math inline">\(\bs{V}\)</span>. Apart from this regular form, we have full-rank SVD as</p>
+\bs{A} = \bs{U}\boldsymbol{\Sigma}\bs{V}'
+\]</span></p><p>where <span class="math inline">\(\bs{U}\in\R^{m\times m}\)</span>, <span class="math inline">\(\boldsymbol{\Sigma}\in\R^{m\times n}\)</span> and <span class="math inline">\(\bs{V}\in\R^{n\times n}\)</span>. <span class="math inline">\(\bs{U}\)</span> and <span class="math inline">\(\bs{V}\)</span> are orthonormal, namely <span class="math inline">\(\bs{U}'\bs{U}=\bs{V}'\bs{V}=\bs{I}\)</span>. <span class="math inline">\(\boldsymbol{\Sigma}\)</span> is diagonal (despite being rectangle), which means all entries <span class="math inline">\(\sigma_{ij}\)</span> are zero if <span class="math inline">\(i\neq j\)</span>. <span class="math inline">\(\bs{V}'\)</span> means transposition of <span class="math inline">\(\bs{V}\)</span>. Apart from this regular form, we have full-rank SVD as</p>
 <p><span class="math display">\[
 \bs{A} = \begin{bmatrix}
 \bs{U}_r &amp; \hat{\bs{U}}_r
 \end{bmatrix}\begin{bmatrix}
-\bs{\Sigma}_r &amp; \bs{O}\\
+\boldsymbol{\Sigma}_r &amp; \bs{O}\\
 \bs{O} &amp; \bs{O}
 \end{bmatrix}\begin{bmatrix}
 \bs{V}_r &amp; \hat{\bs{V}}_r
-\end{bmatrix}' = \bs{U}_r\bs{\Sigma}_r\bs{V}_r'
-\]</span></p><p>where <span class="math inline">\(r=\rank(A)\)</span>; <span class="math inline">\(\bs{U}_r\in\R^{m\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{U}\)</span>, <span class="math inline">\(\hat{\bs{U}}_r\in\R^{m\times (m-r)}\)</span> is the complement of <span class="math inline">\(\bs{U}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>; <span class="math inline">\(\bs{\Sigma}_r\in\R^{r\times r}\)</span> is the top-left square block of <span class="math inline">\(\bs{\Sigma}\)</span>; <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{V}\)</span>, <span class="math inline">\(\hat{\bs{V}}_r\in\R^{n\times(n-r)}\)</span> is the complement of <span class="math inline">\(\bs{V}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>. Note that orthonormality still holds for <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span>, and that now <span class="math inline">\(\bs{\Sigma}_r\)</span> is square and invertible.</p>
+\end{bmatrix}' = \bs{U}_r\boldsymbol{\Sigma}_r\bs{V}_r'
+\]</span></p><p>where <span class="math inline">\(r=\rank(A)\)</span>; <span class="math inline">\(\bs{U}_r\in\R^{m\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{U}\)</span>, <span class="math inline">\(\hat{\bs{U}}_r\in\R^{m\times (m-r)}\)</span> is the complement of <span class="math inline">\(\bs{U}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>; <span class="math inline">\(\boldsymbol{\Sigma}_r\in\R^{r\times r}\)</span> is the top-left square block of <span class="math inline">\(\boldsymbol{\Sigma}\)</span>; <span class="math inline">\(\bs{V}_r\in\R^{n\times r}\)</span> is the block consisting of the first <span class="math inline">\(r\)</span> columns <span class="math inline">\(\bs{V}\)</span>, <span class="math inline">\(\hat{\bs{V}}_r\in\R^{n\times(n-r)}\)</span> is the complement of <span class="math inline">\(\bs{V}_r\)</span> from <span class="math inline">\(\bs{U}\)</span>. Note that orthonormality still holds for <span class="math inline">\(\bs{U}_r\)</span> and <span class="math inline">\(\bs{V}_r\)</span>, and that now <span class="math inline">\(\boldsymbol{\Sigma}_r\)</span> is square and invertible.</p>
 
 <h1 id="toc_0">Columns Space <span class="math inline">\(C(\bs{A})\)</span></h1>
 
@@ -205,10 +211,10 @@ header h1:before {content: ''}
 
 <p><strong>Proof</strong>. All we need is to show that <span class="math inline">\(C(\bs{A})=C(\bs{U}_r)\)</span>. Left to right: assume <span class="math inline">\(\bs{a}\in C(\bs{A})\)</span>, then we know <span class="math inline">\(\exists \bs{x}\)</span> s.t.</p>
 <p><span class="math display">\[
-\bs{a}=\bs{Ax}=\bs{U}_r\bs{\Sigma}_r\bs{V}_r'\bs{x}:= \bs{U}_r\bs{x}^* \in C(\bs{U}_r).
+\bs{a}=\bs{Ax}=\bs{U}_r\boldsymbol{\Sigma}_r\bs{V}_r'\bs{x}:= \bs{U}_r\bs{x}^* \in C(\bs{U}_r).
 \]</span></p><p>Right to left: assume <span class="math inline">\(\bs{u}\in C(\bs{U}_r)\)</span>, then similarly <span class="math inline">\(\exists \bs{x}\)</span> s.t.</p>
 <p><span class="math display">\[
-\bs{u} = \bs{U}_r\bs{x} = \bs{A}\bs{V}_r\bs{\Sigma}_r^{-1}\bs{x} := \bs{A}\bs{x}^* \in C(\bs{A}).
+\bs{u} = \bs{U}_r\bs{x} = \bs{A}\bs{V}_r\boldsymbol{\Sigma}_r^{-1}\bs{x} := \bs{A}\bs{x}^* \in C(\bs{A}).
 \]</span></p><p>Therefore, we conclude that <span class="math inline">\(C(\bs{A})=C(\bs{U}_r)\)</span>.<span style="float: right">Q.E.D.</span></p>
 
 <h1 id="toc_1">Row Space <span class="math inline">\(C(\bs{A}')\)</span></h1>
@@ -217,20 +223,20 @@ header h1:before {content: ''}
 
 <p><strong>Proof</strong>. Similar to the column space, here we need to prove <span class="math inline">\(C(\bs{A}')=C(\bs{V}_r)\)</span>. In fact, since SVD of <span class="math inline">\(\bs{A}'\)</span> is merely</p>
 <p><span class="math display">\[
-\bs{A}' = \bs{V}_r\bs{\Sigma}_r\bs{U}_r',
+\bs{A}' = \bs{V}_r\boldsymbol{\Sigma}_r\bs{U}_r',
 \]</span></p><p>the conclusion follows right away from the previous one.<span style="float: right">Q.E.D.</span></p>
 
 <h1 id="toc_2">Null Space <span class="math inline">\(N(\bs{A})\)</span></h1>
 
 <p><strong>Claim</strong>: <span class="math inline">\(\bar{\bs{V}}_r\)</span> forms a basis of <span class="math inline">\(N(\bs{A})\)</span>.</p>
 
-<p><strong>Proof</strong>. Solving <span class="math inline">\(\bs{\Sigma}\)</span> from the regular SVD gives</p>
+<p><strong>Proof</strong>. Solving <span class="math inline">\(\boldsymbol{\Sigma}\)</span> from the regular SVD gives</p>
 <p><span class="math display">\[
-\bs{\Sigma} = \bs{U}'\bs{A}\bs{V} = \begin{bmatrix}
+\boldsymbol{\Sigma} = \bs{U}'\bs{A}\bs{V} = \begin{bmatrix}
 \bs{U}_r'\bs{A}\bs{V}_r &amp; \bs{U}_r'\bs{A}\bar{\bs{V}}_r\\
 \bar{\bs{U}}_r'\bs{A}\bs{V}_r &amp; \bar{\bs{U}}_r'\bs{A}\bar{\bs{V}}_r
 \end{bmatrix} = \begin{bmatrix}
-\bs{\Sigma}_r &amp; \bs{O}\\
+\boldsymbol{\Sigma}_r &amp; \bs{O}\\
 \bs{O} &amp; \bs{O}
 \end{bmatrix}
 \]</span></p><p>and thus</p>

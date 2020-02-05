@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -156,13 +162,13 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 <h1 id="toc_0">Question</h1>
 
-<p>Assume model <span class="math inline">\(\boldsymbol{y}=\boldsymbol{\iota}\beta_1+\boldsymbol{x}\beta_2+\boldsymbol{u}\)</span> and <span class="math inline">\(\{u_i\}\)</span> i.i.d. Let <span class="math inline">\(\boldsymbol{x'x}/n\to c&gt;0\)</span> and <span class="math inline">\(\boldsymbol{\iota'x}\to0\)</span> as <span class="math inline">\(n\to\infty\)</span>. Suppose an estimator <span class="math inline">\(\hat\gamma\)</span> is available for the ratio <span class="math inline">\(\gamma=\beta_1/\beta_2\)</span>, which is distributed independently of <span class="math inline">\(\boldsymbol{u}\)</span> and</p>
+<p>Assume model <span class="math inline">\(\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}\)</span> and <span class="math inline">\(\{u_i\}\)</span> i.i.d. Let <span class="math inline">\(\boldsymbol{x'x}/n\to c&gt;0\)</span> and <span class="math inline">\(\boldsymbol{\iota'x}\to0\)</span> as <span class="math inline">\(n\to\infty\)</span>. Suppose an estimator <span class="math inline">\(\hat\gamma\)</span> is available for the ratio <span class="math inline">\(\gamma=\beta_1/\beta_2\)</span>, which is distributed independently of <span class="math inline">\(\mathbf{u}\)</span> and</p>
 <p><span class="math display">\[
 n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2).
 \]</span></p><p>Define</p>
 <p><span class="math display">\[
-\hat\beta_2 = \frac{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'\boldsymbol{y}}{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1}
-\]</span></p><p>so <span class="math inline">\(\boldsymbol{y}\)</span> is regressed on <span class="math inline">\(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma\)</span>. Derive the asymptotic distribution of <span class="math inline">\(\hat\beta_2\)</span>.</p>
+\hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1}
+\]</span></p><p>so <span class="math inline">\(\mathbf{y}\)</span> is regressed on <span class="math inline">\(\mathbf{x}+\boldsymbol{\iota}\hat\gamma\)</span>. Derive the asymptotic distribution of <span class="math inline">\(\hat\beta_2\)</span>.</p>
 
 <h1 id="toc_1">Solution</h1>
 
@@ -170,8 +176,8 @@ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2).
 <p><span class="math display">\[
 \begin{align}
 \hat\beta_2-\beta_2
-&amp;= \frac{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'\boldsymbol{y}}{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)}-\beta_2\\
-&amp;= \frac{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\boldsymbol{u}]}{(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)}.\tag{2}
+&amp;= \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)}-\beta_2\\
+&amp;= \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\mathbf{u}]}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)}.\tag{2}
 \end{align}
 \]</span></p><p>For the denominator of the RHS in (2), since</p>
 <p><span class="math display">\[
@@ -179,50 +185,50 @@ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2),
 \]</span></p><p>we have <span class="math inline">\(\hat\gamma\overset{d}{\to}\gamma\)</span> and thus <span class="math inline">\(\hat\gamma^2\overset{d}{\to}\gamma^2\)</span>. So the following convergence holds</p>
 <p><span class="math display">\[
 \begin{align}
-&amp;(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)/n\\=&amp;
-\boldsymbol{x}'\boldsymbol{x}/n+2\hat\gamma\boldsymbol{x}'\boldsymbol{\iota}/n+\hat\gamma^2\boldsymbol{\iota}'\boldsymbol{\iota}/n\overset{d}{\to}c+\gamma^2&gt;0.
+&amp;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)/n\\=&amp;
+\mathbf{x}'\mathbf{x}/n+2\hat\gamma\mathbf{x}'\boldsymbol{\iota}/n+\hat\gamma^2\boldsymbol{\iota}'\boldsymbol{\iota}/n\overset{d}{\to}c+\gamma^2&gt;0.
 \end{align}
 \]</span></p><p>For the numerator of the RHS in (2), we have</p>
 <p><span class="math display">\[
 \begin{align*}
-&amp;(\boldsymbol{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\boldsymbol{u}]/n^{1/2}\\
-=&amp;\beta_2(\gamma-\hat\gamma)(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} + (\boldsymbol{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{u}/n^{1/2} \\-&amp; n^{1/2}(\hat\gamma-\gamma)^2\beta_2 + (\hat\gamma-\gamma)\boldsymbol{\iota}'\boldsymbol{u}/n^{1/2}.\tag{3}
+&amp;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\mathbf{u}]/n^{1/2}\\
+=&amp;\beta_2(\gamma-\hat\gamma)(\mathbf{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} + (\mathbf{x}+\boldsymbol{\iota}\gamma)'\mathbf{u}/n^{1/2} \\-&amp; n^{1/2}(\hat\gamma-\gamma)^2\beta_2 + (\hat\gamma-\gamma)\boldsymbol{\iota}'\mathbf{u}/n^{1/2}.\tag{3}
 \end{align*}
 \]</span></p><p>Now we derive the asymptotic distributions of each term in the half equation (3).</p>
 
 <p><strong>First term in (3)</strong>:</p>
 <p><span class="math display">\[
 \begin{align}
-&amp;\beta_2(\gamma-\hat\gamma)(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} \\=&amp; n^{1/2}(\hat\gamma-\gamma)\beta_2(\boldsymbol{x}'\boldsymbol{\iota}/n+\gamma)\overset{A}{\sim}\mathcal{N}(0,\beta_2^2\gamma^2\lambda^2).
+&amp;\beta_2(\gamma-\hat\gamma)(\mathbf{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} \\=&amp; n^{1/2}(\hat\gamma-\gamma)\beta_2(\mathbf{x}'\boldsymbol{\iota}/n+\gamma)\overset{A}{\sim}\mathcal{N}(0,\beta_2^2\gamma^2\lambda^2).
 \end{align}
-\]</span></p><p><strong>Second term in (3)</strong>: Define <span class="math inline">\(\boldsymbol{a}\)</span> as</p>
+\]</span></p><p><strong>Second term in (3)</strong>: Define <span class="math inline">\(\mathbf{a}\)</span> as</p>
 <p><span class="math display">\[
-\boldsymbol{a} = \frac{\boldsymbol{x}+\boldsymbol{\iota}\gamma}{[(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\gamma)]^{1/2}},
+\mathbf{a} = \frac{\mathbf{x}+\boldsymbol{\iota}\gamma}{[(\mathbf{x}+\boldsymbol{\iota}\gamma)'(\mathbf{x}+\boldsymbol{\iota}\gamma)]^{1/2}},
 \]</span></p><p>then we have</p>
 <p><span class="math display">\[
-\boldsymbol{a}'\boldsymbol{a}=1,\quad \boldsymbol{a}'\boldsymbol{\iota}/n\to 0.
-\]</span></p><p>Notice that <span class="math inline">\(\boldsymbol{x}'\boldsymbol{x}/n\to c\)</span> implies <span class="math inline">\(x_n^2/n\to 0\)</span> and thus <span class="math inline">\(x_n/n\to 0\)</span>, so</p>
+\mathbf{a}'\mathbf{a}=1,\quad \mathbf{a}'\boldsymbol{\iota}/n\to 0.
+\]</span></p><p>Notice that <span class="math inline">\(\mathbf{x}'\mathbf{x}/n\to c\)</span> implies <span class="math inline">\(x_n^2/n\to 0\)</span> and thus <span class="math inline">\(x_n/n\to 0\)</span>, so</p>
 <p><span class="math display">\[
-\boldsymbol{e}_n'\boldsymbol{a}(\boldsymbol{a}'\boldsymbol{a})^{-1}\boldsymbol{a}'\boldsymbol{e}_n
-=\boldsymbol{e}_n'\boldsymbol{a}\boldsymbol{a}'\boldsymbol{e}_n=\frac{(x_n+\gamma)^2}{(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\gamma)}\to 0
+\mathbf{e}_n'\mathbf{a}(\mathbf{a}'\mathbf{a})^{-1}\mathbf{a}'\mathbf{e}_n
+=\mathbf{e}_n'\mathbf{a}\mathbf{a}'\mathbf{e}_n=\frac{(x_n+\gamma)^2}{(\mathbf{x}+\boldsymbol{\iota}\gamma)'(\mathbf{x}+\boldsymbol{\iota}\gamma)}\to 0
 \]</span></p><p>which implies</p>
 <p><span class="math display">\[
-\max_{1\le i\le n}a_i^2=\max_{1\le i\le n}\boldsymbol{e}_i'\boldsymbol{a}\boldsymbol{a}'\boldsymbol{e}_i\to 0.
+\max_{1\le i\le n}a_i^2=\max_{1\le i\le n}\mathbf{e}_i'\mathbf{a}\mathbf{a}'\mathbf{e}_i\to 0.
 \]</span></p><p>Hence, by Hajek-Sidak it holds that</p>
 <p><span class="math display">\[
-\boldsymbol{a}'\boldsymbol{u}\overset{A}{\sim}\mathcal{N}(0,\sigma^2)
+\mathbf{a}'\mathbf{u}\overset{A}{\sim}\mathcal{N}(0,\sigma^2)
 \]</span></p><p>and thus the asymptotic distribution of the second term is given by</p>
 <p><span class="math display">\[
 \begin{align}
-&amp;(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{u}/n^{1/2}\\=&amp;[(\boldsymbol{x}+\boldsymbol{\iota}\gamma)'(\boldsymbol{x}+\boldsymbol{\iota}\gamma)/n]^{1/2}\boldsymbol{a}'\boldsymbol{u}\overset{A}{\sim}\mathcal{N}(0,(c+\gamma^2)\sigma^2).
+&amp;(\mathbf{x}+\boldsymbol{\iota}\gamma)'\mathbf{u}/n^{1/2}\\=&amp;[(\mathbf{x}+\boldsymbol{\iota}\gamma)'(\mathbf{x}+\boldsymbol{\iota}\gamma)/n]^{1/2}\mathbf{a}'\mathbf{u}\overset{A}{\sim}\mathcal{N}(0,(c+\gamma^2)\sigma^2).
 \end{align}
 \]</span></p><p><strong>Third term in (3)</strong>:</p>
 <p><span class="math display">\[
 t_3 = -n^{1/2}(\hat\gamma-\gamma)^2\beta_2\overset{d}{\to}0.
 \]</span></p><p><strong>Last term in (3)</strong>:</p>
 <p><span class="math display">\[
-(\hat\gamma-\gamma)\boldsymbol{\iota}'\boldsymbol{u}/n^{1/2}\overset{d}{\to}0.
-\]</span></p><p>Therefore, by independence of <span class="math inline">\(\hat\gamma\)</span> and <span class="math inline">\(\boldsymbol{u}\)</span> we have</p>
+(\hat\gamma-\gamma)\boldsymbol{\iota}'\mathbf{u}/n^{1/2}\overset{d}{\to}0.
+\]</span></p><p>Therefore, by independence of <span class="math inline">\(\hat\gamma\)</span> and <span class="math inline">\(\mathbf{u}\)</span> we have</p>
 <p><span class="math display">\[
 n^{1/2}(\hat\beta_2-\beta_2)\overset{A}{\sim}\mathcal{N}\left(0,\frac{\beta_2^2\gamma^2\lambda^2 + (c+\gamma^2)\sigma^2}{(c+\gamma^2)^2}\right).
 \]</span></p>

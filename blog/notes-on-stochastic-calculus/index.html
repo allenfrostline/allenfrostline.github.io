@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -206,7 +212,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 <li><a href="#toc_31">Hitting Probability for Diffusion Processes</a></li>
 
-<li><a href="#toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\bs{W}_t)\)</span></a></li>
+<li><a href="#toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\mathbf{W}_t)\)</span></a></li>
 
 <li><a href="#toc_33">Dynkin&rsquo;s Formula</a></li>
 
@@ -216,7 +222,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 <li><a href="#toc_36">Multivariate Itô Process</a></li>
 
-<li><a href="#toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\bs{X}_t)\)</span></a></li>
+<li><a href="#toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\mathbf{X}_t)\)</span></a></li>
 
 <li><a href="#toc_38">Knight&rsquo;s Theorem</a></li>
 
@@ -504,18 +510,18 @@ f(x) = \int_A^x C_1\exp\left\{-\!\int_A^z\frac{2\mu(y)}{\sigma^2(y)}\d y\right\}
 <p><span class="math display">\[
 \P(X_T=B) = \frac{f(X_0) - f(A)}{f(B) - f(A)}.
 \]</span></p>
-<h1 id="toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\bs{W}_t)\)</span></h1>
+<h1 id="toc_32">Multivariable Itô Formula - <span class="math inline">\(u(\mathbf{W}_t)\)</span></h1>
 
 <p>Let <span class="math inline">\(\bs{W_t}\)</span> be a <span class="math inline">\(K\)</span>-dimensional standard Brownian motion. Let <span class="math inline">\(u:\R^K\mapsto \R\)</span> be a <span class="math inline">\(C^2\)</span> function with bounded first and second partial derivatives. Then</p>
 <p><span class="math display">\[
-\d u(\bs{W}_t) = \nabla u(\bs{W}_t)\cdot \d \bs{W}_t + \frac{1}{2}\tr[\Delta u(\bs{W}_t)] \d t
+\d u(\mathbf{W}_t) = \nabla u(\mathbf{W}_t)\cdot \d \mathbf{W}_t + \frac{1}{2}\tr[\Delta u(\mathbf{W}_t)] \d t
 \]</span></p><p>where the gradient operator <span class="math inline">\(\nabla\)</span> gives the vector of all first order partial derivatives, and the Laplace operator (or Laplacian) <span class="math inline">\(\Delta\equiv\nabla^2\)</span> gives the vector of all second order partial derivatives.</p>
 
 <h1 id="toc_33">Dynkin&rsquo;s Formula</h1>
 
 <p>If <span class="math inline">\(T\)</span> is a stopping time for <span class="math inline">\(\bs{W_t}\)</span>, then for any fixed <span class="math inline">\(t\)</span> we have</p>
 <p><span class="math display">\[
-\E[u(\bs{W}_{T\wedge t})] = u(\bs{0}) + \frac{1}{2}\E\!\left[\int_0^{T\wedge t}\!\!\Delta u(\bs{W}_s)\d s\right].
+\E[u(\mathbf{W}_{T\wedge t})] = u(\bs{0}) + \frac{1}{2}\E\!\left[\int_0^{T\wedge t}\!\!\Delta u(\mathbf{W}_s)\d s\right].
 \]</span></p>
 <h1 id="toc_34">Harmonic Functions</h1>
 
@@ -525,45 +531,45 @@ f(x) = \int_A^x C_1\exp\left\{-\!\int_A^z\frac{2\mu(y)}{\sigma^2(y)}\d y\right\}
 
 <h1 id="toc_35">Harmonic Corollary of Dynkin</h1>
 
-<p>Let <span class="math inline">\(u\)</span> be harmonic in the an open region <span class="math inline">\(\mathcal{U}\)</span> with compact support, and assume that <span class="math inline">\(u\)</span> and its partials extend continuously to the boundary <span class="math inline">\(\partial \mathcal{U}\)</span>. Define <span class="math inline">\(T\)</span> to be the first exit time of Brownian motion from <span class="math inline">\(\mathcal{U}\)</span>. for any <span class="math inline">\(\bs{x}\in\mathcal{U}\)</span>, let <span class="math inline">\(\E^{\bs{x}}\)</span> be the expectation under measure <span class="math inline">\(\P^{\bs{x}}\)</span> s.t. <span class="math inline">\(\bs{W}_t - \bs{x}\)</span> is a <span class="math inline">\(K\)</span>-dimensional standard BM. Then</p>
+<p>Let <span class="math inline">\(u\)</span> be harmonic in the an open region <span class="math inline">\(\mathcal{U}\)</span> with compact support, and assume that <span class="math inline">\(u\)</span> and its partials extend continuously to the boundary <span class="math inline">\(\partial \mathcal{U}\)</span>. Define <span class="math inline">\(T\)</span> to be the first exit time of Brownian motion from <span class="math inline">\(\mathcal{U}\)</span>. for any <span class="math inline">\(\mathbf{x}\in\mathcal{U}\)</span>, let <span class="math inline">\(\E^{\mathbf{x}}\)</span> be the expectation under measure <span class="math inline">\(\P^{\mathbf{x}}\)</span> s.t. <span class="math inline">\(\mathbf{W}_t - \mathbf{x}\)</span> is a <span class="math inline">\(K\)</span>-dimensional standard BM. Then</p>
 
 <ul>
-<li><span class="math inline">\(u(\bs{W}_{T\wedge t})\)</span> is a MT.</li>
-<li><span class="math inline">\(\E_{\bs{x}}[u(\bs{W}_T)] = u(\bs{x})\)</span>.</li>
+<li><span class="math inline">\(u(\mathbf{W}_{T\wedge t})\)</span> is a MT.</li>
+<li><span class="math inline">\(\E_{\mathbf{x}}[u(\mathbf{W}_T)] = u(\mathbf{x})\)</span>.</li>
 </ul>
 
 <h1 id="toc_36">Multivariate Itô Process</h1>
 
 <p>A multivariate Itô process is a continuous-time stochastic process <span class="math inline">\(X_t\in\R\)</span> of the form</p>
 <p><span class="math display">\[
-X_t = X_0 + \int_0^t\! M_s \d s + \int_0^t\! \bs{N}_s\cdot \d \bs{W}_s
-\]</span></p><p>where <span class="math inline">\(\bs{N}_t\)</span> is an adapted <span class="math inline">\(\R^K\)</span>−valued process and <span class="math inline">\(\bs{W}_t\)</span> is a
+X_t = X_0 + \int_0^t\! M_s \d s + \int_0^t\! \mathbf{N}_s\cdot \d \mathbf{W}_s
+\]</span></p><p>where <span class="math inline">\(\mathbf{N}_t\)</span> is an adapted <span class="math inline">\(\R^K\)</span>−valued process and <span class="math inline">\(\mathbf{W}_t\)</span> is a
 <span class="math inline">\(K\)</span>−dimensional standard BM.</p>
 
-<h1 id="toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\bs{X}_t)\)</span></h1>
+<h1 id="toc_37">General Multivariable Itô Formula - <span class="math inline">\( u(\mathbf{X}_t)\)</span></h1>
 
-<p>Let <span class="math inline">\(\bs{W}_t\in\R^K\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\bs{X}_t\in\R^m\)</span> be a vector of <span class="math inline">\(m\)</span> multivariate Itô processes satisfying</p>
+<p>Let <span class="math inline">\(\mathbf{W}_t\in\R^K\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\mathbf{X}_t\in\R^m\)</span> be a vector of <span class="math inline">\(m\)</span> multivariate Itô processes satisfying</p>
 <p><span class="math display">\[
-\d X_t^i = M_t^i\d t + \bs{N}_t^i\cdot \d \bs{W}_t.
+\d X_t^i = M_t^i\d t + \mathbf{N}_t^i\cdot \d \mathbf{W}_t.
 \]</span></p><p>Then for any <span class="math inline">\(C^2\)</span> function <span class="math inline">\(u:\R^m\mapsto\R\)</span> with bounded first and second partial derivatives</p>
 <p><span class="math display">\[
-\d u(\bs{X}_t) = \nabla u(\bs{X}_t)\cdot \d \bs{X}_t + \frac{1}{2}\tr[\Delta u(\bs{X}_t)\cdot \d [\bs{X},\bs{X}]_t].
+\d u(\mathbf{X}_t) = \nabla u(\mathbf{X}_t)\cdot \d \mathbf{X}_t + \frac{1}{2}\tr[\Delta u(\mathbf{X}_t)\cdot \d [\mathbf{X},\mathbf{X}]_t].
 \]</span></p>
 <h1 id="toc_38">Knight&rsquo;s Theorem</h1>
 
-<p>Let <span class="math inline">\(\bs{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\bs{U}_t\)</span> be an adapted <span class="math inline">\(K\)</span>−dimensional process satisfying</p>
+<p>Let <span class="math inline">\(\mathbf{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(\mathbf{U}_t\)</span> be an adapted <span class="math inline">\(K\)</span>−dimensional process satisfying</p>
 <p><span class="math display">\[
-|{\bs{U}_t}| = 1\quad\forall t\ge 0.
+|{\mathbf{U}_t}| = 1\quad\forall t\ge 0.
 \]</span></p><p>Then we know the following <span class="math inline">\(1\)</span>-dimensional Itô process is a standard BM:</p>
 <p><span class="math display">\[
-X_t := \int_0^t\!\! \bs{U}_s\cdot \d W_s.
+X_t := \int_0^t\!\! \mathbf{U}_s\cdot \d W_s.
 \]</span></p>
 <h1 id="toc_39">Radial Process</h1>
 
-<p>Let <span class="math inline">\(\bs{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(R_t=|\bs{W}_t|\)</span> be the corresponding radial process, then <span class="math inline">\(R_t\)</span> is a Bessel process with parameter <span class="math inline">\((K-1)\)</span> given by</p>
+<p>Let <span class="math inline">\(\mathbf{W}_t\)</span> be a standard <span class="math inline">\(K\)</span>−dimensional BM, and let <span class="math inline">\(R_t=|\mathbf{W}_t|\)</span> be the corresponding radial process, then <span class="math inline">\(R_t\)</span> is a Bessel process with parameter <span class="math inline">\((K-1)\)</span> given by</p>
 <p><span class="math display">\[
 \d R_t = \frac{K-1}{R_t}\d t + \d W_t^{\sgn}
-\]</span></p><p>where we define <span class="math inline">\(\d W_t^{\sgn} := \sgn(\bs{W}_t)\cdot \d \bs{W}_t\)</span>.</p>
+\]</span></p><p>where we define <span class="math inline">\(\d W_t^{\sgn} := \sgn(\mathbf{W}_t)\cdot \d \mathbf{W}_t\)</span>.</p>
 
 <h1 id="toc_40">Bessel Process</h1>
 
@@ -764,9 +770,9 @@ W_t^* = W_t - \int_0^{T\wedge t}W_s^{-1}\d s
 
 <h1 id="toc_61">Vector Lévy Process</h1>
 
-<p>A <span class="math inline">\(K\)</span>-dimensional Lévy process is a continuous-time random process <span class="math inline">\(\{\bs{X}_t\}_{t\ge 0}\)</span> with <span class="math inline">\(\bs{X}_0=\bs{0}\)</span> and i.i.d. increments. Like the one-dimensional version, vector Lévy processes are defined to be a.s. right continuous with left limits.</p>
+<p>A <span class="math inline">\(K\)</span>-dimensional Lévy process is a continuous-time random process <span class="math inline">\(\{\mathbf{X}_t\}_{t\ge 0}\)</span> with <span class="math inline">\(\mathbf{X}_0=\bs{0}\)</span> and i.i.d. increments. Like the one-dimensional version, vector Lévy processes are defined to be a.s. right continuous with left limits.</p>
 
-<p><strong>Remark:</strong> Given non-random linear transform <span class="math inline">\(F:\R^K\mapsto \R^M\)</span> and a <span class="math inline">\(K\)</span>-dimensional Lévy process <span class="math inline">\(\{\bs{X}_t\}_{t\ge 0}\)</span>, then <span class="math inline">\(\{F(\bs{X}_t)\}_{t\ge 0}\)</span> is a Lévy process on <span class="math inline">\(\R^M\)</span>.</p>
+<p><strong>Remark:</strong> Given non-random linear transform <span class="math inline">\(F:\R^K\mapsto \R^M\)</span> and a <span class="math inline">\(K\)</span>-dimensional Lévy process <span class="math inline">\(\{\mathbf{X}_t\}_{t\ge 0}\)</span>, then <span class="math inline">\(\{F(\mathbf{X}_t)\}_{t\ge 0}\)</span> is a Lévy process on <span class="math inline">\(\R^M\)</span>.</p>
 
 
   <footer>

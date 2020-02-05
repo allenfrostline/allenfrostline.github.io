@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -278,14 +284,14 @@ u^{(0)} &amp; \text{if }y_t\in (-\infty,\theta_1),\\
 u^{(i)} &amp; \text{if }y_t\in [\theta_i,\theta_{i+1}),\ i=1,2,\ldots,k-1,\\
 u^{(k)} &amp; \text{if }y_t\in [\theta_k,\infty).
 \end{cases}
-\]</span></p><p>Variable <span class="math inline">\(y_t\)</span> is predicted using a linear model <span class="math inline">\(y_t=\bs{\beta}\bs{X}_t + \epsilon_t\)</span>, which gives</p>
+\]</span></p><p>Variable <span class="math inline">\(y_t\)</span> is predicted using a linear model <span class="math inline">\(y_t=\bs{\beta}\mathbf{X}_t + \epsilon_t\)</span>, which gives</p>
 <p><span class="math display">\[
 \begin{align}
-\P[u_t=u^{(i)}\mid \bs{X}_t] &amp;= \P[\theta_{i-1}\le \bs{\beta}\bs{X}_t &lt; \theta_i\mid \bs{X}_t]\\
+\P[u_t=u^{(i)}\mid \mathbf{X}_t] &amp;= \P[\theta_{i-1}\le \bs{\beta}\mathbf{X}_t &lt; \theta_i\mid \mathbf{X}_t]\\
 &amp;= \begin{cases}
-\Phi\!\left(\frac{\theta_1-\bs{\beta X}_t}{\sigma_t}\right) &amp; i=0,\\
-\Phi\!\left(\frac{\theta_{i+1}-\bs{\beta X}_t}{\sigma_t}\right) - \Phi\!\left(\frac{\theta_{i}-\bs{\beta X}_t}{\sigma_t}\right) &amp; i=1,2,\ldots,k-1,\\
-1 - \Phi\!\left(\frac{\theta_{k}-\bs{\beta X}_t}{\sigma_t}\right) &amp;
+\Phi\!\left(\frac{\theta_1-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) &amp; i=0,\\
+\Phi\!\left(\frac{\theta_{i+1}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) - \Phi\!\left(\frac{\theta_{i}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) &amp; i=1,2,\ldots,k-1,\\
+1 - \Phi\!\left(\frac{\theta_{k}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) &amp;
  i=k.
 \end{cases}
 \end{align}
@@ -303,21 +309,21 @@ u^{(k)} &amp; \text{if }y_t\in [\theta_k,\infty).
 
 <p>Specifically, for <span class="math inline">\(p_i=\P[A_i=1]\)</span> we let</p>
 <p><span class="math display">\[
-\ln\left(\frac{p_i}{1-p_i}\right) = \bs{\beta X}_i\Rightarrow
-p_i = \frac{\exp(\bs{\beta X}_i)}{1 + \exp(\bs{\beta X}_i)}.
+\ln\left(\frac{p_i}{1-p_i}\right) = \bs{\beta} \mathbf{X}_i\Rightarrow
+p_i = \frac{\exp(\bs{\beta} \mathbf{X}_i)}{1 + \exp(\bs{\beta} \mathbf{X}_i)}.
 \]</span></p><p>For <span class="math inline">\(\delta_i=\P[D_i=1\mid A_i=1]\)</span> we let</p>
 <p><span class="math display">\[
-\ln\left(\frac{\delta_i}{1-\delta_i}\right) = \bs{\gamma Z}_i\Rightarrow
-\delta_i = \frac{\exp(\bs{\gamma Z}_i)}{1 + \exp(\bs{\gamma Z}_i)}.
+\ln\left(\frac{\delta_i}{1-\delta_i}\right) = \bs{\gamma} \mathbf{Z}_i\Rightarrow
+\delta_i = \frac{\exp(\bs{\gamma} \mathbf{Z}_i)}{1 + \exp(\bs{\gamma} \mathbf{Z}_i)}.
 \]</span></p><p>For <span class="math inline">\(S_i\)</span> we let</p>
 <p><span class="math display">\[
 S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=-1}
 \]</span></p><p>where <span class="math inline">\(g(\lambda_{\xi,i})\)</span> is geometric distribution with parameter <span class="math inline">\(\lambda_{\xi,i}\)</span> estimated from</p>
 <p><span class="math display">\[
-\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\bs{W}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\bs{W}_i)}{1 + \exp(\bs{\theta}_\xi\bs{W}_i)},  \quad \xi=u,d.
+\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\mathbf{W}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\mathbf{W}_i)}{1 + \exp(\bs{\theta}_\xi\mathbf{W}_i)},  \quad \xi=u,d.
 \]</span></p><p><code>Examples</code> We can choose features as below</p>
 <p><span class="math display">\[
-\bs{X}_i = (1, A_{i-1}),\ \bs{Z}_i=(1,D_{i-1})\ \text{and}\ \bs{W}_i = (1,S_{i-1}).
+\mathbf{X}_i = (1, A_{i-1}),\ \mathbf{Z}_i=(1,D_{i-1})\ \text{and}\ \mathbf{W}_i = (1,S_{i-1}).
 \]</span></p><p>from which we can train a simple decomposition model using in-sample data.</p>
 
 <h2 id="toc_10">Hawkes Model</h2>

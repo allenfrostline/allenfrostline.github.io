@@ -61,11 +61,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -152,7 +158,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  \newcommand{Cov}{\text{Cov}}
  \newcommand{Var}{\text{Var}}
  \newcommand{span}{\text{span}}
- \newcommand{bs}{\boldsymbol}
+ \newcommand{bs}{\mathbf}
  \newcommand{R}{\mathbb{R}}
  \newcommand{R}{\mathbb{C}}
  \newcommand{rank}{\text{rank}}

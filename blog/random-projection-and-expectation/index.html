@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -155,7 +161,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 <p>A couple of months ago I was asked the following question during an interview (for propriatary concerns I&rsquo;m not gonna disclose the industry or name of the company):
 <span class="math inline">\(\newcommand{R}{\mathbb{R}}
  \newcommand{E}{\text{E}}
- \newcommand{bs}{\boldsymbol}
+ \newcommand{bs}{\mathbf}
  \newcommand{N}{\mathbb{N}}\)</span></p>
 
 <blockquote>

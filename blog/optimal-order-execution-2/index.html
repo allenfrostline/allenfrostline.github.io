@@ -56,11 +56,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -162,15 +168,15 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 <h1 id="toc_0">Rama Cont, Sasha Stoikov and Rishi Talreja (2010)</h1>
 
-<p>In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain. The order book is evenly divided into several buckets of prices, where order sizes are recalculated s.t. positive sizes represent ask orders, and negative sizes represent bid orders. Let&rsquo;s denote this order book by <span class="math inline">\(\boldsymbol{x}\in\mathbb{Z}^n\)</span>. Also, let <span class="math inline">\(\boldsymbol{x}_{p\pm 1} \equiv \boldsymbol{x} \pm \boldsymbol{e}^p\)</span> where <span class="math inline">\(\boldsymbol{e}^p\in\mathbb{Z}^n\)</span> is the <span class="math inline">\(p\)</span>-th base vector. Denote the best ask and bid prices by <span class="math inline">\(p^a\)</span> and <span class="math inline">\(p^b\)</span>. By assuming unit-sized orders<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> and conditioning on the inflow of new orders, the Markov state transitioning can be described as below:</p>
+<p>In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain. The order book is evenly divided into several buckets of prices, where order sizes are recalculated s.t. positive sizes represent ask orders, and negative sizes represent bid orders. Let&rsquo;s denote this order book by <span class="math inline">\(\mathbf{x}\in\mathbb{Z}^n\)</span>. Also, let <span class="math inline">\(\mathbf{x}_{p\pm 1} \equiv \mathbf{x} \pm \mathbf{e}^p\)</span> where <span class="math inline">\(\mathbf{e}^p\in\mathbb{Z}^n\)</span> is the <span class="math inline">\(p\)</span>-th base vector. Denote the best ask and bid prices by <span class="math inline">\(p^a\)</span> and <span class="math inline">\(p^b\)</span>. By assuming unit-sized orders<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> and conditioning on the inflow of new orders, the Markov state transitioning can be described as below:</p>
 
 <ul>
-<li>A limit buy order at price <span class="math inline">\(p &lt; p^a \Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p-1}\)</span>,</li>
-<li>A limit sell order at price <span class="math inline">\(p &gt; p^b \Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p+1}\)</span>,</li>
-<li>A market buy order <span class="math inline">\(\Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p^a-1}\)</span>,</li>
-<li>A market sell order <span class="math inline">\(\Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p^b+1}\)</span>,</li>
-<li>A cancellation of an order at price <span class="math inline">\(p &lt; p^a \Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p+1}\)</span>,</li>
-<li>A cancellation of an order at price <span class="math inline">\(p &gt; p^b \Rightarrow \boldsymbol{x} \to \boldsymbol{x}_{p-1}\)</span>.</li>
+<li>A limit buy order at price <span class="math inline">\(p &lt; p^a \Rightarrow \mathbf{x} \to \mathbf{x}_{p-1}\)</span>,</li>
+<li>A limit sell order at price <span class="math inline">\(p &gt; p^b \Rightarrow \mathbf{x} \to \mathbf{x}_{p+1}\)</span>,</li>
+<li>A market buy order <span class="math inline">\(\Rightarrow \mathbf{x} \to \mathbf{x}_{p^a-1}\)</span>,</li>
+<li>A market sell order <span class="math inline">\(\Rightarrow \mathbf{x} \to \mathbf{x}_{p^b+1}\)</span>,</li>
+<li>A cancellation of an order at price <span class="math inline">\(p &lt; p^a \Rightarrow \mathbf{x} \to \mathbf{x}_{p+1}\)</span>,</li>
+<li>A cancellation of an order at price <span class="math inline">\(p &gt; p^b \Rightarrow \mathbf{x} \to \mathbf{x}_{p-1}\)</span>.</li>
 </ul>
 
 <p>Furthermore, the authors assumed stationary Poisson arrivals for these inflows in each bucket. Arrival rate for limit orders <span class="math inline">\(\lambda(p)\)</span> is an increasing function when <span class="math inline">\(p\)</span> is smaller than the current price, and is decreasing when <span class="math inline">\(p\)</span> is larger than the current price. Arrival rate for market orders is assumed to be constant <span class="math inline">\(\mu\)</span>, and arrival rate for order cancellations should by assumption be proportional to the current order size in the underlying bucket of the book.</p>
@@ -178,12 +184,12 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 <p>Therefore, we have</p>
 
 <ul>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p-1}\)</span> at rate <span class="math inline">\(\lambda(p^a-p)\)</span> for <span class="math inline">\(p&lt;p^a\)</span>,</li>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p+1}\)</span> at rate <span class="math inline">\(\lambda(p-p^b)\)</span> for <span class="math inline">\(p&gt;p^b\)</span>,</li>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p^a-1}\)</span> at rate <span class="math inline">\(\mu\)</span>,</li>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p^b+1}\)</span> at rate <span class="math inline">\(\mu\)</span>,</li>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p+1}\)</span> at rate <span class="math inline">\(\theta(p^a - p)|x^p|\)</span> for <span class="math inline">\(p&lt;p^a\)</span>,</li>
-<li><span class="math inline">\(\boldsymbol{x}\to \boldsymbol{x}_{p-1}\)</span> at rate <span class="math inline">\(\theta(p-p^b)|x^p|\)</span> for <span class="math inline">\(p&gt;p^b\)</span>.</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p-1}\)</span> at rate <span class="math inline">\(\lambda(p^a-p)\)</span> for <span class="math inline">\(p&lt;p^a\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p+1}\)</span> at rate <span class="math inline">\(\lambda(p-p^b)\)</span> for <span class="math inline">\(p&gt;p^b\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p^a-1}\)</span> at rate <span class="math inline">\(\mu\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p^b+1}\)</span> at rate <span class="math inline">\(\mu\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p+1}\)</span> at rate <span class="math inline">\(\theta(p^a - p)|x^p|\)</span> for <span class="math inline">\(p&lt;p^a\)</span>,</li>
+<li><span class="math inline">\(\mathbf{x}\to \mathbf{x}_{p-1}\)</span> at rate <span class="math inline">\(\theta(p-p^b)|x^p|\)</span> for <span class="math inline">\(p&gt;p^b\)</span>.</li>
 </ul>
 
 <p>The empirical performance of one-step ahead prediction is illustrated below.</p>
@@ -208,19 +214,19 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 <tbody>
 <tr>
 <td align="center">Untra-high frequency</td>
-<td align="center"><span class="math inline">\(\sim 10^{-3} - 1\)</span> s</td>
+<td align="center"><span class="math inline">\(\sim\)</span> <span class="math inline">\(10^{-3}\)</span> to <span class="math inline">\(1\)</span> seconds</td>
 <td align="center">Microstructure, latency</td>
 </tr>
 
 <tr>
 <td align="center">High frequency</td>
-<td align="center"><span class="math inline">\(\sim 10 - 10^2\)</span> s</td>
+<td align="center"><span class="math inline">\(\sim\)</span> <span class="math inline">\(10\)</span> to <span class="math inline">\(10^2\)</span> seconds</td>
 <td align="center">Optimal execution</td>
 </tr>
 
 <tr>
 <td align="center">Daily</td>
-<td align="center"><span class="math inline">\(\sim 10^3 - 10^4\)</span> s</td>
+<td align="center"><span class="math inline">\(\sim\)</span> <span class="math inline">\(10^3\)</span> to <span class="math inline">\(10^4\)</span> seconds</td>
 <td align="center">Trading strategies, option hedging</td>
 </tr>
 </tbody>

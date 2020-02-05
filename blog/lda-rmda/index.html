@@ -61,11 +61,17 @@
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   "HTML-CSS": {
+    scale: 95,
     availableFonts: ["TeX"],
     preferredFonts: "MathJax_SansSerif",
     undefinedFamily: "MathJax_SansSerif",
-    linebreaks: { automatic: true }
-  }
+    linebreaks: { automatic: true },
+    matchFontHeight: true,
+    noReflows: false,
+  },
+  "fast-preview": {
+    disabled: true
+  },
 });
 MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
   var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
@@ -169,31 +175,31 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 <p><img src="/images/lda_rmda2.png" alt="" /></p>
 
-<p>As shown above, when we consider a 2-dimensional binary classification problem, the LDA is equivalently finding the optimal direction vector <span class="math inline">\(\boldsymbol{w}\)</span> s.t. the ratio of <span class="math inline">\(\boldsymbol{w}^T\boldsymbol{S}_b\boldsymbol{w}\)</span> (sum of between-class covariances of the projections) and <span class="math inline">\(\boldsymbol{w}^T\boldsymbol{S}_w\boldsymbol{w}\)</span> (sum of within-class covariances of the projections) is maximized. Specifically, we define</p>
+<p>As shown above, when we consider a 2-dimensional binary classification problem, the LDA is equivalently finding the optimal direction vector <span class="math inline">\(\mathbf{w}\)</span> s.t. the ratio of <span class="math inline">\(\mathbf{w}^T\mathbf{S}_b\mathbf{w}\)</span> (sum of between-class covariances of the projections) and <span class="math inline">\(\mathbf{w}^T\mathbf{S}_w\mathbf{w}\)</span> (sum of within-class covariances of the projections) is maximized. Specifically, we define</p>
 <p><span class="math display">\[
-\boldsymbol{S}_b = (\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)^T(\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)
+\mathbf{S}_b = (\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)^T(\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)
 \]</span></p><p>and</p>
 <p><span class="math display">\[
-\boldsymbol{S}_w = \sum_{\boldsymbol{x}\in X_0}(\boldsymbol{x} - \boldsymbol{\mu}_0)^T(\boldsymbol{x} - \boldsymbol{\mu}_0) + \sum_{\boldsymbol{x}\in X_1}(\boldsymbol{x} - \boldsymbol{\mu}_1)^T(\boldsymbol{x} - \boldsymbol{\mu}_1).
+\mathbf{S}_w = \sum_{\mathbf{x}\in X_0}(\mathbf{x} - \boldsymbol{\mu}_0)^T(\mathbf{x} - \boldsymbol{\mu}_0) + \sum_{\mathbf{x}\in X_1}(\mathbf{x} - \boldsymbol{\mu}_1)^T(\mathbf{x} - \boldsymbol{\mu}_1).
 \]</span></p><p>Therefore, the objective of this maximization problem is</p>
 <p><span class="math display">\[
-J = \frac{\boldsymbol{w}^T\boldsymbol{S}_b\boldsymbol{w}}{\boldsymbol{w}^T\boldsymbol{S}_w\boldsymbol{w}}
+J = \frac{\mathbf{w}^T\mathbf{S}_b\mathbf{w}}{\mathbf{w}^T\mathbf{S}_w\mathbf{w}}
 \]</span></p><p>which is also called the generalized Rayleigh quotiet.</p>
 
 <p>The homogenous objective can be equivalently written into</p>
 <p><span class="math display">\[
 \begin{align}
-\min_{\boldsymbol{w}}\quad &amp;-\boldsymbol{w}^T\boldsymbol{S}_b\boldsymbol{w}\\\\
-\text{s.t.}\quad &amp;\boldsymbol{w}^T\boldsymbol{S}_w\boldsymbol{w} = 1
+\min_{\mathbf{w}}\quad &amp;-\mathbf{w}^T\mathbf{S}_b\mathbf{w}\\\\
+\text{s.t.}\quad &amp;\mathbf{w}^T\mathbf{S}_w\mathbf{w} = 1
 \end{align}
 \]</span></p><p>which, by using the method of Langrange multipliers, gives solution</p>
 <p><span class="math display">\[
-\boldsymbol{w} = \boldsymbol{S}_w^{-1}(\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)
-\]</span></p><p>and the final prediction for new data <span class="math inline">\(\boldsymbol{x}\)</span> is based on the scale of <span class="math inline">\(\boldsymbol{w}^T\boldsymbol{x}\)</span>.</p>
+\mathbf{w} = \mathbf{S}_w^{-1}(\boldsymbol{\mu}_0 - \boldsymbol{\mu}_1)
+\]</span></p><p>and the final prediction for new data <span class="math inline">\(\mathbf{x}\)</span> is based on the scale of <span class="math inline">\(\mathbf{w}^T\mathbf{x}\)</span>.</p>
 
 <p>For multiclass classification, the solution is similar. Here we propose the score function below without derivation:</p>
 <p><span class="math display">\[
-\delta_k = \boldsymbol{x}^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_k - \frac{1}{2}\boldsymbol{\mu}_k^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_k + \log\pi_k
+\delta_k = \mathbf{x}^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_k - \frac{1}{2}\boldsymbol{\mu}_k^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_k + \log\pi_k
 \]</span></p><p>where <span class="math inline">\(\boldsymbol{\mu}_k\)</span> is the sample mean of all data within class <span class="math inline">\(k\)</span>, and <span class="math inline">\(\pi_k\)</span> is the percentage of all data that is of this class. By comparing these <span class="math inline">\(k\)</span> scores we determine the best prediction with the highest value.</p>
 
 <h1 id="toc_1">Codes of LDA</h1>
@@ -242,7 +248,7 @@ colors = ['#b80b0b', '#b89a0b', '#378000', '#2e157e']
         return max(prob, key=prob.get)
 </code></pre>
 
-<p>Then we define three classes of 2D input <span class="math inline">\(\boldsymbol{X}\)</span> and pass it to the classifier. Original as well as the predicted distributions are plotted with accuracy printed below.</p>
+<p>Then we define three classes of 2D input <span class="math inline">\(\mathbf{X}\)</span> and pass it to the classifier. Original as well as the predicted distributions are plotted with accuracy printed below.</p>
 
 <pre><code class="language-python">np.random.seed(2)
 
@@ -288,7 +294,7 @@ print('Training accuracy: {:.2f}%'.format(accuracy * N))
 
 <h1 id="toc_2">A Sketch of R-MDA</h1>
 
-<p>For data with inherent matrix forms like electroencephalogram (EEG) data introduced in Jie Su (2018), the classical LDA is not the most appropriate solution since it forcibly requires vector input. To use LDA for classification on such datasets we have to vectorize the matrices and potentially losing some critical structural information. Authors of this paper invented this new method called Regularized Matrix Discriminant Analysis (R-MDA) that naturally takes matric input in analysis. Furthermore, noticing that inversing large matrix <span class="math inline">\(\boldsymbol{S}_w\)</span> in high dimensions can be computationally burdonsome, they adopted the Alternating Direction Method of Multipliers (ADMM) to iteratively optimize the objective instead of the widely-used Singular Valur Decomposition (SVD). A graphical representation of the R-MDA compared with LDA is as follows.</p>
+<p>For data with inherent matrix forms like electroencephalogram (EEG) data introduced in Jie Su (2018), the classical LDA is not the most appropriate solution since it forcibly requires vector input. To use LDA for classification on such datasets we have to vectorize the matrices and potentially losing some critical structural information. Authors of this paper invented this new method called Regularized Matrix Discriminant Analysis (R-MDA) that naturally takes matric input in analysis. Furthermore, noticing that inversing large matrix <span class="math inline">\(\mathbf{S}_w\)</span> in high dimensions can be computationally burdonsome, they adopted the Alternating Direction Method of Multipliers (ADMM) to iteratively optimize the objective instead of the widely-used Singular Valur Decomposition (SVD). A graphical representation of the R-MDA compared with LDA is as follows.</p>
 
 <p><img src="/images/lda_rmda3.png" alt="" /></p>
 
