@@ -41,6 +41,11 @@
     <link rel="stylesheet" href="/css/fonts.css" />
     <script async src="/js/load-typekit.js"></script>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
 <script>
 (function(u, c) {
   var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -52,6 +57,34 @@
 });
 </script>
 <link rel="stylesheet" href="/css/custom.css" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: ["TeX"],
+    preferredFonts: "MathJax_SansSerif",
+    undefinedFamily: "MathJax_SansSerif",
+    linebreaks: { automatic: true }
+  }
+});
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+</script>
+<script type="math/tex">
+\require{sansmath}
+</script>
 
   </head>
 
@@ -654,25 +687,6 @@ document.addEventListener('keyup', function(e) {
 <script async src="/js/alt-title.js"></script>
 
 <script async src="/js/header-link.js"></script>
-
-
-
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  "HTML-CSS": {
-    availableFonts: [],
-    preferredFonts: "inherit",
-    undefinedFamily: "inherit",
-    linebreaks: {
-      automatic: true
-    }
-  }
-});
-</script>
 
 
   

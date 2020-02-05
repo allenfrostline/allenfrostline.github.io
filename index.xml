@@ -6388,7 +6388,10 @@ for hue in [&#39;lookback_window&#39;, &#39;minimum_occurrence&#39;, &#39;minimu
 &lt;/ul&gt;
 
 &lt;/nav&gt;
-&lt;p&gt;目人關上年時連大！體子一開類到營導她！院組火原望腦卻半頭來在說？假方重文。中什跟，營定分了營技，子主銷樣一包目國北個的係氣度；引曾經就。得親筆點灣提！建家數進，我不來：生微節係單門怎公子！只過河、化族際光說原形底，在還之展拿心少，心重學似市本力多出習任用軍不道要。的主吃行要故又神界食其一看我萬此軍過。者美性學還食然話系產如新先！望處因也於不為氣名調根冷還公們國標受連輕，一沒受，了地是大太口？過市裝，見女解心為步排？園小前工，在有超，無得步高論與室外公傷變算班興養身靜，功半成第，加多所收育你公了國無間性民不信在。兩感想，推滿安大微優停信雨了別，那現界氣企體的麼公可以處戰聲有醫是的意起覺在站的愛適此史教教好文此指務克。我自區來收你強器至陽形然一勢……通魚當全等中速開只風同度然不！研都人去山裡然更男園得曾是便無座市來是論準！展最能代處下代能病，下老光。&lt;/p&gt;
+&lt;p&gt;Foldable paragraphs: not working.&lt;/p&gt;
+
+&lt;p&gt;&lt;details&gt;&lt;summary&gt;Foldable paragraphs&lt;/summary&gt;
+目人關上年時連大！體子一開類到營導她！院組火原望腦卻半頭來在說？假方重文。中什跟，營定分了營技，子主銷樣一包目國北個的係氣度；引曾經就。得親筆點灣提！建家數進，我不來：生微節係單門怎公子！只過河、化族際光說原形底，在還之展拿心少，心重學似市本力多出習任用軍不道要。的主吃行要故又神界食其一看我萬此軍過。者美性學還食然話系產如新先！望處因也於不為氣名調根冷還公們國標受連輕，一沒受，了地是大太口？過市裝，見女解心為步排？園小前工，在有超，無得步高論與室外公傷變算班興養身靜，功半成第，加多所收育你公了國無間性民不信在。兩感想，推滿安大微優停信雨了別，那現界氣企體的麼公可以處戰聲有醫是的意起覺在站的愛適此史教教好文此指務克。我自區來收你強器至陽形然一勢……通魚當全等中速開只風同度然不！研都人去山裡然更男園得曾是便無座市來是論準！展最能代處下代能病，下老光。&lt;/details&gt;&lt;/p&gt;
 
 &lt;p&gt;充ンめ府壮2変ロツコ社報本ぽず優銀いげよじ道追映活ちかん佐幻フる指稿でスどる人印ぴね。辺ぴリ琉万セサヒノ扱72通ク映由ばれと目業ゆす券同フスセリ条趣94府いゆし況一コクレ刊記勲悔殿牲つえ。緊ヨムハロ張受ネツ際込ノミ並計イ突2集キエ原更実レ青樹受レ中科リ湿車すよで体明づ話欧ラ職米ばぞこん波3台フるぎ面明レセミ部隆コヱヒ応反か索宮なでぽぴ。&lt;/p&gt;
 
@@ -6441,7 +6444,7 @@ for hue in [&#39;lookback_window&#39;, &#39;minimum_occurrence&#39;, &#39;minimu
 &lt;p&gt;步排？園小前工，在有超，無得步高論與室外公傷變算班興養身靜，功半成第，加多所收育你公了國無間性民不信在。兩感想，推滿安大微優停信雨了別，那現界氣企體的麼公可以處戰聲有醫是的意起覺在站的愛適此史教教好文此指務克。我自區來收你強器至陽——&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;哎。要選全校駆阪戦変慶的手永案善逃富真試高。話重会得著者虚大者聞定故作必船憩稿広。共件周済購図練話冊新営立。辺載年媛趣際芦臓所図前豊出育。裁導要狙景賞年亀肉大初境。善被家転年間真気成都研家和景説。行格評期呪作球個調山近戦第将将支企。利体誌日時彦速完社役年県葉天北幣展開。書婦立長知監見出術気千派融字召家人劇。&lt;/p&gt;
+&lt;p&gt;“哎。”要選全校駆阪戦変慶的手永案善逃富真試高。話重会得著者虚大者聞定故作必船憩稿広。共件周済購図練話冊新営立。辺載年媛趣際芦臓所図前豊出育。裁導要狙景賞年亀肉大初境。善被家転年間真気成都研家和景説。行格評期呪作球個調山近戦第将将支企。利体誌日時彦速完社役年県葉天北幣展開。書婦立長知監見出術気千派融字召家人劇。&lt;/p&gt;
 
 &lt;p&gt;--鲁迅《我没说过》&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -14396,7 +14399,7 @@ PV_S = P^f\cdot N = \exp[-r^f(T-t)]\cdot N \approx N.
 
 where we used the fact that $D^f(t)=1$. Now under risk-neutral measure, we know
 
-\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;\left(\frac{1}{2}\sigma^2S^2V&lt;em&gt;{SS} + V&lt;/em&gt;t - r^fV&lt;em&gt;S S\right)\d t = r^d(V  - V&lt;/em&gt;S S)\d t
+\]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;\left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right)\d t = r^d(V  - V_S S)\d t
 $$&lt;/p&gt;
 
 &lt;p&gt;which gives the so-called &lt;strong&gt;Garman-Kohlhagen PDE&lt;/strong&gt;:&lt;/p&gt;
@@ -18361,26 +18364,26 @@ data.head()
 &lt;tr&gt;
 &lt;th&gt;&lt;/th&gt;
 &lt;th&gt;time&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;1&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;10&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;100&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;101&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;102&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;103&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;104&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;105&lt;/th&gt;
-&lt;th&gt;ask&lt;em&gt;price&lt;/em&gt;106&lt;/th&gt;
+&lt;th&gt;ask_price_1&lt;/th&gt;
+&lt;th&gt;ask_price_10&lt;/th&gt;
+&lt;th&gt;ask_price_100&lt;/th&gt;
+&lt;th&gt;ask_price_101&lt;/th&gt;
+&lt;th&gt;ask_price_102&lt;/th&gt;
+&lt;th&gt;ask_price_103&lt;/th&gt;
+&lt;th&gt;ask_price_104&lt;/th&gt;
+&lt;th&gt;ask_price_105&lt;/th&gt;
+&lt;th&gt;ask_price_106&lt;/th&gt;
 &lt;th&gt;&amp;hellip;&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;90&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;91&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;92&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;93&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;94&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;95&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;96&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;97&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;98&lt;/th&gt;
-&lt;th&gt;bid&lt;em&gt;vol&lt;/em&gt;99&lt;/th&gt;
+&lt;th&gt;bid_vol_90&lt;/th&gt;
+&lt;th&gt;bid_vol_91&lt;/th&gt;
+&lt;th&gt;bid_vol_92&lt;/th&gt;
+&lt;th&gt;bid_vol_93&lt;/th&gt;
+&lt;th&gt;bid_vol_94&lt;/th&gt;
+&lt;th&gt;bid_vol_95&lt;/th&gt;
+&lt;th&gt;bid_vol_96&lt;/th&gt;
+&lt;th&gt;bid_vol_97&lt;/th&gt;
+&lt;th&gt;bid_vol_98&lt;/th&gt;
+&lt;th&gt;bid_vol_99&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 
@@ -26616,8 +26619,9 @@ P(\lim_{n\to\infty}\mathcal{S}_n)=\lim_{n\to\infty}P(\mathcal{S_n})
 F(x)=P(\{\omega\mid X(\omega)\le x\})=P(X\le x).
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Result 2&lt;/strong&gt; If &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is a distribution function, then &lt;span class=&#34;math inline&#34;&gt;\(F(-\infty)=0\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(F(\infty)=1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is nondecreasing and continuous from the right, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\displaystyle\lim_{x\downarrow a}F(x)=F(a)\)&lt;/span&gt;.
-&lt;strong&gt;Exercise 1&lt;/strong&gt; Prove &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is continuous from the right.&lt;br /&gt;
+&lt;p&gt;&lt;strong&gt;Result 2&lt;/strong&gt; If &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is a distribution function, then &lt;span class=&#34;math inline&#34;&gt;\(F(-\infty)=0\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(F(\infty)=1\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is nondecreasing and continuous from the right, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\displaystyle\lim_{x\downarrow a}F(x)=F(a)\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Exercise 1&lt;/strong&gt; Prove &lt;span class=&#34;math inline&#34;&gt;\(F(x)\)&lt;/span&gt; is continuous from the right.&lt;br /&gt;
 Proof. Define sequence &lt;span class=&#34;math inline&#34;&gt;\(\{x_n\}\)&lt;/span&gt; by&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 x_1&amp;gt;x_2&amp;gt;\ldots&amp;gt;x_n&amp;gt;\ldots,\lim_{n\to\infty}x_n=a

@@ -41,6 +41,11 @@
     <link rel="stylesheet" href="/css/fonts.css" />
     <script async src="/js/load-typekit.js"></script>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
 <script>
 (function(u, c) {
   var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -52,6 +57,34 @@
 });
 </script>
 <link rel="stylesheet" href="/css/custom.css" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: ["TeX"],
+    preferredFonts: "MathJax_SansSerif",
+    undefinedFamily: "MathJax_SansSerif",
+    linebreaks: { automatic: true }
+  }
+});
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+</script>
+<script type="math/tex">
+\require{sansmath}
+</script>
 
   </head>
 
@@ -165,26 +198,26 @@ data.head()
 <tr>
 <th></th>
 <th>time</th>
-<th>ask<em>price</em>1</th>
-<th>ask<em>price</em>10</th>
-<th>ask<em>price</em>100</th>
-<th>ask<em>price</em>101</th>
-<th>ask<em>price</em>102</th>
-<th>ask<em>price</em>103</th>
-<th>ask<em>price</em>104</th>
-<th>ask<em>price</em>105</th>
-<th>ask<em>price</em>106</th>
+<th>ask_price_1</th>
+<th>ask_price_10</th>
+<th>ask_price_100</th>
+<th>ask_price_101</th>
+<th>ask_price_102</th>
+<th>ask_price_103</th>
+<th>ask_price_104</th>
+<th>ask_price_105</th>
+<th>ask_price_106</th>
 <th>&hellip;</th>
-<th>bid<em>vol</em>90</th>
-<th>bid<em>vol</em>91</th>
-<th>bid<em>vol</em>92</th>
-<th>bid<em>vol</em>93</th>
-<th>bid<em>vol</em>94</th>
-<th>bid<em>vol</em>95</th>
-<th>bid<em>vol</em>96</th>
-<th>bid<em>vol</em>97</th>
-<th>bid<em>vol</em>98</th>
-<th>bid<em>vol</em>99</th>
+<th>bid_vol_90</th>
+<th>bid_vol_91</th>
+<th>bid_vol_92</th>
+<th>bid_vol_93</th>
+<th>bid_vol_94</th>
+<th>bid_vol_95</th>
+<th>bid_vol_96</th>
+<th>bid_vol_97</th>
+<th>bid_vol_98</th>
+<th>bid_vol_99</th>
 </tr>
 </thead>
 
@@ -826,25 +859,6 @@ document.addEventListener('keyup', function(e) {
 <script async src="/js/alt-title.js"></script>
 
 <script async src="/js/header-link.js"></script>
-
-
-
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  "HTML-CSS": {
-    availableFonts: [],
-    preferredFonts: "inherit",
-    undefinedFamily: "inherit",
-    linebreaks: {
-      automatic: true
-    }
-  }
-});
-</script>
 
 
   

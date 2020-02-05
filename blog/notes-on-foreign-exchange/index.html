@@ -36,6 +36,11 @@
     <link rel="stylesheet" href="/css/fonts.css" />
     <script async src="/js/load-typekit.js"></script>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
 <script>
 (function(u, c) {
   var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -47,6 +52,34 @@
 });
 </script>
 <link rel="stylesheet" href="/css/custom.css" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: ["TeX"],
+    preferredFonts: "MathJax_SansSerif",
+    undefinedFamily: "MathJax_SansSerif",
+    linebreaks: { automatic: true }
+  }
+});
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+</script>
+<script type="math/tex">
+\require{sansmath}
+</script>
 
   </head>
 
@@ -314,7 +347,7 @@ PV_S = P^f\cdot N = \exp[-r^f(T-t)]\cdot N \approx N.
 
 where we used the fact that $D^f(t)=1$. Now under risk-neutral measure, we know
 
-\]</span></p><p>\left(\frac{1}{2}\sigma^2S^2V<em>{SS} + V</em>t - r^fV<em>S S\right)\d t = r^d(V  - V</em>S S)\d t
+\]</span></p><p>\left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right)\d t = r^d(V  - V_S S)\d t
 $$</p>
 
 <p>which gives the so-called <strong>Garman-Kohlhagen PDE</strong>:</p>
@@ -544,25 +577,6 @@ document.addEventListener('keyup', function(e) {
 <script async src="/js/alt-title.js"></script>
 
 <script async src="/js/header-link.js"></script>
-
-
-
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  "HTML-CSS": {
-    availableFonts: [],
-    preferredFonts: "inherit",
-    undefinedFamily: "inherit",
-    linebreaks: {
-      automatic: true
-    }
-  }
-});
-</script>
 
 
   

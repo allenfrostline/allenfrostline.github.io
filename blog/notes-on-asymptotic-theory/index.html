@@ -36,6 +36,11 @@
     <link rel="stylesheet" href="/css/fonts.css" />
     <script async src="/js/load-typekit.js"></script>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
 <script>
 (function(u, c) {
   var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -47,6 +52,34 @@
 });
 </script>
 <link rel="stylesheet" href="/css/custom.css" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  "HTML-CSS": {
+    availableFonts: ["TeX"],
+    preferredFonts: "MathJax_SansSerif",
+    undefinedFamily: "MathJax_SansSerif",
+    linebreaks: { automatic: true }
+  }
+});
+MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+});
+</script>
+<script type="math/tex">
+\require{sansmath}
+</script>
 
   </head>
 
@@ -187,8 +220,9 @@ P(\lim_{n\to\infty}\mathcal{S}_n)=\lim_{n\to\infty}P(\mathcal{S_n})
 F(x)=P(\{\omega\mid X(\omega)\le x\})=P(X\le x).
 \]</span></p>
 <blockquote>
-<p><strong>Result 2</strong> If <span class="math inline">\(F(x)\)</span> is a distribution function, then <span class="math inline">\(F(-\infty)=0\)</span>, <span class="math inline">\(F(\infty)=1\)</span> and <span class="math inline">\(F(x)\)</span> is nondecreasing and continuous from the right, i.e. <span class="math inline">\(\displaystyle\lim_{x\downarrow a}F(x)=F(a)\)</span>.
-<strong>Exercise 1</strong> Prove <span class="math inline">\(F(x)\)</span> is continuous from the right.<br />
+<p><strong>Result 2</strong> If <span class="math inline">\(F(x)\)</span> is a distribution function, then <span class="math inline">\(F(-\infty)=0\)</span>, <span class="math inline">\(F(\infty)=1\)</span> and <span class="math inline">\(F(x)\)</span> is nondecreasing and continuous from the right, i.e. <span class="math inline">\(\displaystyle\lim_{x\downarrow a}F(x)=F(a)\)</span>.</p>
+
+<p><strong>Exercise 1</strong> Prove <span class="math inline">\(F(x)\)</span> is continuous from the right.<br />
 Proof. Define sequence <span class="math inline">\(\{x_n\}\)</span> by</p>
 <p><span class="math display">\[
 x_1&gt;x_2&gt;\ldots&gt;x_n&gt;\ldots,\lim_{n\to\infty}x_n=a
@@ -747,25 +781,6 @@ document.addEventListener('keyup', function(e) {
 <script async src="/js/alt-title.js"></script>
 
 <script async src="/js/header-link.js"></script>
-
-
-
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  "HTML-CSS": {
-    availableFonts: [],
-    preferredFonts: "inherit",
-    undefinedFamily: "inherit",
-    linebreaks: {
-      automatic: true
-    }
-  }
-});
-</script>
 
 
   
