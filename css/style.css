@@ -434,6 +434,19 @@ img[src$="#border"] {
   display: inline;
 }
 
+.multicol {
+  column-count: 2;
+  -webkit-column-rule-width: 1px;
+  -moz-column-rule-width: 1px;
+  column-rule-width: 1px;
+  -webkit-column-rule-style: solid;
+  -moz-column-rule-style: solid;
+  column-rule-style: solid;
+  -webkit-column-rule-color: black;
+  -moz-column-rule-color: black;
+  column-rule-color: black;
+}
+
 /* Small Screen */
 @media screen and (max-width:1200px) {
   .main {
@@ -441,6 +454,10 @@ img[src$="#border"] {
     margin: auto;
     padding: 10px;
     padding-top: 180px
+  }
+
+  .multicol {
+    column-count: 1;
   }
 
   .masthead {
