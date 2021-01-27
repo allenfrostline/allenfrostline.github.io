@@ -55,12 +55,17 @@
 <link rel="stylesheet" href="/css/custom.css" />
 
 <script type="text/x-mathjax-config">
+
+
+
+
+
 MathJax.Hub.Config({
   "HTML-CSS": {
     scale: 95,
     availableFonts: ["TeX"],
-    preferredFonts: "MathJax_SansSerif",
-    undefinedFamily: "MathJax_SansSerif",
+    preferredFonts: "MathJax_Serif",
+    undefinedFamily: "MathJax_Serif",
     linebreaks: { automatic: true },
     matchFontHeight: true,
     noReflows: false,
@@ -69,20 +74,7 @@ MathJax.Hub.Config({
     disabled: true
   },
 });
-MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
-  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
-  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
-  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
-  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
-  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
-});
-MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
-  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
-  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
-  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
-  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
-});
+
 </script>
 <script type="math/tex">
 \require{sansmath}
@@ -266,7 +258,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 <br><br>
 <nav class="post-nav">
   <span class="nav-prev">&larr; <a href="/blog/epidemic-models/">Compartmental Epidemic Models</a></span>
-  <span class="nav-next"></span>
+  <span class="nav-next"><a href="/blog/hide-code-jupyter/">Hide Codes/Prompts in Jupyter Notebook</a> &rarr;</span>
 </nav>
 
 <script type="text/javascript">
@@ -279,6 +271,8 @@ document.addEventListener('keyup', function(e) {
     
   } else if (e.which == 39) {  
     
+    url = '\/blog\/hide-code-jupyter\/';
+    
   }
   if (url) window.location = url;
 });
@@ -286,11 +280,11 @@ document.addEventListener('keyup', function(e) {
 
 
 
-<script src="https://utteranc.es/client.js"
+<script src="https://allenfrostline.github.io/utterances/clients.js"
         repo="allenfrostline/allenfrostline.github.io"
         issue-term="pathname"
         label="Utterances"
-        theme="github-light"
+        theme="nella-red"
         crossorigin="anonymous"
         async>
 </script>

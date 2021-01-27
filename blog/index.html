@@ -48,12 +48,17 @@
 <link rel="stylesheet" href="/css/custom.css" />
 
 <script type="text/x-mathjax-config">
+
+
+
+
+
 MathJax.Hub.Config({
   "HTML-CSS": {
     scale: 95,
     availableFonts: ["TeX"],
-    preferredFonts: "MathJax_SansSerif",
-    undefinedFamily: "MathJax_SansSerif",
+    preferredFonts: "MathJax_Serif",
+    undefinedFamily: "MathJax_Serif",
     linebreaks: { automatic: true },
     matchFontHeight: true,
     noReflows: false,
@@ -62,20 +67,7 @@ MathJax.Hub.Config({
     disabled: true
   },
 });
-MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
-  var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
-  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
-  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
-  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
-  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
-});
-MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
-  VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
-  VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
-  VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
-  VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
-});
+
 </script>
 <script type="math/tex">
 \require{sansmath}
@@ -127,6 +119,32 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 <div class="archive">
   
   <h2 class="archive-title">2020</h2>
+  
+  
+  <p style="text-indent: -55px; margin-left: 18px">
+    <span style="position:absolute; margin-left:0px;">2020-03-29</span>
+    <a href="/blog/beautify-dataframe/" style="position:relative; margin-left: 55px;">How to Beautify a DataFrame?</a>
+  </p>
+  
+  <p style="text-indent: -55px; margin-left: 18px">
+    <span style="position:absolute; margin-left:0px;">2020-03-29</span>
+    <a href="/blog/streamlit/" style="position:relative; margin-left: 55px;">一个做Dashboard的包</a>
+  </p>
+  
+  
+  
+  <p style="text-indent: -55px; margin-left: 18px">
+    <span style="position:absolute; margin-left:0px;">2020-03-15</span>
+    <a href="/blog/to-the-2020s-3/" style="position:relative; margin-left: 55px;">写在2020年的第七十四天</a>
+  </p>
+  
+  
+  
+  <p style="text-indent: -55px; margin-left: 18px">
+    <span style="position:absolute; margin-left:0px;">2020-02-27</span>
+    <a href="/blog/hide-code-jupyter/" style="position:relative; margin-left: 55px;">Hide Codes/Prompts in Jupyter Notebook</a>
+  </p>
+  
   
   
   <p style="text-indent: -55px; margin-left: 18px">
