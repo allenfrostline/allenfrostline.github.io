@@ -108,6 +108,11 @@ a {
 
 sup a {
   border-bottom: none;
+  margin-left: -3px;
+}
+
+sup {
+  line-height: 5px;
 }
 
 h1 a {
