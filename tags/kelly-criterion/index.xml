@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kelly criterion on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/kelly-criterion/</link>
+    <description>Recent content in Kelly criterion on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/kelly-criterion/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Billiard Tournament: Martingale, Kelly Criterion and More</title>
+      <link>https://allenfrostline.com/blog/billiard-tournament-martingale/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/billiard-tournament-martingale/</guid>
+      <description>I am recently playing a billiard game where you can play a series of exciting tournaments. In each tournament, you pay an entrance fee of, for example, 500USD, to potentially win a prize of, say, 2500USD. There are various kinds of tournaments with different entrance fees ranging from 100USD up to over 10000USD. After hundreds of games, my winning rate stablized around 58%, which is actually pretty good as it significantly beats random draws.</description>
+    </item>
+  </channel>
+</rss>

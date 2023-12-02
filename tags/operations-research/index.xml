@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>operations research on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/operations-research/</link>
+    <description>Recent content in operations research on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Mon, 27 Mar 2017 11:40:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/operations-research/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Operations Research</title>
+      <link>https://allenfrostline.com/blog/notes-on-operations-research/</link>
+      <pubDate>Mon, 27 Mar 2017 11:40:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-operations-research/</guid>
+      <description>This is my lecture notes from the course Operations Research. The course was intended to be a fundamental one introducing various aspects of operations research, the thinking process of a typical optimization problem, and famous theorems and applications. Introduction Summary of this lecture: Introduction Basic Linear Programming Taha Chapters 1, 2, 3 Structure: 7 lectures 7 tutorials 2 assignments individual written open-book exam (only book and no notes in the</description>
+    </item>
+  </channel>
+</rss>

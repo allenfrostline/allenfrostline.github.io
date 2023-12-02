@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Continuous Integration in Blogging - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Continuous Integration in Blogging - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="My website&amp;rsquo;s backend has recently migrated from Hexo to Hugo. The former was written in Node.js and suffered severely from compiling huge files. The latter, on the other hand, is a golang-based &amp;hellip;">
+      <meta property="og:description" content="My website&amp;rsquo;s backend has recently migrated from Hexo to Hugo. The former was written in Node.js and suffered severely from compiling huge files. The latter, on the other hand, is a golang-based &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Continuous Integration in Blogging</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-09-11
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>My website&rsquo;s backend has recently migrated from <a href="https://hexo.io">Hexo</a> to <a href="https://gohugo.io">Hugo</a>. The former was written in Node.js and suffered severely from compiling huge files. The latter, on the other hand, is a golang-based static site generator and thanks to that I now only need to wait &lt;2 seconds before a complete rebuild, despite my increasing number of posts. I have no intend to generate another piece Internet garbage repeating what I actually did during the migration. You may find tens of posts already there if you Google it. However, today I&rsquo;d like to share how I manage to maintain my blog in a continuous integration way:</p>
+<blockquote>
+<p>Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early.</p>
+</blockquote>
+<p>In English, it means &ldquo;store everything together&rdquo;. I assure you this is way better than describe above. At least it saves my life. Anyway, now that everyone is one the same page, let&rsquo;s start bit by bit.</p>
+<h1 id="repository">Repository</h1>
+<p>I store everything on GitHub. As most people do, the repo&rsquo;s name is <code>{{user_id}}.github.io</code>. This is a <strong>public</strong> repo. In this repo you will find all the compiled HTML files, locally they appear in your <code>public</code> folder of your website. However, this repo doesn&rsquo;t just serve as the hub for my website, but also for all the comments. See below.</p>
+<h1 id="comments">Comments</h1>
+<p>I&rsquo;m using <a href="https://gitalk.github.io">Gitalk</a> as the commenting system for my website. It&rsquo;s neat, customizable and best of all, stores every piece of comment as a GitHub issue. I was originally using another repo for these comments but recently, after GitHub launched their <a href="https://help.github.com/en/articles/transferring-an-issue-to-another-repository">issue transferring</a> feature, I successfully ported all the old comments onto the repo I mentioned above.</p>
+<h1 id="back-up">Back-up</h1>
+<p>Everyone needs somewhere to back-up his stuff, and this principle is especially true for blogging. I&rsquo;m storing the whole website folder on a <strong>private</strong> GitHub repo ignoring the <code>public</code> folder. In this way, not only the posts (<code>.md</code> files) and media (<code>.jpg</code>, <code>.png</code>, etc.) are saved securely, but also the site configurations, the theme customization (this can be especially frustrating if you mess with a lot of <code>.css</code> and <code>.js</code> files) and basically everything else, are backed up perfectly. That been done, when you change a blogging environment, all you need to do is to clone this private repo on your new machine and pretend nothing has happened.</p>
+<h1 id="shortcuts">Shortcuts</h1>
+<p>I&rsquo;m lazy, too lazy to type a single command in Terminal. To solve that issue I now need two tools.</p>
+<h2 id="bash-scripts">Bash Scripts</h2>
+<p>There are two scripts I use: <code>deploy</code> and <code>backup</code>. In order to deploy (update) my website, I push everything in the public folder onto the <strong>public</strong> repo, namely the one ending with <code>.git.io</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="color:#998;font-style:italic"># deploy.sh</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#999">echo</span> -e <span style="color:#b84">&#34;\033[0;32mDeploying updates to GitHub...\033[0m&#34;</span>
+</span></span><span style="display:flex;"><span>hugo
+</span></span><span style="display:flex;"><span><span style="color:#999">cd</span> public
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span><span style="color:#008080">msg</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;rebuild and deploy `date`&#34;</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#b84">&#34;</span><span style="color:#008080">$msg</span><span style="color:#b84">&#34;</span>
+</span></span><span style="display:flex;"><span>git push upstream master
+</span></span><span style="display:flex;"><span><span style="color:#999">cd</span> ..
+</span></span></code></pre></div><p>The other script was intended to back up everything of my website.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="color:#998;font-style:italic"># backup.sh</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#999">echo</span> -e <span style="color:#b84">&#34;\033[0;32mSaving backup to GitHub...\033[0m&#34;</span>
+</span></span><span style="display:flex;"><span>hugo
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span><span style="color:#008080">msg</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;backup `date`&#34;</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#b84">&#34;</span><span style="color:#008080">$msg</span><span style="color:#b84">&#34;</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#b84">&#34;backup `date`&#34;</span>
+</span></span><span style="display:flex;"><span>git push upstream master
+</span></span></code></pre></div><p>These are saved under the root directory. Before actually using these scripts, you also have to grant required system permissions to them, simply:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod u+x deploy.sh backup.sh
+</span></span></code></pre></div><h2 id="alfred">Alfred</h2>
+<p>I love <a href="https://www.alfredapp.com">Alfred</a>. This is the best productivity app that I will personally recommend every single friend of mine to install. You can search on the Internet how this thing works in different scenarios. Here I use Alfred to create shortcuts and workflows in blogging. The final workflow looks like this in Alfred:</p>
+<p><img src="/images/continuous-integration-blog.png" alt=""></p>
+<p>Here I defined four commands under the <code>Hugo</code> project, namely <code>hp</code> for new page, <code>hn</code> for new post, <code>hs</code> for local server preview and <code>hd</code> for deploy. The first two are designed such that they copy a template markdown file saved in the <code>layouts</code> folder into the <code>content</code> or <code>blog</code> folder, and then open it in your preferred text editor. The <code>hs</code> command starts the server while simultaneously opens <code>localhost:1313</code> in your browser. Lastly, the <code>hd</code> command triggers the following:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#999">cd</span> <span style="font-weight:bold">{{</span>root_of_website<span style="font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span>rm content/new-page.md &amp;&gt;/dev/null
+</span></span><span style="display:flex;"><span>rm content/blog/new-post.md &amp;&gt;/dev/null
+</span></span><span style="display:flex;"><span>./deploy.sh <span style="font-weight:bold">&amp;&amp;</span> ./backup.sh
+</span></span></code></pre></div><p>Here it deletes new page or post files that are copied but not edited, after which it deploys the website and then finally back everything up onto the private repo.</p>
+<h1 id="result">Result</h1>
+<p>My final workflow ends up like this (I config Alfred s.t. all I need to activate it is just a double-click of ⌘):</p>
+<ul>
+<li>Enter <code>hs</code> in Alfred to start preview.</li>
+<li>Enter <code>hn</code> in Alfred to create a new post.</li>
+<li>Rename and edit the post, after which close everything.</li>
+<li>Type <code>hd</code> in Alfred to deploy (and backup).</li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/an-old-article/">一篇旧文</a></span>
+  <span class="nav-next"><a href="/blog/n-fac-square/">Can n! be a Square Number?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/an-old-article\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/n-fac-square\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

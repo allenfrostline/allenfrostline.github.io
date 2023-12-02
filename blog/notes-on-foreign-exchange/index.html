@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Foreign Exchange - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Foreign Exchange - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&amp;rsquo;s contents and thus please feel free to point out if there&amp;rsquo;s anything you find &amp;hellip;">
+      <meta property="og:description" content="These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&amp;rsquo;s contents and thus please feel free to point out if there&amp;rsquo;s anything you find &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Notes on Foreign Exchange</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-02-21
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&rsquo;s contents and thus please feel free to point out if there&rsquo;s anything you find important but missing here.
+<code>$\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\MGF}{\text{MGF}}$</code></p>
+<!-- more -->
+<h1 id="pricing-in-theory">Pricing in Theory</h1>
+<h2 id="notations">Notations</h2>
+<ul>
+<li><code>$d$</code> <code>$\equiv$</code> superscript for domestic currency</li>
+<li><code>$f$</code> <code>$\equiv$</code> superscript for foreign currency</li>
+<li><code>$t$</code> <code>$\equiv$</code> current time</li>
+<li><code>$T$</code> <code>$\equiv$</code> delivery time</li>
+<li><code>$S_t$</code> <code>$\equiv$</code> spot price of a foreign currency in domestic currency</li>
+<li><code>$N$</code> <code>$\equiv$</code> number of units in transaction</li>
+<li><code>$R$</code> <code>$\equiv$</code> fixed contract rate</li>
+<li><code>$r$</code> <code>$\equiv$</code> interest rate</li>
+<li><code>$PV$</code> <code>$\equiv$</code> present value</li>
+<li><code>$P$</code> <code>$\equiv$</code> PV of a zero-coupon bond</li>
+<li><code>$D$</code> <code>$\equiv$</code> currency deposit (money market account)</li>
+</ul>
+<h2 id="fx-spot-price">FX Spot Price</h2>
+<p>The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) <code>$1 = S_t$</code>. Which is equivalent to <code>$1/S_t = 1$</code>. We say <code>$S_t$</code> is a price in domestic terms.</p>
+<h2 id="span-stylecolorb80000fx-spot-contractspan"><span style="color:#b80000">FX Spot Contract</span></h2>
+<p><strong>Selling</strong> domestic currency to <strong>buy</strong> foreign currencies.</p>
+<h2 id="value-of-a-spot-contract">Value of a Spot Contract</h2>
+<p>Value for the buyer is (in domestic currency) <code>$PV=(S_t - R)N$</code>. This is because of the two cash flows:</p>
+<ul>
+<li><code>$+N$</code> (foreign currency)</li>
+<li><code>$-N\cdot R$</code> (domestic currency).</li>
+</ul>
+<h2 id="zero-coupon-bonds">Zero-Coupon Bonds</h2>
+<ul>
+<li>Domestic: <code>$P^d(t,T) =\exp[-(T-t)r^d(t, T)]$</code></li>
+<li>Domestic: <code>$P^f(t,T) =\exp[-(T-t)r^f(t, T)]$</code></li>
+</ul>
+<h2 id="span-stylecolorb80000fx-forward-contractspan"><span style="color:#b80000">FX Forward Contract</span></h2>
+<p>Executing a spot contract at time <code>$T$</code> with given contract rate <code>$R$</code>.</p>
+<h2 id="value-of-a-forward-contract">Value of a Forward Contract</h2>
+<p>Value for the buyer is (in domestic currency) <code>$PV=(S_t\cdot P^f - R\cdot P^d)N$</code>. This is because of the two cash flows at time <code>$T$</code>:</p>
+<ul>
+<li><code>$+N$</code> (foreign currency)</li>
+<li><code>$-N\cdot R$</code> (domestic currency)</li>
+</ul>
+<p>which has present values at time <code>$t$</code></p>
+<ul>
+<li><code>$+N\cdot P^f$</code> (foreign currency)</li>
+<li><code>$-N\cdot R\cdot P^d$</code> (domestic currency)</li>
+</ul>
+<h2 id="forward-rate">Forward Rate</h2>
+<p>We set <code>$PV=0$</code> for the forward contract and get <code>$F\equiv R=S_t\cdot P^f /\ P^d=S_t\exp[(r^d - r^f)\cdot(T-t)]$</code>. Therefore, we also have <code>$F-S_t\approx S_t(r^d - r^f)\cdot(T-t)$</code>.</p>
+<h2 id="covered-interest-rate-parity-cip">Covered Interest Rate Parity (CIP)</h2>
+<p>In order to replicate a forward contract, we can execute a spot contract, borrow domestic and lend foreign. Namely, we have cash flows at time <code>$t$</code>:</p>
+<ul>
+<li><code>$+1-1\equiv 0$</code> (foreign currency)</li>
+<li><code>$+S_t-S_t\equiv 0$</code> (domestic currency)</li>
+</ul>
+<p>and at time <code>$T$</code>:</p>
+<ul>
+<li><code>$+1/ P^f$</code> (foreign currency)</li>
+<li><code>$-S_t / P^d$</code> (domestic currency)</li>
+</ul>
+<p>This yields <code>$S_t/P^dF=F\cdot 1 / P^f$</code>, or <code>$F=S_t\cdot P^f / P^d$</code>, which is what we call the CIP. This means higher interest rate currencies will be &ldquo;weaker&rdquo; on a forward basis.</p>
+<h2 id="implied-yields">Implied Yields</h2>
+<p>From the CIP we have <code>$P^f = P^d \cdot F/S_t$</code>, which gives <code>$r^f = r^d - \log(F/S_t) / (T-t)$</code>.</p>
+<h2 id="span-stylecolorb80000fx-swap-contractspan"><span style="color:#b80000">FX Swap Contract</span></h2>
+<p>Swapping a forward contract (<code>$T_1$</code>, <code>$R_1$</code>) for another (<code>$T_2$</code>, <code>$R_2$</code>).</p>
+<h2 id="value-of-a-swap-contract">Value of a Swap Contract</h2>
+<p>Value for the buyer is (in domestic currency)</p>
+<div>
+$$
+\begin{align*}
+PV&=(S_t\cdot P^{f1} - R_1\cdot P^{d1} - S_t\cdot P^{f2} + R_2\cdot P^{d2})\\
+&=\left\{S_t\left[\exp(-r^{f1}(T_1-t)) - \exp(-r^{f2}(T_2-t))\right] - R_1\exp(r^{d1}(T_1-t)) + R_1\exp(r^{d1}(T_1-t))\right\}\cdot N
+\end{align*}
+$$
+</div>
+<p>which is rather <strong>insensitive</strong> w.r.t. the spot rate:</p>
+<p>$$
+PV_S = \frac{\partial PV}{\partial S} = (P^{f1} - P^{f2})N = \left[\exp(-r^{f1}(T_1-t)) - \exp(-r^{f2}(T_2-t))\right]\cdot N\approx N r^f(T_2 -T_1)
+$$</p>
+<p>compared with that of a forward contract:</p>
+<p>$$
+PV_S = P^f\cdot N = \exp[-r^f(T-t)]\cdot N \approx N.
+$$</p>
+<h2 id="span-stylecolorb80000fx-option-contractspan"><span style="color:#b80000">FX Option Contract</span></h2>
+<p>The right (but not obligation) to exhcange <code>$N$</code> units of foreign currency for <code>$N\cdot K$</code> units of domestic currency at time <code>$T$</code>. This is to say, we call the right to buy foreign currency as a foreign call, but in the meantime, also a domestic put.</p>
+<h2 id="value-of-an-option-contract">Value of an Option Contract</h2>
+<p>We have the put-call parity as <code>$C-P=P^d(F-K)$</code> and the payoff of a foreign call option, <code>$\max(0, S_T-K)$</code>. We assume <code>$\{S_t\}_{0\le t\le T}$</code> follows GBM <code>$\d S = \mu  S \d t + \sigma S \d W$</code> which, according to Itô&rsquo;s lemma, gives</p>
+<p>$$
+\d V = \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t\right) \d t + V_S\d S
+$$</p>
+<p>where <code>$V$</code> is any derivative w.r.t. <code>$S$</code> (remark: remember that all subscript <code>$t$</code> here denote derivatives w.r.t. <code>$t$</code>, not time). Now, noticing the hedged portfolio <code>$\Pi = \{+1 \text{ unit of }V; -V_S \text{ units of } D^f\}$</code> has dynamics</p>
+<p>$$
+\begin{align*}
+\d\Pi &amp;= \d V - V_S\d  (S\cdot D^f) \
+&amp;= \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t\right) \d t + V_S\d S - V_S(D^f \d S + S\cdot r^f \d t) \
+&amp;= \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right) \d t
+\end{align*}</p>
+<p>where we used the fact that <code>$D^f(t)=1$</code>. Now under risk-neutral measure, we know</p>
+<p>$$
+\left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right)\d t = r^d(V  - V_S S)\d t
+$$</p>
+<p>which gives the so-called <strong>Garman-Kohlhagen PDE</strong>:</p>
+<p>$$
+\frac{1}{2}\sigma^2S^2V_{SS} + (r^d - r^f)V_S S - r^d V + V_t = 0
+$$</p>
+<p>with boundary conditions <code>$V(S_T,T)=(S_T-K)^+$</code> and <code>$V(0,T)=0$</code>.</p>
+<h1 id="pricing-in-practice">Pricing in Practice</h1>
+<h2 id="span-stylecolorb80000fx-spot-contractspan-dates"><span style="color:#b80000">FX Spot Contract</span>: Dates</h2>
+<p><strong>Trade date</strong> is when the terms of the transaction are agreed. Currency trading is a global, 24-hour market. The &ldquo;trading day&rdquo; ends at 5pm New York time. <strong>Value date</strong> is when cash flows occur, i.e., when currencies are delivered. Value date for spot transactions is &ldquo;T+2&rdquo; for most currency pairs. However, spot value date is &ldquo;T+1&rdquo; for USD versus CAD, RUB, TRY, PHP.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Trade Date (T+0)</th>
+<th style="text-align:center">T+1</th>
+<th style="text-align:center">Value Date (T+2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Trade terms are agreed</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">Two currency payments are delivered</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">Good day for CCY1 and CCY2 if non-USD</td>
+<td style="text-align:center">Good day for CCY1 and CCY2</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">Can be a USD holiday</td>
+<td style="text-align:center">Cannot be a USD holiday</td>
+</tr>
+</tbody>
+</table>
+<h2 id="currency-pairs-ccy1ccy2">Currency Pairs (CCY1/CCY2)</h2>
+<p>We usually call currency pairs (CCY1/CCY2, usually &ldquo;/&rdquo; is omitted) as any of the following:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">CCY1</th>
+<th style="text-align:center">CCY2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Base Currency</td>
+<td style="text-align:center">Terms Currency</td>
+</tr>
+<tr>
+<td style="text-align:center">Fixed Currency</td>
+<td style="text-align:center">Variable Currency</td>
+</tr>
+<tr>
+<td style="text-align:center">Home Currency</td>
+<td style="text-align:center">Overseas Currency</td>
+</tr>
+</tbody>
+</table>
+<p>When we say EURUSD <code>$= 1.1860$</code>, we mean <code>$1$</code> EUR <code>$=$</code> <code>$1.1860$</code> USD.</p>
+<h2 id="bid-offer-spreads">Bid Offer Spreads</h2>
+<p>In the context of bid offer spreads, we denote the bid and offer prices as EURUSD <code>$=1.1859/1.1860$</code> (or <code>$1.1859/60$</code> as shorthand). These spreads may vary. The possible reasons may involve liquidity, volatility and cost of risk.</p>
+<h2 id="direct-and-indirect-quotes">Direct and Indirect Quotes</h2>
+<p>In terms of USD, the direct quotes are CCYUSD and the indirect quotes are USDCCY.</p>
+<h2 id="lhs-and-rhs">LHS and RHS</h2>
+<ul>
+<li>LHS (left-hand side) <code>$=$</code> market-maker&rsquo;s bid</li>
+<li>RHD (right-hand side) <code>$=$</code> market-maker&rsquo;s offer</li>
+</ul>
+<h2 id="cross-rates">Cross Rates</h2>
+<p>Spot rates <strong>calculated</strong> from an indirect market, e.g. when EURUSD <code>$=1.1882$</code> and USDJPY <code>$=109.14$</code>, then we have cross rate EURJPY <code>$=129.68$</code>, which does not necessarily coincides with the actual rate in the market.</p>
+<h2 id="day-count-for-money-market">Day Count for Money Market</h2>
+<ul>
+<li>For tenors of <code>$1$</code> year and under: ACT/360 or ACT/365, where ACT <code>$=$</code> actual (number of days)</li>
+<li>For tenors of years (e.g. bonds): 30/360</li>
+</ul>
+<h2 id="interest-rate-used-with-fx-forwards">Interest Rate used with FX Forwards</h2>
+<p>It&rsquo;s neither of the interest rates of the two currencies. Instead, people use the deposit rate in this case, specifically in terms of USD, it&rsquo;s the Eurodollar deposit rate, or LIBOR.</p>
+<h2 id="span-stylecolorb80000fx-forward-contractspan-1"><span style="color:#b80000">FX Forward Contract</span></h2>
+<p>Contracts with any delivery date (a.k.a. value date) other than spot are considered forward. Standard delivery dates may be in weeks or months, and otherwise called &ldquo;broken&rdquo;. Specifically, we call the contract &ldquo;cash&rdquo; if its delivery date is today, and &ldquo;tom&rdquo; if it&rsquo;s tomorrow. FX forwards are OTC (over-the-counter).</p>
+<h2 id="forward-point">Forward Point</h2>
+<p>We define: <code>$\text{forward point} = \text{forward rate (outright)} - \text{spot rate}$</code>. The number is usually scaled by <code>$10^4$</code>.</p>
+<h2 id="covered-interest-rate-parity-cip-with-interest-rates">Covered Interest Rate Parity (CIP) with Interest Rates</h2>
+<p>We have</p>
+<p>$$
+\text{forward} =\text{spot} \times \frac{1 + R_{\text{variable CCY}}\times\text{days}/ 360}{1 + R_{\text{fixed CCY}}\times\text{days}/360}
+$$</p>
+<p>where we use <code>$R$</code> instead of <code>$P$</code> here as it&rsquo;s more commonly given.</p>
+<h2 id="implied-yields-with-interest-rates">Implied Yields with Interest Rates</h2>
+<p>Using the CIP above, we have</p>
+<p>$$
+R^f = \frac{(S/F)\times(1  +R_d\times\text{days}/360) - 1}{\text{days}/360}
+$$</p>
+<p>where we assume the rates are not compounded.</p>
+<h2 id="span-stylecolorb80000fx-swap-contractspan-1"><span style="color:#b80000">FX Swap Contract</span></h2>
+<p>Contracts that alter the value date on an existing trade by simultaneously
+executing two forward transactions.</p>
+<h2 id="risks-for-spot-forward-and-swap">Risks For Spot, Forward and Swap</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"># of legs</th>
+<th style="text-align:center">FX Risk</th>
+<th style="text-align:center">IR Spread Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Spot</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">Forward</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">Swap</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">No</td>
+<td style="text-align:center">Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="swap-point">Swap Point</h2>
+<p>We define: <code>$\text{swap point} = \text{far rate} - \text{near rate}$</code>.</p>
+<p><span style="color:#b80000">To be continued.</span></p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/notes-on-stochastic-calculus/">Notes on Stochastic Calculus</a></span>
+  <span class="nav-next"><a href="/blog/random-projection-and-expectation/">Random Projection and Its Expectation</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/notes-on-stochastic-calculus\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/random-projection-and-expectation\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

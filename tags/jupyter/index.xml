@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jupyter on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/jupyter/</link>
+    <description>Recent content in Jupyter on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 30 Oct 2019 20:44:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/jupyter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Adding a Python 2.7 Kernel in Jupyter</title>
+      <link>https://allenfrostline.com/blog/py27-kernel/</link>
+      <pubDate>Wed, 30 Oct 2019 20:44:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/py27-kernel/</guid>
+      <description>It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:
+Up-to-Date Anaconda Before we start installing anything, let&amp;rsquo;s update anaconda.
+conda update conda In case of error concerning setuptools, you may reinstall it before the update. In that case, the scripts would be
+conda uninstall setuptools conda install setuptools conda update --force conda Python 2.7 Environment We need, of course, a brand new python 2.</description>
+    </item>
+    <item>
+      <title>Bad Interpreter Error of Jupyter and its Solution</title>
+      <link>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</link>
+      <pubDate>Wed, 17 Apr 2019 14:56:13 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</guid>
+      <description>I always wanna clean up my dev environment thoroughly, once for good. After all these years messing up with virtualenv, conda, pip as well as all the other languages than Python: R, Java, Node.js, Julia, Golang&amp;hellip; My computer finally started going nuts. Jupyter notebook threw me the following error every time I start it:
+zsh: /usr/local/bin/jupyter: bad interpreter: /usr/local/opt/python/bin/python3.7: no such file or directory It turns out that the cause was that along with reinstallation of Python, the homebrew symlinks to Jupyter are now broken.</description>
+    </item>
+    <item>
+      <title>Run Jupyter Notebook within Virtualenv</title>
+      <link>https://allenfrostline.com/blog/jupyter-virtualenv/</link>
+      <pubDate>Sat, 28 Apr 2018 00:55:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/jupyter-virtualenv/</guid>
+      <description> # create virtualenv myenv mkvirtualenv myenv # enter virtualenv workon myenv # install jupyter if it&amp;#39;s not done yet (myenv) pip3 install jupyter # install ipykernel if it&amp;#39;s not done yet (myenv) pip3 install ipykernel # create new kernel of python3 (myenv) python3 -m ipykernel install --user --name myenv --display-name &amp;#34;Python 3&amp;#34; # start the notebook within myenv (myenv) jupyter notebook </description>
+    </item>
+  </channel>
+</rss>

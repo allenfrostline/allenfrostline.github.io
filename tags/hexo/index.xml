@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hexo on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/hexo/</link>
+    <description>Recent content in hexo on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 03 May 2019 13:40:57 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/hexo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Content Filtering with Hexo Tipue-Search Engine</title>
+      <link>https://allenfrostline.com/blog/content-filtering-tipue-search/</link>
+      <pubDate>Fri, 03 May 2019 13:40:57 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/content-filtering-tipue-search/</guid>
+      <description>It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;rsquo;em to show up in a search result, like password protected posts (shown as encrypted codes) and random pages for a certain project (some even don&amp;rsquo;t have a title, and this tipue-search would still show them in the searching result — with a</description>
+    </item>
+    <item>
+      <title>Switched Hexo Theme to Apollo</title>
+      <link>https://allenfrostline.com/blog/switch-hexo-theme-to-apollo/</link>
+      <pubDate>Sun, 22 Apr 2018 14:33:29 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/switch-hexo-theme-to-apollo/</guid>
+      <description>I&amp;rsquo;ve been using the well-developed NexT theme for this Hexo blog since I built it. The old theme was fantastic, with a broad header, strong local search, neat, animated two-column layout and various comment systems including valine1 and gitment2. However, it&amp;rsquo;s a two-edged sword to have so many features binded, and more importantly, presented right within such a simple layout. Eventually, I realized that I actually don&amp;rsquo;t need the spacious header or the animated sidebar (I do, though, need local search, and we&amp;rsquo;ll return to that below).</description>
+    </item>
+    <item>
+      <title>How to Set Up a Personal Site Using Hexo?</title>
+      <link>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</link>
+      <pubDate>Mon, 26 Sep 2016 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</guid>
+      <description>Below are some principle steps of setting up this website using Hexo. Instead of using Wordpress, I considered using Hexo directly for higher flexibility in customization.
+Download npm and node.js, then use npm to download git and hexo.
+Then, in root folder create a new folder named &amp;lt;name&amp;gt;.github.io and within it hexo.
+cd ~/&amp;lt;name&amp;gt;.github.io/hexo git init hexo init Find /hexo/source/_post. This is the folder we put out Markdown posts, later.</description>
+    </item>
+  </channel>
+</rss>

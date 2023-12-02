@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>strategy on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/strategy/</link>
+    <description>Recent content in strategy on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sun, 09 Jun 2019 11:04:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/strategy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market</title>
+      <link>https://allenfrostline.com/blog/crypto-news/</link>
+      <pubDate>Sun, 09 Jun 2019 11:04:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/crypto-news/</guid>
+      <description>This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context analysis (or more specifically, word analysis) into traditional momentum strategies and adjusts position automatically over time using both factors. The hybrid strategy is implemented with backtesing period from Dec. 17th 2017 to May 2nd 2019. It yields cumulative return of 229% and a remarkable Sharpe ratio of 2.</description>
+    </item>
+    <item>
+      <title>The Perfect Market Maker: Is it Possible?</title>
+      <link>https://allenfrostline.com/blog/perfect-market-maker/</link>
+      <pubDate>Tue, 23 Apr 2019 01:02:36 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/perfect-market-maker/</guid>
+      <description>In this research report we try to simulate and explore difference scenarios for a &amp;ldquo;perfect&amp;rdquo; market maker in the Bitcoin market. By &amp;ldquo;perfect&amp;rdquo; we refer to the capability to capture all spreads on the right side of any trade, i.e. there will be no spread loss at all. Although this setting is too perfect to be considered comparable with real trading, our analysis w.r.t. model parameters are believed to be insightful still.</description>
+    </item>
+    <item>
+      <title>Spread Trading: XOP and DRIP</title>
+      <link>https://allenfrostline.com/blog/spread-trading-etf/</link>
+      <pubDate>Tue, 23 Apr 2019 00:32:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/spread-trading-etf/</guid>
+      <description>In this strategy we try to do spread trading based on the M-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding one specific ETF with (in expectation) increasing returns, by holding an opposite position of another ETF with decreasing returns. Once we have that the two ETFs&amp;rsquo; returns are highly correlated, we can trade and make profit by this sort of pair trading.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (3): One More Strategy</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</link>
+      <pubDate>Fri, 27 Jul 2018 16:04:01 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</guid>
+      <description>It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market is primitive and savage in many senses, by which I mean there&amp;rsquo;re supposed to be a bunch of inefficiency and corresponding arbitrage opportunities.
+On the top of the page is the backtest PnL of the new strategy 4 from 01/01 up to yesterday, 07/26.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (2): Performance</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</link>
+      <pubDate>Tue, 09 Jan 2018 02:28:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</guid>
+      <description>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. Europe/Amsterdam. Cheers!
+Update April 11:
+Strategy offline before I realized my AWS bills was being owed and the server down due to that&amp;hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (1): Some Ideas</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</link>
+      <pubDate>Thu, 21 Dec 2017 19:52:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</guid>
+      <description>Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within 24 hours. Together with BTC, mainstream altcoins like ETH and ETC faced significant slump since a week ago. On contrary, XRP, because of the rumored endorcement from big companies like Amazon, is experiencing a straight appreciation of almost 100% since two weeks ago.</description>
+    </item>
+    <item>
+      <title>Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</title>
+      <link>https://allenfrostline.com/blog/ensemble-modeling/</link>
+      <pubDate>Wed, 15 Nov 2017 16:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/ensemble-modeling/</guid>
+      <description>In this research paper we try to use as much information on a stock as we can on Ricequant, to train a robust binary classifier for expected returns on a rolling basis. As an extra, we create a brand-new accuracy metric based on behavioral economics for model traing, which enhanced the fitting of the models (in the language of classical metrics, e.g. accuracy or pricision scores) by 3 to 5 times.</description>
+    </item>
+    <item>
+      <title>Strategy: XGBoost Classification &#43; Technical Indicators</title>
+      <link>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</link>
+      <pubDate>Sun, 12 Mar 2017 20:45:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</guid>
+      <description>On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.</description>
+    </item>
+    <item>
+      <title>Strategy: LSTM Neural Network &#43; Small Cap</title>
+      <link>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</link>
+      <pubDate>Tue, 17 Jan 2017 12:03:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
+      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
+Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
+    </item>
+  </channel>
+</rss>

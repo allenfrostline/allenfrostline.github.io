@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Stock Price Simulation - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Stock Price Simulation - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards. &amp;hellip;">
+      <meta property="og:description" content="In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Stock Price Simulation</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-05-10
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>In this post, I&rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.</p>
+<p><img src="/images/price_sim1.png" alt=""></p>
+<!-- more -->
+<p>Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">prepend</span>(arr, val<span style="font-weight:bold">=</span><span style="color:#099">0</span>):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> np<span style="font-weight:bold">.</span>pad(arr, (<span style="color:#099">1</span>, <span style="color:#099">0</span>), mode<span style="font-weight:bold">=</span><span style="color:#b84">&#39;constant&#39;</span>, constant_values<span style="font-weight:bold">=</span>val)
+</span></span></code></pre></div><h1 id="brownian-motion">Brownian Motion</h1>
+<p>Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements. The random motion was the solution to massive number of tiny collisions of particles in certain medium. Brownian motion was named after the botanist, Robert Brown, in 1827, and after almost a century introduced into the financial markets. People usually call a standard Brownian motion as a Wiener process, which has the following properties:</p>
+<ul>
+<li><code>$W_0\overset{\text{a.s.}}{=}0\newcommand{\d}{\text{d}}$</code></li>
+<li><code>$W$</code> has independent increments <code>$\forall t &gt; 0$</code></li>
+<li><code>$W$</code> has Gaussian increments: <code>$W_{t + \d t} - W_t \sim \mathcal{N}(0,\d t)$</code></li>
+<li><code>$W_t$</code> is continuous in <code>$t$</code> with probability <code>$1$</code></li>
+</ul>
+<p>A general BM follows SDE:</p>
+<p>$$
+\d S_t = \mu \d t + \sigma \d W_t
+$$</p>
+<p>which directly gives solution by take integrals on both sides:</p>
+<p>$$
+S_t = S_0 + \mu t + \sigma W_t.
+$$</p>
+<p>With all of these given, we can easily simulate the process as below.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BM</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, mu, sigma, seed<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">=</span> mu
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">=</span> sigma
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> seed <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> <span style="font-weight:bold">None</span>: np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(seed)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">generate</span>(self, n_steps):
+</span></span><span style="display:flex;"><span>        t <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arange(n_steps)
+</span></span><span style="display:flex;"><span>        W <span style="font-weight:bold">=</span> prepend(np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>normal(<span style="color:#099">0</span>, <span style="color:#099">1</span>, n_steps <span style="font-weight:bold">-</span> <span style="color:#099">1</span>))<span style="font-weight:bold">.</span>cumsum()
+</span></span><span style="display:flex;"><span>        S <span style="font-weight:bold">=</span> self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">*</span> t <span style="font-weight:bold">+</span> self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">*</span> W
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> S
+</span></span></code></pre></div><p><strong>Comments</strong>: One may notice that we don&rsquo;t have any constraint posed on <code>$W$</code> — it can be however positive — and however negative. Therefore, while BM might give a simple and easy-to-implement solution for a short run, we don&rsquo;t really want to use it as it potentially gives us negative prices.</p>
+<h1 id="geometric-brownian-motion">Geometric Brownian Motion</h1>
+<p>Geometric Brownian Motion (GBM) was famous as been used in Fisher Black and Myron Scholes&rsquo;s 1973 paper, <em>The Pricing of Options and Corporate Liabilities</em>. The process is by definition positive and thus gives a fix for what we doubted in BM. The corresponding SDE is</p>
+<p>$$
+\d S_t = S_t(\mu \d t + \sigma \d W_t)
+$$</p>
+<p>which gives solution</p>
+<div>
+$$
+S_t = S_0\exp\left\{\left(\mu-\frac{\sigma^2}{2}\right)t + \sigma W_t\right\}.
+$$
+</div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">GBM</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, mu, sigma, seed<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">=</span> mu
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">=</span> sigma
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> seed <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> <span style="font-weight:bold">None</span>: np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(seed)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">generate</span>(self, n_steps):
+</span></span><span style="display:flex;"><span>        t <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arange(n_steps)
+</span></span><span style="display:flex;"><span>        W <span style="font-weight:bold">=</span> BM(<span style="color:#099">0</span>, <span style="color:#099">1</span>)<span style="font-weight:bold">.</span>generate(n_steps)
+</span></span><span style="display:flex;"><span>        S <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp((self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">-</span> self<span style="font-weight:bold">.</span>__sigma<span style="font-weight:bold">**</span><span style="color:#099">2</span> <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">*</span> t <span style="font-weight:bold">+</span> self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">*</span> W)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> S
+</span></span></code></pre></div><p><strong>Comments</strong>: The GBM is good enough for most simulations. However, it is also well-known that the Black-Scholes model cannot give fat tails as is inspected empirically in stock markets.</p>
+<h1 id="mertons-jump-diffusion-process">Merton&rsquo;s Jump Diffusion Process</h1>
+<p>Robert C. Merton, who shared the 1997 Nobel Price with Scholes (Black had passes away unfortunately), was one of the first academics to address some of the limitations in the GBM. In his 1976 paper, <em>Option Pricing when Underlying Stock Returns are Discontinuous</em>, he superimposed a &ldquo;jump&rdquo; component on the diffusion term so that the model can now simulate sudden economic shocks, i.e. jumps in prices. The jump <code>$J$</code> is given by the exponential of a compound Poisson process <code>$N$</code> with normal underlyings. The SDE is as follows.</p>
+<div>
+$$
+\begin{align*}
+Y_i&\overset{\text{i.i.d.}}{\sim}\mathcal{N}(\gamma, \delta^2)&\text{(Jump Magnitude)}\\
+\d N_t & \sim \text{Pois}(\lambda \d t)&\text{(Poisson Process)}\\
+J_t &= \textstyle{\sum_{i=1}^{N_t}}Y_i&\text{(Jump)}\\
+\d S_t &= S_t (\mu \d t + \sigma \d W_t + \d J_t).\\
+\end{align*}
+$$
+</div>
+<p>Merton&rsquo;s jump diffusion SDE has a closed-form solution:</p>
+<p>$$
+S_t = S_0 \exp\left{\left(\mu -\frac{\sigma}{2}\right)t + \sigma W_t + J_t\right}.
+$$</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">MertonJump</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, mu, sigma, lamda, gamma, delta, seed<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">=</span> mu
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">=</span> sigma
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__lamda <span style="font-weight:bold">=</span> lamda
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__gamma <span style="font-weight:bold">=</span> gamma
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__delta <span style="font-weight:bold">=</span> delta
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> seed <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> <span style="font-weight:bold">None</span>: np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(seed)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">generate</span>(self, n_steps):
+</span></span><span style="display:flex;"><span>        t <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arange(n_steps)
+</span></span><span style="display:flex;"><span>        Y <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>normal(self<span style="font-weight:bold">.</span>__gamma, self<span style="font-weight:bold">.</span>__delta, n_steps)
+</span></span><span style="display:flex;"><span>        N <span style="font-weight:bold">=</span> prepend(np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>poisson(self<span style="font-weight:bold">.</span>__lamda, n_steps <span style="font-weight:bold">-</span> <span style="color:#099">1</span>))<span style="font-weight:bold">.</span>cumsum()
+</span></span><span style="display:flex;"><span>        J <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array([Y[:i]<span style="font-weight:bold">.</span>sum() <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> N])
+</span></span><span style="display:flex;"><span>        W <span style="font-weight:bold">=</span> BM(<span style="color:#099">0</span>, <span style="color:#099">1</span>)<span style="font-weight:bold">.</span>generate(n_steps)
+</span></span><span style="display:flex;"><span>        S <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp((self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">-</span> self<span style="font-weight:bold">.</span>__sigma<span style="font-weight:bold">**</span><span style="color:#099">2</span> <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">*</span> t <span style="font-weight:bold">+</span> self<span style="font-weight:bold">.</span>__sigma <span style="font-weight:bold">*</span> W <span style="font-weight:bold">+</span> J)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> S
+</span></span></code></pre></div><p><strong>Comments</strong>: Merton&rsquo;s jump process solved the kurtosis mismatch problem in empirical financial data by minimally changing the GBM. However, with the discontinuous (and usually negative, corresponding to market clashes) jumps introduced in the model, we may witness frequent slumps and in general a decline in the total drift. On the other, the jump process still did not solve the constant volatility issue.</p>
+<h1 id="the-heston-stochastic-volatility-process">The Heston Stochastic Volatility Process</h1>
+<p>In the early 1990s Steven Heston introduced this model where volatilities, different from the original GBM, are no longer constant. In the Heston model, volatilities evolve according to the Cox-Ingersoll-Ross process with a mean-reverting essense. As there&rsquo;re now two stochastic processes, we need two (potentially correlated) Wiener processes. The SDE is now</p>
+<div>
+$$
+\begin{align*}
+\d W_t^S\d W_t^V &= \rho\d t & \text{(Correlated Wiener)}\\
+\d V_t &= \kappa (\theta - V_t) \d t + \xi \sqrt{V_t} \d W_t^V &\text{(Cox-Ingersoll-Ross)}\\
+\d S_t &= \mu S_t \d t + \sqrt{V_t}S_t \d W_t^S & \text{(Heston)}
+\end{align*}
+$$
+</div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Heston</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, mu, theta, kappa, xi, rho, seed<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">=</span> mu
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__theta <span style="font-weight:bold">=</span> theta
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__kappa <span style="font-weight:bold">=</span> kappa
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__xi <span style="font-weight:bold">=</span> xi
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>__rho <span style="font-weight:bold">=</span> rho
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> seed <span style="font-weight:bold">is</span> <span style="font-weight:bold">not</span> <span style="font-weight:bold">None</span>: np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(seed)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">generate</span>(self, n_steps):
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># generate correlated BM</span>
+</span></span><span style="display:flex;"><span>        Z1, Z2 <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>multivariate_normal(
+</span></span><span style="display:flex;"><span>            mean<span style="font-weight:bold">=</span>[<span style="color:#099">0</span>, <span style="color:#099">0</span>], size<span style="font-weight:bold">=</span>n_steps <span style="font-weight:bold">-</span> <span style="color:#099">1</span>,
+</span></span><span style="display:flex;"><span>            cov<span style="font-weight:bold">=</span>np<span style="font-weight:bold">.</span>array([[<span style="color:#099">1</span>, self<span style="font-weight:bold">.</span>__rho], [self<span style="font-weight:bold">.</span>__rho, <span style="color:#099">1</span>]])
+</span></span><span style="display:flex;"><span>        )<span style="font-weight:bold">.</span>T
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># generate Cox-Ingersoll-Ross process of vol</span>
+</span></span><span style="display:flex;"><span>        V <span style="font-weight:bold">=</span> [self<span style="font-weight:bold">.</span>__theta]
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> t <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_steps <span style="font-weight:bold">-</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>            dV <span style="font-weight:bold">=</span> self<span style="font-weight:bold">.</span>__kappa <span style="font-weight:bold">*</span> (self<span style="font-weight:bold">.</span>__theta <span style="font-weight:bold">-</span> V[<span style="font-weight:bold">-</span><span style="color:#099">1</span>]) <span style="font-weight:bold">+</span> self<span style="font-weight:bold">.</span>__xi <span style="font-weight:bold">*</span> V[<span style="font-weight:bold">-</span><span style="color:#099">1</span>]<span style="font-weight:bold">**</span><span style="color:#099">.5</span> <span style="font-weight:bold">*</span> Z2[t]
+</span></span><span style="display:flex;"><span>            V<span style="font-weight:bold">.</span>append(<span style="color:#999">abs</span>(V[<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">+</span> dV))
+</span></span><span style="display:flex;"><span>        V <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array(V)
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># generate the Heston process</span>
+</span></span><span style="display:flex;"><span>        lnS <span style="font-weight:bold">=</span> prepend(np<span style="font-weight:bold">.</span>cumsum(np<span style="font-weight:bold">.</span>array(
+</span></span><span style="display:flex;"><span>            [self<span style="font-weight:bold">.</span>__mu <span style="font-weight:bold">-</span> _v <span style="font-weight:bold">/</span> <span style="color:#099">2</span> <span style="font-weight:bold">+</span> _v<span style="font-weight:bold">**</span><span style="color:#099">.5</span> <span style="font-weight:bold">*</span> _z <span style="font-weight:bold">for</span> _v, _z <span style="font-weight:bold">in</span> <span style="color:#999">zip</span>(V, Z1)]
+</span></span><span style="display:flex;"><span>        )))
+</span></span><span style="display:flex;"><span>        S <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp(lnS)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> S
+</span></span></code></pre></div><p><strong>Comments</strong>: The Heston model is one of the most popular stochastic volatility models in finance. In case one need even more freedom, he may opt for time-varying parameters e.g. <code>$\mu\to\mu_t$</code> and <code>$\xi\to\xi_t$</code>.</p>
+<h1 id="plots">Plots</h1>
+<p>Finally, let&rsquo;s take a look at all the simulated price processes. The Brownian motion is shifted s.t. <code>$S_0=1$</code> like the rest models. Mutual parameters like <code>$\mu$</code> and <code>$\sigma$</code> are set to the same values. Each figure shows <code>$1000$</code> paths.</p>
+<p><img src="/images/price_sim2.png" alt=""></p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/content-filtering-tipue-search/">Content Filtering with Hexo Tipue-Search Engine</a></span>
+  <span class="nav-next"><a href="/blog/markdown-test/">Markdown Test</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/content-filtering-tipue-search\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/markdown-test\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

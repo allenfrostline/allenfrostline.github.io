@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Eigenvectors from Eigenvalues? - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Eigenvectors from Eigenvalues? - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="The paper uploaded yesterday by Peter Denton, Stephen Parke, Terence Tao and Xining Zhang has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted &amp;hellip;">
+      <meta property="og:description" content="The paper uploaded yesterday by Peter Denton, Stephen Parke, Terence Tao and Xining Zhang has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Eigenvectors from Eigenvalues?</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-11-15
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>The <a href="https://arxiv.org/abs/1908.03795">paper</a> uploaded yesterday by <a href="https://peterdenton.github.io">Peter Denton</a>, <a href="https://home.fnal.gov/~parke">Stephen Parke</a>, <a href="https://www.math.ucla.edu/~tao">Terence Tao</a> and <a href="https://physics.uchicago.edu/people/profile/xining-zhang">Xining Zhang</a> has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors. I&rsquo;ll mainly cover two aspects: assumptions and computations. As a claim: I&rsquo;ve enjoyed reading the (multiple) rigorous proofs on Terry&rsquo;s <a href="https://jair2012.wordpress.com/2019/11/16/eigenvalues-and-eigenvectors">blog</a> and have no intention of arguing on the correctness of the theorem.</p>
+<p>The theorem in the paper reads:<code>$\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}} \newcommand{Corr}{\text{Corr}} \newcommand{E}{\text{E}} \newcommand{Cov}{\text{Cov}} \newcommand{Var}{\text{Var}} \newcommand{span}{\text{span}} \newcommand{bs}{\mathbf} \newcommand{R}{\mathbb{R}} \newcommand{R}{\mathbb{C}} \newcommand{rank}{\text{rank}} \newcommand{\norm}[1]{\left\lVert#1\right\rVert} \newcommand{diag}{\text{diag}} \newcommand{tr}{\text{tr}} \newcommand{braket}[1]{\left\langle#1\right\rangle} \newcommand{C}{\mathbb{C}}$</code></p>
+<p><strong>Theorem</strong>. Let <code>$\bs{A}$</code> be an <code>$n\times n$</code> Hermitian matrix with eigenvalues <code>$\{\lambda_i(\bs{A}):i=1,2,\ldots,n\}$</code>. Let <code>$\bs{v}_i$</code> be a unit eigenvector corresponding to <code>$\lambda_i(\bs{A})$</code> and let <code>$v_{i,j}$</code> be the <code>$j$</code>-th entry of this vector. Then</p>
+<p>$$
+|v_{i,j}|^2 \prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{A})] = \prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{M}_j)]
+$$</p>
+<p>where <code>$\bs{M}_j$</code> is the <code>$(n-1)\times(n-1)$</code> Hermitian matrix by removing the <code>$j$</code>-th row and column from <code>$\bs{A}$</code>. Namely, given the denominator is non-zero, the following can be used to calculate any eigenvector from pre-calculated eigenvalues:</p>
+<div>
+$$
+|v_{i,j}|^2 = \frac{\prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{M}_j)]}{\prod_{k=1;k\neq i}^n [\lambda_i(\bs{A}) - \lambda_k(\bs{A})]}.
+$$
+</div>
+<p>The statement of this theorem restricts our universe to only Hermitian matrices, namely matrices that are (symmetrically) self-adjoint: <code>$\bs{A}=\bar{\bs{A}'}$</code>. <span style="color:#b80000"><strong>This is so strong an assumption that most machine learning problems are out of our consideration except e.g. EVD-related ones for covariance matrices.</strong></span></p>
+<p><strong>Algorithm1</strong>. The theorem gives the following algorithm right out-of-box:</p>
+<pre tabindex="0"><code>function v_ij(lambda_A: Array[n-1], lambda_M: Array[n-1]) {
+    numerator = 1
+    denominator = 1
+    for (k = 1...n) {
+        if (k == i) continue
+        numerator *= (lambda_A[i] - lambda_M[k])
+        denominator *= (lambda_A[i] - lambda_A[k])
+    }
+    return (numerator / denominator)
+}
+</code></pre><p>Time complexity of this algorithm: <code>$O(n)$</code>, which means the time complexity for the whole eigenvector <code>$\bs{v}_i$</code> would be <code>$O(n^2)$</code> and <code>$O(n^3)$</code> if we&rsquo;re looking for all eigenvectors.</p>
+<p><strong>Algorithm2</strong>: As a comparison, let&rsquo;s see how the classical algorithm works in calculating eigenvectors:</p>
+<pre tabindex="0"><code>function v_i(A: Array[n-1][n-1], lambda_A: Array[n-1]) {
+    T = A - I * lambda_A[i]  # O(n^2)
+    v_i = solve(D * v == 0)  # O(f(u))
+}
+</code></pre><p>where <code>$f(u)$</code> is a strictly monotonically decreasing function of the required precision <code>$u$</code>. This precision is pre-determined for the numerical method of solving the high-dimensional polynomial system <code>$\bs{Dv}=\bs{0}$</code> (the closed-form solution e.g. Gaussian elimination or LU decomposition requires <code>$O(\frac{2}{3}n^3+2n^2)\equiv O(n^3)$</code> time). For <code>$n\gg 1$</code>, it can be proved that <code>$O(f(u))\ll O(n^2)$</code> and thus the time complexity of the original algorithm is also <code>$O(n^2)$</code> for each eigenvector, and <code>$O(n^3)$</code> for all of them.</p>
+<p>Therefore, with all eigenvalues given, the time complexity of the new algorithm is identical to the classical one. <span style="color: #b80000"><strong>However, if we take into consideration the time spent on finding the <code>$n$</code> eigenvalues of <code>$\bs{A}$</code> and <code>$n(n-1)$</code> eigenvalues of <code>$\{\bs{M}_j:j=1,2,\ldots,n\}$</code>, the new algorithm is in fact doing not less but even more calculation, and as each eigenvalue costs us <code>$O(n^3)$</code> time, this is just non-negligible.</strong></span></p>
+<p>As a conclusion, despite the novelty of using only eigenvalues as inputs, the new paper is not actually &ldquo;overturning&rdquo; the way most of us are used to when calculating the eigenvectors, as some media has mistakenly reported. It is true that the very beauty comes from simplicity, but nothing lasts when the world loses its rationality.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/josephus-problem/">Josephus Problem</a></span>
+  <span class="nav-next"><a href="/blog/on-desire/">谈欲望</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/josephus-problem\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/on-desire\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

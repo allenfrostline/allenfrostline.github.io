@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ETF on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/etf/</link>
+    <description>Recent content in ETF on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 23 Apr 2019 00:32:04 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/etf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spread Trading: XOP and DRIP</title>
+      <link>https://allenfrostline.com/blog/spread-trading-etf/</link>
+      <pubDate>Tue, 23 Apr 2019 00:32:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/spread-trading-etf/</guid>
+      <description>In this strategy we try to do spread trading based on the M-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding one specific ETF with (in expectation) increasing returns, by holding an opposite position of another ETF with decreasing returns. Once we have that the two ETFs&amp;rsquo; returns are highly correlated, we can trade and make profit by this sort of pair trading.</description>
+    </item>
+  </channel>
+</rss>

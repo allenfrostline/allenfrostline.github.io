@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>brownian motion on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/brownian-motion/</link>
+    <description>Recent content in brownian motion on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 10 May 2019 14:17:22 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/brownian-motion/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stock Price Simulation</title>
+      <link>https://allenfrostline.com/blog/stock-price-simulation/</link>
+      <pubDate>Fri, 10 May 2019 14:17:22 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/stock-price-simulation/</guid>
+      <description>In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.
+Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:
+def prepend(arr, val=0): return np.pad(arr, (1, 0), mode=&amp;#39;constant&amp;#39;, constant_values=val) Brownian Motion Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements.</description>
+    </item>
+    <item>
+      <title>Notes on Stochastic Calculus</title>
+      <link>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</link>
+      <pubDate>Thu, 21 Feb 2019 23:08:38 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</guid>
+      <description>This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, etc. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\sgn}{\text{sgn}}\newcommand{\tr}{\text{tr}}\newcommand{\bs}{\boldsymbol}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\R}{\mathbb{R}}\newcommand{\MGF}{\text{MGF}}$
+MGF of Normal Distribution For $X\sim\N(\mu,\sigma^2)$, we have $\MGF(\theta)=\exp(\theta\mu + \theta^2\sigma^2/2)$. We have $\E(X^k) = \MGF^{\ (k)}(0)$.
+Truncated Normal Distribution Consider a two-sided truncation $(a,b)$ on $\N(\mu,\sigma^2)$, then
+$$ \E[X\mid a &amp;lt; X &amp;lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\beta)}{\Phi(\alpha) - \Phi(\beta)} $$</description>
+    </item>
+    <item>
+      <title>Parameter Estimation of Brownian Motions by Method of Moments</title>
+      <link>https://allenfrostline.com/blog/estimation-brownian-motion/</link>
+      <pubDate>Sat, 05 May 2018 12:22:10 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/estimation-brownian-motion/</guid>
+      <description>How to estimate the parameters of a geometric Brownian motion (GBM)? It seems rather simple but actually took me quite some time to solve it. The most intuitive way is by using the method of moments.
+Estimation of ABM First let us consider a simpler case, an arithmetic Brownian motion (ABM). The evolution is given by
+$$ dS = \mu dt + \sigma dW. $$
+By integrating both sides over $(t,t+T]$ we have</description>
+    </item>
+  </channel>
+</rss>

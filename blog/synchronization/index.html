@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Time Synchronization on Amazon EC2 - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Time Synchronization on Amazon EC2 - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="My trading bot just ceased this morning from its loyal 24/7 service. It&amp;rsquo;s running on an Amazon EC2 server with Ubuntu 16.04 and I&amp;rsquo;m sure this time I&amp;rsquo;m not having an unpaid-bill issue &amp;hellip;">
+      <meta property="og:description" content="My trading bot just ceased this morning from its loyal 24/7 service. It&amp;rsquo;s running on an Amazon EC2 server with Ubuntu 16.04 and I&amp;rsquo;m sure this time I&amp;rsquo;m not having an unpaid-bill issue &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Time Synchronization on Amazon EC2</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-07-12
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>My trading bot just ceased this morning from its loyal 24/7 service. It&rsquo;s running on an Amazon EC2 server with <code>Ubuntu 16.04</code> and I&rsquo;m sure this time I&rsquo;m not having <a href="http://allenfrostline.com/cryptocurrency-arbitrage-2/">an unpaid-bill issue</a> any more. After some time digging I think I finally figure out the cause of this unexpected strike &ndash; asynchronism.</p>
+<!-- more -->
+<p>Asynchronism, or in simple terms, timing discrepancy, usually means a tiny bit of difference between local time on your computer/server and the global NTP time. It can be as undetectable as several milliseconds but in some applications like trading, such discrepancies are reckoned intolerable and any request sent from such computers/servers are ruthlessly rejected. Computers are just machines and they cannot be accurate in time forever. That&rsquo;s why we need (time) synchronization. In fact, EC2 does have such regular synchronization built in, but it seems it only happens once after a rather long period, like days. In order to adjust the synchronization period length to avoid similar issues in the future, I&rsquo;ll need the Amazon Time Sync Service.</p>
+<p>First we install the <code>chrony</code> package for synchronization, and open its configuration.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install chrony
+</span></span><span style="display:flex;"><span>sudo vi /etc/chrony/chrony.conf
+</span></span></code></pre></div><p>Append in the opened <code>chrony.conf</code> file a line as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>server 169.254.169.123 prefer iburst
+</span></span></code></pre></div><p>Restart <code>chrony</code> service.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo /etc/init.d/chrony restart
+</span></span></code></pre></div><pre><code>[ ok ] Restarting chrony (via systemctl): chrony.service.
+</code></pre>
+<p>Make sure that <code>chrony</code> is successfully synchronizing time from <code>169.254.169.123</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chronyc sources -v
+</span></span></code></pre></div><pre><code>210 Number of sources = 7
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current synced, '+' = combined , '-' = not combined,
+| /   '?' = unreachable, 'x' = time may be in error, '~' = time too variable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 169.254.169.123               3   6    17    12    +15us[  +57us] +/-  320us
+^- tbag.heanet.ie                1   6    17    13  -3488us[-3446us] +/- 1779us
+^- ec2-12-34-231-12.eu-west-     2   6    17    13   +893us[ +935us] +/- 7710us
+^? 2a05:d018:c43:e312:ce77:6     0   6     0   10y     +0ns[   +0ns] +/-    0ns
+^? 2a05:d018:d34:9000:d8c6:5     0   6     0   10y     +0ns[   +0ns] +/-    0ns
+^? tshirt.heanet.ie              0   6     0   10y     +0ns[   +0ns] +/-    0ns
+^? bray.walcz.net                0   6     0   10y     +0ns[   +0ns] +/-    0ns
+</code></pre>
+<p>where <code>^*</code> denotes the preferred time source.</p>
+<p>Finally, check the synchronization report.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chronyc tracking
+</span></span></code></pre></div><pre><code>Reference ID    : 169.254.169.123 (169.254.169.123)
+Stratum         : 4
+Ref time (UTC)  : Thu Jul 12 16:41:57 2018
+System time     : 0.000000011 seconds slow of NTP time
+Last offset     : +0.000041659 seconds
+RMS offset      : 0.000041659 seconds
+Frequency       : 10.141 ppm slow
+Residual freq   : +7.557 ppm
+Skew            : 2.329 ppm
+Root delay      : 0.000544 seconds
+Root dispersion : 0.000631 seconds
+Update interval : 2.0 seconds
+Leap status     : Normal    
+</code></pre>
+<p>As a conclusion, the server is now synchronizing time to the assigned source every 2 seconds and we shall never encounter similar issues.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/giethorn/">A Photo Taken at Giethoorn</a></span>
+  <span class="nav-next"><a href="/blog/pythonic-swap/">Pythonic Swapping: How and Why</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/giethorn\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/pythonic-swap\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

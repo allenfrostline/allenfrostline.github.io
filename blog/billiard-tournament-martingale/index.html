@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Billiard Tournament: Martingale, Kelly Criterion and More - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Billiard Tournament: Martingale, Kelly Criterion and More - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I am recently playing a billiard game where you can play a series of exciting tournaments. In each tournament, you pay an entrance fee of, for example, 500USD, to potentially win a prize of, say, &amp;hellip;">
+      <meta property="og:description" content="I am recently playing a billiard game where you can play a series of exciting tournaments. In each tournament, you pay an entrance fee of, for example, 500USD, to potentially win a prize of, say, &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Billiard Tournament: Martingale, Kelly Criterion and More</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-01-14
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>I am recently playing a billiard game where you can play a series of exciting tournaments. In each tournament, you pay an entrance fee of, for example, 500USD, to potentially win a prize of, say, 2500USD. There are various kinds of tournaments with different entrance fees ranging from 100USD up to over 10000USD. After hundreds of games, my winning rate stablized around 58%, which is actually pretty good as it significantly beats random draws. A natural concept therefore came into my mind: <strong>Is there an optimal strategy?</strong></p>
+<!-- more -->
+<p>Well, I think so. I&rsquo;ll list two strategies below and try to explore any potential optimality. We can reasonably model these tournaments as repetitive betting with certain fixed physical probability <code>$p$</code> of winning and odds<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> of <code>$(d-1)$</code>:<code>$1$</code> against ourselves. Given that there are sufficiently sparse tournament entrance fees, we may model these fees as a real variable <code>$x\in\mathbb{R}_+$</code> to maximize our long run profitability. Without loss of generality, let&rsquo;s assume an initial balance of <code>$M_0=0$</code> and that money in this world is infinitely divisible. The problem then becomes determination of the optimal <code>$x\in[0,1]$</code> s.t. the expected return is maximized. Nonetheless, regarding different interpretations of this problem we have several solutions. Some are intriguing while others may be frustrating.</p>
+<h1 id="martingale">Martingale</h1>
+<p>Let&rsquo;s first take a look at potential values of <code>$x$</code> and the corresponding balance trajectories <code>$M_t$</code>. For any <code>$0 \le x \le 1$</code>, we have probability <code>$p$</code> to get an <code>$x$</code>-fraction of our whole balance <code>$D$</code>-folded and <code>$1-p$</code> to lose it, that is</p>
+<p>$$
+\text{E}(M_{t+1}\mid\mathcal{F}_t) = (1-x)M_t + p\cdot xdM_t + (1-p)\cdot 0 =
+[1 + (pd-1)x] M_t
+$$</p>
+<p>which indicates <code>$M_t$</code> is a sub-martingale<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> as in this particular case, <code>$p=0.58$</code>, <code>$d=5$</code> and thus <code>$pd=2.9 &gt; 1$</code>. So the optimal fraction is <code>$x^* = 1$</code>, which is rather aggresive and yields a ruin probability of <code>$1-p^n$</code> for the first <code>$n$</code> bets. Simulation supports our worries: not once did we survived <code>$10$</code> bets in this tournament, and the maximum we ever attained is less than a million.</p>
+<img width="100%" src="/images/tournament1.png">
+<h1 id="kelly-criterion">Kelly Criterion</h1>
+<p>If consider <code>$\log M_t$</code> instead, then</p>
+<div>
+$$
+\begin{align*}
+\text{E}(\log M_t\mid \mathcal{F}_t) &=
+p\cdot \log[(1-x)M_t + xdM_t] +
+(1-p)\cdot \log[(1-x)M_t + 0]\\ &=
+p\cdot \log[(1-(1-d)x)M_t] +
+(1-p)\cdot \log[(1-x)M_t].
+\end{align*}
+$$
+</div>
+<p>The first order condition is</p>
+<div>
+$$
+\begin{align}
+&-\frac{\partial}{\partial x}\text{E}(\log M_t\mid \mathcal{F}_t) =
+\frac{p(1-d)}{1-(1-d)x}+\frac{1-p}{1-x} = 0 \\
+\quad\Rightarrow\quad&x^* = \frac{pd-1}{d-1}=0.475
+\end{align}
+$$
+</div>
+<p>which is more conservative and therefore, should survive longer than the previous strategy. Simulation gives the following trajectories: even the worst sim beat the best we got when <code>$x=1$</code>.</p>
+<img width="100%" src="/images/tournament2.png">
+<h1 id="further-thoughts">Further Thoughts</h1>
+<p>According to Doob&rsquo;s martingale inequality<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>, the probability of our balance ever attaining a value no less than <code>$C = 1\times10^{60}$</code> in <code>$T=500$</code> steps is</p>
+<p>$$
+\begin{align}
+&amp;\text{P}\left(\sup_{t \le T}M_t\ge C\right) \le \frac{\text{E}(M_T)}{C} =
+\frac{M_0}{C} \prod_{t=0}^{T-1}\frac{\text{E}(M_{t+1}\mid\mathcal{F}_t)}{M_t} \&amp;=
+\frac{[1+(pd-1)x]^T}{C} \approx 4.6\times10^{139} \gg 1.
+\end{align}
+$$</p>
+<p>This implies the superior limit of the probability that our balance exceeds <code>$1\times10^{60}$</code> within <code>$500$</code> steps is one (instead of what simulation gave us, which is around <code>$0.31$</code>). To put it differently, we actually might be able to find a certain strategy that is even significantly better than the one given by the Kelly criterion.</p>
+<p>What is it, then? Or, does it actually exist? I don&rsquo;t have an idea yet, but perhaps exploratory algorithms like machine learning will give us some hints, and perhaps the strategy is not static but rather dynamic.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>In a game with odds <code>$(d-1)$</code>:<code>$1$</code>, for each dollar you bet, you either win <code>$d$</code> dollars or lose all.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><code>$M_t$</code> is a sub-martingale iff. <code>$\text{E}(M_{t+1}\mid \mathcal{F}_t) \ge M_t$</code> for all <code>$t \ge 0$</code>.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Let <code>$X_t$</code> be a non-negative sub-martingale, then <code>$\text{P}(\sup_{t\le T} X_t \ge C)\le \text{E}(X_T) / C$</code>.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/deep-learning-amd-gpu/">Deep Learning on MacOS with AMD eGPU?</a></span>
+  <span class="nav-next"><a href="/blog/notes-on-stochastic-calculus/">Notes on Stochastic Calculus</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/deep-learning-amd-gpu\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/notes-on-stochastic-calculus\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

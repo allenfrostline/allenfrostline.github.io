@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3 - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3 - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I&amp;rsquo;ve been a die-hard fan of Sublime Text (ST), all the time from the 2nd to the 3rd version now. To be frank, I use ST in almost all situations: taking lecture notes in LaTeX, drafting small &amp;hellip;">
+      <meta property="og:description" content="I&amp;rsquo;ve been a die-hard fan of Sublime Text (ST), all the time from the 2nd to the 3rd version now. To be frank, I use ST in almost all situations: taking lecture notes in LaTeX, drafting small &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-10-10
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>I&rsquo;ve been a die-hard fan of <code>Sublime Text (ST)</code>, all the time from the 2nd to the 3rd version now. To be frank, I use <code>ST</code> in almost all situations: taking lecture notes in LaTeX, drafting small projects in Python or R (while for large projects, <code>Jupyter Notebook</code> and <code>RStudio</code> are stronger platforms), or tracking my Todo-list in Markdown. Everything works so smoothly and lightly with <code>ST</code>, especially compared with IDEs like <code>Xcode</code> or <code>Visual Studio</code>. On the other hand, it is more friendly to users who are not so keen on shortcuts &ndash; I mean, shortcuts for everything, like <code>Vim</code> or <code>Eclipse</code> (there are abundant shortcuts in <code>ST</code> already and that&rsquo;s enough for me). It must be a different world if I mastered that technique, but for now&hellip; I think I&rsquo;m fine with a large and smart touchpad on my MBP<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<p>However, there&rsquo;s one thing missing in <code>ST3</code>, and that is C++ project building. To be specific, there&rsquo;re two features that are not implemented yet:</p>
+<ol>
+<li>The only build system for C++, is called <code>C++ Single File</code>, and you know what that means. The only scenario that works is when you just have one file suffixed by <code>cpp</code>. No <code>hpp</code> or other <code>cpp</code>s, no.</li>
+<li>You cannot input through <code>STDIN</code> because the editor freezes when <code>cin</code> is met. No input, no.</li>
+</ol>
+<p>These two missing features are really annoying at first when I need to write a project in C++ and do some debugging. However, eventually I managed to write my own build system for C++ which accepts multiple files (including head files) and even inputs. I&rsquo;ll just skip the steps to create a new build system as they can be easily handled if you check the menu. The codes for the system is as below:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;shell_cmd&#34;</span>: <span style="color:#b84">&#34;g++ *.cpp -I /opt/local/include -o a &amp;&amp; open -a Terminal.app ./a&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;selector&#34;</span>: <span style="color:#b84">&#34;source.c++, source.cxx, source.cpp&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;working_dir&#34;</span> : <span style="color:#b84">&#34;$file_path&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The basic idea is to build<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, create a executive program named <code>a</code><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> and then run it in the Terminal, where STDIN is possible.</p>
+<p>I hope this post can help anyone who need this trick.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>There&rsquo;s actually one more text editor (not IDE) I&rsquo;ve tried: <code>Atom</code>. It&rsquo;s developed and maintained by GitHub and looks really fancy at very first glance. However, at least on my MBP, it&rsquo;s not as fast as <code>ST3</code> and was later knocked out.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Note here I included a parameter <code>-I /opt/local/include</code> in case external libraries like <code>boost</code> are required in the code.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Instead of the base-name of the file, I name this executive program as a simple <code>a</code> because when there&rsquo;re multiple <code>cpp</code> files in the project, it&rsquo;s hard for the computer to locate which one contains the main code and determine a name after that file. In many cases, the <code>cpp</code> file that is active when you hit <code>command+B</code> only declares some classes, but the executive program is named after it. That&rsquo;s the actual case I encountered and want to eliminate.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/how-to-get-legends-out-of-the-plot/">How to Get Legends Out of the Plotting Area in R</a></span>
+  <span class="nav-next"><a href="/blog/ensemble-modeling/">Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/how-to-get-legends-out-of-the-plot\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/ensemble-modeling\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

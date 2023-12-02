@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Heston on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/heston/</link>
+    <description>Recent content in Heston on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 10 May 2019 14:17:22 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/heston/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stock Price Simulation</title>
+      <link>https://allenfrostline.com/blog/stock-price-simulation/</link>
+      <pubDate>Fri, 10 May 2019 14:17:22 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/stock-price-simulation/</guid>
+      <description>In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.
+Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:
+def prepend(arr, val=0): return np.pad(arr, (1, 0), mode=&amp;#39;constant&amp;#39;, constant_values=val) Brownian Motion Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements.</description>
+    </item>
+  </channel>
+</rss>

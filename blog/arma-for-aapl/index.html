@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Basic Walkthrough of ARMA: Take AAPL for Example - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Basic Walkthrough of ARMA: Take AAPL for Example - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&amp;rsquo;re going to apply it on the stock price of Apple &amp;hellip;">
+      <meta property="og:description" content="The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&amp;rsquo;re going to apply it on the stock price of Apple &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Basic Walkthrough of ARMA: Take AAPL for Example</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-03-11
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&rsquo;re going to apply it on the stock price of Apple Inc. <!-- more -->We will perform the prediction mainly in four parts:</p>
+<ul>
+<li>Data loading</li>
+<li>Decomposition</li>
+<li>ARMA: fit and predict</li>
+<li>Evaluation</li>
+</ul>
+<p>After the whole process, there&rsquo;re some TBD concerns.</p>
+<h1 id="data-loading">Data loading</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">pandas</span> <span style="font-weight:bold">as</span> <span style="color:#555">pd</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.pyplot</span> <span style="font-weight:bold">as</span> <span style="color:#555">plt</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">yahoo_finance</span> <span style="font-weight:bold">import</span> Share
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">datetime</span> <span style="font-weight:bold">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">statsmodels.tsa.seasonal</span> <span style="font-weight:bold">import</span> seasonal_decompose
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">statsmodels.tsa.stattools</span> <span style="font-weight:bold">import</span> adfuller, acf, pacf, arma_order_select_ic
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">statsmodels.tsa.arima_model</span> <span style="font-weight:bold">import</span> ARMA, _arma_predict_out_of_sample
+</span></span><span style="display:flex;"><span>np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(<span style="color:#099">123</span>)    <span style="color:#998;font-style:italic"># fix random seed for reproducibility</span>
+</span></span><span style="display:flex;"><span>pd<span style="font-weight:bold">.</span>set_option(<span style="color:#b84">&#39;display.width&#39;</span>, <span style="color:#099">1000</span>)
+</span></span></code></pre></div><p>Here we extract the historical data of AAPL from 2007-01-01 to 2009-01-01, which exactly covers the explosion of 2008 subprime crisis. We only consider adjusted close prices and volumes.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># load the dataset</span>
+</span></span><span style="display:flex;"><span>start <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;2007-01-01&#39;</span>
+</span></span><span style="display:flex;"><span>end <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;2009-01-01&#39;</span>
+</span></span><span style="display:flex;"><span>AAPL <span style="font-weight:bold">=</span> Share(<span style="color:#b84">&#39;AAPL&#39;</span>)
+</span></span><span style="display:flex;"><span>historical <span style="font-weight:bold">=</span> AAPL<span style="font-weight:bold">.</span>get_historical(start_date<span style="font-weight:bold">=</span>start, end_date<span style="font-weight:bold">=</span>end)
+</span></span><span style="display:flex;"><span>df <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>DataFrame(historical)<span style="font-weight:bold">.</span>ix[::<span style="font-weight:bold">-</span><span style="color:#099">1</span>,[<span style="color:#b84">&#39;Date&#39;</span>,<span style="color:#b84">&#39;Adj_Close&#39;</span>,<span style="color:#b84">&#39;Volume&#39;</span>]]
+</span></span><span style="display:flex;"><span>df <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>set_index(<span style="color:#b84">&#39;Date&#39;</span>)<span style="font-weight:bold">.</span>astype(np<span style="font-weight:bold">.</span>float64)
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>index <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>to_datetime(df<span style="font-weight:bold">.</span>index)
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>Volume <span style="font-weight:bold">/=</span> <span style="color:#099">1e6</span>  <span style="color:#998;font-style:italic"># volume in millions</span>
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>ix[<span style="color:#099">0</span>,:] <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>ix[<span style="color:#099">1</span>,:]
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(df<span style="font-weight:bold">.</span>tail())
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(df<span style="font-weight:bold">.</span>dtypes)
+</span></span></code></pre></div><pre><code>            Adj_Close    Volume
+Date                           
+2008-12-24  11.017744   67.8335
+2008-12-26  11.117505   77.0812
+2008-12-29  11.221153  171.5000
+2008-12-30  11.179694  241.9004
+2008-12-31  11.057907  151.8853
+Adj_Close    float64
+Volume       float64
+dtype: object
+</code></pre>
+<p>As you can see, I here devide the volume by some properly large number so that the scales of the variables are similar.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#999">print</span>(df<span style="font-weight:bold">.</span>describe())
+</span></span></code></pre></div><pre><code>        Adj_Close      Volume
+count  504.000000  504.000000
+mean    17.510924  264.179629
+std      4.551519  111.138634
+min     10.428248   67.833500
+25%     12.748336  188.703025
+50%     17.160162  240.869300
+75%     21.891029  308.259350
+max     25.889884  843.242400
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">2</span>,<span style="color:#099">1</span>), (<span style="color:#099">0</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>plot(df<span style="font-weight:bold">.</span>Adj_Close, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;Adj Close&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">2</span>,<span style="color:#099">1</span>), (<span style="color:#099">1</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>plot(df<span style="font-weight:bold">.</span>Volume, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;Volume&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>subplots_adjust(hspace<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl1.png" alt="png"></p>
+<h1 id="decomposition">Decomposition</h1>
+<p>First we take the logarithm of the series. This is totally reversible and in many cases w.r.t. time series could efficiently improve the stationarity.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>log(df)
+</span></span></code></pre></div><p>Then we decompose the series by three parts: trend, seasonality and residual.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>dec_Adj_Close <span style="font-weight:bold">=</span> seasonal_decompose(df<span style="font-weight:bold">.</span>Adj_Close, model<span style="font-weight:bold">=</span><span style="color:#b84">&#39;multiplicative&#39;</span>, freq<span style="font-weight:bold">=</span><span style="color:#099">60</span>)
+</span></span><span style="display:flex;"><span>dec_Volume <span style="font-weight:bold">=</span> seasonal_decompose(df<span style="font-weight:bold">.</span>Volume, model<span style="font-weight:bold">=</span><span style="color:#b84">&#39;multiplicative&#39;</span>, freq<span style="font-weight:bold">=</span><span style="color:#099">60</span>)
+</span></span></code></pre></div><p>The charts are plotted below.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">10</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">0</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>plot(df<span style="font-weight:bold">.</span>Adj_Close, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;original&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;Adj Close&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">1</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>plot(dec_Adj_Close<span style="font-weight:bold">.</span>trend, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;trend&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax3 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">2</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax3<span style="font-weight:bold">.</span>plot(dec_Adj_Close<span style="font-weight:bold">.</span>seasonal, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax3<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax3<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;seasonality&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax4 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">3</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>ax4<span style="font-weight:bold">.</span>plot(dec_Adj_Close<span style="font-weight:bold">.</span>resid, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax4<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;residual&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax5 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">0</span>,<span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax5<span style="font-weight:bold">.</span>plot(df<span style="font-weight:bold">.</span>Volume, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax5<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax5<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;original&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>ax5<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;Volume&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax6 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">1</span>,<span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax6<span style="font-weight:bold">.</span>plot(dec_Volume<span style="font-weight:bold">.</span>trend, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax6<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax6<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;trend&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax7 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">2</span>,<span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax7<span style="font-weight:bold">.</span>plot(dec_Volume<span style="font-weight:bold">.</span>seasonal, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax7<span style="font-weight:bold">.</span>get_xaxis()<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>ax7<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;seasonality&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax8 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">4</span>,<span style="color:#099">2</span>), (<span style="color:#099">3</span>,<span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax8<span style="font-weight:bold">.</span>plot(dec_Volume<span style="font-weight:bold">.</span>resid, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>,  color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax8<span style="font-weight:bold">.</span>legend([<span style="color:#b84">&#39;residual&#39;</span>], loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>subplots_adjust(hspace<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl2.png" alt="png"></p>
+<p>As we can see, the seasonality is periodically significant. Also we may notice the trend behavior in late 2008: a continuous slump in the price and a lagged surge in the volume. The market panic is well illustrated. It&rsquo;s sure that the seasonality is stationary, but as for the residual, it remains to be tested. Now let&rsquo;s define a function to test the stationarity of the residuals. We use the <a href="https://en.wikipedia.org/wiki/Dickey%E2%80%93Fuller_test">Dickey-Fuller test</a> to examine the existence of a unit root.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">test_stationarity</span>(timeseries):
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Determing rolling statistics</span>
+</span></span><span style="display:flex;"><span>    rolmean <span style="font-weight:bold">=</span> timeseries<span style="font-weight:bold">.</span>rolling(center<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>, window<span style="font-weight:bold">=</span><span style="color:#099">12</span>)<span style="font-weight:bold">.</span>mean()
+</span></span><span style="display:flex;"><span>    rolstd <span style="font-weight:bold">=</span> timeseries<span style="font-weight:bold">.</span>rolling(center<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>, window<span style="font-weight:bold">=</span><span style="color:#099">12</span>)<span style="font-weight:bold">.</span>std()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Plot rolling statistics:</span>
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>    orig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>plot(timeseries, <span style="color:#b84">&#39;k-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;Original&#39;</span>)
+</span></span><span style="display:flex;"><span>    mean <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>plot(rolmean, <span style="color:#b84">&#39;k:&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;Rolling Mean&#39;</span>)
+</span></span><span style="display:flex;"><span>    std <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>plot(rolstd, <span style="color:#b84">&#39;k-&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;Rolling Std&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>title(<span style="color:#b84">&#39;Rolling Mean &amp; Standard Deviation&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>show()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Perform Dickey-Fuller test:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#999">print</span>(<span style="color:#b84">&#39;Results of Dickey-Fuller Test:&#39;</span>)
+</span></span><span style="display:flex;"><span>    dftest <span style="font-weight:bold">=</span> adfuller(timeseries, autolag<span style="font-weight:bold">=</span><span style="color:#b84">&#39;AIC&#39;</span>)
+</span></span><span style="display:flex;"><span>    dfoutput <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series(dftest[<span style="color:#099">0</span>:<span style="color:#099">4</span>], index<span style="font-weight:bold">=</span>[<span style="color:#b84">&#39;Test Statistic&#39;</span>,<span style="color:#b84">&#39;p-value&#39;</span>,<span style="color:#b84">&#39;#Lags Used&#39;</span>,<span style="color:#b84">&#39;Number of Observations Used&#39;</span>])
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> key,value <span style="font-weight:bold">in</span> dftest[<span style="color:#099">4</span>]<span style="font-weight:bold">.</span>items():
+</span></span><span style="display:flex;"><span>        dfoutput[<span style="color:#b84">&#39;Critical Value (</span><span style="color:#b84">%s</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">%</span>key] <span style="font-weight:bold">=</span> value
+</span></span><span style="display:flex;"><span>    <span style="color:#999">print</span>(dfoutput)
+</span></span></code></pre></div><p>Now let&rsquo;s use our test function.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>res_Adj_Close <span style="font-weight:bold">=</span> dec_Adj_Close<span style="font-weight:bold">.</span>resid<span style="font-weight:bold">.</span>dropna()
+</span></span><span style="display:flex;"><span>test_stationarity(res_Adj_Close)
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl3.png" alt="png"></p>
+<pre><code>Results of Dickey-Fuller Test:
+Test Statistic                -5.663466e+00
+p-value                        9.265660e-07
+#Lags Used                     1.600000e+01
+Number of Observations Used    4.270000e+02
+Critical Value (1%)           -3.445758e+00
+Critical Value (5%)           -2.868333e+00
+Critical Value (10%)          -2.570388e+00
+dtype: float64
+</code></pre>
+<p>Since the test tatistic is way smaller than the 1% critical value (and the p-value also really small), we reject the null, i.e. we take it that the residual of adjusted close price is stationary under 1% significance level.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>res_Volume <span style="font-weight:bold">=</span> dec_Volume<span style="font-weight:bold">.</span>resid<span style="font-weight:bold">.</span>dropna()
+</span></span><span style="display:flex;"><span>test_stationarity(res_Volume)
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl4.png" alt="png"></p>
+<pre><code>Results of Dickey-Fuller Test:
+Test Statistic                -1.165042e+01
+p-value                        2.043672e-21
+#Lags Used                     0.000000e+00
+Number of Observations Used    4.430000e+02
+Critical Value (1%)           -3.445198e+00
+Critical Value (5%)           -2.868086e+00
+Critical Value (10%)          -2.570257e+00
+dtype: float64
+</code></pre>
+<p>Similar to that of adjusted close price, the residual of volume is considered to be stationary under 1% significance level.</p>
+<h1 id="arma-fit-and-predict">ARMA: fit and predict</h1>
+<p>Now with stationary time series, we can start <strong>forecasting</strong>. There are two situations:</p>
+<ul>
+<li>A strictly stationary series with no dependence on past values.</li>
+<li>A series with significant dependence on past values. In this case we need to use some statistical models like ARMA to forecast the data.</li>
+</ul>
+<p>Here we are of course using the latter one, and thus we need to specify the parameters of the model:</p>
+<ul>
+<li><strong>Number of AR (Auto-Regressive) terms ($p$)</strong>: AR terms are just lags of dependent variable. For instance if $p$ is $5$, the predictors for $x_t$ will be $x_{t-1},x_{t-2},\ldots,x_{t-5}$.</li>
+<li><strong>Number of MA (Moving Average) terms ($q$)</strong>: MA terms are lagged forecast errors in prediction equation. For instance if $q$ is $5$, the predictors for $x_t$ will be $e_{t-1},e_{t-2},\ldots,e_{t-5}$ where $e_i$ is the difference between the moving average at $i^{th}$ instant and actual value.</li>
+</ul>
+<p>An importance concern here is how to determine the values of $p$ and $q$. Below we plot the ACF and PACF charts to determine them. The rules are:</p>
+<ul>
+<li>$p$: The lag value where the PACF chart crosses the upper confidence interval for the first time.</li>
+<li>$q$: The lag value where the ACF chart crosses the upper confidence interval for the first time.</li>
+</ul>
+<p>So first, let&rsquo;s plot the ACF and PACF charts.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">acfplot</span>(timeseries):
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#ACF and PACF plots:</span>
+</span></span><span style="display:flex;"><span>    nlags <span style="font-weight:bold">=</span> <span style="color:#099">20</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Pre-set ACF and PACF:</span>
+</span></span><span style="display:flex;"><span>    lag_acf <span style="font-weight:bold">=</span> acf(timeseries, nlags<span style="font-weight:bold">=</span>nlags)
+</span></span><span style="display:flex;"><span>    lag_pacf <span style="font-weight:bold">=</span> pacf(timeseries, nlags<span style="font-weight:bold">=</span>nlags, method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ols&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Plot PACF:</span>
+</span></span><span style="display:flex;"><span>    ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">121</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>plot(lag_pacf, <span style="color:#b84">&#39;ko-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(nlags<span style="font-weight:bold">+</span><span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=-</span><span style="color:#099">1.96</span><span style="font-weight:bold">/</span>np<span style="font-weight:bold">.</span>sqrt(<span style="color:#999">len</span>(timeseries)), ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=</span><span style="color:#099">1.96</span><span style="font-weight:bold">/</span>np<span style="font-weight:bold">.</span>sqrt(<span style="color:#999">len</span>(timeseries)), ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;Partial Autocorrelation Function&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">#Plot ACF: </span>
+</span></span><span style="display:flex;"><span>    ax2 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">122</span>) 
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>plot(lag_acf, <span style="color:#b84">&#39;ko-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(nlags<span style="font-weight:bold">+</span><span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=-</span><span style="color:#099">1.96</span><span style="font-weight:bold">/</span>np<span style="font-weight:bold">.</span>sqrt(<span style="color:#999">len</span>(timeseries)), ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>axhline(y<span style="font-weight:bold">=</span><span style="color:#099">1.96</span><span style="font-weight:bold">/</span>np<span style="font-weight:bold">.</span>sqrt(<span style="color:#999">len</span>(timeseries)), ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.2</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;Autocorrelation Function&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>acfplot(res_Adj_Close)
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl5.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>acfplot(res_Volume)
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl6.png" alt="png"></p>
+<p>From the charts it is clear that for $Adj\ Close$ we have $p=2$, $q=14$ and for $Volume$ we have $p=2$, $q=5$. Then we can load the ARIMA models for prediction. However, there&rsquo;re actually built-in method for that, which is quite more direct.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>order <span style="font-weight:bold">=</span> arma_order_select_ic(res_Adj_Close, max_ar<span style="font-weight:bold">=</span><span style="color:#099">5</span>, max_ma<span style="font-weight:bold">=</span><span style="color:#099">20</span>, ic<span style="font-weight:bold">=</span>[<span style="color:#b84">&#39;aic&#39;</span>, <span style="color:#b84">&#39;bic&#39;</span>, <span style="color:#b84">&#39;hqic&#39;</span>])
+</span></span><span style="display:flex;"><span>order<span style="font-weight:bold">.</span>bic_min_order
+</span></span></code></pre></div><pre><code>/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  &quot;Check mle_retvals&quot;, ConvergenceWarning)
+/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  &quot;Check mle_retvals&quot;, ConvergenceWarning)
+...
+/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  &quot;Check mle_retvals&quot;, ConvergenceWarning)
+
+
+(1, 0)
+</code></pre>
+<p>&hellip; and yes, unreliable and horribly slow. Just forget about that. Let&rsquo;s continue with the ARMA model.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">pred</span>(timeseries, p, q):
+</span></span><span style="display:flex;"><span>    model <span style="font-weight:bold">=</span> ARMA(timeseries, (p, q))<span style="font-weight:bold">.</span>fit()
+</span></span><span style="display:flex;"><span>    pred <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fittedvalues
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>plot(timeseries, <span style="color:#b84">&#39;k-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;k:&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;prediction&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>title(<span style="color:#b84">&#39;$R_{{adj}}^2$ : </span><span style="color:#b84">{:.4f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#099">1</span><span style="font-weight:bold">-</span>(<span style="color:#999">sum</span>((pred <span style="font-weight:bold">-</span> timeseries)<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(timeseries)<span style="font-weight:bold">-</span>p<span style="font-weight:bold">-</span>q<span style="font-weight:bold">-</span><span style="color:#099">1</span>))<span style="font-weight:bold">/</span>(<span style="color:#999">sum</span>(timeseries<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(timeseries)<span style="font-weight:bold">-</span><span style="color:#099">1</span>)))) <span style="color:#998;font-style:italic"># Residual Sum of Squares, RSS = SUM[(y-f(x))^2]</span>
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>show()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> model, pred
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_res_Adj_Close, pred_res_Adj_Close <span style="font-weight:bold">=</span> pred(res_Adj_Close, <span style="color:#099">2</span>, <span style="color:#099">14</span>)
+</span></span></code></pre></div><pre><code>/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  &quot;Check mle_retvals&quot;, ConvergenceWarning)
+</code></pre>
+<p><img src="/images/arma_for_aapl7.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_res_Volume, pred_res_Volume <span style="font-weight:bold">=</span> pred(res_Volume, <span style="color:#099">2</span>, <span style="color:#099">5</span>)
+</span></span></code></pre></div><pre><code>/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  &quot;Check mle_retvals&quot;, ConvergenceWarning)
+</code></pre>
+<p><img src="/images/arma_for_aapl8.png" alt="png"></p>
+<h1 id="evaluation">Evaluation</h1>
+<p>Just as what I did above, I use adjusted R-square as the evaluation metric function. The &ldquo;adjusted&rdquo; means the R-square is punished for too many explanatory variables, and thus can in a way reduce the tendency of overfitting.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> dec_Adj_Close<span style="font-weight:bold">.</span>trend <span style="font-weight:bold">*</span> dec_Adj_Close<span style="font-weight:bold">.</span>seasonal <span style="font-weight:bold">*</span> pred_res_Adj_Close
+</span></span><span style="display:flex;"><span>data <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp(df<span style="font-weight:bold">.</span>Adj_Close)
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp(pred)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(data, <span style="color:#b84">&#39;k-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;k:&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;prediction&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>title(<span style="color:#b84">&#39;Prediction of AAPL ($R_{{adj}}$ : </span><span style="color:#b84">{:.4f}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#099">1</span><span style="font-weight:bold">-</span>(<span style="color:#999">sum</span>((pred <span style="font-weight:bold">-</span> data)<span style="font-weight:bold">.</span>dropna()<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(data)<span style="font-weight:bold">-</span><span style="color:#099">2</span><span style="font-weight:bold">-</span><span style="color:#099">14</span><span style="font-weight:bold">-</span><span style="color:#099">1</span>))<span style="font-weight:bold">/</span>(<span style="color:#999">sum</span>(data<span style="font-weight:bold">.</span>dropna()<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(data)<span style="font-weight:bold">-</span><span style="color:#099">1</span>))))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl9.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">15</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> dec_Volume<span style="font-weight:bold">.</span>trend <span style="font-weight:bold">*</span> dec_Volume<span style="font-weight:bold">.</span>seasonal <span style="font-weight:bold">*</span> pred_res_Volume
+</span></span><span style="display:flex;"><span>data <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp(df<span style="font-weight:bold">.</span>Volume) <span style="font-weight:bold">*</span> <span style="color:#099">1e6</span>
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>exp(pred) <span style="font-weight:bold">*</span> <span style="color:#099">1e6</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(data, <span style="color:#b84">&#39;k-&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;k:&#39;</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0.6</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;prediction&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>title(<span style="color:#b84">&#39;Prediction of AAPL ($R_{{adj}}$ : </span><span style="color:#b84">{:.4f}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#099">1</span><span style="font-weight:bold">-</span>(<span style="color:#999">sum</span>((pred <span style="font-weight:bold">-</span> data)<span style="font-weight:bold">.</span>dropna()<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(data)<span style="font-weight:bold">-</span><span style="color:#099">2</span><span style="font-weight:bold">-</span><span style="color:#099">5</span><span style="font-weight:bold">-</span><span style="color:#099">1</span>))<span style="font-weight:bold">/</span>(<span style="color:#999">sum</span>(data<span style="font-weight:bold">.</span>dropna()<span style="font-weight:bold">**</span><span style="color:#099">2</span>)<span style="font-weight:bold">/</span>(<span style="color:#999">len</span>(data)<span style="font-weight:bold">-</span><span style="color:#099">1</span>))))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/arma_for_aapl10.png" alt="png"></p>
+<p>The results seem good, but never forget that this is only the in-sample prediction, so in other words this could be totally an opposite scenario when we use this fitted model to predict out-sample values, i.e. to predict the adjusted close or volume on 2009-01-02 (a Friday).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>params <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>params
+</span></span><span style="display:flex;"><span>residuals <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>resid
+</span></span><span style="display:flex;"><span>p <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>k_ar
+</span></span><span style="display:flex;"><span>q <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>k_ma
+</span></span><span style="display:flex;"><span>k_exog <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>k_exog
+</span></span><span style="display:flex;"><span>k_trend <span style="font-weight:bold">=</span> model_res_Adj_Close<span style="font-weight:bold">.</span>k_trend
+</span></span><span style="display:flex;"><span>steps <span style="font-weight:bold">=</span> <span style="color:#099">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_arma_predict_out_of_sample(params, steps, residuals, p, q, k_trend, k_exog, endog<span style="font-weight:bold">=</span>res_Adj_Close, exog<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>, start<span style="font-weight:bold">=</span><span style="color:#999">len</span>(res_Adj_Close))<span style="font-weight:bold">.</span>squeeze()
+</span></span></code></pre></div><pre><code>array([ 0.97023813,  0.97742186,  0.97331353,  0.97333901,  0.981861  ])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>params <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>params
+</span></span><span style="display:flex;"><span>residuals <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>resid
+</span></span><span style="display:flex;"><span>p <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>k_ar
+</span></span><span style="display:flex;"><span>q <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>k_ma
+</span></span><span style="display:flex;"><span>k_exog <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>k_exog
+</span></span><span style="display:flex;"><span>k_trend <span style="font-weight:bold">=</span> model_res_Volume<span style="font-weight:bold">.</span>k_trend
+</span></span><span style="display:flex;"><span>steps <span style="font-weight:bold">=</span> <span style="color:#099">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_arma_predict_out_of_sample(params, steps, residuals, p, q, k_trend, k_exog, endog<span style="font-weight:bold">=</span>res_Volume, exog<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>, start<span style="font-weight:bold">=</span><span style="color:#999">len</span>(res_Volume))<span style="font-weight:bold">.</span>squeeze()
+</span></span></code></pre></div><pre><code>array([ 1.00925408,  1.01171945,  1.00450219,  0.99949544,  0.99683326])
+</code></pre>
+<h1 id="conclusion--concerns">Conclusion &amp; concerns</h1>
+<p>Another concern is (which is really obvious), that here when back-computing the predicted values I used the formular</p>
+<p>$$
+Y_{total} = Y_{trend} \cdot Y_{seasonality} \cdot Y_{residual}
+$$</p>
+<p>but only the residual is predicted using our ARMA model. The rest two parts, of cource, should also be predicted and then we can finally call it a &ldquo;prediction&rdquo;. Otherwise we are only partially predicting the series. For the seasonality we may directly do a translation as the patterns are very stable. However, as for the trend composition, neither translation nor ARMA are going to work well. My suggestion is to resort to deep learning or some RNN models (like LSTM in another post of mine). Machine learning in the field of time series prediction is indeed promising and stunning in recent years.</p>
+<p>Another concern, which is actually way more important, is that we lack out-sample prediction here. This is also called cross validation. Why is cross validation so important? Because if we don&rsquo;t do any cross validation, then we can always use as many explanatory variables as possible to achieve better scores in evaluation, which is most likely how overfitting happens. What we are gonna do to eliminate this, is to use historical data within time range, say, from 2009-01-01 to 2009-06-01, to predict the adjusted close prices and volumes day by day. The adjusted R-square is then the &ldquo;test score&rdquo; of the model, while implicitly the former R-square becomes the &ldquo;train score&rdquo;.</p>
+<hr>
+<h1 id="references">References:</h1>
+<ul>
+<li>McKinney, Wes, Josef Perktold, and Skipper Seabold. &ldquo;Time series analysis in Python with statsmodels.&rdquo; Jarrodmillman. Com (2011): 96-102.</li>
+<li>Kwiatkowski, Denis, et al. &ldquo;Testing the null hypothesis of stationarity against the alternative of a unit root: How sure are we that economic time series have a unit root?.&rdquo; Journal of econometrics 54.1-3 (1992): 159-178.</li>
+<li><a href="http://www.jianshu.com/p/cced6617b423">竹间为简, &ldquo;AR(I)MA时间序列建模过程&rdquo;.</a></li>
+<li><a href="http://www.seanabu.com/2016/03/22/time-series-seasonal-ARIMA-model-in-python/">Seasonal ARIMA with Python</a></li>
+<li><a href="https://www.zhihu.com/question/21229371">有什么好的模型可以做高精度的时间序列预测呢？</a></li>
+<li><a href="http://www.ulb.ac.be/di/map/gbonte/ftp/time_ser.pdf">Machine Learning Strategies for Time Series Prediction</a></li>
+<li><a href="https://www.youtube.com/watch?v=Aw77aMLj9uM">A Youtube Course on AR, MA, ARMA and ARIMA</a></li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/how-to-deploy-a-local-project-onto-github/">How to Deploy a Local Project onto Github</a></span>
+  <span class="nav-next"><a href="/blog/strategy-xgboost-technical-indicators/">Strategy: XGBoost Classification &#43; Technical Indicators</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/how-to-deploy-a-local-project-onto-github\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/strategy-xgboost-technical-indicators\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

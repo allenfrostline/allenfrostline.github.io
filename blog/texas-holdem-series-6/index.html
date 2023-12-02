@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Texas Hold&#39;em Series (6): Range Estimation - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Texas Hold&#39;em Series (6): Range Estimation - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Range is important. A poker player without a mature preflop1 range is more dangerous than a blind soldier aiming at random people on the battlefield, or a vicious chef throwing anything within reach &amp;hellip;">
+      <meta property="og:description" content="Range is important. A poker player without a mature preflop1 range is more dangerous than a blind soldier aiming at random people on the battlefield, or a vicious chef throwing anything within reach &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Texas Hold&#39;em Series (6): Range Estimation</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-11-05
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p><strong>Range is important</strong>. A poker player without a mature preflop<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> range is more dangerous than a blind soldier aiming at random people on the battlefield, or a vicious chef throwing anything within reach into his pot. On the other hand, given your opponents&rsquo; range (think somehow from a God&rsquo;s eye view) you may be able to do whatever you want with your hand cards, no matter how poor they actually are. In reality, the most difficult and also heatedly discussed topic about ranging is not its application but rather the estimation: how can you give a <strong>consistent</strong> estimator of your enemy&rsquo;s range? This is the question I&rsquo;m concerned about in this post.<code>$\newcommand{bs}{\boldsymbol} \newcommand{R}{\mathbb{R}} \newcommand{P}{\mathbb{P}} \newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}$</code></p>
+<p>Before introducing the estimation, let&rsquo;s give &ldquo;range&rdquo; a rigorous definition. The range, or so-called range chart, refers to a <code>$13\times 13$</code> table that includes every single preflop hand scenario in it. It is true that there&rsquo;re in total <code>$\binom{52}{2}=1{,}326$</code> different hands but we don&rsquo;t really need to differentiate <span style="color:red">4♦</span><span style="color:red">5♦</span> from 4♠5♠ as both are suited and share the same hand value, right? If you agree with me about this, then you&rsquo;ll realize right away that there are in total only <code>$13^2=169$</code> cases, including both suited and off-suit hands. Therefore, we may include <strong>one&rsquo;s intention to enter a game on preflop with any hand</strong> in a table like such, which is the formal definiton of the range. More mathematically, <strong>a range is a matrix with each entry being the probability of entering the game given the corresponding hand</strong>. We let the upper triangular<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> part of the matrix to denote suited hands and the rest for off-suit.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.3.4/bokeh.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.3.4/bokeh-widgets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.3.4/bokeh-tables.min.js"></script>
+<script type="text/javascript">
+    (function() {
+          var fn = function() {
+            Bokeh.safely(function() {
+              (function(root) {
+                function embed_document(root) {
+                  
+                var docs_json = '{"1cfda14a-3390-473e-96bb-18917063515b":{"roots":{"references":[{"attributes":{"source":{"id":"3974","type":"ColumnDataSource"}},"id":"3979","type":"CDSView"},{"attributes":{"text":{"field":"hand"},"text_alpha":{"value":0.1},"text_color":{"value":"black"},"text_font":"Palatino","x":{"field":"c1"},"x_offset":{"value":-10},"y":{"field":"c2"},"y_offset":{"value":8}},"id":"3983","type":"Text"},{"attributes":{"below":[{"id":"3963","type":"CategoricalAxis"}],"center":[{"id":"3966","type":"Grid"},{"id":"3970","type":"Grid"}],"left":[{"id":"3967","type":"CategoricalAxis"}],"plot_height":800,"plot_width":2000,"renderers":[{"id":"3978","type":"GlyphRenderer"},{"id":"3984","type":"GlyphRenderer"}],"sizing_mode":"scale_width","title":{"id":"3987","type":"Title"},"toolbar":{"id":"3972","type":"Toolbar"},"toolbar_location":null,"x_range":{"id":"3955","type":"FactorRange"},"x_scale":{"id":"3959","type":"CategoricalScale"},"y_range":{"id":"3957","type":"FactorRange"},"y_scale":{"id":"3961","type":"CategoricalScale"}},"id":"3954","subtype":"Figure","type":"Plot"},{"attributes":{"data_source":{"id":"3980","type":"ColumnDataSource"},"glyph":{"id":"3982","type":"Text"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"3983","type":"Text"},"selection_glyph":null,"view":{"id":"3985","type":"CDSView"}},"id":"3984","type":"GlyphRenderer"},{"attributes":{},"id":"3961","type":"CategoricalScale"},{"attributes":{"callback":null,"data":{"c1":["2","2","2","2","2","2","2","2","2","2","2","2","2","3","3","3","3","3","3","3","3","3","3","3","3","3","4","4","4","4","4","4","4","4","4","4","4","4","4","5","5","5","5","5","5","5","5","5","5","5","5","5","6","6","6","6","6","6","6","6","6","6","6","6","6","7","7","7","7","7","7","7","7","7","7","7","7","7","8","8","8","8","8","8","8","8","8","8","8","8","8","9","9","9","9","9","9","9","9","9","9","9","9","9","T","T","T","T","T","T","T","T","T","T","T","T","T","J","J","J","J","J","J","J","J","J","J","J","J","J","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","K","K","K","K","K","K","K","K","K","K","K","K","K","A","A","A","A","A","A","A","A","A","A","A","A","A"],"c2":["2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A"],"hand":["22","23","24","25","26","27","28","29","2T","2J","2Q","2K","2A","32","33","34","35","36","37","38","39","3T","3J","3Q","3K","3A","42","43","44","45","46","47","48","49","4T","4J","4Q","4K","4A","52","53","54","55","56","57","58","59","5T","5J","5Q","5K","5A","62","63","64","65","66","67","68","69","6T","6J","6Q","6K","6A","72","73","74","75","76","77","78","79","7T","7J","7Q","7K","7A","82","83","84","85","86","87","88","89","8T","8J","8Q","8K","8A","92","93","94","95","96","97","98","99","9T","9J","9Q","9K","9A","T2","T3","T4","T5","T6","T7","T8","T9","TT","TJ","TQ","TK","TA","J2","J3","J4","J5","J6","J7","J8","J9","JT","JJ","JQ","JK","JA","Q2","Q3","Q4","Q5","Q6","Q7","Q8","Q9","QT","QJ","QQ","QK","QA","K2","K3","K4","K5","K6","K7","K8","K9","KT","KJ","KQ","KK","KA","A2","A3","A4","A5","A6","A7","A8","A9","AT","AJ","AQ","AK","AA"],"index":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168],"value":{"__ndarray__":"AAAAAABI4D8AAAAAAEDWPwAAAAAAoNY/AAAAAAAg1z8AAAAAAJDWPwAAAAAAYNU/AAAAAABg1z8AAAAAAJDYPwAAAAAAgNs/AAAAAABw3T8AAAAAAJDePwAAAAAAkOA/AAAAAACo4T8AAAAAAKDUPwAAAAAAQOI/AAAAAAAw1z8AAAAAADDYPwAAAAAAoNc/AAAAAACA2D8AAAAAAMDXPwAAAAAA0Nk/AAAAAABA2z8AAAAAADDdPwAAAAAA8N8/AAAAAABY4D8AAAAAAADhPwAAAAAAINU/AAAAAAAQ1j8AAAAAAPDiPwAAAAAAgNk/AAAAAAAQ2D8AAAAAAADZPwAAAAAAANk/AAAAAACQ2j8AAAAAAIDbPwAAAAAAsNw/AAAAAACg3z8AAAAAAMjgPwAAAAAAoOE/AAAAAACw1D8AAAAAAJDWPwAAAAAA4Nc/AAAAAABA5D8AAAAAAODYPwAAAAAAANs/AAAAAAAA3D8AAAAAAADcPwAAAAAAkN0/AAAAAAAA3z8AAAAAAEjgPwAAAAAAIOI/AAAAAABA4j8AAAAAANDUPwAAAAAAQNY/AAAAAAAg1z8AAAAAALDXPwAAAAAAYOQ/AAAAAADg2j8AAAAAAJDbPwAAAAAAYNs/AAAAAAAw3j8AAAAAALDePwAAAAAAcOA/AAAAAADA4T8AAAAAAODhPwAAAAAAINM/AAAAAABA1j8AAAAAAHDXPwAAAAAAcNk/AAAAAABg2T8AAAAAAJjlPwAAAAAAkN0/AAAAAABA3T8AAAAAAAjgPwAAAAAAeOA/AAAAAAAA4T8AAAAAAMjhPwAAAAAAkOI/AAAAAABQ1T8AAAAAAEDWPwAAAAAAMNc/AAAAAADg2D8AAAAAADDZPwAAAAAAwNo/AAAAAADo5T8AAAAAAMDfPwAAAAAAaOA/AAAAAABQ4T8AAAAAAMDhPwAAAAAAQOI/AAAAAAAI4z8AAAAAANDWPwAAAAAAgNc/AAAAAABA2T8AAAAAAJDaPwAAAAAAcNk/AAAAAAAA3D8AAAAAAIDePwAAAAAAGOc/AAAAAABg4T8AAAAAAODhPwAAAAAAYOI/AAAAAABo4j8AAAAAACjjPwAAAAAAkNk/AAAAAAAA2j8AAAAAAHDaPwAAAAAAANw/AAAAAADQ3D8AAAAAAMDdPwAAAAAAwN8/AAAAAADQ4D8AAAAAAIDnPwAAAAAA6OI/AAAAAADI4j8AAAAAAHjjPwAAAAAAcOQ/AAAAAADQ2j8AAAAAACDbPwAAAAAAANo/AAAAAADQ3D8AAAAAAEDdPwAAAAAAgN8/AAAAAABo4D8AAAAAAGDhPwAAAAAAuOI/AAAAAACQ6T8AAAAAAEjkPwAAAAAAoOQ/AAAAAAAw5T8AAAAAANDbPwAAAAAA4N0/AAAAAAAw3D8AAAAAAFDePwAAAAAAAN8/AAAAAABg3z8AAAAAAAjhPwAAAAAACOI/AAAAAACI4j8AAAAAAGjjPwAAAAAAiOk/AAAAAABg5D8AAAAAAAjlPwAAAAAAYN4/AAAAAADw3T8AAAAAAADfPwAAAAAACOE/AAAAAACA4D8AAAAAAKjgPwAAAAAAgOE/AAAAAADA4T8AAAAAAPDiPwAAAAAA4OM/AAAAAACQ5D8AAAAAAOjpPwAAAAAAwOQ/AAAAAAAw4D8AAAAAAJDfPwAAAAAAwOA/AAAAAABY4T8AAAAAACDhPwAAAAAAeOE/AAAAAAAg4j8AAAAAAKjiPwAAAAAAcOM/AAAAAAAo5D8AAAAAAEjkPwAAAAAAAOQ/AAAAAACI6j8=","dtype":"float64","shape":[169]}},"selected":{"id":"3992","type":"Selection"},"selection_policy":{"id":"3993","type":"UnionRenderers"}},"id":"3974","type":"ColumnDataSource"},{"attributes":{"callback":null,"data":{"c1":["2","2","2","2","2","2","2","2","2","2","2","2","2","3","3","3","3","3","3","3","3","3","3","3","3","3","4","4","4","4","4","4","4","4","4","4","4","4","4","5","5","5","5","5","5","5","5","5","5","5","5","5","6","6","6","6","6","6","6","6","6","6","6","6","6","7","7","7","7","7","7","7","7","7","7","7","7","7","8","8","8","8","8","8","8","8","8","8","8","8","8","9","9","9","9","9","9","9","9","9","9","9","9","9","T","T","T","T","T","T","T","T","T","T","T","T","T","J","J","J","J","J","J","J","J","J","J","J","J","J","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","Q","K","K","K","K","K","K","K","K","K","K","K","K","K","A","A","A","A","A","A","A","A","A","A","A","A","A"],"c2":["2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A","2","3","4","5","6","7","8","9","T","J","Q","K","A"],"hand":["22","23","24","25","26","27","28","29","2T","2J","2Q","2K","2A","32","33","34","35","36","37","38","39","3T","3J","3Q","3K","3A","42","43","44","45","46","47","48","49","4T","4J","4Q","4K","4A","52","53","54","55","56","57","58","59","5T","5J","5Q","5K","5A","62","63","64","65","66","67","68","69","6T","6J","6Q","6K","6A","72","73","74","75","76","77","78","79","7T","7J","7Q","7K","7A","82","83","84","85","86","87","88","89","8T","8J","8Q","8K","8A","92","93","94","95","96","97","98","99","9T","9J","9Q","9K","9A","T2","T3","T4","T5","T6","T7","T8","T9","TT","TJ","TQ","TK","TA","J2","J3","J4","J5","J6","J7","J8","J9","JT","JJ","JQ","JK","JA","Q2","Q3","Q4","Q5","Q6","Q7","Q8","Q9","QT","QJ","QQ","QK","QA","K2","K3","K4","K5","K6","K7","K8","K9","KT","KJ","KQ","KK","KA","A2","A3","A4","A5","A6","A7","A8","A9","AT","AJ","AQ","AK","AA"],"index":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168],"value":{"__ndarray__":"AAAAAABI4D8AAAAAAEDWPwAAAAAAoNY/AAAAAAAg1z8AAAAAAJDWPwAAAAAAYNU/AAAAAABg1z8AAAAAAJDYPwAAAAAAgNs/AAAAAABw3T8AAAAAAJDePwAAAAAAkOA/AAAAAACo4T8AAAAAAKDUPwAAAAAAQOI/AAAAAAAw1z8AAAAAADDYPwAAAAAAoNc/AAAAAACA2D8AAAAAAMDXPwAAAAAA0Nk/AAAAAABA2z8AAAAAADDdPwAAAAAA8N8/AAAAAABY4D8AAAAAAADhPwAAAAAAINU/AAAAAAAQ1j8AAAAAAPDiPwAAAAAAgNk/AAAAAAAQ2D8AAAAAAADZPwAAAAAAANk/AAAAAACQ2j8AAAAAAIDbPwAAAAAAsNw/AAAAAACg3z8AAAAAAMjgPwAAAAAAoOE/AAAAAACw1D8AAAAAAJDWPwAAAAAA4Nc/AAAAAABA5D8AAAAAAODYPwAAAAAAANs/AAAAAAAA3D8AAAAAAADcPwAAAAAAkN0/AAAAAAAA3z8AAAAAAEjgPwAAAAAAIOI/AAAAAABA4j8AAAAAANDUPwAAAAAAQNY/AAAAAAAg1z8AAAAAALDXPwAAAAAAYOQ/AAAAAADg2j8AAAAAAJDbPwAAAAAAYNs/AAAAAAAw3j8AAAAAALDePwAAAAAAcOA/AAAAAADA4T8AAAAAAODhPwAAAAAAINM/AAAAAABA1j8AAAAAAHDXPwAAAAAAcNk/AAAAAABg2T8AAAAAAJjlPwAAAAAAkN0/AAAAAABA3T8AAAAAAAjgPwAAAAAAeOA/AAAAAAAA4T8AAAAAAMjhPwAAAAAAkOI/AAAAAABQ1T8AAAAAAEDWPwAAAAAAMNc/AAAAAADg2D8AAAAAADDZPwAAAAAAwNo/AAAAAADo5T8AAAAAAMDfPwAAAAAAaOA/AAAAAABQ4T8AAAAAAMDhPwAAAAAAQOI/AAAAAAAI4z8AAAAAANDWPwAAAAAAgNc/AAAAAABA2T8AAAAAAJDaPwAAAAAAcNk/AAAAAAAA3D8AAAAAAIDePwAAAAAAGOc/AAAAAABg4T8AAAAAAODhPwAAAAAAYOI/AAAAAABo4j8AAAAAACjjPwAAAAAAkNk/AAAAAAAA2j8AAAAAAHDaPwAAAAAAANw/AAAAAADQ3D8AAAAAAMDdPwAAAAAAwN8/AAAAAADQ4D8AAAAAAIDnPwAAAAAA6OI/AAAAAADI4j8AAAAAAHjjPwAAAAAAcOQ/AAAAAADQ2j8AAAAAACDbPwAAAAAAANo/AAAAAADQ3D8AAAAAAEDdPwAAAAAAgN8/AAAAAABo4D8AAAAAAGDhPwAAAAAAuOI/AAAAAACQ6T8AAAAAAEjkPwAAAAAAoOQ/AAAAAAAw5T8AAAAAANDbPwAAAAAA4N0/AAAAAAAw3D8AAAAAAFDePwAAAAAAAN8/AAAAAABg3z8AAAAAAAjhPwAAAAAACOI/AAAAAACI4j8AAAAAAGjjPwAAAAAAiOk/AAAAAABg5D8AAAAAAAjlPwAAAAAAYN4/AAAAAADw3T8AAAAAAADfPwAAAAAACOE/AAAAAACA4D8AAAAAAKjgPwAAAAAAgOE/AAAAAADA4T8AAAAAAPDiPwAAAAAA4OM/AAAAAACQ5D8AAAAAAOjpPwAAAAAAwOQ/AAAAAAAw4D8AAAAAAJDfPwAAAAAAwOA/AAAAAABY4T8AAAAAACDhPwAAAAAAeOE/AAAAAAAg4j8AAAAAAKjiPwAAAAAAcOM/AAAAAAAo5D8AAAAAAEjkPwAAAAAAAOQ/AAAAAACI6j8=","dtype":"float64","shape":[169]}},"selected":{"id":"3994","type":"Selection"},"selection_policy":{"id":"3995","type":"UnionRenderers"}},"id":"3980","type":"ColumnDataSource"},{"attributes":{},"id":"3990","type":"CategoricalTickFormatter"},{"attributes":{},"id":"3968","type":"CategoricalTicker"},{"attributes":{"fill_color":{"field":"value","transform":{"id":"3953","type":"LinearColorMapper"}},"height":{"units":"data","value":1},"line_color":{"value":"#1f77b4"},"line_width":{"value":0},"width":{"units":"data","value":1},"x":{"field":"c1"},"y":{"field":"c2"}},"id":"3976","type":"Rect"},{"attributes":{},"id":"3988","type":"CategoricalTickFormatter"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"units":"data","value":1},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":0},"width":{"units":"data","value":1},"x":{"field":"c1"},"y":{"field":"c2"}},"id":"3977","type":"Rect"},{"attributes":{"callback":null,"factors":["2","3","4","5","6","7","8","9","T","J","Q","K","A"]},"id":"3957","type":"FactorRange"},{"attributes":{"text":""},"id":"3987","type":"Title"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"3971","type":"HoverTool"}]},"id":"3972","type":"Toolbar"},{"attributes":{"formatter":{"id":"3990","type":"CategoricalTickFormatter"},"ticker":{"id":"3968","type":"CategoricalTicker"},"visible":false},"id":"3967","type":"CategoricalAxis"},{"attributes":{"source":{"id":"3980","type":"ColumnDataSource"}},"id":"3985","type":"CDSView"},{"attributes":{"dimension":1,"ticker":{"id":"3968","type":"CategoricalTicker"}},"id":"3970","type":"Grid"},{"attributes":{},"id":"3992","type":"Selection"},{"attributes":{"high":0.298828125,"low":0.8291015625,"palette":["#006837","#1a9850","#66bd63","#a6d96a","#d9ef8b","#ffffbf","#fee08b","#fdae61","#f46d43","#d73027","#a50026"]},"id":"3953","type":"LinearColorMapper"},{"attributes":{},"id":"3959","type":"CategoricalScale"},{"attributes":{"text":{"field":"hand"},"text_color":{"value":"black"},"text_font":"Palatino","x":{"field":"c1"},"x_offset":{"value":-10},"y":{"field":"c2"},"y_offset":{"value":8}},"id":"3982","type":"Text"},{"attributes":{"data_source":{"id":"3974","type":"ColumnDataSource"},"glyph":{"id":"3976","type":"Rect"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"3977","type":"Rect"},"selection_glyph":null,"view":{"id":"3979","type":"CDSView"}},"id":"3978","type":"GlyphRenderer"},{"attributes":{},"id":"3993","type":"UnionRenderers"},{"attributes":{"formatter":{"id":"3988","type":"CategoricalTickFormatter"},"ticker":{"id":"3964","type":"CategoricalTicker"},"visible":false},"id":"3963","type":"CategoricalAxis"},{"attributes":{"children":[[{"id":"3954","subtype":"Figure","type":"Plot"},0,0]],"sizing_mode":"scale_width"},"id":"3997","type":"GridBox"},{"attributes":{},"id":"3995","type":"UnionRenderers"},{"attributes":{},"id":"3994","type":"Selection"},{"attributes":{"ticker":{"id":"3964","type":"CategoricalTicker"}},"id":"3966","type":"Grid"},{"attributes":{},"id":"3964","type":"CategoricalTicker"},{"attributes":{"callback":null,"factors":["A","K","Q","J","T","9","8","7","6","5","4","3","2"]},"id":"3955","type":"FactorRange"},{"attributes":{"callback":null,"tooltips":[["Win%","@value{2.1%}"],["Hand","@hand"]]},"id":"3971","type":"HoverTool"}],"root_ids":["3997"]},"title":"Bokeh Application","version":"1.3.4"}}';
+                var render_items = [{"docid":"1cfda14a-3390-473e-96bb-18917063515b","roots":{"3997":"a1d9de33-34bb-4457-ad9a-511ac0f12734"}}];
+                root.Bokeh.embed.embed_items(docs_json, render_items);
+              
+                }
+                if (root.Bokeh !== undefined) {
+                  embed_document(root);
+                } else {
+                  var attempts = 0;
+                  var timer = setInterval(function(root) {
+                    if (root.Bokeh !== undefined) {
+                      clearInterval(timer);
+                      embed_document(root);
+                    } else {
+                      attempts++;
+                      if (attempts > 100) {
+                        clearInterval(timer);
+                        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                      }
+                    }
+                  }, 10, root)
+                }
+              })(window);
+            });
+          };
+          if (document.readyState != "loading") fn();
+          else document.addEventListener("DOMContentLoaded", fn);
+        })();
+</script>
+<div class="bk-root" id="a1d9de33-34bb-4457-ad9a-511ac0f12734" data-root-id="3997"></div>
+<p>The above beautiful table<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> is <strong>NOT</strong> a range chart. It is the natural winning probability given any hand in a heads-up game, calculated using my hand evaluation tool in <a href="https://allenfrostline.com/blog/texas-holdem-series-4">this post</a>. Let&rsquo;s call it <code>$\mathbf{W}$</code> just for now. The table can, however, in a very truthful and exemplary way represent one&rsquo;s preference of entering a game. With higher natural winning rate, I would enter the game with a higher probability. That makes sense to me. Also, the table shares some straightforward properties with a range chart, like the diagonals are exceptionally better than surrounding entries (as they&rsquo;re in pairs) and that upper right entering probabilities are higher than lower left ones (as by definition they&rsquo;ve got an edge for being suited). Furthermore, if we assume that hero is playing under Kelly criterion, namely maximizing his (conditional) expected log returns, then it&rsquo;s also easy to show that in a heads-up game it&rsquo;s ideal to submit to a range that is equal to <code>$\mathbf{R}_{\text{kelly}}=(2\mathbf{W}-1)_+$</code>. Hence, it would be unwise if you enter the game with a hand like 3♠<span style="color:red">A♦</span> (winning rate <code>$49.3\%$</code>) though it looks quite good sometimes.</p>
+<p>Enough for intro. Let&rsquo;s start estimation. Assume now that we&rsquo;re playing against someone, enemy, with his fixed but unknown range <code>$\mathbf{R}$</code>. What we do observe are multiple (enough for a good estimation if you know how) games that he&rsquo;s involved — sometimes our enemy enters the game, sometimes not. We don&rsquo;t always have the chance to see his hands unless he&rsquo;s made it to showdown, so calculating simple average entering probabilities becomes a method out of our consideration right away. We do have his average entering probability <code>$\pi\in(0,1)$</code>. What else? We also know, regardless of him being any kind of player, the natural probability matrix<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> of getting any hand, denoted by <code>$\mathbf{P}$</code>, which is given by</p>
+<p>$$
+\mathbf{P}_{ij} := \P{\ \text{hand}\ (i,j)\ } = \frac{8\cdot\1{i&lt;j} + 12\cdot \1{i=j} + 24\cdot\1{i&gt;j}}{52\times 51} =
+\frac{2\cdot\1{i&lt;j} + 3\cdot \1{i=j} + 6\cdot\1{i&gt;j}}{663}
+$$</p>
+<p><code>$\forall i,j=1,2,\ldots,13$</code>. Meanwhile, by definition we know</p>
+<p>$$
+\mathbf{R}_{ij}:=\P{\ \text{enter}\mid\text{hand}\ (i,j)\ }.
+$$</p>
+<p>Hence, let <code>$\bs{\iota}\in\R^{13}$</code> be the one-vector, we know</p>
+<p>$$
+\pi := \P{\ \text{enter}\ } = \bs{\iota}&rsquo;(\mathbf{R}\odot\mathbf{P})\bs{\iota}\tag{1}
+$$</p>
+<p>where <code>$\mathbf{A}\odot\mathbf{B}$</code>, a.k.a. the <a href=https://en.wikipedia.org/wiki/Hadamard_product_(matrices)>Hadamard product</a>, means the elementwise product of <code>$\mathbf{A}$</code> and <code>$\mathbf{B}$</code>. This introduces <code>$\mathbf{H}\in\R^{13\times 13}$</code>, which by Bayes&rsquo; rule follows</p>
+<div>
+$$
+\mathbf{H}_{ij} := \P\{\ \text{hand}\ (i,j)\mid\text{enter}\ \} =
+\frac{\P\{\ \text{enter}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{enter}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}} =
+\frac{(\mathbf{R}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\mathbf{R}\odot\mathbf{P})\bs{\iota}}
+$$
+</div>
+<p>or simply</p>
+<p>$$
+\mathbf{H} = \frac{\mathbf{R}\odot\mathbf{P}}{\bs{\iota}&rsquo;(\mathbf{R}\odot\mathbf{P})\bs{\iota}}.\tag{2}
+$$</p>
+<p>With <code>$n$</code> equations there is no way we can estimate <code>$2n$</code> variables (<code>$n=13^2=169$</code> in this context) from <code>$\mathbf{R}$</code> and <code>$\mathbf{H}$</code>. Seems we&rsquo;ve come to a dead end. It&rsquo;s a good time to add an assumption. If we assume that <strong>probability of enemy entering the game is then proportional to him staying until showdown</strong> (in which case we can see his cards), then</p>
+<div>
+$$
+(\kappa\mathbf{R}\odot\mathbf{R})_{ij} \equiv \kappa \mathbf{R}^{\circ 2}_{ij} := \P\{\ \text{showdown}\mid\text{hand}\ (i,j)\ \},\quad\kappa\in(0,1)
+$$
+</div>
+<p>where <code>$\mathbf{R}^{\circ 2}$</code> is the Hadamard power of <code>$2$</code>, namely elementwise square of <code>$\mathbf{R}$</code>. By Bayes&rsquo; rule again we know</p>
+<div>
+$$
+\mathbf{S}_{ij} = \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
+\frac{\P\{\ \text{showdown}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{showdown}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}}
+= \frac{(\kappa\mathbf{R}^{\circ 2}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\kappa\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}}
+= \frac{(\mathbf{R}^{\circ 2}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}}
+$$
+</div>
+<p>or simply</p>
+<p>$$
+\mathbf{S} = \frac{\mathbf{R}^{\circ 2}\odot\mathbf{P}}{\bs{\iota}&rsquo;(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}}.\tag{3}
+$$</p>
+<p>Notice that the probability of our enemy reaching showdown is observable, so we have</p>
+<p>$$
+\xi := \P{\ \text{showdown}\ } = \kappa \bs{\iota}&rsquo;(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}.\tag{4}
+$$</p>
+<p>There&rsquo;re in total <code>$2n+1$</code> equations by combining eq. (1) - (4) together, which makes it possible to solve for <code>$2n+1$</code> variables including all entries in <code>$\mathbf{R}$</code> and <code>$\mathbf{H}$</code> together with scalar <code>$\kappa$</code>. Simple algebra gives the solution as follows:</p>
+<p>$$
+\begin{cases}
+\kappa = \displaystyle{\frac{\xi [\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}]^2}{\pi^2}},\
+\mathbf{R} =
+\displaystyle{\frac{\pi\mathbf{S}^{\circ \frac{1}{2}}\odot\mathbf{P}^{\circ -\frac{1}{2}}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}} =
+\displaystyle{\frac{\pi(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}\odot\mathbf{P}^{\circ -1}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}},\
+\mathbf{H} = \displaystyle{\frac{(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}}
+\end{cases}
+$$</p>
+<p>which, you may have noticed, can be written in a more succinct form by denoting <code>$\bs{\Sigma}:=(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}$</code> and <code>$\sigma:=\bs{\iota}'(\mathbf{S}\odot\mathbf{P})\bs{\iota}$</code>:</p>
+<p>$$
+\begin{cases}
+\kappa = \xi\sigma^2/\pi^2,\
+\mathbf{R} = \pi\bs{\Sigma}\oslash\mathbf{P} / \sigma,\
+\mathbf{H} = \bs{\Sigma} / \sigma
+\end{cases}
+$$</p>
+<p>where <code>$\mathbf{A}\oslash\mathbf{B}$</code> is the Hadamard division, namely the elementwise division of the two matrices. It is equivalent to <code>$\mathbf{A}\odot\mathbf{B}^{\circ -1}$</code>. Notice that all known variables in the RHS of the solution, except for <code>$\mathbf{P}$</code> which is a constant matrix, are estimated by taking averages that converge to corresponding expectations in distribution at a rate of <code>$\sqrt{2}$</code>. Therefore, by <strong>continuous mapping theorem</strong> we know this convergence still holds for <code>$\kappa$</code>, <code>$\mathbf{R}$</code> and <code>$\mathbf{H}$</code> and thus our estimators are indeed consistent. Now we can finally conclude that the problem is properly solved with the additional assumption we made above.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Usually when we talk about ranges, we mean preflop ranges, though in some rare cases it can actually mean something more general.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Apparently diagonal entries cannot represent suited hands. Cards with the same rank can&rsquo;t be of the same suit, too.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>It&rsquo;s not so beautiful if you&rsquo;re currently using a small screen.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>By probability matrix I mean a matrix with all entries adding up to <code>$1$</code>.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/canned-yellow-peach/">黄桃罐头</a></span>
+  <span class="nav-next"><a href="/blog/josephus-problem/">Josephus Problem</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/canned-yellow-peach\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/josephus-problem\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

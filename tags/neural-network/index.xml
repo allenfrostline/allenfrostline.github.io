@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>neural network on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/neural-network/</link>
+    <description>Recent content in neural network on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 17 Jan 2017 12:03:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/neural-network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Strategy: LSTM Neural Network &#43; Small Cap</title>
+      <link>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</link>
+      <pubDate>Tue, 17 Jan 2017 12:03:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
+      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
+Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
+    </item>
+  </channel>
+</rss>

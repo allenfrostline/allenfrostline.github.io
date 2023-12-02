@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hugo on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/hugo/</link>
+    <description>Recent content in hugo on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 11 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Continuous Integration in Blogging</title>
+      <link>https://allenfrostline.com/blog/continuous-integration-blog/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/continuous-integration-blog/</guid>
+      <description>My website&amp;rsquo;s backend has recently migrated from Hexo to Hugo. The former was written in Node.js and suffered severely from compiling huge files. The latter, on the other hand, is a golang-based static site generator and thanks to that I now only need to wait &amp;lt;2 seconds before a complete rebuild, despite my increasing number of posts. I have no intend to generate another piece Internet garbage repeating what I actually did during the migration.</description>
+    </item>
+  </channel>
+</rss>

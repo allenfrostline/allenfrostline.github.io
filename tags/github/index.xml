@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>github on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/github/</link>
+    <description>Recent content in github on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 03 May 2019 13:28:04 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Revert GitHub Commit History?</title>
+      <link>https://allenfrostline.com/blog/revert-github-commit/</link>
+      <pubDate>Fri, 03 May 2019 13:28:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/revert-github-commit/</guid>
+      <description>There is a piece of nicely given advice I&amp;rsquo;d like to share with you: do never post anything too large on your Hexo blog. The suggestion given above was a joke to me until yesterday. I thought I can just wait for some more minutes and then everything will be fine. Pages will end up posted with probability one in the long run — well, they didn&amp;rsquo;t make it this time.</description>
+    </item>
+    <item>
+      <title>How to Deploy a Local Project onto Github</title>
+      <link>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</link>
+      <pubDate>Mon, 13 Feb 2017 21:26:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</guid>
+      <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.
+(1) Open Terminal.app and enter the directory of the folder.
+cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.
+git init Now you&amp;rsquo;ll see a .</description>
+    </item>
+    <item>
+      <title>How to Set Up a Personal Site Using Hexo?</title>
+      <link>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</link>
+      <pubDate>Mon, 26 Sep 2016 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</guid>
+      <description>Below are some principle steps of setting up this website using Hexo. Instead of using Wordpress, I considered using Hexo directly for higher flexibility in customization.
+Download npm and node.js, then use npm to download git and hexo.
+Then, in root folder create a new folder named &amp;lt;name&amp;gt;.github.io and within it hexo.
+cd ~/&amp;lt;name&amp;gt;.github.io/hexo git init hexo init Find /hexo/source/_post. This is the folder we put out Markdown posts, later.</description>
+    </item>
+  </channel>
+</rss>

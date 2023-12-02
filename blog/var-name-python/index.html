@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>How to Get Variable Name as a String in Python - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="How to Get Variable Name as a String in Python - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Although it&amp;rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable &amp;hellip;">
+      <meta property="og:description" content="Although it&amp;rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>How to Get Variable Name as a String in Python</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-04-23
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Although it&rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable names as columns names in a pandas dataframe. How are we gonna implement this in Python?</p>
+<!-- more -->
+<p>There is a nasty workaround provided somewhere on Stackoverflow (sorry but I forgot the actual thread):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">varName</span>(p):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> k, v <span style="font-weight:bold">in</span> <span style="color:#999">globals</span>()<span style="font-weight:bold">.</span>items():
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> <span style="color:#999">id</span>(p) <span style="font-weight:bold">==</span> <span style="color:#999">id</span>(v):
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">return</span> k
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>foo <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;well&#39;</span>
+</span></span><span style="display:flex;"><span>far <span style="font-weight:bold">=</span> <span style="color:#099">12345</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(varName(foo))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(varName(far))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(varName(varName))
+</span></span></code></pre></div><pre><code>foo
+far
+varName
+</code></pre>
+<p>The method utilized the fact that Python stores all variables in the <code>global()</code> dictionary where keys are corresponding <code>id</code> values. Enjoy coding 🙃</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/perfect-market-maker/">The Perfect Market Maker: Is it Possible?</a></span>
+  <span class="nav-next"><a href="/blog/animation-matplotlib/">Animation in Matplotlib?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/perfect-market-maker\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/animation-matplotlib\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

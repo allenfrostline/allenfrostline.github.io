@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>How to Get Legends Out of the Plotting Area in R - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="How to Get Legends Out of the Plotting Area in R - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&amp;rsquo;t overlay the plots?
+[&amp;hellip;] This is easy &amp;hellip;">
+      <meta property="og:description" content="Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&amp;rsquo;t overlay the plots?
+[&amp;hellip;] This is easy &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>How to Get Legends Out of the Plotting Area in R</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-09-30
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&rsquo;t overlay the plots?</p>
+<!-- more -->
+<p>This is easy to tackle in Python, but for the default plotting function in R I did struggle for quite a while.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># `percentage.table()` is a function defined by me.</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># `f` is a vector of all classes and `len` is the length of `f`.</span>
+</span></span><span style="display:flex;"><span><span style="color:#900;font-weight:bold">barplot</span>(<span style="color:#900;font-weight:bold">percentage.table</span>(clusters),col<span style="font-weight:bold">=</span><span style="color:#900;font-weight:bold">heat.colors</span>(len),
+</span></span><span style="display:flex;"><span>        legend.text<span style="font-weight:bold">=</span>f,
+</span></span><span style="display:flex;"><span>        args.legend<span style="font-weight:bold">=</span><span style="color:#900;font-weight:bold">list</span>(x<span style="font-weight:bold">=</span><span style="color:#b84">&#34;topright&#34;</span>,
+</span></span><span style="display:flex;"><span>                         inset<span style="font-weight:bold">=</span><span style="color:#900;font-weight:bold">c</span>(<span style="color:#099">-.2</span>,<span style="color:#099">0</span>),
+</span></span><span style="display:flex;"><span>                         xpd<span style="font-weight:bold">=</span>T,
+</span></span><span style="display:flex;"><span>                         fill<span style="font-weight:bold">=</span><span style="color:#900;font-weight:bold">heat.colors</span>(len),
+</span></span><span style="display:flex;"><span>                         bty<span style="font-weight:bold">=</span><span style="color:#b84">&#34;n&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#900;font-weight:bold">title</span>(<span style="color:#b84">&#34;Barchart of Clusters&#34;</span>)
+</span></span></code></pre></div><p>Based on such constructions you can get plots like this:</p>
+<img src="/images/legend.pdf" style="width: 60%;"/>
+<p>I hope this helps if you have the same question:)</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/route/">路</a></span>
+  <span class="nav-next"><a href="/blog/how-to-build-cpp-with-stdin/">How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/route\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/how-to-build-cpp-with-stdin\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

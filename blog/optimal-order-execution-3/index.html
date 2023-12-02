@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (3) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (3) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying &amp;hellip;">
+      <meta property="og:description" content="Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Literature Review on Optimal Order Execution (3)</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-04-29
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Here I&rsquo;m trying to write something partly based on Cont&rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&rsquo;m trying to abandon the assumption of unified order sizes. To implement that, I need to shift from a Markov chain which is supported by discrete spaces, onto some other stochastic process that is estimatable. Moreover, although I actually considered supervised learning for this problem, I gave it up at last. This is because my model is inherently designed for high frequency trading and thus training for several minutes each time would be intolerable.</p>
+<!-- more -->
+<h1 id="section-1-package-import">Section 1: Package Import</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">smm</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">scipy</span> <span style="font-weight:bold">as</span> <span style="color:#555">sp</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">pandas</span> <span style="font-weight:bold">as</span> <span style="color:#555">pd</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.pyplot</span> <span style="font-weight:bold">as</span> <span style="color:#555">plt</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">scipy</span> <span style="font-weight:bold">import</span> special
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">scipy.optimize</span> <span style="font-weight:bold">import</span> brute
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">scipy.stats</span> <span style="font-weight:bold">import</span> skellam, t, kurtosis, gaussian_kde
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">matplotlib.patches</span> <span style="font-weight:bold">import</span> Patch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>np<span style="font-weight:bold">.</span>set_printoptions(linewidth<span style="font-weight:bold">=</span><span style="color:#099">200</span>)
+</span></span><span style="display:flex;"><span>pd<span style="font-weight:bold">.</span>set_option(<span style="color:#b84">&#39;display.max_rows&#39;</span>, <span style="color:#099">20</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span></code></pre></div><p>I need <code>smm</code> for multivariate stochastic processes, and <code>scipy.optimize</code> for maximum likelihood estimation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">retrieve_data</span>(date):
+</span></span><span style="display:flex;"><span>    file <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;data/depth_quarter_200_</span><span style="color:#b84">{}</span><span style="color:#b84">.csv&#39;</span><span style="font-weight:bold">.</span>format(date)
+</span></span><span style="display:flex;"><span>    data <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>read_csv(file)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>date <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;20180129&#39;</span>
+</span></span><span style="display:flex;"><span>data<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;time&#39;</span>] <span style="font-weight:bold">+</span> <span style="color:#999">list</span>(data<span style="font-weight:bold">.</span>columns[<span style="color:#099">1</span>:])
+</span></span><span style="display:flex;"><span>data<span style="font-weight:bold">.</span>head()
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th></th>
+<th>time</th>
+<th>ask_price_1</th>
+<th>ask_price_10</th>
+<th>ask_price_100</th>
+<th>ask_price_101</th>
+<th>ask_price_102</th>
+<th>ask_price_103</th>
+<th>ask_price_104</th>
+<th>ask_price_105</th>
+<th>ask_price_106</th>
+<th>&hellip;</th>
+<th>bid_vol_90</th>
+<th>bid_vol_91</th>
+<th>bid_vol_92</th>
+<th>bid_vol_93</th>
+<th>bid_vol_94</th>
+<th>bid_vol_95</th>
+<th>bid_vol_96</th>
+<th>bid_vol_97</th>
+<th>bid_vol_98</th>
+<th>bid_vol_99</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2018-01-29 00:00:06.951631+08:00</td>
+<td>12688.00</td>
+<td>12663.58</td>
+<td>12391.48</td>
+<td>12390.00</td>
+<td>12389.96</td>
+<td>12388.00</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>&hellip;</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2018-01-29 00:00:07.792882+08:00</td>
+<td>12676.93</td>
+<td>12657.04</td>
+<td>12391.48</td>
+<td>12390.00</td>
+<td>12389.96</td>
+<td>12388.00</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>&hellip;</td>
+<td>1.0</td>
+<td>400.0</td>
+<td>363.0</td>
+<td>5.0</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2018-01-29 00:00:08.702945+08:00</td>
+<td>12643.27</td>
+<td>12617.26</td>
+<td>12361.27</td>
+<td>12360.00</td>
+<td>12359.38</td>
+<td>12358.06</td>
+<td>12356.22</td>
+<td>12355.44</td>
+<td>12354.17</td>
+<td>&hellip;</td>
+<td>6.0</td>
+<td>15.0</td>
+<td>1.0</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2018-01-29 00:00:10.998615+08:00</td>
+<td>12666.00</td>
+<td>12642.73</td>
+<td>12380.00</td>
+<td>12377.00</td>
+<td>12374.99</td>
+<td>12369.73</td>
+<td>12366.43</td>
+<td>12365.84</td>
+<td>12361.45</td>
+<td>&hellip;</td>
+<td>460.0</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+<td>150.0</td>
+<td>12.0</td>
+<td>97.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2018-01-29 00:00:11.742304+08:00</td>
+<td>12674.00</td>
+<td>12643.27</td>
+<td>12384.22</td>
+<td>12381.39</td>
+<td>12380.00</td>
+<td>12377.00</td>
+<td>12374.99</td>
+<td>12369.73</td>
+<td>12366.43</td>
+<td>&hellip;</td>
+<td>4.0</td>
+<td>121.0</td>
+<td>5.0</td>
+<td>60.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>120.0</td>
+<td>150.0</td>
+<td>12.0</td>
+<td>97.0</td>
+</tr>
+</tbody>
+</table>
+<p>Larger index means smaller values for both bid and ask prices. It&rsquo;s uncommon and here I re-indexed the variables s.t. <code>bid_1</code> and <code>ask_1</code> corresponds with the best opponent prices.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">rename_index</span>(s):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="color:#b84">&#39;ask&#39;</span> <span style="font-weight:bold">in</span> s:
+</span></span><span style="display:flex;"><span>        _, v, i <span style="font-weight:bold">=</span> s<span style="font-weight:bold">.</span>split(<span style="color:#b84">&#39;_&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> <span style="color:#b84">f</span><span style="color:#b84">&#39;ask_</span><span style="color:#b84">{</span>v<span style="color:#b84">}</span><span style="color:#b84">_</span><span style="color:#b84">{</span><span style="color:#099">200</span> <span style="font-weight:bold">-</span> <span style="color:#999">int</span>(i) <span style="font-weight:bold">+</span> <span style="color:#099">1</span><span style="color:#b84">}</span><span style="color:#b84">&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(<span style="color:#999">map</span>(rename_index, data<span style="font-weight:bold">.</span>columns))
+</span></span></code></pre></div><h1 id="section-2-data-mining">Section 2: Data Mining</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>variables <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(data<span style="font-weight:bold">.</span>columns[<span style="color:#099">1</span>:])
+</span></span></code></pre></div><p>I dropped the <code>time</code> variable simply because I don&rsquo;t know how to use it. Normally there&rsquo;re two ways to handle uneven time-grids: resampling and ignoring, and I chose the latter.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">plot_lob</span>(n, t, theme<span style="font-weight:bold">=</span><span style="color:#b84">&#39;w&#39;</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># function to plot the limit order book</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">assert</span> theme <span style="font-weight:bold">in</span> [<span style="color:#b84">&#39;w&#39;</span>, <span style="color:#b84">&#39;k&#39;</span>, <span style="color:#b84">&#39;white&#39;</span>, <span style="color:#b84">&#39;black&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    temp_price <span style="font-weight:bold">=</span> data[[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_price_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n, <span style="color:#099">0</span>, <span style="font-weight:bold">-</span><span style="color:#099">1</span>)] <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>                      [<span style="color:#b84">f</span><span style="color:#b84">&#39;ask_price_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n <span style="font-weight:bold">+</span> <span style="color:#099">1</span>)]]<span style="font-weight:bold">.</span>head(t)
+</span></span><span style="display:flex;"><span>    temp_vol <span style="font-weight:bold">=</span> data[[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n, <span style="color:#099">0</span>, <span style="font-weight:bold">-</span><span style="color:#099">1</span>)] <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>                    [<span style="color:#b84">f</span><span style="color:#b84">&#39;ask_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n <span style="font-weight:bold">+</span> <span style="color:#099">1</span>)]]<span style="font-weight:bold">.</span>head(t)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n):
+</span></span><span style="display:flex;"><span>        temp_vol<span style="font-weight:bold">.</span>iloc[:, n <span style="font-weight:bold">+</span> i] <span style="font-weight:bold">+=</span> temp_vol<span style="font-weight:bold">.</span>iloc[:, n <span style="font-weight:bold">+</span> i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n):
+</span></span><span style="display:flex;"><span>        temp_vol<span style="font-weight:bold">.</span>iloc[:, n <span style="font-weight:bold">-</span> i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>] <span style="font-weight:bold">+=</span> temp_vol<span style="font-weight:bold">.</span>iloc[:, n <span style="font-weight:bold">-</span> i]
+</span></span><span style="display:flex;"><span>    price_min, price_max <span style="font-weight:bold">=</span> temp_price<span style="font-weight:bold">.</span>min()<span style="font-weight:bold">.</span>min(), temp_price<span style="font-weight:bold">.</span>max()<span style="font-weight:bold">.</span>max()
+</span></span><span style="display:flex;"><span>    price_limits <span style="font-weight:bold">=</span> (price_min <span style="font-weight:bold">*</span> <span style="color:#099">1.1</span> <span style="font-weight:bold">-</span> price_max <span style="font-weight:bold">*</span> <span style="color:#099">.1</span>, price_max <span style="font-weight:bold">*</span> <span style="color:#099">1.1</span> <span style="font-weight:bold">-</span> price_min <span style="font-weight:bold">*</span> <span style="color:#099">.1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fc1 <span style="font-weight:bold">=</span> theme
+</span></span><span style="display:flex;"><span>    ax1 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">5</span>, <span style="color:#099">1</span>), (<span style="color:#099">0</span>, <span style="color:#099">0</span>), rowspan<span style="font-weight:bold">=</span><span style="color:#099">4</span>, facecolor<span style="font-weight:bold">=</span>fc1)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>fill_betweenx(x1<span style="font-weight:bold">=</span>n <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, x2<span style="font-weight:bold">=</span>n, y<span style="font-weight:bold">=</span>price_limits, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.2</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>    lc <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;k&#39;</span> <span style="font-weight:bold">if</span> theme <span style="font-weight:bold">in</span> [<span style="color:#b84">&#39;w&#39;</span>, <span style="color:#b84">&#39;white&#39;</span>] <span style="font-weight:bold">else</span> <span style="color:#b84">&#39;w&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(t):
+</span></span><span style="display:flex;"><span>        ax1<span style="font-weight:bold">.</span>plot(temp_price<span style="font-weight:bold">.</span>iloc[i, :]<span style="font-weight:bold">.</span>values, color<span style="font-weight:bold">=</span>lc, alpha<span style="font-weight:bold">=</span>(i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>) <span style="font-weight:bold">/</span> t, lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_ylim(price_limits)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_xticklabels(<span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>spines[<span style="color:#b84">&#39;bottom&#39;</span>]<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;price&#39;</span>)
+</span></span><span style="display:flex;"><span>    ax1<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n <span style="font-weight:bold">-</span> <span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fc2 <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;#efefef&#39;</span> <span style="font-weight:bold">if</span> theme <span style="font-weight:bold">in</span> [<span style="color:#b84">&#39;w&#39;</span>, <span style="color:#b84">&#39;white&#39;</span>] <span style="font-weight:bold">else</span> <span style="color:#b84">&#39;#222222&#39;</span>
+</span></span><span style="display:flex;"><span>    ax2 <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>subplot2grid((<span style="color:#099">5</span>, <span style="color:#099">1</span>), (<span style="color:#099">4</span>, <span style="color:#099">0</span>), facecolor<span style="font-weight:bold">=</span>fc2)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>fill_betweenx(x1<span style="font-weight:bold">=</span>n <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, x2<span style="font-weight:bold">=</span>n, y<span style="font-weight:bold">=</span>[<span style="color:#099">0</span>, temp_vol<span style="font-weight:bold">.</span>max()<span style="font-weight:bold">.</span>max() <span style="font-weight:bold">*</span> <span style="color:#099">1.1</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.2</span>, lw<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(t):
+</span></span><span style="display:flex;"><span>        ax2<span style="font-weight:bold">.</span>bar(np<span style="font-weight:bold">.</span>arange(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n), temp_vol<span style="font-weight:bold">.</span>iloc[i, :]<span style="font-weight:bold">.</span>values, color<span style="font-weight:bold">=</span>lc, alpha<span style="font-weight:bold">=</span><span style="color:#099">.2</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_ylim(<span style="color:#099">0</span>, temp_vol<span style="font-weight:bold">.</span>max()<span style="font-weight:bold">.</span>max() <span style="font-weight:bold">*</span> <span style="color:#099">1.1</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>spines[<span style="color:#b84">&#39;top&#39;</span>]<span style="font-weight:bold">.</span>set_visible(<span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;volume&#39;</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n <span style="font-weight:bold">-</span> <span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n))
+</span></span><span style="display:flex;"><span>    ax2<span style="font-weight:bold">.</span>set_xticklabels([<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n, <span style="color:#099">0</span>, <span style="font-weight:bold">-</span><span style="color:#099">1</span>)] <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>                        [<span style="color:#b84">f</span><span style="color:#b84">&#39;ask_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n <span style="font-weight:bold">+</span> <span style="color:#099">1</span>)], rotation<span style="font-weight:bold">=</span><span style="color:#099">90</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>subplots_adjust(hspace<span style="font-weight:bold">=</span><span style="color:#099">.0</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p>Now we make a plot of the order book within the past 10 steps, including 20 bid levels and 20 ask levels.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n, t <span style="font-weight:bold">=</span> <span style="color:#099">20</span>, <span style="color:#099">10</span>
+</span></span><span style="display:flex;"><span>plot_lob(n, t)
+</span></span></code></pre></div><p><img src="/images/order_1.png" alt="png"></p>
+<p>Not sure if it tells any critical information. Let&rsquo;s make another plot. This time <code>$t=500$</code> and we only consider the best bid and ask orders.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ax.set_yscale(&#39;log&#39;)</span>
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;price&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;volume&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>t <span style="font-weight:bold">=</span> <span style="color:#099">500</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ap <span style="font-weight:bold">=</span> data[<span style="color:#b84">&#39;ask_price_1&#39;</span>]<span style="font-weight:bold">.</span>values
+</span></span><span style="display:flex;"><span>av <span style="font-weight:bold">=</span> data[<span style="color:#b84">&#39;ask_vol_1&#39;</span>]<span style="font-weight:bold">.</span>values
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>scatter(ap[<span style="color:#099">0</span>], av[<span style="color:#099">0</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ask&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(t):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((ap[i], ap[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>]), (av[i], av[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>]), <span style="color:#b84">&#39;r-&#39;</span>, alpha<span style="font-weight:bold">=</span>(<span style="color:#099">1</span> <span style="font-weight:bold">-</span> i <span style="font-weight:bold">/</span> t) <span style="font-weight:bold">*</span> <span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bp <span style="font-weight:bold">=</span> data[<span style="color:#b84">&#39;bid_price_1&#39;</span>]<span style="font-weight:bold">.</span>values
+</span></span><span style="display:flex;"><span>bv <span style="font-weight:bold">=</span> data[<span style="color:#b84">&#39;bid_vol_1&#39;</span>]<span style="font-weight:bold">.</span>values
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>scatter(bp[<span style="color:#099">0</span>], <span style="font-weight:bold">-</span>bv[<span style="color:#099">0</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bid&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(t):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((bp[i], bp[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>]), (<span style="font-weight:bold">-</span>bv[i], <span style="font-weight:bold">-</span>bv[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>]), <span style="color:#b84">&#39;c-&#39;</span>, alpha<span style="font-weight:bold">=</span>(<span style="color:#099">1</span> <span style="font-weight:bold">-</span> i <span style="font-weight:bold">/</span> t) <span style="font-weight:bold">*</span> <span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;best&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>)    
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/order_2.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>price <span style="font-weight:bold">=</span> data[[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_price_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n,<span style="color:#099">0</span>,<span style="font-weight:bold">-</span><span style="color:#099">1</span>)] <span style="font-weight:bold">+</span> [<span style="color:#b84">f</span><span style="color:#b84">&#39;ask_price_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>,n<span style="font-weight:bold">+</span><span style="color:#099">1</span>)]]
+</span></span><span style="display:flex;"><span>vol <span style="font-weight:bold">=</span> data[[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n,<span style="color:#099">0</span>,<span style="font-weight:bold">-</span><span style="color:#099">1</span>)] <span style="font-weight:bold">+</span> [<span style="color:#b84">f</span><span style="color:#b84">&#39;ask_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>,n<span style="font-weight:bold">+</span><span style="color:#099">1</span>)]]
+</span></span></code></pre></div><p>A simple idea would be inputting the prices and volumes in the current orderbook, and predict the future mid prices. Furthermore, it&rsquo;s ideal to have a rough expectation of the minimum time that the mid price crosses a certain price, or the time needed in expectation before my order got executed successfully.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>change <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(price<span style="font-weight:bold">.</span>shape[<span style="color:#099">0</span>] <span style="font-weight:bold">-</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># print(f&#39;checking state {i} and {i+1}&#39;, end=&#39;\r&#39;)</span>
+</span></span><span style="display:flex;"><span>    mask <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>isin(price<span style="font-weight:bold">.</span>iloc[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>, :]<span style="font-weight:bold">.</span>values, price<span style="font-weight:bold">.</span>iloc[i, :]<span style="font-weight:bold">.</span>values) <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>           np<span style="font-weight:bold">.</span>isin(price<span style="font-weight:bold">.</span>iloc[i, :]<span style="font-weight:bold">.</span>values, price<span style="font-weight:bold">.</span>iloc[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>, :]<span style="font-weight:bold">.</span>values)
+</span></span><span style="display:flex;"><span>    cnames <span style="font-weight:bold">=</span> price<span style="font-weight:bold">.</span>columns[mask]
+</span></span><span style="display:flex;"><span>    mask <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(<span style="color:#999">map</span>(<span style="font-weight:bold">lambda</span> x: x<span style="font-weight:bold">.</span>replace(<span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;vol&#39;</span>), cnames))
+</span></span><span style="display:flex;"><span>    change1 <span style="font-weight:bold">=</span> vol[mask]<span style="font-weight:bold">.</span>iloc[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>] <span style="font-weight:bold">-</span> vol[mask]<span style="font-weight:bold">.</span>iloc[i]
+</span></span><span style="display:flex;"><span>    cnames <span style="font-weight:bold">=</span> [c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> price<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">if</span> c <span style="font-weight:bold">not</span> <span style="font-weight:bold">in</span> cnames]
+</span></span><span style="display:flex;"><span>    mask <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(<span style="color:#999">map</span>(<span style="font-weight:bold">lambda</span> x: x<span style="font-weight:bold">.</span>replace(<span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;vol&#39;</span>), cnames))
+</span></span><span style="display:flex;"><span>    change2 <span style="font-weight:bold">=</span> vol[mask]<span style="font-weight:bold">.</span>iloc[i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>] <span style="font-weight:bold">-</span> vol[mask]<span style="font-weight:bold">.</span>iloc[i]
+</span></span><span style="display:flex;"><span>    change_temp <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> ci <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n):
+</span></span><span style="display:flex;"><span>        c <span style="font-weight:bold">=</span> vol<span style="font-weight:bold">.</span>columns[ci]
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> c <span style="font-weight:bold">in</span> change1:
+</span></span><span style="display:flex;"><span>            change_temp[ci] <span style="font-weight:bold">+=</span> change1[c]
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> c <span style="font-weight:bold">in</span> change2:
+</span></span><span style="display:flex;"><span>            change_temp[ci] <span style="font-weight:bold">+=</span> change2[c]
+</span></span><span style="display:flex;"><span>    change<span style="font-weight:bold">.</span>append(change_temp)
+</span></span></code></pre></div><p>The calculation of <code>change</code> took over 10 minutes. I don&rsquo;t think it&rsquo;s gonna be useful in real work. However, it&rsquo;s not so bad an idea to save it somewhere locally in case I need it later.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>change <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>DataFrame(np<span style="font-weight:bold">.</span>array(change)<span style="font-weight:bold">.</span>astype(<span style="color:#999">int</span>), columns<span style="font-weight:bold">=</span>vol<span style="font-weight:bold">.</span>columns)
+</span></span><span style="display:flex;"><span>change<span style="font-weight:bold">.</span>to_csv(<span style="color:#b84">f</span><span style="color:#b84">&#39;data/change_</span><span style="color:#b84">{</span>date<span style="color:#b84">}</span><span style="color:#b84">.csv&#39;</span>)
+</span></span></code></pre></div><h1 id="section-3-model">Section 3: Model</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>change <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>read_csv(<span style="color:#b84">f</span><span style="color:#b84">&#39;data/change_</span><span style="color:#b84">{</span>date<span style="color:#b84">}</span><span style="color:#b84">.csv&#39;</span>, index_col<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span></code></pre></div><p>After some research, I decided to fit the data in <code>change</code> to student&rsquo;s t-distribution, Skellam distribution, and two-side Weibull distribution. I&rsquo;ll now elaborate reason why I chose, and how to estimate each distribution below.</p>
+<p>First is the <a href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">t-distribution</a>. It is well-known for its leptokurtosis which suits well in many financial time series as a better alternative to Normal distribution. The PDF and CDF of the t-distribution involves the Gamma function and thus would be computationally troublesome when we want to calculate the MSE of the parameters. However, notice for any r.v. <code>$X\sim t(\nu,\mu,\sigma)$</code>, we have relationship</p>
+<p>$$
+\text{Var}(X) = \begin{cases}
+\frac{\nu}{\nu - 2} &amp; \text{for }\nu &gt; 2,\
+\infty &amp; \text{for }1 &lt; \nu \le 2,\
+\text{undefined} &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>and</p>
+<p>$$
+\text{Kur}_+(X) = \begin{cases}
+\frac{6}{\nu - 4} &amp; \text{for }\nu &gt; 4,\
+\infty &amp; \text{for }2 &lt; \nu \le 4,\
+\text{undefined} &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>where <code>$\text{Kur}_+\equiv \text{Kur} - 3$</code> is the excess kurtosis, we can simply go for moment estimation for t-distribution using empirical variance or kurtosis.</p>
+<p>Second, the <a href="https://en.wikipedia.org/wiki/Skellam_distribution">Skellam distribution</a>. This is mainly due to the original model used in Cont&rsquo;s paper, where he assumes Poisson order arrivals uniformly over the time. Here I slightly improve the model s.t. bid and ask orders are modelled in the same time and represented by r.v. <code>$S\equiv P_a - P_b$</code> where <code>$P_a\sim Pois(\lambda_a)$</code> and <code>$P_b\sim Pois(\lambda_b)$</code>. This is therefore a discrete distribution with two parameters. <code>scipy.stats</code> has its PMF implemented and all I need to do is numerically maximize the likelihood.</p>
+<p>For the <a href="https://www.sciencedirect.com/science/article/pii/S0169207013000332">two-sided Weibull distribution</a>, it is given by</p>
+<p>$$
+Y = \begin{cases}
+-\text{Weibull}(\lambda_1, k_1) &amp; \text{if } Y &lt; 0,\
+\text{Weibull}(\lambda_2, k_2) &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>where shape parameters <code>$k_{1,2}\ge 0 $</code> and scale parameters <code>$\lambda_{1,2} &gt; 0$</code>.</p>
+<p>Therefore, the pdf is</p>
+<p>$$
+f(y \mid \lambda_1, k_1, \lambda_2, k_2) = \begin{cases}
+\left(\frac{-y}{(\lambda_1)}\right)^{k_1 -1}\exp\left(-\left(\frac{-y}{(\lambda_1)}\right)^{k_1}\right) &amp; \text{if y &lt; 0},\
+\left(\frac{y}{(\lambda_2}\right)^{k_2 -1}\exp\left(-\left(\frac{y}{(\lambda_2)}\right)^{k_2}\right)
+&amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>and to normalize the integration to <code>$1$</code>, we also have</p>
+<p>$$
+\frac{\lambda_1}{k_1} + \frac{\lambda_2}{k_2} = 1 \Rightarrow \lambda_2 = k_2 (1 - \lambda_1 / k_1)
+$$</p>
+<p>which means there&rsquo;re in fact only three parameters to estimate.</p>
+<p>Now we rewrite the log-likelihood as</p>
+<p>$$
+\begin{align*}
+LL = \sum_{i=1}^n \log(f(y_i))
+= \sum_{i=1}^n &amp;\left((k_1-1)(\log^<em>(-y_i) - \log^</em>(\lambda_1)) - (-y_i / \lambda_1)^{k_1}\right)\mathbb{I}<em>{y_i &lt; 0} + \
+&amp;\left((k_2-1)(\log^<em>(y_i) - \log^</em>(\lambda_2)) - (y_i / \lambda_2)^{k_2}\right)\mathbb{I}</em>{y_i \ge 0}.
+\end{align*}
+$$</p>
+<p>where we have the special <code>$\log^*(y)\equiv 0$</code> if <code>$y\le0$</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>i <span style="font-weight:bold">=</span> <span style="color:#099">15</span>  <span style="color:#998;font-style:italic"># take ask_15 for example</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cgrid <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array([c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> change[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_vol_</span><span style="color:#b84">{</span><span style="font-weight:bold">-</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">if</span> i <span style="font-weight:bold">&lt;</span> <span style="color:#099">0</span> \
+</span></span><span style="display:flex;"><span>                  <span style="font-weight:bold">else</span> <span style="color:#b84">f</span><span style="color:#b84">&#39;ask_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span>] <span style="font-weight:bold">if</span> <span style="font-weight:bold">-</span><span style="color:#099">200</span> <span style="font-weight:bold">&lt;</span> c <span style="font-weight:bold">&lt;</span> <span style="color:#099">200</span>])[::<span style="color:#099">200</span>]
+</span></span><span style="display:flex;"><span>cgrid<span style="font-weight:bold">.</span>sort()
+</span></span><span style="display:flex;"><span>density <span style="font-weight:bold">=</span> gaussian_kde(cgrid)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(cgrid, density(cgrid), <span style="color:#b84">&#39;r-&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;gaussian&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>exkur <span style="font-weight:bold">=</span> kurtosis(cgrid) <span style="font-weight:bold">-</span> <span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span>scale1 <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>std(cgrid)
+</span></span><span style="display:flex;"><span>scale2 <span style="font-weight:bold">=</span> (<span style="color:#099">2</span> <span style="font-weight:bold">-</span> <span style="color:#099">6</span> <span style="font-weight:bold">/</span> (<span style="color:#099">6</span> <span style="font-weight:bold">+</span> <span style="color:#099">2</span> <span style="font-weight:bold">*</span> exkur))<span style="font-weight:bold">**</span><span style="color:#099">.5</span>
+</span></span><span style="display:flex;"><span>params <span style="font-weight:bold">=</span> [<span style="color:#099">6</span> <span style="font-weight:bold">/</span> exkur <span style="font-weight:bold">+</span> <span style="color:#099">4</span>, np<span style="font-weight:bold">.</span>mean(cgrid), scale1 <span style="font-weight:bold">*</span> <span style="color:#099">.3</span> <span style="font-weight:bold">+</span> scale2 <span style="font-weight:bold">*</span> <span style="color:#099">.7</span>]
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(cgrid, t<span style="font-weight:bold">.</span>pdf(cgrid, <span style="font-weight:bold">*</span>params), <span style="color:#b84">&#39;c-&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;t(</span><span style="color:#b84">{:.2f}</span><span style="color:#b84">, </span><span style="color:#b84">{:.2f}</span><span style="color:#b84">, </span><span style="color:#b84">{:.2f}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(<span style="font-weight:bold">*</span>params))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>negloglik_skellam <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> mu: <span style="font-weight:bold">-</span><span style="color:#999">sum</span>(skellam<span style="font-weight:bold">.</span>logpmf(cgrid, <span style="font-weight:bold">*</span>mu))
+</span></span><span style="display:flex;"><span>mu <span style="font-weight:bold">=</span> brute(negloglik_skellam, ranges<span style="font-weight:bold">=</span>[(<span style="color:#099">100</span>, <span style="color:#099">500</span>), (<span style="color:#099">100</span>, <span style="color:#099">500</span>)], Ns<span style="font-weight:bold">=</span><span style="color:#099">10</span>, finish<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(cgrid, skellam<span style="font-weight:bold">.</span>pmf(cgrid, <span style="font-weight:bold">*</span>mu), <span style="color:#b84">&#39;y-&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;skellam(</span><span style="color:#b84">{:.2f}</span><span style="color:#b84">, </span><span style="color:#b84">{:.2f}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(<span style="font-weight:bold">*</span>mu))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># log_ = lambda y: np.log(y) if y &gt; 0 else 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># def logpdf_tweibull(y, params):</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     l1, k1, k2 = params</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     l2 = k2 * (1 - l1 / k1)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     if l1 &gt;= k1 or l2 &gt;= k2:</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#         return 1e5</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     ret = float(((k1 - 1) * (log_(-y) - log_(l1)) - (-y / l1)**k1) * (y &lt; 0) + \</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#                 ((k2 - 1) * (log_(y) - log_(l2)) - (y / l2)**k2) * (y &gt;= 0))</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     if np.isnan(ret):</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#         return 1e5</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     return ret</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># negloglik_tweibull = lambda params: -sum(logpdf_tweibull(y, params) for y in cgrid / 1000)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># params = brute(negloglik_tweibull, ranges=[(.1, .9), (.1, .9), (.1, .9)], Ns=10, finish=None)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># l1, k1, k2 = params</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># l2 = k2 * (1 - l1 / k1)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># params = np.array([l1, k1, l2, k2]); print(params)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># tweibull_pdf = lambda y: (-y/l1)**(k1-1)*np.exp(-(-y/l1)**k1) * (y &lt; 0) + \</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#                          (y/l2)**(k2-1)*np.exp(-(y/l2)**k2) * (y &gt;= 0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># tweibull_cdf = np.cumsum([tweibull_pdf(y) for y in cgrid / 1000])</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ax.plot(cgrid, tweibull_cdf, &#39;b-&#39;, label=&#39;tweibull({:.2f}, {:.2f}, {:.2f}, {:.2f})&#39;.format(*params))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>hist(cgrid, bins<span style="font-weight:bold">=</span><span style="color:#099">40</span>, facecolor<span style="font-weight:bold">=</span>(<span style="color:#099">0</span>,<span style="color:#099">0</span>,<span style="color:#099">0</span>,<span style="color:#099">.5</span>), edgecolor<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, normed<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;change&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">200</span>, <span style="color:#099">200</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;change&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;best&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/order_3.png" alt="png"></p>
+<p>As coded above, at last I didn&rsquo;t include two-sided Weibull distribution because the optimization did not converge. In conclusion, for changes of order sizes (denoted by <code>$x$</code>), we use modified t-distribution with</p>
+<p>$$
+\hat{\mu} = \bar{x},\quad \hat{\sigma} = 0.3 \cdot \sqrt{\widehat{\text{Var}}(x)} + 0.7 \cdot \sqrt{\left(2 - \frac{6}{6 + 2\ \widehat{\text{Kur}}_+(x)}\right)}
+$$</p>
+<p>and</p>
+<p>$$
+\hat{\nu} = \frac{6}{\widehat{\text{Kur}}_+(x)} + 4
+$$</p>
+<p>where</p>
+<p>$$
+\widehat{\text{Kur}}_+(x) = \widehat{\text{Kur}}(x) - 3
+$$</p>
+<p>while</p>
+<p>$$
+\widehat{\text{Kur}}(x) = \hat{m}_4(x) / \hat{m}_2^2(x)
+$$</p>
+<p>and</p>
+<div>
+$$
+\hat{m}_4 = \sum_{i=1}^n (x_i - \bar{x})^4 / n,\quad \hat{m}_2 = \sum_{i=1}^n (x_i - \bar{x})^2 / n.
+$$
+</div>
+<p>Now, when we assume independence across different buckets of order book, we can estimate the parameters of t-distributions as below.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>params <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros([<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n, <span style="color:#099">3</span>])
+</span></span><span style="display:flex;"><span>nrow <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> np<span style="font-weight:bold">.</span>arange(<span style="font-weight:bold">-</span>n, n <span style="font-weight:bold">+</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> i: <span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span>    cgrid <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array([c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> change[<span style="color:#b84">f</span><span style="color:#b84">&#39;bid_vol_</span><span style="color:#b84">{</span><span style="font-weight:bold">-</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span> <span style="font-weight:bold">if</span> i <span style="font-weight:bold">&lt;</span> <span style="color:#099">0</span> \
+</span></span><span style="display:flex;"><span>                      <span style="font-weight:bold">else</span> <span style="color:#b84">f</span><span style="color:#b84">&#39;ask_vol_</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">&#39;</span>] <span style="font-weight:bold">if</span> <span style="font-weight:bold">-</span><span style="color:#099">200</span> <span style="font-weight:bold">&lt;</span> c <span style="font-weight:bold">&lt;</span> <span style="color:#099">200</span>])[::<span style="color:#099">200</span>]
+</span></span><span style="display:flex;"><span>    exkur <span style="font-weight:bold">=</span> kurtosis(cgrid) <span style="font-weight:bold">-</span> <span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span>    scale1 <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>std(cgrid)
+</span></span><span style="display:flex;"><span>    scale2 <span style="font-weight:bold">=</span> (<span style="color:#099">2</span> <span style="font-weight:bold">-</span> <span style="color:#099">6</span> <span style="font-weight:bold">/</span> (<span style="color:#099">6</span> <span style="font-weight:bold">+</span> <span style="color:#099">2</span> <span style="font-weight:bold">*</span> exkur))<span style="font-weight:bold">**</span><span style="color:#099">.5</span>
+</span></span><span style="display:flex;"><span>    params[nrow,:] <span style="font-weight:bold">=</span> [<span style="color:#099">6</span> <span style="font-weight:bold">/</span> exkur <span style="font-weight:bold">+</span> <span style="color:#099">4</span>, np<span style="font-weight:bold">.</span>mean(cgrid), scale1 <span style="font-weight:bold">*</span> <span style="color:#099">.3</span> <span style="font-weight:bold">+</span> scale2 <span style="font-weight:bold">*</span> <span style="color:#099">.7</span>]
+</span></span><span style="display:flex;"><span>    nrow <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>params
+</span></span></code></pre></div><pre><code>array([[ 5.1589201 , -0.52536232, 11.05729   ],
+       [ 5.86412495, -0.61454545, 12.08484143],
+       [ 5.82376701,  4.61231884, 11.67543236],
+       [ 6.28819815, -0.7173913 , 10.85941723],
+       [ 6.89178374, -1.59927798, 11.25140225],
+       [ 6.14231284,  2.29856115, 12.46686452],
+       [ 6.4347771 ,  2.22302158, 13.73785226],
+       [ 6.17737187,  0.67753623, 12.19098061],
+       [ 5.9250571 , -1.68231047, 12.54472066],
+       [ 5.16886809, -0.69090909, 11.94199489],
+       ...
+       [ 5.94772822,  3.18181818, 12.4415555 ],
+       [ 6.5157695 ,  4.62181818, 13.67098387],
+       [ 6.69385395,  0.66304348, 13.63770319],
+       [ 4.99329442, -1.11510791, 11.63780506],
+       [ 5.04144977,  1.91756272, 11.20026029],
+       [ 5.47054269, -4.34163701, 10.66971035],
+       [ 5.11684414, -2.35460993,  9.98656422],
+       [ 4.89130697,  1.07092199, 11.5511127 ],
+       [ 5.31202782, -0.58865248, 11.01769165],
+       [ 5.17908162,  2.16961131, 10.81368767]])
+</code></pre>
+<p>When we do not ignore the correlation across all buckets, a multivariate t-distribution must be considered. Similar to multivariate Normal distributions, here we need to estimate a covariance matrix, a vector of expectations and a vector of degrees of freedom. Notice the degrees of freedom do not vary significantly across the rows in <code>params</code>, to accelerate computation I set a unified degree of freedom for all buckets, namely <code>$df = 7$</code>. Using Expectation Maximization (EM) algorithm introduced by D. Peel and G. J. McLachlan (2000), I wrote the model below to estimate this distribution.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">MVT</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, df<span style="font-weight:bold">=</span><span style="color:#099">3.5</span>):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">=</span> df
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">fit</span>(self, X, <span style="color:#999">iter</span><span style="font-weight:bold">=</span><span style="color:#099">200</span>, eps<span style="font-weight:bold">=</span><span style="color:#099">1e-6</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># initialize parameters</span>
+</span></span><span style="display:flex;"><span>        D <span style="font-weight:bold">=</span> X<span style="font-weight:bold">.</span>shape[<span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>        N <span style="font-weight:bold">=</span> X<span style="font-weight:bold">.</span>shape[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>        cov <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>cov(X, rowvar<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>        mean <span style="font-weight:bold">=</span> X<span style="font-weight:bold">.</span>mean(axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>        mu <span style="font-weight:bold">=</span> X <span style="font-weight:bold">-</span> mean[<span style="font-weight:bold">None</span>, :]
+</span></span><span style="display:flex;"><span>        delta <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>einsum(<span style="color:#b84">&#39;ij,ij-&gt;i&#39;</span>, mu, np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>solve(cov, mu<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>T)
+</span></span><span style="display:flex;"><span>        z <span style="font-weight:bold">=</span> (self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">+</span> D) <span style="font-weight:bold">/</span> (self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">+</span> delta)
+</span></span><span style="display:flex;"><span>        obj <span style="font-weight:bold">=</span> [
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">-</span>N <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>slogdet(cov)[<span style="color:#099">1</span>] <span style="font-weight:bold">/</span> <span style="color:#099">2</span> <span style="font-weight:bold">-</span> (z <span style="font-weight:bold">*</span> delta)<span style="font-weight:bold">.</span>sum() <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">-</span>N <span style="font-weight:bold">*</span> special<span style="font-weight:bold">.</span>gammaln(self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">+</span> N <span style="font-weight:bold">*</span> self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>log(self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">+</span>self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">*</span> (np<span style="font-weight:bold">.</span>log(z) <span style="font-weight:bold">-</span> z)<span style="font-weight:bold">.</span>sum() <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># iterate EM algorithm</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">iter</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#998;font-style:italic"># M step</span>
+</span></span><span style="display:flex;"><span>            mean <span style="font-weight:bold">=</span> (X <span style="font-weight:bold">*</span> z[:, <span style="font-weight:bold">None</span>])<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)<span style="font-weight:bold">.</span>reshape(<span style="font-weight:bold">-</span><span style="color:#099">1</span>, <span style="color:#099">1</span>) <span style="font-weight:bold">/</span> z<span style="font-weight:bold">.</span>sum()
+</span></span><span style="display:flex;"><span>            mu <span style="font-weight:bold">=</span> X <span style="font-weight:bold">-</span> mean<span style="font-weight:bold">.</span>squeeze()[<span style="font-weight:bold">None</span>, :]
+</span></span><span style="display:flex;"><span>            cov <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>einsum(<span style="color:#b84">&#39;ij,ik-&gt;jk&#39;</span>, mu, mu <span style="font-weight:bold">*</span> z[:, <span style="font-weight:bold">None</span>]) <span style="font-weight:bold">/</span> N
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#998;font-style:italic"># E step</span>
+</span></span><span style="display:flex;"><span>            delta <span style="font-weight:bold">=</span> (mu <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>solve(cov, mu<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>            delta <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>einsum(<span style="color:#b84">&#39;ij,ij-&gt;i&#39;</span>, mu, np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>solve(cov, mu<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>T)
+</span></span><span style="display:flex;"><span>            z <span style="font-weight:bold">=</span> (self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">+</span> D) <span style="font-weight:bold">/</span> (self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">+</span> delta)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#998;font-style:italic"># store objective</span>
+</span></span><span style="display:flex;"><span>            obj<span style="font-weight:bold">.</span>append(
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">-</span>N <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>slogdet(cov)[<span style="color:#099">1</span>] <span style="font-weight:bold">/</span> <span style="color:#099">2</span> <span style="font-weight:bold">-</span> (z <span style="font-weight:bold">*</span> delta)<span style="font-weight:bold">.</span>sum() <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">-</span>N <span style="font-weight:bold">*</span> special<span style="font-weight:bold">.</span>gammaln(self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">+</span> N <span style="font-weight:bold">*</span> self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>log(self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">/</span> <span style="color:#099">2</span>) <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">+</span>self<span style="font-weight:bold">.</span>df <span style="font-weight:bold">*</span> (np<span style="font-weight:bold">.</span>log(z) <span style="font-weight:bold">-</span> z)<span style="font-weight:bold">.</span>sum() <span style="font-weight:bold">/</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            err <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>abs(obj[<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> obj[<span style="font-weight:bold">-</span><span style="color:#099">2</span>])
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">f</span><span style="color:#b84">&#39;Iteration </span><span style="color:#b84">{</span>i <span style="font-weight:bold">+</span> <span style="color:#099">1</span><span style="color:#b84">}</span><span style="color:#b84">&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> err <span style="font-weight:bold">&lt;</span> eps: <span style="font-weight:bold">break</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> cov, mean<span style="font-weight:bold">.</span>squeeze()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="font-weight:bold">=</span> MVT(<span style="color:#099">7</span>)
+</span></span><span style="display:flex;"><span>S, m <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fit(change<span style="font-weight:bold">.</span>values)
+</span></span></code></pre></div><p>Now the distribution for order size movement is estimated. We can simulate the trajectory and rebuild the order book in future several steps. Specifically, notice the predicted movement may well change the shape of the order book while, according to practical observation, the order book retains its &ldquo;V&rdquo;-shape in most of the time. Therefore, I sort up separately both halves of the order book every time they&rsquo;re updated by a predicted order size movement (or &ldquo;co-movement&rdquo;, since it should be a vector).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_steps <span style="font-weight:bold">=</span> <span style="color:#099">20</span>
+</span></span><span style="display:flex;"><span>prediction <span style="font-weight:bold">=</span> smm<span style="font-weight:bold">.</span>smm<span style="font-weight:bold">.</span>SMM<span style="font-weight:bold">.</span>multivariate_t_rvs(S<span style="font-weight:bold">=</span>S, m<span style="font-weight:bold">=</span>m, df<span style="font-weight:bold">=</span><span style="color:#099">7</span>, n<span style="font-weight:bold">=</span>n_steps)
+</span></span><span style="display:flex;"><span>orderbook <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros([<span style="color:#099">1</span> <span style="font-weight:bold">+</span> n_steps, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n])
+</span></span><span style="display:flex;"><span>orderbook[<span style="color:#099">0</span>,:] <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n_steps <span style="font-weight:bold">+</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>    orderbook[i, :n] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n] <span style="font-weight:bold">+</span> prediction[i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n])[::<span style="font-weight:bold">-</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>    orderbook[i, n:] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:] <span style="font-weight:bold">+</span> prediction[i <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:])
+</span></span></code></pre></div><p>Below is a simple sketch of this order book trajectory where I assign stronger color to the traces that are closer to the best (bid/ask) prices.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n):  <span style="color:#998;font-style:italic"># stronger color means closer to mid price</span>
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(<span style="color:#999">range</span>(<span style="color:#099">1</span> <span style="font-weight:bold">+</span> n_steps), orderbook[:,i], <span style="color:#b84">&#39;r-&#39;</span>, alpha<span style="font-weight:bold">=</span>(i <span style="font-weight:bold">+</span> <span style="color:#099">1</span>) <span style="font-weight:bold">/</span> n)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n):  <span style="color:#998;font-style:italic"># stronger color means closer to mid price</span>
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(<span style="color:#999">range</span>(<span style="color:#099">1</span> <span style="font-weight:bold">+</span> n_steps), orderbook[:,i], <span style="color:#b84">&#39;c-&#39;</span>, alpha<span style="font-weight:bold">=</span>(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> n <span style="font-weight:bold">-</span> i) <span style="font-weight:bold">/</span> n)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(n_steps <span style="font-weight:bold">+</span> <span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;evolution&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;order book&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout();
+</span></span></code></pre></div><p><img src="/images/order_5.png" alt="png"></p>
+<p>It can be seen from the figure that stronger traces are located more to the bottom, which validates our intuition since trades around the current price are more active than those to the left or the right of the order book.</p>
+<h1 id="section-4-prediction">Section 4: Prediction</h1>
+<p>With this prediction procedure implemented, we can estimate the probability of our order (placed at the price bucket <code>order_idx</code> with size <code>order_size</code>) being executed within <code>n_steps</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_steps <span style="font-weight:bold">=</span> <span style="color:#099">10</span>
+</span></span><span style="display:flex;"><span>n_sim <span style="font-weight:bold">=</span> <span style="color:#099">1000</span>
+</span></span><span style="display:flex;"><span>order_idx <span style="font-weight:bold">=</span> <span style="color:#099">12</span>  <span style="color:#998;font-style:italic"># [0, 2n-1]</span>
+</span></span><span style="display:flex;"><span>order_size <span style="font-weight:bold">=</span> <span style="color:#099">100</span>
+</span></span><span style="display:flex;"><span>success <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>orderbook <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros([<span style="color:#099">1</span> <span style="font-weight:bold">+</span> n_steps, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n])
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_sim):
+</span></span><span style="display:flex;"><span>    prediction <span style="font-weight:bold">=</span> smm<span style="font-weight:bold">.</span>smm<span style="font-weight:bold">.</span>SMM<span style="font-weight:bold">.</span>multivariate_t_rvs(S<span style="font-weight:bold">=</span>S, m<span style="font-weight:bold">=</span>m, df<span style="font-weight:bold">=</span><span style="color:#099">7</span>, n<span style="font-weight:bold">=</span>n_steps)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> j <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n_steps <span style="font-weight:bold">+</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>        orderbook[j, :n] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n] <span style="font-weight:bold">+</span> prediction[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n])[::<span style="font-weight:bold">-</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>        orderbook[j, n:] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:] <span style="font-weight:bold">+</span> prediction[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:])
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> orderbook[:, order_idx]<span style="font-weight:bold">.</span>min() <span style="font-weight:bold">+</span> order_size <span style="font-weight:bold">&lt;=</span> <span style="color:#099">0</span>:
+</span></span><span style="display:flex;"><span>        success <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>success <span style="font-weight:bold">/</span> n_sim
+</span></span></code></pre></div><pre><code>0.861
+</code></pre>
+<p>So a limit buy order at <code>bid_8</code> (<code>$20 - 12 = 8$</code>) with size 100 can be executed within 10 steps, at a probability of 86.1%. Moreover, we can even make a 3D surface plot to get a comprehensive idea of the whole distribution.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">evolve</span>(order_idx, order_size, n_steps<span style="font-weight:bold">=</span><span style="color:#099">10</span>, n_sim<span style="font-weight:bold">=</span><span style="color:#099">1000</span>):
+</span></span><span style="display:flex;"><span>    success <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>    orderbook <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros([<span style="color:#099">1</span> <span style="font-weight:bold">+</span> n_steps, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n])
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_sim):
+</span></span><span style="display:flex;"><span>        prediction <span style="font-weight:bold">=</span> smm<span style="font-weight:bold">.</span>smm<span style="font-weight:bold">.</span>SMM<span style="font-weight:bold">.</span>multivariate_t_rvs(S<span style="font-weight:bold">=</span>S, m<span style="font-weight:bold">=</span>m, df<span style="font-weight:bold">=</span><span style="color:#099">7</span>, n<span style="font-weight:bold">=</span>n_steps)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> j <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>, n_steps <span style="font-weight:bold">+</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>            orderbook[j, :n] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n] <span style="font-weight:bold">+</span> prediction[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, :n])[::<span style="font-weight:bold">-</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>            orderbook[j, n:] <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sort(orderbook[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:] <span style="font-weight:bold">+</span> prediction[j <span style="font-weight:bold">-</span> <span style="color:#099">1</span>, n:])
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> orderbook[:, order_idx]<span style="font-weight:bold">.</span>min() <span style="font-weight:bold">+</span> order_size <span style="font-weight:bold">&lt;=</span> <span style="color:#099">0</span>:
+</span></span><span style="display:flex;"><span>            success <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> success <span style="font-weight:bold">/</span> n_sim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>grid_idx <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arange(<span style="color:#099">0</span>, <span style="color:#099">2</span> <span style="font-weight:bold">*</span> n)
+</span></span><span style="display:flex;"><span>grid_size <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arange(<span style="color:#099">0</span>, <span style="color:#099">1000</span>, <span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>l_idx <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(grid_idx)
+</span></span><span style="display:flex;"><span>l_size <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(grid_size)
+</span></span><span style="display:flex;"><span>result <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>zeros([l_idx, l_size])
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(l_idx):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> j <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(l_size):
+</span></span><span style="display:flex;"><span>        result[i, j] <span style="font-weight:bold">=</span> evolve(grid_idx[i], grid_size[j])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">mpl_toolkits.mplot3d</span> <span style="font-weight:bold">import</span> Axes3D
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">seaborn</span> <span style="font-weight:bold">as</span> <span style="color:#555">sns</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Transform data to a long format</span>
+</span></span><span style="display:flex;"><span>data <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>DataFrame(result, index<span style="font-weight:bold">=</span>grid_idx, columns<span style="font-weight:bold">=</span>grid_size)
+</span></span><span style="display:flex;"><span>df <span style="font-weight:bold">=</span> data<span style="font-weight:bold">.</span>unstack()<span style="font-weight:bold">.</span>reset_index()
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;index&#39;</span>, <span style="color:#b84">&#39;prob&#39;</span>]
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Make the plot</span>
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>gca(projection<span style="font-weight:bold">=</span><span style="color:#b84">&#39;3d&#39;</span>)
+</span></span><span style="display:flex;"><span>surf<span style="font-weight:bold">=</span>ax<span style="font-weight:bold">.</span>plot_trisurf(df[<span style="color:#b84">&#39;index&#39;</span>], df[<span style="color:#b84">&#39;size&#39;</span>], df[<span style="color:#b84">&#39;prob&#39;</span>], cmap<span style="font-weight:bold">=</span>plt<span style="font-weight:bold">.</span>cm<span style="font-weight:bold">.</span>Blues_r, linewidth<span style="font-weight:bold">=</span><span style="color:#099">.1</span>)
+</span></span><span style="display:flex;"><span>fig<span style="font-weight:bold">.</span>colorbar(surf, shrink<span style="font-weight:bold">=</span><span style="color:#099">.8</span>, aspect<span style="font-weight:bold">=</span><span style="color:#099">10</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>view_init(<span style="color:#099">30</span>, <span style="color:#099">30</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;index&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;size&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_zlabel(<span style="color:#b84">&#39;prob&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><p><img src="/images/order_6.png" alt=""></p>
+<h1 id="reference">Reference</h1>
+<ul>
+<li>Rama Cont, Sasha Stoikov and Rishi Talreja. &ldquo;A stochastic model for order book dynamics&rdquo;. Operations Research, Volume 58, No. 3 (2010), 549-563.</li>
+<li>David Peel, and Geoffrey J. McLachlan. &ldquo;Robust mixture modelling using the t-distribution.&rdquo; Statistics and computing 10, no. 4 (2000): 339-348.</li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/optimal-order-execution-2/">Literature Review on Optimal Order Execution (2)</a></span>
+  <span class="nav-next"><a href="/blog/estimation-brownian-motion/">Parameter Estimation of Brownian Motions by Method of Moments</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/optimal-order-execution-2\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/estimation-brownian-motion\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

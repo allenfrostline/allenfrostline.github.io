@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MacOS on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/macos/</link>
+    <description>Recent content in MacOS on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Mon, 07 Jan 2019 02:05:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deep Learning on MacOS with AMD eGPU?</title>
+      <link>https://allenfrostline.com/blog/deep-learning-amd-gpu/</link>
+      <pubDate>Mon, 07 Jan 2019 02:05:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/deep-learning-amd-gpu/</guid>
+      <description>I&amp;rsquo;ve recently sold my Nvidia GTX 1080 eGPU1 after two month&amp;rsquo;s waiting in vain for a compatible Nvidia video driver for MacOS 10.14 (Mojave). Either Apple&amp;rsquo;s or Nvidia&amp;rsquo;s fault, I don&amp;rsquo;t care any more. Right away, I ordered an AMD Radeon RX Vega 64 on Newegg. The card arrived two days later and it looked sexy at first sight. It&amp;rsquo;s plug-and-play as expected and performed just as good as its predecessor, regardless of serious gaming, video editing or whatever.</description>
+    </item>
+  </channel>
+</rss>

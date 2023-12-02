@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>momentum on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/momentum/</link>
+    <description>Recent content in momentum on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sun, 09 Jun 2019 11:04:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/momentum/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market</title>
+      <link>https://allenfrostline.com/blog/crypto-news/</link>
+      <pubDate>Sun, 09 Jun 2019 11:04:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/crypto-news/</guid>
+      <description>This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context analysis (or more specifically, word analysis) into traditional momentum strategies and adjusts position automatically over time using both factors. The hybrid strategy is implemented with backtesing period from Dec. 17th 2017 to May 2nd 2019. It yields cumulative return of 229% and a remarkable Sharpe ratio of 2.</description>
+    </item>
+  </channel>
+</rss>

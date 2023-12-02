@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>market making on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/market-making/</link>
+    <description>Recent content in market making on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 23 Apr 2019 01:02:36 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/market-making/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Perfect Market Maker: Is it Possible?</title>
+      <link>https://allenfrostline.com/blog/perfect-market-maker/</link>
+      <pubDate>Tue, 23 Apr 2019 01:02:36 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/perfect-market-maker/</guid>
+      <description>In this research report we try to simulate and explore difference scenarios for a &amp;ldquo;perfect&amp;rdquo; market maker in the Bitcoin market. By &amp;ldquo;perfect&amp;rdquo; we refer to the capability to capture all spreads on the right side of any trade, i.e. there will be no spread loss at all. Although this setting is too perfect to be considered comparable with real trading, our analysis w.r.t. model parameters are believed to be insightful still.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Network Visualization: Chinese Railway Transport from 1992 to 2011 - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Network Visualization: Chinese Railway Transport from 1992 to 2011 - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a &amp;hellip;">
+      <meta property="og:description" content="This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a &amp;hellip;">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://drive.google.com/uc?export=view&amp;id=1MTVORM70HA_YztlR4Ftp1mO7q5YAFvCC">
+    
+    
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Network Visualization: Chinese Railway Transport from 1992 to 2011</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-11-29
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<img src="/images/net1992.jpg" style="width: 80%;"/>
+<!-- more -->
+<p>This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a comprehensive table called <code>data</code>, where for each province there&rsquo;s a matrix of 20 by 31, i.e. transport to each province w.r.t. different years. Therefore, it&rsquo;s convenient to extract the actual transient matrix for each year by using the method <code>groupby</code> of <code>Pandas</code>.</p>
+<h2 id="import-packages">Import Packages</h2>
+<p>The most important one is <code>networkx</code> in this project.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">warnings</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">pandas</span> <span style="font-weight:bold">as</span> <span style="color:#555">pd</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">networkx</span> <span style="font-weight:bold">as</span> <span style="color:#555">nx</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.pyplot</span> <span style="font-weight:bold">as</span> <span style="color:#555">plt</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.patches</span> <span style="font-weight:bold">as</span> <span style="color:#555">mpatches</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">matplotlib.collections</span> <span style="font-weight:bold">import</span> LineCollection
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">matplotlib.colors</span> <span style="font-weight:bold">import</span> colorConverter, Colormap
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>warnings<span style="font-weight:bold">.</span>filterwarnings(<span style="color:#b84">&#39;ignore&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcdefaults()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;font.family&#39;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;serif&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>style<span style="font-weight:bold">.</span>use(<span style="color:#b84">&#39;seaborn-paper&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;axes.facecolor&#39;</span>]<span style="font-weight:bold">=</span><span style="color:#b84">&#39;w&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;axes.grid&#39;</span>] <span style="font-weight:bold">=</span> <span style="font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;figure.figsize&#39;</span>] <span style="font-weight:bold">=</span> [<span style="color:#099">10</span>, <span style="color:#099">5</span>]
+</span></span></code></pre></div><h2 id="plotting-functions">Plotting Functions</h2>
+<p>There&rsquo;re two functions, <code>draw_networkx_edges_with_arrows</code> for directed edges drawing, <code>plot_network</code> for whole networks drawing.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">draw_networkx_edges_with_arrows</span>(G, pos, width, edge_color, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ax<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    ec <span style="font-weight:bold">=</span> colorConverter<span style="font-weight:bold">.</span>to_rgba(edge_color, alpha)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> ax <span style="font-weight:bold">is</span> <span style="font-weight:bold">None</span>: ax <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>gca()
+</span></span><span style="display:flex;"><span>    edge_pos <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>asarray([(pos[e[<span style="color:#099">0</span>]], pos[e[<span style="color:#099">1</span>]]) <span style="font-weight:bold">for</span> e <span style="font-weight:bold">in</span> G<span style="font-weight:bold">.</span>edges()])
+</span></span><span style="display:flex;"><span>    edge_collection <span style="font-weight:bold">=</span> LineCollection(edge_pos, colors<span style="font-weight:bold">=</span>ec, linewidths<span style="font-weight:bold">=</span>width, antialiaseds<span style="font-weight:bold">=</span>(<span style="color:#099">1</span>,), 
+</span></span><span style="display:flex;"><span>                                     linestyle<span style="font-weight:bold">=</span><span style="color:#b84">&#39;solid&#39;</span>, transOffset <span style="font-weight:bold">=</span> ax<span style="font-weight:bold">.</span>transData)
+</span></span><span style="display:flex;"><span>    edge_collection<span style="font-weight:bold">.</span>set_zorder(<span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>add_collection(edge_collection)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> cb<span style="font-weight:bold">.</span>is_numlike(alpha): edge_collection<span style="font-weight:bold">.</span>set_alpha(alpha)
+</span></span><span style="display:flex;"><span>    arrow_collection <span style="font-weight:bold">=</span> <span style="font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>    arrow_colors <span style="font-weight:bold">=</span> ec
+</span></span><span style="display:flex;"><span>    p <span style="font-weight:bold">=</span> <span style="color:#099">.8</span>  <span style="color:#998;font-style:italic"># length of edge apart from the arrow part</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> (src, dst), lwi <span style="font-weight:bold">in</span> <span style="color:#999">zip</span>(edge_pos, width):
+</span></span><span style="display:flex;"><span>        x1, y1 <span style="font-weight:bold">=</span> src
+</span></span><span style="display:flex;"><span>        x2, y2 <span style="font-weight:bold">=</span> dst
+</span></span><span style="display:flex;"><span>        dx <span style="font-weight:bold">=</span> x2<span style="font-weight:bold">-</span>x1   <span style="color:#998;font-style:italic"># x offset</span>
+</span></span><span style="display:flex;"><span>        dy <span style="font-weight:bold">=</span> y2<span style="font-weight:bold">-</span>y1   <span style="color:#998;font-style:italic"># y offset</span>
+</span></span><span style="display:flex;"><span>        d <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>sqrt(<span style="color:#999">float</span>(dx<span style="font-weight:bold">**</span><span style="color:#099">2</span> <span style="font-weight:bold">+</span> dy<span style="font-weight:bold">**</span><span style="color:#099">2</span>))  <span style="color:#998;font-style:italic"># length of edge</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> d <span style="font-weight:bold">==</span> <span style="color:#099">0</span>: <span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> dx <span style="font-weight:bold">==</span> <span style="color:#099">0</span>:  <span style="color:#998;font-style:italic"># vertical edge</span>
+</span></span><span style="display:flex;"><span>            xa <span style="font-weight:bold">=</span> x2
+</span></span><span style="display:flex;"><span>            ya <span style="font-weight:bold">=</span> dy<span style="font-weight:bold">*</span>p<span style="font-weight:bold">+</span>y1
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> dy <span style="font-weight:bold">==</span> <span style="color:#099">0</span>:  <span style="color:#998;font-style:italic"># horizontal edge</span>
+</span></span><span style="display:flex;"><span>            ya <span style="font-weight:bold">=</span> y2
+</span></span><span style="display:flex;"><span>            xa <span style="font-weight:bold">=</span> dx<span style="font-weight:bold">*</span>p<span style="font-weight:bold">+</span>x1
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>            theta <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>arctan2(dy, dx)
+</span></span><span style="display:flex;"><span>            xa <span style="font-weight:bold">=</span> p<span style="font-weight:bold">*</span>d<span style="font-weight:bold">*</span>np<span style="font-weight:bold">.</span>cos(theta)<span style="font-weight:bold">+</span>x1
+</span></span><span style="display:flex;"><span>            ya <span style="font-weight:bold">=</span> p<span style="font-weight:bold">*</span>d<span style="font-weight:bold">*</span>np<span style="font-weight:bold">.</span>sin(theta)<span style="font-weight:bold">+</span>y1
+</span></span><span style="display:flex;"><span>        dx, dy <span style="font-weight:bold">=</span> x2<span style="font-weight:bold">-</span>xa, y2<span style="font-weight:bold">-</span>ya
+</span></span><span style="display:flex;"><span>        patch <span style="font-weight:bold">=</span> mpatches<span style="font-weight:bold">.</span>Arrow(xa, ya, dx, dy, width<span style="font-weight:bold">=</span>lwi<span style="font-weight:bold">/</span><span style="color:#099">55</span>, alpha<span style="font-weight:bold">=</span>lwi<span style="font-weight:bold">*</span>alpha<span style="font-weight:bold">/</span><span style="color:#099">5</span>, color<span style="font-weight:bold">=</span>ec, transform<span style="font-weight:bold">=</span>ax<span style="font-weight:bold">.</span>transData)
+</span></span><span style="display:flex;"><span>        ax<span style="font-weight:bold">.</span>add_patch(patch)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    minx <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>amin(np<span style="font-weight:bold">.</span>ravel(edge_pos[:, :, <span style="color:#099">0</span>]))
+</span></span><span style="display:flex;"><span>    maxx <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>amax(np<span style="font-weight:bold">.</span>ravel(edge_pos[:, :, <span style="color:#099">0</span>]))
+</span></span><span style="display:flex;"><span>    miny <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>amin(np<span style="font-weight:bold">.</span>ravel(edge_pos[:, :, <span style="color:#099">1</span>]))
+</span></span><span style="display:flex;"><span>    maxy <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>amax(np<span style="font-weight:bold">.</span>ravel(edge_pos[:, :, <span style="color:#099">1</span>]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    w <span style="font-weight:bold">=</span> maxx<span style="font-weight:bold">-</span>minx
+</span></span><span style="display:flex;"><span>    h <span style="font-weight:bold">=</span> maxy<span style="font-weight:bold">-</span>miny
+</span></span><span style="display:flex;"><span>    padx, pady <span style="font-weight:bold">=</span> <span style="color:#099">0.05</span><span style="font-weight:bold">*</span>w, <span style="color:#099">0.05</span><span style="font-weight:bold">*</span>h
+</span></span><span style="display:flex;"><span>    corners <span style="font-weight:bold">=</span> (minx<span style="font-weight:bold">-</span>padx, miny<span style="font-weight:bold">-</span>pady), (maxx<span style="font-weight:bold">+</span>padx, maxy<span style="font-weight:bold">+</span>pady)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>update_datalim(corners)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>autoscale_view()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> edge_collection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">plot_network</span>(net, year, save<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>):
+</span></span><span style="display:flex;"><span>    u <span style="font-weight:bold">=</span> net<span style="font-weight:bold">.</span>source
+</span></span><span style="display:flex;"><span>    v <span style="font-weight:bold">=</span> net<span style="font-weight:bold">.</span>target
+</span></span><span style="display:flex;"><span>    w <span style="font-weight:bold">=</span> net<span style="font-weight:bold">.</span>flow
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    G <span style="font-weight:bold">=</span> nx<span style="font-weight:bold">.</span>DiGraph()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> ui, vi, wi <span style="font-weight:bold">in</span> <span style="color:#999">zip</span>(u, v, w): G<span style="font-weight:bold">.</span>add_edges_from([(ui, vi)], weight<span style="font-weight:bold">=</span>wi)
+</span></span><span style="display:flex;"><span>    pos <span style="font-weight:bold">=</span> nx<span style="font-weight:bold">.</span>circular_layout(G)
+</span></span><span style="display:flex;"><span>    edge_labels <span style="font-weight:bold">=</span> <span style="color:#999">dict</span>([((u, v,), d[<span style="color:#b84">&#39;weight&#39;</span>]) <span style="font-weight:bold">for</span> u, v, d <span style="font-weight:bold">in</span> G<span style="font-weight:bold">.</span>edges(data<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>)])
+</span></span><span style="display:flex;"><span>    weights <span style="font-weight:bold">=</span> [G[u][v][<span style="color:#b84">&#39;weight&#39;</span>] <span style="font-weight:bold">for</span> u, v <span style="font-weight:bold">in</span> G<span style="font-weight:bold">.</span>edges()]
+</span></span><span style="display:flex;"><span>    weights <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array(<span style="color:#999">list</span>(<span style="color:#999">map</span>(<span style="font-weight:bold">lambda</span> x: (x <span style="font-weight:bold">-</span> <span style="color:#999">min</span>(weights)) <span style="font-weight:bold">/</span> 
+</span></span><span style="display:flex;"><span>                       (<span style="color:#999">max</span>(weights) <span style="font-weight:bold">-</span> <span style="color:#999">min</span>(weights)), weights)))  <span style="color:#998;font-style:italic"># normalize</span>
+</span></span><span style="display:flex;"><span>    weights <span style="font-weight:bold">=</span> weights<span style="font-weight:bold">*</span><span style="color:#099">10</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">10</span>,<span style="color:#099">10</span>))
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>axis(<span style="color:#b84">&#39;off&#39;</span>)
+</span></span><span style="display:flex;"><span>    nx<span style="font-weight:bold">.</span>draw_networkx_edge_labels(G, pos, edge_labels<span style="font-weight:bold">=</span>edge_labels, font_family<span style="font-weight:bold">=</span><span style="color:#b84">&#39;serif&#39;</span>, font_size<span style="font-weight:bold">=</span><span style="color:#099">4</span>, 
+</span></span><span style="display:flex;"><span>                                 font_color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;grey&#39;</span>, bbox<span style="font-weight:bold">=</span>{<span style="color:#b84">&#39;alpha&#39;</span>:<span style="color:#099">.0</span>, <span style="color:#b84">&#39;lw&#39;</span>:<span style="color:#099">0</span>})
+</span></span><span style="display:flex;"><span>    nx<span style="font-weight:bold">.</span>draw_networkx_nodes(G, pos, nodelist<span style="font-weight:bold">=</span>G<span style="font-weight:bold">.</span>nodes(), node_color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, node_size<span style="font-weight:bold">=</span><span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>    draw_networkx_edges_with_arrows(G, pos, width<span style="font-weight:bold">=</span>weights, edge_color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;#5cce40&#39;</span>)
+</span></span><span style="display:flex;"><span>    nx<span style="font-weight:bold">.</span>draw_networkx_labels(G, pos, font_color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;white&#39;</span>, font_family<span style="font-weight:bold">=</span><span style="color:#b84">&#39;serif&#39;</span>, font_size<span style="font-weight:bold">=</span><span style="color:#099">6</span>)
+</span></span><span style="display:flex;"><span>    fig<span style="font-weight:bold">.</span>set_facecolor(<span style="color:#b84">&#39;#262626&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>title(<span style="color:#b84">r</span><span style="color:#b84">&#39;Railway Transport ($10^3$ ton), </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(year), color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;white&#39;</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> save: plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;./plots/net</span><span style="color:#b84">{}</span><span style="color:#b84">.png&#39;</span><span style="font-weight:bold">.</span>format(year), facecolor<span style="font-weight:bold">=</span>fig<span style="font-weight:bold">.</span>get_facecolor())
+</span></span><span style="display:flex;"><span>    plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><h2 id="data-preparation-and-plotting">Data Preparation and Plotting</h2>
+<p>As I mentioned in the beginning, here the transient matrices are extracted by <code>groupby</code>. For further usage, we save then by specifying the parameter <code>save</code> in <code>plot_network</code> to be <code>True</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rail <span style="font-weight:bold">=</span> data<span style="font-weight:bold">.</span>ix[:,<span style="color:#099">6</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>]<span style="font-weight:bold">.</span>fillna(<span style="color:#099">0</span>)<span style="font-weight:bold">.</span>astype(<span style="color:#999">int</span>)<span style="font-weight:bold">.</span>groupby(data<span style="font-weight:bold">.</span>Year)
+</span></span><span style="display:flex;"><span>province <span style="font-weight:bold">=</span> data<span style="font-weight:bold">.</span>Province<span style="font-weight:bold">.</span>unique()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> temp <span style="font-weight:bold">in</span> <span style="color:#999">list</span>(rail):
+</span></span><span style="display:flex;"><span>    year <span style="font-weight:bold">=</span> temp[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>    net <span style="font-weight:bold">=</span> temp[<span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>    net<span style="font-weight:bold">.</span>index <span style="font-weight:bold">=</span> province
+</span></span><span style="display:flex;"><span>    net <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([net<span style="font-weight:bold">.</span>ix[:,i] <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> net<span style="font-weight:bold">.</span>columns], axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>    net <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([pd<span style="font-weight:bold">.</span>Series(net<span style="font-weight:bold">.</span>index), pd<span style="font-weight:bold">.</span>Series(np<span style="font-weight:bold">.</span>repeat(province, <span style="color:#099">31</span>)), pd<span style="font-weight:bold">.</span>Series(net<span style="font-weight:bold">.</span>values)], 
+</span></span><span style="display:flex;"><span>                    axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>, ignore_index<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>    net<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;source&#39;</span>, <span style="color:#b84">&#39;target&#39;</span>, <span style="color:#b84">&#39;flow&#39;</span>]
+</span></span><span style="display:flex;"><span>    mask <span style="font-weight:bold">=</span> net<span style="font-weight:bold">.</span>source <span style="font-weight:bold">==</span> net<span style="font-weight:bold">.</span>target
+</span></span><span style="display:flex;"><span>    net <span style="font-weight:bold">=</span> net[<span style="font-weight:bold">~</span>mask]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    plot_network(net, year, <span style="font-weight:bold">True</span>)
+</span></span></code></pre></div><h2 id="gif-generation">GIF Generation</h2>
+<p>Key package here is <code>imageio</code>. I&rsquo;ve set the limit for maximum pixel to 1e10 in case there&rsquo;s any overflow due to large figures in the above steps.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">imageio</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">PIL</span> <span style="font-weight:bold">import</span> Image
+</span></span><span style="display:flex;"><span>Image<span style="font-weight:bold">.</span>MAX_IMAGE_PIXELS <span style="font-weight:bold">=</span> <span style="color:#099">1e10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>image_list <span style="font-weight:bold">=</span> [<span style="color:#b84">f</span><span style="color:#b84">&#39;net</span><span style="color:#b84">{</span>i<span style="color:#b84">}</span><span style="color:#b84">.png&#39;</span> <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1992</span>, <span style="color:#099">2012</span>)]
+</span></span><span style="display:flex;"><span>gif_name <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;net.gif&#39;</span>
+</span></span><span style="display:flex;"><span>frames <span style="font-weight:bold">=</span> [imageio<span style="font-weight:bold">.</span>imread(image_name) <span style="font-weight:bold">for</span> image_name <span style="font-weight:bold">in</span> image_list]
+</span></span><span style="display:flex;"><span>imageio<span style="font-weight:bold">.</span>mimsave(gif_name, frames, <span style="color:#b84">&#39;GIF&#39;</span>, duration<span style="font-weight:bold">=</span><span style="color:#099">.5</span>)
+</span></span></code></pre></div><p>Well, I have to say it looks gorgeous.</p>
+<img src="https://drive.google.com/uc?export=view&id=1MTVORM70HA_YztlR4Ftp1mO7q5YAFvCC" style="width: 80%;"/>
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/ensemble-modeling/">Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</a></span>
+  <span class="nav-next"><a href="/blog/cryptocurrency-arbitrage-1/">Cryptocurrency Arbitrage (1): Some Ideas</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/ensemble-modeling\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-1\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

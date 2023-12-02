@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Cryptocurrency Arbitrage (1): Some Ideas - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Cryptocurrency Arbitrage (1): Some Ideas - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within &amp;hellip;">
+      <meta property="og:description" content="Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Cryptocurrency Arbitrage (1): Some Ideas</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-12-21
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within 24 hours. Together with BTC, mainstream altcoins like ETH and ETC faced significant slump since a week ago. On contrary, XRP, because of the rumored endorcement from big companies like Amazon, is experiencing a straight appreciation of almost 100% since two weeks ago.</p>
+<!-- more -->
+<p>This is the cryptocurrency market. Notorious for its incredible risks with comparatively high volatility and liquidity (within the exchange, while for the special case of inter-exchange liquidity of BTC markets, you can check out <a href="http://allenfrostline.com/bitcoin-time-series-2/">this previous post</a> of mine), the huge market is also globally desirable for any quant trader &ndash; well maintained APIs, low fees, free information including 3rd-level order books, and various order types allowing for any kind of derivative you&rsquo;d like to give a try. Earlier this year, I took a brief look into this market and its varied properties did attract me. Different from then when I mainly focused on the inefficiency of the market as a whole, I&rsquo;d like to write some real stategies this time, as basically all my grad school applications are finished and there&rsquo;s a wonderful holiday waiting for me. I&rsquo;ll have enough time to build my own wheel, develop and test my lovely strategies.</p>
+<p>There&rsquo;re already some codes being written since yesterday, I don&rsquo;t intend to present them here as they&rsquo;re highly unstable and need way more tests and perfection. However, I do have a framework for now, which I&rsquo;d like to write down here so that I can proceed everything in a more orderly way. This is gonna be a series, as I&rsquo;ve already put in the title, and hopefully I can finish everything below by 2018.</p>
+<h2 id="trading-system">Trading System</h2>
+<p>This part is actually already finished. This is a framework (for now) specifically designed for the Poloniex API which requires private keys so that the bot can send real orders. Due to the fact that there&rsquo;s no market order in Poloniex&rsquo;s API, I had to write my own based on limit orders and order book information. This is now still a commandline version, which of course can be easily embedded into a web-based or desktop software, but I don&rsquo;t think that&rsquo;s of any practical necessity now. <a href="http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html">ANSI colors</a> are enough for efficient while enjoyable monitoring. The only issue now is the speed of the system. However, the delays are almost 95% from web data requests rather than the strategies themselves, and thus rewriting the whole system into a C++ one seems not helping either.</p>
+<h2 id="strategy-1-dynamic-forecasting">Strategy 1: Dynamic Forecasting</h2>
+<p>The first strategy is almost done and is currently under non-trading testing. It is based on a Long-Short-Term-Memory neural network with an uncertain number of sigmoid activation layers. Although I named it as forecasting, it is in fact not a regression. Rather, I hot-coded the optimum weighted portfolio posteriorly determined by the historical Sharpe ratio on a minute basis. By doing so, I successfully translated the multivariate regression problem (which is, according to my experience, fairly hard for most models) into a categorical classification problem. By using a sigmoid activation layer for outputs I can interpret/use the classification probabilities as the predicted weight vector and validate it using loss functions like MSE or cross-entropy. The result is interesting, and I&rsquo;ll keep it for the next post.</p>
+<h2 id="strategy-2-polygon-arbitrage">Strategy 2: Polygon Arbitrage</h2>
+<p>I got this inspiration from the so-called &ldquo;<a href="https://en.wikipedia.org/wiki/Triangular_arbitrage">triangular arbitrage</a>&rdquo; in foreign exchange markets. Because however transparent information is across the whole market, traders cannot access and digest everything at the very same time, price discrepancy occurs from time to time. By trading USD for EUR and then for CNY and then back for USD, due to such discrepancy in between, arbitrage opportunities may exist. However, as this is quite classic a strategy, of course thousands of traders are already doing this sort of thing in the cryptocurrency market, and thus for length 4 (including both beginning and ending currencies) paths, arbitrage opportunities are only too transient to be caught. Based on this idea, by extending the trading path&rsquo;s length to a larger but bounded, uncertain number, I expect to find more such opportunities with a sacrifice of higher slippage. I&rsquo;m considering whether theories about Markov chains and graph theory can be applied in this story but have not yet figured out any concrete idea.</p>
+<h2 id="strategy-3-dynamic-polygon-arbitrage">Strategy 3: Dynamic Polygon Arbitrage</h2>
+<p>As the name implies, this is merely the combination of strategy 1 and 2. The insight behind it is also quite simple &ndash; by basing our trasactions on a coin, e.g. BTC, we&rsquo;re binding our excess returns to the absolute performance of the coin itself. There&rsquo;re two solutions for this dilemma:</p>
+<ol>
+<li>Dynamically choose the best coin you guess for the future period.</li>
+<li>Open a margin account and trade only in margin, which is definitely preferable to the first solution&hellip; but</li>
+</ol>
+<p><strong>I cannot open a margin account, period.</strong></p>
+<p>Merry Christmas!</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/network-visualization/">Network Visualization: Chinese Railway Transport from 1992 to 2011</a></span>
+  <span class="nav-next"><a href="/blog/cryptocurrency-arbitrage-2/">Cryptocurrency Arbitrage (2): Performance</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/network-visualization\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-2\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

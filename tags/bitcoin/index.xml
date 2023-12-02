@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bitcoin on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/bitcoin/</link>
+    <description>Recent content in bitcoin on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 09 Jan 2018 02:28:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/bitcoin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cryptocurrency Arbitrage (2): Performance</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</link>
+      <pubDate>Tue, 09 Jan 2018 02:28:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</guid>
+      <description>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. Europe/Amsterdam. Cheers!
+Update April 11:
+Strategy offline before I realized my AWS bills was being owed and the server down due to that&amp;hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (1): Some Ideas</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</link>
+      <pubDate>Thu, 21 Dec 2017 19:52:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</guid>
+      <description>Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within 24 hours. Together with BTC, mainstream altcoins like ETH and ETC faced significant slump since a week ago. On contrary, XRP, because of the rumored endorcement from big companies like Amazon, is experiencing a straight appreciation of almost 100% since two weeks ago.</description>
+    </item>
+    <item>
+      <title>Bitcoin Inter-exchange Price Spread Prediction</title>
+      <link>https://allenfrostline.com/blog/bitcoin-time-series/</link>
+      <pubDate>Sun, 21 May 2017 00:59:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/bitcoin-time-series/</guid>
+      <description>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. Step 1: Import All Packages import quandl import cmocean import warnings import numpy as np import pandas as pd import seaborn as sns import statsmodels.api as sm from pytrends.request import TrendReq from scipy import stats as ss from datetime import datetime as dt from arch.</description>
+    </item>
+  </channel>
+</rss>

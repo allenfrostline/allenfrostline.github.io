@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Orthonormal Bases for Four Subspaces using Singular Value Decomposition - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Orthonormal Bases for Four Subspaces using Singular Value Decomposition - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space &amp;hellip;">
+      <meta property="og:description" content="The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Orthonormal Bases for Four Subspaces using Singular Value Decomposition</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-10-23
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+<p>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space <code>$\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\mathbf}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}C(\bs{A})$</code>, the null space <code>$N(\bs{A})$</code>, the row space <code>$C(\bs{A}')$</code>, and the left null space <code>$N(\bs{A}')$</code>.</p>
+<p>In this post, we denote SVD of matrix <code>$\bs{A}\in\R^{m\times n}$</code> as</p>
+<p>$$
+\bs{A} = \bs{U}\boldsymbol{\Sigma}\bs{V}'
+$$</p>
+<p>where <code>$\bs{U}\in\R^{m\times m}$</code>, <code>$\boldsymbol{\Sigma}\in\R^{m\times n}$</code> and <code>$\bs{V}\in\R^{n\times n}$</code>. <code>$\bs{U}$</code> and <code>$\bs{V}$</code> are orthonormal, namely <code>$\bs{U}'\bs{U}=\bs{V}'\bs{V}=\bs{I}$</code>. <code>$\boldsymbol{\Sigma}$</code> is diagonal (despite being rectangle), which means all entries <code>$\sigma_{ij}$</code> are zero if <code>$i\neq j$</code>. <code>$\bs{V}'$</code> means transposition of <code>$\bs{V}$</code>. Apart from this regular form, we have full-rank SVD as</p>
+<p>$$
+\bs{A} = \begin{bmatrix}
+\bs{U}_r &amp; \hat{\bs{U}}_r
+\end{bmatrix}\begin{bmatrix}
+\boldsymbol{\Sigma}_r &amp; \bs{O}\newline
+\bs{O} &amp; \bs{O}
+\end{bmatrix}\begin{bmatrix}
+\bs{V}_r &amp; \hat{\bs{V}}_r
+\end{bmatrix}&rsquo; = \bs{U}_r\boldsymbol{\Sigma}_r\bs{V}_r'
+$$</p>
+<p>where <code>$r=\rank(A)$</code>; <code>$\bs{U}_r\in\R^{m\times r}$</code> is the block consisting of the first <code>$r$</code> columns <code>$\bs{U}$</code>, <code>$\hat{\bs{U}}_r\in\R^{m\times (m-r)}$</code> is the complement of <code>$\bs{U}_r$</code> from <code>$\bs{U}$</code>; <code>$\boldsymbol{\Sigma}_r\in\R^{r\times r}$</code> is the top-left square block of <code>$\boldsymbol{\Sigma}$</code>; <code>$\bs{V}_r\in\R^{n\times r}$</code> is the block consisting of the first <code>$r$</code> columns <code>$\bs{V}$</code>, <code>$\hat{\bs{V}}_r\in\R^{n\times(n-r)}$</code> is the complement of <code>$\bs{V}_r$</code> from <code>$\bs{U}$</code>. Note that orthonormality still holds for <code>$\bs{U}_r$</code> and <code>$\bs{V}_r$</code>, and that now <code>$\boldsymbol{\Sigma}_r$</code> is square and invertible.</p>
+<h1 id="columns-space-cbsa">Columns Space <code>$C(\bs{A})$</code></h1>
+<p><strong>Claim</strong>: <code>$\bs{U}_r$</code> forms a basis of <code>$C(\bs{A})$</code>. We prove it as follows.</p>
+<p><strong>Proof</strong>. All we need is to show that <code>$C(\bs{A})=C(\bs{U}_r)$</code>. Left to right: assume <code>$\bs{a}\in C(\bs{A})$</code>, then we know <code>$\exists \bs{x}$</code> s.t.</p>
+<p>$$
+\bs{a}=\bs{Ax}=\bs{U}_r\boldsymbol{\Sigma}_r\bs{V}_r&rsquo;\bs{x}:= \bs{U}_r\bs{x}^* \in C(\bs{U}_r).
+$$</p>
+<p>Right to left: assume <code>$\bs{u}\in C(\bs{U}_r)$</code>, then similarly <code>$\exists \bs{x}$</code> s.t.</p>
+<p>$$
+\bs{u} = \bs{U}_r\bs{x} = \bs{A}\bs{V}_r\boldsymbol{\Sigma}_r^{-1}\bs{x} := \bs{A}\bs{x}^* \in C(\bs{A}).
+$$</p>
+<p>Therefore, we conclude that <code>$C(\bs{A})=C(\bs{U}_r)$</code>.<span style="float: right">Q.E.D.</span></p>
+<h1 id="row-space-cbsa">Row Space <code>$C(\bs{A}')$</code></h1>
+<p><strong>Claim</strong>: <code>$\bs{V}_r$</code> gives a basis of <code>$C(\bs{A}')$</code>.</p>
+<p><strong>Proof</strong>. Similar to the column space, here we need to prove <code>$C(\bs{A}')=C(\bs{V}_r)$</code>. In fact, since SVD of <code>$\bs{A}'$</code> is merely</p>
+<p>$$
+\bs{A}&rsquo; = \bs{V}_r\boldsymbol{\Sigma}_r\bs{U}_r&rsquo;,
+$$</p>
+<p>the conclusion follows right away from the previous one.<span style="float: right">Q.E.D.</span></p>
+<h1 id="null-space-nbsa">Null Space <code>$N(\bs{A})$</code></h1>
+<p><strong>Claim</strong>: <code>$\bar{\bs{V}}_r$</code> forms a basis of <code>$N(\bs{A})$</code>.</p>
+<p><strong>Proof</strong>. Solving <code>$\boldsymbol{\Sigma}$</code> from the regular SVD gives</p>
+<p>$$
+\boldsymbol{\Sigma} = \bs{U}&rsquo;\bs{A}\bs{V} = \begin{bmatrix}
+\bs{U}_r&rsquo;\bs{A}\bs{V}_r &amp; \bs{U}_r&rsquo;\bs{A}\bar{\bs{V}}_r\newline
+\bar{\bs{U}}_r&rsquo;\bs{A}\bs{V}_r &amp; \bar{\bs{U}}_r&rsquo;\bs{A}\bar{\bs{V}}_r
+\end{bmatrix} = \begin{bmatrix}
+\boldsymbol{\Sigma}_r &amp; \bs{O}\newline
+\bs{O} &amp; \bs{O}
+\end{bmatrix}
+$$</p>
+<p>and thus</p>
+<p>$$
+\begin{bmatrix}
+\bs{U}_r&rsquo;\bs{A}\bar{\bs{V}}_r\newline
+\bar{\bs{U}}_r&rsquo;\bs{A}\bar{\bs{V}}_r
+\end{bmatrix} = \begin{bmatrix}
+\bs{O} \newline \bs{O}
+\end{bmatrix} \Rightarrow \bs{A}\bar{\bs{V}}_r = \bs{O}
+$$</p>
+<p>which means <code>$\bar{\bs{V}}_r\in N(\bs{A})$</code>. Meanwhile, since <code>$\bar{\bs{V}}_r$</code> is orthonormal with <code>$\rank(\bar{\bs{V}}_r) = n-r = \dim(N(\bs{A}))$</code>, we conclude that <code>$\bar{\bs{V}}_r$</code> forms a basis of <code>$N(\bs{A})$</code>.<span style="float: right">Q.E.D.</span></p>
+<h1 id="left-null-space-nbsa">Left Null Space <code>$N(\bs{A}')$</code></h1>
+<p><strong>Claim</strong>: <code>$\bar{\bs{U}}_r$</code> gives a basis of <code>$N(\bs{A}')$</code>.</p>
+<p><strong>Proof</strong>. Similar to the null space of <code>$N(\bs{A})$</code>, if we consider <code>$\bs{A}'$</code> in the place of <code>$\bs{A}$</code>, then we have right away that</p>
+<p>$$
+\bs{A}&rsquo;\bar{\bs{U}}_r = \bs{O} \Rightarrow \bar{\bs{U}}_r\in N(\bs{A}&rsquo;)
+$$</p>
+<p>and because <code>$\rank(\bar{\bs{U}}_r)=m-r=\dim(N(\bs{A}'))$</code>, we conclude that <code>$\bar{\bs{U}}_r$</code> forms a basis for the left null space of <code>$\bs{A}$</code>.<span style="float: right">Q.E.D.</span></p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/xiao-ao-jiang-hu/">谈《笑傲江湖》</a></span>
+  <span class="nav-next"><a href="/blog/bokeh-in-post/">Bokeh Plots in a Blog Post</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/xiao-ao-jiang-hu\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/bokeh-in-post\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

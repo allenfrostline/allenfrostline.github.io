@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Content Filtering with Hexo Tipue-Search Engine - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Content Filtering with Hexo Tipue-Search Engine - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;rsquo;em to show up in a search &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;rsquo;em to show up in a search &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Content Filtering with Hexo Tipue-Search Engine</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-05-03
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It&rsquo;s always been a headache to me that I cannot have my blog&rsquo;s search engine to show content I want — there&rsquo;re always something you don&rsquo;t want &rsquo;em to show up in a search result, like <a href="https://www.npmjs.com/package/hexo-blog-encrypt">password protected</a> posts (shown as encrypted codes) and random pages for a certain project (some even don&rsquo;t have a title, and this tipue-search would still show them in the searching result — with a blank title and a bunch of html raw codes). Even worse, it seems there&rsquo;s no offical way to set this sort of content filters. This feels bad. This terrible feeling has tortured me for months till I made up my mind and fixed it from source codes today.</p>
+<!-- more -->
+<p>The fix turned out, well, quite straightforward. First, we locate the node package folder <code>hexo-generator-tipue-search-json</code>. The package structure shows</p>
+<pre><code>node_modules
+└───hexo-generator-tipue-search-json
+    ├───index.js
+    ├───LICENSE
+    ├───package.json
+    ├───README.md
+    └───node_modules
+        └───...
+</code></pre>
+<p>The file we need to edit is <code>index.js</code>. Below I&rsquo;ve attached the full codes after modification:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="font-weight:bold">var</span> util <span style="font-weight:bold">=</span> require(<span style="color:#b84">&#39;hexo-util&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hexo.extend.generator.register(<span style="color:#b84">&#39;tipue-search-json&#39;</span>, hexo_generator_tipue_search_json);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">function</span> hexo_generator_tipue_search_json(site) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">var</span> minify <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span> (str) {
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">return</span> util.stripHTML(str).trim().replace(<span style="color:#808000">/\n/g</span>, <span style="color:#b84">&#39; &#39;</span>).replace(<span style="color:#808000">/\s+/g</span>, <span style="color:#b84">&#39; &#39;</span>);
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        keys <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            title<span style="font-weight:bold">:</span> <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>            url<span style="font-weight:bold">:</span> <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>            text<span style="font-weight:bold">:</span> <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>            tags<span style="font-weight:bold">:</span> <span style="font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        json <span style="font-weight:bold">=</span> {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">var</span> catags <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span> (item) {
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">return</span> item.name.replace(<span style="color:#808000">/\s+/g</span>, <span style="color:#b84">&#39;-&#39;</span>).toLowerCase();
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">var</span> postsContent <span style="font-weight:bold">=</span> site.posts.sort(<span style="color:#b84">&#39;-date&#39;</span>).filter(<span style="font-weight:bold">function</span> (post) {
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">return</span> (post.published <span style="font-weight:bold">&amp;&amp;</span> <span style="font-weight:bold">!</span>(<span style="color:#b84">&#39;password&#39;</span> <span style="font-weight:bold">in</span> post));  <span style="color:#998;font-style:italic">// 不搜索加密文章
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>        }).map(<span style="font-weight:bold">function</span> (post) {
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">var</span> actualPost <span style="font-weight:bold">=</span> {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#999">Object</span>.getOwnPropertyNames(keys).forEach(<span style="font-weight:bold">function</span> (item) {
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">switch</span> (item) {
+</span></span><span style="display:flex;"><span>                    <span style="font-weight:bold">case</span> <span style="color:#b84">&#39;text&#39;</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="font-weight:bold">return</span> actualPost[item] <span style="font-weight:bold">=</span> minify(post.content);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="font-weight:bold">case</span> <span style="color:#b84">&#39;tags&#39;</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="font-weight:bold">return</span> actualPost[item] <span style="font-weight:bold">=</span> post.tags.map(catags).join(<span style="color:#b84">&#39; &#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="font-weight:bold">case</span> <span style="color:#b84">&#39;url&#39;</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="font-weight:bold">return</span> actualPost[item] <span style="font-weight:bold">=</span> hexo.config.root <span style="font-weight:bold">+</span> post[<span style="color:#b84">&#39;path&#39;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="font-weight:bold">default</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>                        <span style="font-weight:bold">return</span> actualPost[item] <span style="font-weight:bold">=</span> post[item];
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">return</span> actualPost;
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">// var pagesContent = site.pages.sort(&#39;-date&#39;).map(function (page) {
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//         var actualPage = {};
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">//         Object.getOwnPropertyNames(keys).forEach(function (item) {
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//             switch (item) {
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//                 case &#39;text&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//                     return actualPage[item] = minify(page.content);
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">//                 case &#39;url&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//                     return actualPage[item] = hexo.config.root + page[&#39;path&#39;];
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">//                 default:
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//                     return actualPage[item] = page[item];
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//             }
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//         });
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//         actualPage.tags = &#34;&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//         return actualPage;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">//     });
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">// json.pages = postsContent.concat(pagesContent);  // 不要搜索pages
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    json.pages <span style="font-weight:bold">=</span> postsContent;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> {
+</span></span><span style="display:flex;"><span>        path<span style="font-weight:bold">:</span> <span style="color:#b84">&#39;/tipuesearch/tipuesearch_content.json&#39;</span>,
+</span></span><span style="display:flex;"><span>        data<span style="font-weight:bold">:</span> JSON.stringify(json)
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note the second line of the definition of <code>postsContent</code> and the lines we comment out. These modifications are made such that encrypted posts and standalone pages won&rsquo;t be searched.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/revert-github-commit/">Revert GitHub Commit History?</a></span>
+  <span class="nav-next"><a href="/blog/stock-price-simulation/">Stock Price Simulation</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/revert-github-commit\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/stock-price-simulation\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

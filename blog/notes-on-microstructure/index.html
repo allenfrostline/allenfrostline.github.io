@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Mathematical Market Microstructure - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Mathematical Market Microstructure - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market &amp;hellip;">
+      <meta property="og:description" content="Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Notes on Mathematical Market Microstructure</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-10-04
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+<p>Following are my lecture notes from Prof. Yuri Balasanov&rsquo;s course Mathematical Market Microstructure.<code>$\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}$</code></p>
+<h1 id="introduction">Introduction</h1>
+<p>In this section we start with an overview of market microstructure as a whole.</p>
+<h2 id="definition-of-market-microstructure">Definition of Market Microstructure</h2>
+<p>Maureen O&rsquo;Hara defines market microstructure as</p>
+<blockquote>
+<p>&hellip; the study of the process and outcomes of exchanging assets under explicit trading rules. While much of economics abstracts from the mechanics of trading, microstructure literature analyzes how specific trading mechanisms affect the price formation process.</p>
+</blockquote>
+<p>which is generally shown by high frequency trading.</p>
+<h2 id="frogs-eye-view">Frog&rsquo;s Eye View</h2>
+<ul>
+<li>(Fundamental Assumption) <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">Central Limit Theorem</a> does not work. Price is not observable unless there&rsquo;s a trade and thus neither <em>number</em> or <em>size</em> of price movements during a period of time is not garanteed. In fact, no matter how many points we sample from historical data, the mass distribution of price jumps has fatter tails than normal distribution, which means CLT is not working.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
+<li>(Price Formation and Discovery) Last price is not necessarily an indicator of where it has now formed. Also, price discovery is a <em>destructive</em> experiment involving unique counterpart.</li>
+<li>(Uncertainty Principle) Like quantum mechanics, we can never measure <em>simultaneously</em> price and its volatility manifested in a derivative product. Instead of a number, price is considered a distribution.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></li>
+<li>(The Two Slits Experiment) An order which passed through the previous slit may pass again or be submitted one of the following: hit, lift or join. This activity affacts the state of the trader&rsquo;ss decision at subsequent times.</li>
+<li>(Technology) Colocated servers; GPS antennas for timing; fiber optics vs. microwave<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>; Field-Programmable Gate Array (FPGA) and Graphics Processing Unit (GPU); big data.</li>
+<li>(Regulation) <a href="https://www.bloomberg.com/quicktake/spoofing">Spoofing</a> (also see figure below); Rule 610 (locking the market); Dodd-Frank Act<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> (violation of bids and offers).</li>
+<li>(Future) Direct Market Access (DMA); dark pools; cost of connectivity; speed of light.</li>
+</ul>
+<p><img alt="spoofing" src="/images/notes-on-microstructure1.png" style="width: min(100%, 300px)"></src></p>
+<h2 id="principle-of-ma">Principle of Ma</h2>
+<p>Ma (間) means empty, spatial void, and interval of space or time in Japanese. The Zen Principle of Ma, when in microstructure context, basically emphasizes that the more &ldquo;micro&rdquo; we go into the data, the more randomness we&rsquo;ll observe.</p>
+<h2 id="characteristics-of-transactions-data">Characteristics of Transactions Data</h2>
+<ul>
+<li>Randomly spaced time intervals (Principle of Ma). Trading intensity contains important information.</li>
+<li>Discrete-valued prices can only be multiples of tick size.</li>
+<li>Diurnal patterns: periodic intensity. For example, high at the
+beginning and at the end of the trading session.</li>
+<li>To observe microstructure time resolution currently needs to be in microseconds.</li>
+</ul>
+<h2 id="characteristics-of-nonsynchronous-trading-data">Characteristics of Nonsynchronous Trading Data</h2>
+<ul>
+<li>Cross-correlation between stock returns at lag 1</li>
+<li>Autocorrelation at lag 1 in portfolio returns</li>
+<li>(Bid-Ask Bounce) Negative autocorrelations in returns of a single stock</li>
+</ul>
+<p><code>Example</code> Stocks A and B are independent. Stock A is traded more frequently than B. News arriving at the very end of day session will more likely a§ect stock A than B. Stock B will react more the next day. Then in daily prices there will be a 1-day lag due to di§erence in trading frequency even when the two stocks are independent.</p>
+<h1 id="models">Models</h1>
+<p>In this section, we will introduce a series of mathematical models that explain the abovementioned nonsynchronous characteristics.</p>
+<h2 id="a-simple-model-to-start-with">A Simple Model to Start With</h2>
+<p>Let <code>$r_t$</code> be continuously compounded return at time <code>$t$</code>. Assume that <code>$r_t$</code> are i.i.d. latent variables, <code>$\E[r_t] = μ$</code>, <code>$\V[r_t]=\sigma$</code>. For each <code>$t$</code> probability that the asset is not traded is <code>$\pi$</code>. Let <code>$r_t^0$</code> be the manifest return variable. If at <code>$t$</code> there is no trade <code>$r_t^0 = 0$</code>. If at <code>$t$</code> there is a trade then <code>$r_t^0$</code> is the cumulative return since the previous trade.</p>
+<p>It can be shown that</p>
+<div>
+$$
+\begin{align}
+&\P[r_t^0=\textstyle{\sum_{i=0}^k} r_{t-i}] = \pi^2(1-\pi)^2,\quad\E[r_t^0] = \mu,\\&\V[r_t^0]=\sigma^2+\frac{2\pi\mu^2}{1-\pi},\quad \Cov(r_t^0, r_{t-1}^0) = -\pi\mu^2.
+\end{align}
+$$
+</div>
+<p>This simple model explains negative autocorrelation induced by nonsynchronous trading.</p>
+<h2 id="ordered-probit-model">Ordered Probit Model</h2>
+<p>Let <code>$y_t$</code> be a latent variable depending on time. Observed variable is <code>$u_t$</code>. Assume <code>$u_t$</code> is an <strong>ordered</strong> <code>$k$</code>-categorical variable:</p>
+<p>$$
+u_t = \begin{cases}
+u^{(0)} &amp; \text{if }y_t\in (-\infty,\theta_1),\
+u^{(i)} &amp; \text{if }y_t\in [\theta_i,\theta_{i+1}),\ i=1,2,\ldots,k-1,\
+u^{(k)} &amp; \text{if }y_t\in [\theta_k,\infty).
+\end{cases}
+$$</p>
+<p>Variable <code>$y_t$</code> is predicted using a linear model <code>$y_t=\bs{\beta}\mathbf{X}_t + \epsilon_t$</code>, which gives</p>
+<div>
+$$
+\begin{align}
+\P[u_t=u^{(i)}\mid \mathbf{X}_t] &= \P[\theta_{i-1}\le \bs{\beta}\mathbf{X}_t < \theta_i\mid \mathbf{X}_t]\\
+&= \begin{cases}
+\Phi\!\left(\frac{\theta_1-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) & i=0,\\
+\Phi\!\left(\frac{\theta_{i+1}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) - \Phi\!\left(\frac{\theta_{i}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) & i=1,2,\ldots,k-1,\\
+1 - \Phi\!\left(\frac{\theta_{k}-\bs{\beta} \mathbf{X}_t}{\sigma_t}\right) &
+ i=k.
+\end{cases}
+\end{align}
+$$
+</div>
+<p>Note here we assume <code>$\epsilon_t\sim\mathcal{N}(0,\sigma_t^2)$</code> and thus applied <code>$\Phi(\cdot)$</code> as link function, which explains why it&rsquo;s a Probit model.</p>
+<h2 id="decomposition-model">Decomposition Model</h2>
+<p>Assume the price change <code>$y_i = P_{t_i} - P_{t_{i-1}}$</code> can be decomposed into product of three components:</p>
+<ul>
+<li>Indicator of price change <code>$A_i\in\{0,1\}$</code>.</li>
+<li>Direction of price change <code>$D_i\in\{-1,+1\}$</code>.</li>
+<li>Size of price change <code>$S_i\in\mathbb{N}_+$</code>.</li>
+</ul>
+<p>Specifically, for <code>$p_i=\P[A_i=1]$</code> we let</p>
+<div>
+$$
+\ln\left(\frac{p_i}{1-p_i}\right) = \bs{\beta} \mathbf{X}_i\Rightarrow
+p_i = \frac{\exp(\bs{\beta} \mathbf{X}_i)}{1 + \exp(\bs{\beta} \mathbf{X}_i)}.
+$$
+</div>
+<p>For <code>$\delta_i=\P[D_i=1\mid A_i=1]$</code> we let</p>
+<div>
+$$
+\ln\left(\frac{\delta_i}{1-\delta_i}\right) = \bs{\gamma} \mathbf{Z}_i\Rightarrow
+\delta_i = \frac{\exp(\bs{\gamma} \mathbf{Z}_i)}{1 + \exp(\bs{\gamma} \mathbf{Z}_i)}.
+$$
+</div>
+<p>For <code>$S_i$</code> we let</p>
+<div>
+$$
+S_i\mid (D_i,A_i=1)\sim 1 + g(\lambda_{u,i})\1{D_i=+1} + g(\lambda_{d,i})\1{D_i=-1}
+$$
+</div>
+<p>where <code>$g(\lambda_{\xi,i})$</code> is geometric distribution with parameter <code>$\lambda_{\xi,i}$</code> estimated from</p>
+<div>
+$$
+\ln\left(\frac{\lambda_{\xi,i}}{1-\lambda_{\xi,i}}\right) = \bs{\theta}_\xi\mathbf{W}_i\Rightarrow \lambda_{\xi,i} = \frac{\exp(\bs{\theta}_\xi\mathbf{W}_i)}{1 + \exp(\bs{\theta}_\xi\mathbf{W}_i)},  \quad \xi=u,d.
+$$
+</div>
+<p><code>Examples</code> We can choose features as below</p>
+<div>
+$$
+\mathbf{X}_i = (1, A_{i-1}),\ \mathbf{Z}_i=(1,D_{i-1})\ \text{and}\ \mathbf{W}_i = (1,S_{i-1}).
+$$
+</div>
+<p>from which we can train a simple decomposition model using in-sample data.</p>
+<h2 id="hawkes-model">Hawkes Model</h2>
+<p>We can model the price as a compound Cox process and use Hawkes model to estimate it. For definition and detailed analysis check out the <a href="#toc_11">next section</a>.</p>
+<h1 id="stochastic-processes">Stochastic Processes</h1>
+<p>Let&rsquo;s first define two basic processes: Markov process and point process.</p>
+<h2 id="markov-process">Markov Process</h2>
+<p><code>$Y$</code> is called a Markov process if</p>
+<p>$$
+\P[Y_t\le y\mid \F_s^Y] = \P[Y_t\le y\mid Y_s]
+$$</p>
+<p><code>$\P$</code>-a.s. for all <code>$t\ge s\ge 0$</code> and <code>$y\in\R$</code>.</p>
+<h2 id="point-process">Point Process</h2>
+<p>Let <code>$\mathcal{N}$</code> be a set of all right-continuous non-decreasing integer-valued functions <code>$\{v(t):v_0= 0; t\ge 0\}$</code>. Any random variable <code>$N(t)$</code> with trajectories from <code>$\mathcal{N}$</code> is called a point process. It can also be seen as the counting process of random events.</p>
+<p><code>Property</code> (Stationarity) A point process is stationary if <code>$\Delta_s=N(s+t)-N(s)$</code> has the same distribution for all <code>$s$</code>.</p>
+<h2 id="poisson-process">Poisson Process</h2>
+<p>Before defining the Poisson process, let&rsquo;s review some basics about Poisson distribution.</p>
+<p>(Poisson Distribution) We say <code>$N\sim\text{Pois}(\lambda)$</code> if</p>
+<p>$$
+\pi_{\lambda,k} \equiv \P[N=k] = \frac{\lambda^k e^{-\lambda}}{k!}
+$$</p>
+<p>where it can be proved that <code>$\E[N]=\V[N]=\lambda$</code>. Poisson distribution is in fact a small probability limit of binomial distribution.</p>
+<p>(Mixed Poisson Distribution) Let&rsquo;s say <code>$N\sim \text{Pois}(\lambda t)$</code> and <code>$\Lambda$</code> be a random variable with distribution <code>$\text{U}$</code>. Now instead of sticking with constant <code>$\lambda$</code>, assume random <code>$\Lambda$</code> as intensity and we have mixed Poisson distribution</p>
+<p>$$
+p_k(t) \equiv \P[N=k] = \E!\left[\frac{(\Lambda t)^k e^{-\Lambda t}}{k!}\right] =
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}\d \text{U} =
+\int_0^{\infty} \frac{(\lambda t)^k e^{-\lambda t}}{k!}u(\lambda)\d\lambda.
+$$</p>
+<p>Extend this to the joint distribution of <code>$(N,\Lambda)$</code> and we have</p>
+<p>$$
+\P[N=k,\Lambda\le x] = \int_0^x \frac{(\lambda t)^k e^{-\lambda t}}{k!} \d\text{U},\quad x \ge 0.
+$$</p>
+<p>Assume</p>
+<p>$$
+\E[\Lambda] = \mu_{\Lambda},\quad \V[\Lambda] = \sigma_{\Lambda}^2
+$$</p>
+<p>then</p>
+<p>$$
+\E[N] = t\mu_{\Lambda},\quad \V[N] = t\mu_{\Lambda} + t^2\sigma_{\Lambda}^2 \ge t\mu_{\Lambda}.
+$$</p>
+<p>This is called over-dispersion (variance greater than expectation).</p>
+<p><code>Example</code> If we use Gamma distribution as the structure distribution for a mixed Poisson distribution, then</p>
+<p>$$
+u(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)}\lambda^{\alpha-1} e^{-\beta \lambda}
+$$</p>
+<p>where <code>$\lambda \ge 0$</code>, <code>$\alpha,\beta&gt;0$</code> and</p>
+<p>$$
+\Gamma(\alpha) = \int_0^{\infty} x^{\alpha - 1}e^{-x}\d x,\quad \alpha &gt; 0
+$$</p>
+<p>with <code>$\alpha$</code> being called the shape parameter and <code>$\beta$</code> called the scale parameter. When <code>$\beta=1$</code> it&rsquo;s a standard Gamma distribution; when <code>$\alpha=1$</code> it&rsquo;s an exponential distribution; when <code>$\alpha=k\in\mathbb{N}_+$</code>, the distribution is the sum of <code>$k$</code> exponential r.v.s.</p>
+<p>For <code>$\Lambda\sim\text{Gamma}(\alpha,\beta)$</code>, we have</p>
+<p>$$
+\E[\Lambda] = \mu_{\Lambda} = \frac{\alpha}{\beta},\quad\V[\Lambda] = \sigma_{\Lambda} = \frac{\alpha}{\beta^2}
+$$</p>
+<p>and for the corresponding mixed distribution</p>
+<p>$$
+\begin{align}
+\P[N=k]
+&amp;= \binom{\alpha+k-1}{k}\left(\frac{\beta}{\beta + k}\right)^{\alpha}\left(\frac{t}{\beta+t}\right)^k\
+&amp;\overset{\alpha=1}{=} \frac{\beta}{\beta+t}\left(\frac{t}{\beta+t}\right)^k
+\end{align}.
+$$</p>
+<p><code>Definition</code> (Poisson Process) A point process <code>$N(t)$</code> is called a Poisson process with intensity <code>$\lambda$</code> if:</p>
+<ul>
+<li><code>$N(t)$</code> has independent increments.</li>
+<li><code>$N(t)-N(s)\sim\text{Pois}(\lambda(t-s))$</code> for any <code>$t\ge s\ge 0$</code>.</li>
+</ul>
+<p><code>Definition</code> (Non-Homogeneous Poisson Process) A point process <code>$N_A(t)$</code> is called a non-homogeneous Poisson process with intensity measure <code>$A_t\in\mathcal{A}$</code> if</p>
+<ul>
+<li><code>$N_A(t)$</code> has independent increments.</li>
+<li><code>$N_A(t) - N_A(s)\sim\text{Pois}(A_t-A_s)$</code>.</li>
+</ul>
+<h2 id="cox-process">Cox Process</h2>
+<p>Let <code>$\Lambda_t$</code>, <code>$t\ge 0$</code>, be a random process with trajectories from <code>$\mathcal{A}$</code>. Cox process is a generalization of non-homogeneous Poisson process in which intensity measure can be stochastic in a certain way.</p>
+<p><code>Definition</code> (Cox Process) A point process <code>$N_{\Lambda}(t)$</code> is called Cox process with random intensity measure <code>$\Lambda_t$</code> if for any realization <code>$A_t$</code> of <code>$\Lambda_t$</code> the process <code>$N_{\Lambda}(t)$</code> is a non-homogeneous Poisson process with intensity measure <code>$A_t$</code>.</p>
+<p>Definition of Cox process means that we can generate Cox process by first generating a trajectory of intensity measure <code>$A_t$</code> and then generating trajectory of <code>$N_{\Lambda}(t)$</code> as a trajectory of non-homogeneous Poisson process with intensity measure <code>$A_t$</code>. If <code>$N_1(t)$</code> is a homogeneous Poisson process with unit intensity independent of random intensity measure <code>$\Lambda_t$</code> then Cox process <code>$N_{\Lambda}(t)$</code> is a superposition of <code>$N_1(t)$</code> and <code>$\Lambda_t$</code>:</p>
+<p>$$
+N_{\Lambda}(t) = N_1(\Lambda_t),\quad t\ge 0.
+$$</p>
+<p><code>Definition</code> (Compound Cox Process) Let <code>$X_1,X_2,\ldots$</code> be i.i.d. and have at least two moments, say <code>$\E[X]=a$</code>, <code>$\V[X]=\sigma^2&lt;\infty$</code>. Let <code>$N(t)=N(\Lambda_t)$</code> be a Cox process independent of <code>$X$</code>, then</p>
+<p>$$
+S(t) := \sum_{i=1}^{N(\Lambda_t)} X_i,\quad t \ge 0
+$$</p>
+<p>is called a compound Cox process. It can be derived <code>$\E[S]=a\mu_{\Lambda}$</code>, <code>$\V[S]=(a^2+\sigma^2)\mu_{\Lambda} + a^2\sigma_{\Lambda}^2$</code>.</p>
+<p>Particularly, when <code>$\Lambda_t = \lambda t$</code>, <code>$S(t)$</code> is a compound Poisson process.</p>
+<p><code>Theorem</code> (Central Limit Theorem for Compound Cox Processes) Let <code>$\Lambda_t\overset{p}{\to} \infty$</code>, for weak convergence to some random variable <code>$Z$</code> given by</p>
+<p>$$
+\frac{S(t)}{\sigma_X\sqrt{d(t)}}\to Z,\quad t\to \infty
+$$</p>
+<p>where <code>$d(t)$</code> is a strictly increasing function on time <code>$t$</code> and <code>$d(t)\equiv t$</code> when we assume calendar time i.e. time flowing minute by minute, it&rsquo;s necessary and sufficient that</p>
+<ul>
+<li><code>$\P[Z&lt; z] = \int_0^{\infty}\Phi(zy^{-\frac{1}{2}})\d \P[U&lt; u]=\E[\Phi(zU^{-\frac{1}{2}})]$</code>, <code>$z\in\R$</code>.</li>
+<li><code>$\frac{\Lambda_t}{d(t)}\to U$</code>, <code>$t\to \infty$</code>.</li>
+</ul>
+<p>Note that the asymptotic distribution <code>$\Lambda_t / \d t$</code> does not depend on <code>$t$</code> but can still be stochastic. The limit distribution is not Gamma, but rather a mixed one that can be very heavy tailed in many cases, which explains why CLT doesn&rsquo;t work in finance. <strong>In fact, CLT holds if and only if the limit distribution <code>$U$</code> is constant <code>$1$</code></strong>.</p>
+<p><code>Example</code> (Dynamic VaR) Assuming that cumulative intensity process <code>$\Lambda(t)$</code> is a Gamma process (i.e. a process starting from <code>$0$</code> with independent increments distributed as Gamma distribution) the <code>$q$</code>-level quantile of the maximum loss distribution is calculated as</p>
+<p>$$
+D(T,q) = \sigma\sqrt{\frac{\mu T}{2}}\ln\left(\frac{1}{1-q}\right).
+$$</p>
+<h2 id="hawkes-process">Hawkes Process</h2>
+<p>A Hawkes process <code>$N_t$</code>, also known as a self-exciting counting process, is a simple point process whose conditional intensity can be expressed as</p>
+<p>$$
+\begin{align}
+\lambda(t) &amp;= \mu (t) + \int_{- \infty}^t \nu (t - s) d N_s\
+&amp;= \mu (t) + \sum_{T_k &lt; t} \nu (t - T_k)
+\end{align}
+$$</p>
+<p>where  <code>$\nu : \mathbb{R}^+ \rightarrow \mathbb{R}^+$</code> is a kernel function which expresses the positive influence of past events <code>$T_i$</code> on the current value of the intensity process <code>$\lambda (t)$</code>, <code>$\mu (t)$</code> is a possibly non-stationary function representing the expected, predictable, or deterministic part of the intensity, and <code>$\{ T_i : T_i &lt; T_{i + 1} \} \in \mathbb{R}$</code> is the time of occurrence of the i-th event of the process.</p>
+<p>Specifically, when we use exponential decay with parameter (which is also the most famous type of Hawkes processes), the formulation becomes</p>
+<p>$$
+\Lambda_t = \lambda + \sum_{0\le T_k\le t} \alpha \exp[-\beta(t-T_k)],\quad t\ge 0.
+$$</p>
+<h2 id="branching-process">Branching Process</h2>
+<p>Consider a random model for population growth in the absence of spatial or any other resource constraints. In such population of individuals in every generation <code>$n=0,1,2,\ldots$</code>, each individual produces a random number <code>$h$</code> of children in the next generation, independently of other individuals.<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup> The probability distribution function for children in the next generation is often called the offspring distribution and is given by <code>$p_i=\P[h=i]$</code> for <code>$i=1,2,\ldots$</code>.</p>
+<p>There can be two cases:</p>
+<ul>
+<li>
+<p>(w/o immigration) This Markov chain has only one absorbing state, i.e. <code>$0$</code> and all other states are transient if <code>$p_0&gt;0$</code>. <strong>The population either dies out or goes to infinity</strong>.</p>
+</li>
+<li>
+<p>(w/ immigration) If we assume immigrants join the population by Pois<code>$(\lambda)$</code>, and say that the offspring distribution for immigrants are Binom<code>$(1,p)$</code>, then the total number of new immigrant children follows Pois<code>$(\frac{\lambda}{1-p})$</code>. In this case, <strong>there is possibility of a limiting distribution for the population size</strong>.</p>
+</li>
+</ul>
+<p>Hawkes process can be seen as a branching process with immigration. For Hawkes process the <strong>branching ratio</strong> is defined as the ratio of <code>$\alpha$</code> the excitability to <code>$\beta$</code> the decay.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>One solution to cope with this discrepancy, is to allow infinite volatility.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Thanks to <a href="https://en.wikipedia.org/wiki/Uncertainty_principle">Heisenberg</a>, we can gauge this uncertainty in quantum mechanics.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Microwave travels faster and easier to deploy, but suffers from less bandwidth and sensitivity to weather conditions.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>Proposed Interpretive Order (PIO), proposed by CFTC, defines an orderly market as (1) a rational relationship between consecutive prices; (2) a strong correlation between price changes and the volume of trades levels of volatility that do not materially reduce liquidity; (3) accurate relationships between the price of a derivative and the underlying; (4) reasonable spreads between contracts for near and remote months. These are yet very unclear descriptions as of now.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>This model was introduced by F. Galton, in late 1800s, to study the disappearance of aristocratic family names; in this case <code>$p_i$</code> was interpreted as the probability that a man has <code>$i$</code> sons.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/notes-on-matrix-decomp/">Notes on Multivariate Data Analysis via Matrix Decomposition</a></span>
+  <span class="nav-next"><a href="/blog/xiao-ao-jiang-hu/">谈《笑傲江湖》</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/notes-on-matrix-decomp\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/xiao-ao-jiang-hu\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

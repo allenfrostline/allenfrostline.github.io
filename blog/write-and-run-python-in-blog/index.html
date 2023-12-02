@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Write (and Run) Python in Blog - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Write (and Run) Python in Blog - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and &amp;hellip;">
+      <meta property="og:description" content="Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+<py-env>
+  - matplotlib
+  - pandas
+  - numpy
+  - scipy
+  - statsmodels
+</py-env>
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Write (and Run) Python in Blog</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2022-05-05
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&rsquo;s developed and maintained by Anaconda team which makes it sound more promising and trustworthy, at least in the long run.</p>
+<div id="plot"></div>
+<py-script output="plot">
+import numpy as np
+from types import SimpleNamespace
+import scipy.stats as ss
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+n = 1000
+u = ss.pareto.rvs(1.5, size=n)
+v = ss.norm.rvs(0, 1, size=n)
+x = np.random.randn(n)
+y = x * 12.5 + .25 + u + v
+reg = sm.OLS(y, sm.add_constant(x.reshape(-1, 1))).fit()
+x_fit = np.linspace(x.min(), x.max(), 10)
+y_fit = sm.add_constant(x_fit.reshape(-1, 1)) @ reg.params
+colors = dict(black=(0, 0, 0), red=(187, 34, 34), blue=(51, 102, 153))
+for c, v in colors.items(): colors[c] = tuple(i / 255 for i in v)
+colors =  SimpleNamespace(**colors)
+fig, (ax1, ax2) = plt.subplots(figsize=(8, 4), ncols=2)
+ax1.scatter(x, y, s=1, c=[colors.black])
+ax1.plot(x_fit, y_fit, c=colors.red)
+ax2.hist(reg.resid, fc=colors.blue, density=True, bins=30, ec=colors.black)
+plt.tight_layout()
+fig
+</py-script>
+<p>Charts above are randomly generated when this page loads, by scripts below. Specificaly, what&rsquo;s shown on the left is OLS fitting on a Pareto/Normal mixture model, and on the right the residual distribution.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#000080">div</span> <span style="color:#008080">id</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;plot&#34;</span>&gt;&lt;/<span style="color:#000080">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#000080">py-script</span> <span style="color:#008080">output</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;plot&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>import numpy as np
+</span></span><span style="display:flex;"><span>from types import SimpleNamespace
+</span></span><span style="display:flex;"><span>import scipy.stats as ss
+</span></span><span style="display:flex;"><span>import statsmodels.api as sm
+</span></span><span style="display:flex;"><span>import matplotlib.pyplot as plt
+</span></span><span style="display:flex;"><span>n = 1000
+</span></span><span style="display:flex;"><span>u = ss.pareto.rvs(1.5, size=n)
+</span></span><span style="display:flex;"><span>v = ss.norm.rvs(0, 1, size=n)
+</span></span><span style="display:flex;"><span>x = np.random.randn(n)
+</span></span><span style="display:flex;"><span>y = x * 12.5 + .25 + u + v
+</span></span><span style="display:flex;"><span>reg = sm.OLS(y, sm.add_constant(x.reshape(-1, 1))).fit()
+</span></span><span style="display:flex;"><span>x_fit = np.linspace(x.min(), x.max(), 10)
+</span></span><span style="display:flex;"><span>y_fit = sm.add_constant(x_fit.reshape(-1, 1)) @ reg.params
+</span></span><span style="display:flex;"><span>colors = dict(black=(0, 0, 0), red=(187, 34, 34), blue=(51, 102, 153))
+</span></span><span style="display:flex;"><span>for c, v in colors.items(): colors[c] = tuple(i / 255 for i in v)
+</span></span><span style="display:flex;"><span>colors =  SimpleNamespace(**colors)
+</span></span><span style="display:flex;"><span>fig, (ax1, ax2) = plt.subplots(figsize=(8, 4), ncols=2)
+</span></span><span style="display:flex;"><span>ax1.scatter(x, y, s=1, c=[colors.black])
+</span></span><span style="display:flex;"><span>ax1.plot(x_fit, y_fit, c=colors.red)
+</span></span><span style="display:flex;"><span>ax2.hist(reg.resid, fc=colors.blue, density=True, bins=30, ec=colors.black)
+</span></span><span style="display:flex;"><span>plt.tight_layout()
+</span></span><span style="display:flex;"><span>fig
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#000080">py-script</span>&gt;
+</span></span></code></pre></div><p>As you may have noticed, I&rsquo;m taking an extra effort to define colors as RGB tuples in my custom namespace, and the charts lack anything textual - axis labels, titles, legends. This is because whenever I try to use single or double quotation marks, there comes a <code>SyntaxError</code> that prevents the code from proceeding. Also, it seems to be the case that codes inside <code>&lt;py-script&gt;</code> tags do not support empty lines, which is kinda important (and maybe not so). Unfortunately as PyScript is still an experimental repo, I haven&rsquo;t seen anyone posting about these on their issues page. Maybe I should be the one.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/two_shots/">Two Pretty Shots</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/two_shots\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

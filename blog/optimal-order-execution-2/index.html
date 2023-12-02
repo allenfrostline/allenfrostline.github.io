@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (2) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (2) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Today, I&amp;rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&amp;rsquo;ll mainly walk through six papers by Rama Cont, respectively in 2010 and 2018. &amp;hellip;">
+      <meta property="og:description" content="Today, I&amp;rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&amp;rsquo;ll mainly walk through six papers by Rama Cont, respectively in 2010 and 2018. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Literature Review on Optimal Order Execution (2)</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-04-29
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Today, I&rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&rsquo;ll mainly walk through six papers by <a href="https://www.imperial.ac.uk/people/r.cont">Rama Cont</a>, respectively in 2010 and 2018. Professor Cont is renowned for his indepth research in stochastic analysis, stochastic processes and mathematical modeling in quantitative finance. He&rsquo;s written dozens of papers concerning the order book dynamics by building rigorous mathematical models.</p>
+<!-- more -->
+<h1 id="rama-cont-sasha-stoikov-and-rishi-talreja-2010">Rama Cont, Sasha Stoikov and Rishi Talreja (2010)</h1>
+<p>In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain. The order book is evenly divided into several buckets of prices, where order sizes are recalculated s.t. positive sizes represent ask orders, and negative sizes represent bid orders. Let&rsquo;s denote this order book by $\mathbf{x}\in\mathbb{Z}^n$. Also, let $\mathbf{x}_{p\pm 1} \equiv \mathbf{x} \pm \mathbf{e}^p$ where $\mathbf{e}^p\in\mathbb{Z}^n$ is the $p$-th base vector. Denote the best ask and bid prices by $p^a$ and $p^b$. By assuming unit-sized orders<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> and conditioning on the inflow of new orders, the Markov state transitioning can be described as below:</p>
+<ul>
+<li>A limit buy order at price $p &lt; p^a \Rightarrow \mathbf{x} \to \mathbf{x}_{p-1}$,</li>
+<li>A limit sell order at price $p &gt; p^b \Rightarrow \mathbf{x} \to \mathbf{x}_{p+1}$,</li>
+<li>A market buy order $\Rightarrow \mathbf{x} \to \mathbf{x}_{p^a-1}$,</li>
+<li>A market sell order $\Rightarrow \mathbf{x} \to \mathbf{x}_{p^b+1}$,</li>
+<li>A cancellation of an order at price $p &lt; p^a \Rightarrow \mathbf{x} \to \mathbf{x}_{p+1}$,</li>
+<li>A cancellation of an order at price $p &gt; p^b \Rightarrow \mathbf{x} \to \mathbf{x}_{p-1}$.</li>
+</ul>
+<p>Furthermore, the authors assumed stationary Poisson arrivals for these inflows in each bucket. Arrival rate for limit orders $\lambda(p)$ is an increasing function when $p$ is smaller than the current price, and is decreasing when $p$ is larger than the current price. Arrival rate for market orders is assumed to be constant $\mu$, and arrival rate for order cancellations should by assumption be proportional to the current order size in the underlying bucket of the book.</p>
+<p>Therefore, we have</p>
+<ul>
+<li>$\mathbf{x}\to \mathbf{x}_{p-1}$ at rate $\lambda(p^a-p)$ for $p&lt;p^a$,</li>
+<li>$\mathbf{x}\to \mathbf{x}_{p+1}$ at rate $\lambda(p-p^b)$ for $p&gt;p^b$,</li>
+<li>$\mathbf{x}\to \mathbf{x}_{p^a-1}$ at rate $\mu$,</li>
+<li>$\mathbf{x}\to \mathbf{x}_{p^b+1}$ at rate $\mu$,</li>
+<li>$\mathbf{x}\to \mathbf{x}_{p+1}$ at rate $\theta(p^a - p)|x^p|$ for $p&lt;p^a$,</li>
+<li>$\mathbf{x}\to \mathbf{x}_{p-1}$ at rate $\theta(p-p^b)|x^p|$ for $p&gt;p^b$.</li>
+</ul>
+<p>The empirical performance of one-step ahead prediction is illustrated below.</p>
+<p><img src="/images/cont1.png" alt=""></p>
+<p>It is easy to recognize that the underlying random walk is a birth-death process. Hence, we may opt for Laplace transforms to calculate the first-passage times of our model, i.e. the time before our order is successfully executed <strong>given that the mid price hasn&rsquo;t moved</strong>.</p>
+<h1 id="rama-cont-2011">Rama Cont (2011)</h1>
+<p>In this paper of Cont, he tried to model untra-high frequency (UHF) order book using fluid and diffusion models.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Regime</th>
+<th style="text-align:center">Time scale</th>
+<th style="text-align:center">Issues</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Untra-high frequency</td>
+<td style="text-align:center">$\sim$ $10^{-3}$ to $1$ seconds</td>
+<td style="text-align:center">Microstructure, latency</td>
+</tr>
+<tr>
+<td style="text-align:center">High frequency</td>
+<td style="text-align:center">$\sim$ $10$ to $10^2$ seconds</td>
+<td style="text-align:center">Optimal execution</td>
+</tr>
+<tr>
+<td style="text-align:center">Daily</td>
+<td style="text-align:center">$\sim$ $10^3$ to $10^4$ seconds</td>
+<td style="text-align:center">Trading strategies, option hedging</td>
+</tr>
+</tbody>
+</table>
+<p>By going from UHF to even more ideal data where we assume tick size $\to$ 0, order arrival frequency $\to\infty$ and order size $\to$ 0, we may apply multiple asymptotic theorems to analyze the order book dynamics in this very extreme case. Different combinations of scaling assumptions are possible for the same process and might lead to very different limits. Specifically, when we assume that variances vanishes asymptotically, the limit process is thus deterministic and often given by a PDE or ODE. This functional equivalent of Law of Large Numbers is called &ldquo;fluid&rdquo; or &ldquo;hydrodynamic&rdquo; limit, e.g.</p>
+<p>$$
+\lambda_n^i\sim n\lambda^i,\quad \left(\frac{N_1^n - N_2^n}{n}, t\ge 0\right) \overset{n\to\infty}{\to} ((\lambda^1 - \lambda^2)t, t\ge 0).
+$$</p>
+<p>Other scaling assumption can lead to a totally different limit, e.g. &ldquo;random&rdquo; or &ldquo;diffusion&rdquo; limit:</p>
+<p>$$
+\lambda_n^i\sim n\lambda, \quad \lambda_n^1 - \lambda_n^2 = \sigma^2\sqrt{n},\quad \left(\frac{N_1^n - N_2^n}{\sqrt{n}}\right)\overset{n\to\infty}{\to}\sigma W.
+$$</p>
+<h1 id="rama-cont-and-adrien-de-larrard-2013">Rama Cont and Adrien de Larrard (2013)</h1>
+<p>Similar to the first paper, here Cont and de Larrard tried to model order books as a Markov chain where limit orders, market orders and order cancellations arrives following stationary Poisson processes. Specifically, in this paper, the arrival rate of limit orders is <strong>constant</strong>. This is assumed in the hope of deriving close-form results analytically. Between each stock price change, we have $q_t^a$ and $q_t^b$ are independent birth-death processes with birth rate $\lambda$ and death rate $\mu+\theta$. Define $\sigma^a$ as the first-passage time for process $q_t^a$. Similarly define $\sigma^b$. Then, the time duration before the next price move is given by $\tau = \min{\sigma^a, \sigma^b}$.</p>
+<p>Conditional Laplace transform of $\sigma^a$ solves</p>
+<p>$$
+\mathcal{L}(s, x) = \text{E}(\exp(-s\sigma^a)\mid q_0^a = x) =  \frac{\lambda \mathcal{L}(s, x+1) + (\mu+\theta)\mathcal{L}(s,x-1)}{\lambda+\mu+\theta+s}
+$$</p>
+<p>which eventually gives</p>
+<p>$$
+\mathcal{L}(s, x) = \left(\frac{(\lambda + \mu + \theta + s) - \sqrt{(\lambda + \mu + \theta + s)^2 - 4 \lambda (\mu + \theta)}}{2\lambda}\right)^x.
+$$</p>
+<p>The distribution of $\tau$ conditional on the current queue length is</p>
+<p>$$
+\text{P}(\tau &gt; t\mid q_0^a = x, q_0^b = y)
+= \text{P}(\sigma^a &gt; t\mid q_0^a = x) \text{P}(\sigma^b &gt; t\mid q_0^b = y)
+= \int_t^{\infty} \hat{\mathcal{L}}(u, x) du\int_t^{\infty} \hat{\mathcal{L}}(u, y) du
+$$</p>
+<p>where the inverse Laplace transform $\hat{\mathcal{L}}$ is given by</p>
+<p>$$
+\hat{\mathcal{L}}(t, x) = \frac{x}{t} \sqrt{\left(\frac{\mu + \theta}{\lambda}\right)^x} I_x\left(2t\sqrt{\lambda(\theta + \mu)}\right)\exp(-t(\lambda + \mu + \theta)).
+$$</p>
+<h1 id="rama-cont-and-adrien-de-larrard-2011--2012">Rama Cont and Adrien de Larrard (2011 &amp; 2012)</h1>
+<p>In the case of heavy-traffic queueing systems, the order books tend to show &ldquo;diffusive&rdquo; dynamics. In the most extreme scenario $\lambda = \mu + \theta$, we have</p>
+<p>$$
+\left(\frac{s_t(n\log n)}{\sqrt{n}}\right)_{t\ge 0} \overset{d}{\to} \sqrt{\frac{\pi \lambda \delta^2}{D(f)}B}
+$$</p>
+<p>where $B$ is a Brownian motion, and</p>
+<p>$$
+D(f)\equiv \left(\int_{\mathbb{R}_+^2} xy\ dF(x, y)\right)^{1/2}
+$$</p>
+<p>is the geometric mean of the bid and ask queue lengths. This directly gives a diffusion process with variance</p>
+<p>$$
+\sigma^2 = \delta^2 \frac{\pi\lambda}{D(f)}.
+$$</p>
+<p>Interestingly, the formula does not require checking the stock price to estimate the volatility. Instead, all information it needs is from order flow statistics: arrival rate $\lambda$, and average order size $D(f)$.</p>
+<h1 id="justin-sirignano-and-rama-cont-2018">Justin Sirignano and Rama Cont (2018)</h1>
+<p>Deep learning is leading the fashion in academia. In the just-finished 6th Imperial-ETH Workshop in Mathematical Finance, Cont introduced his Long-Short-Term Memory (LSTM) network built with Sirignano that claimed to have defeated a range of other well-studied mathematical models (see below for the network structure). The model takes historical order book states as input and predicts next price moves. Specifically, they used the historical data from approximately 1,000 stocks traded on NASDAQ and trained the network asynchronously on over 500 GPUs. Results show significant improvement on prediction accuracy by introducing long-term memory into the model and moreover, a tendency of universal effectiveness even for stocks out of the sample.</p>
+<img src="/images/cont2.png" style="width:60%"/>
+<hr>
+<h1 id="references">References</h1>
+<ul>
+<li>Rama Cont, Sasha Stoikov and Rishi Talreja. &ldquo;A stochastic model for order book dynamics&rdquo;. Operations Research, Volume 58, No. 3 (2010), 549-563.</li>
+<li>Rama Cont. &ldquo;Statistical modeling of high frequency data: facts, models and challenges&rdquo;. IEEE Sig. Proc., 28: 5 (2011), 16–25.</li>
+<li>Rama Cont, and Adrien de Larrard. &ldquo;Price dynamics in a Markovian limit order market&rdquo;. SIAM Journal on Financial Mathematics (2013), Vol 4, 1–25.</li>
+<li>Rama Cont, and Adrien De Larrard. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1757861">&ldquo;Order book dynamics in liquid markets: limit theorems and diffusion approximations&rdquo;</a> (2011).</li>
+<li>Rama Cont, and Adrien de Larrard. &ldquo;Price dynamics in limit order markets: linking volatility with order flow&rdquo;. Working Paper (2012).</li>
+<li>Justin Sirignano, and Rama Cont. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3141294">&ldquo;Universal features of price formation in financial markets: perspectives from Deep Learning&rdquo;</a> (2018).</li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>It is apparently a very strong assumption. Although according to the paper, the authors used average order size as the unit in empirical validation of the model, I still doubt whether assuming universally constant order size shall be a good idea.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/jupyter-virtualenv/">Run Jupyter Notebook within Virtualenv</a></span>
+  <span class="nav-next"><a href="/blog/optimal-order-execution-3/">Literature Review on Optimal Order Execution (3)</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/jupyter-virtualenv\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/optimal-order-execution-3\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

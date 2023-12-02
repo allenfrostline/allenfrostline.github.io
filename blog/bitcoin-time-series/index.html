@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Bitcoin Inter-exchange Price Spread Prediction - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Bitcoin Inter-exchange Price Spread Prediction - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: &amp;hellip;">
+      <meta property="og:description" content="Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Bitcoin Inter-exchange Price Spread Prediction</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-05-21
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. <!-- more --></p>
+<h1 id="step-1-import-all-packages">Step 1: Import All Packages</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">quandl</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">cmocean</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">warnings</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">pandas</span> <span style="font-weight:bold">as</span> <span style="color:#555">pd</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">seaborn</span> <span style="font-weight:bold">as</span> <span style="color:#555">sns</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">statsmodels.api</span> <span style="font-weight:bold">as</span> <span style="color:#555">sm</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">pytrends.request</span> <span style="font-weight:bold">import</span> TrendReq
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">scipy</span> <span style="font-weight:bold">import</span> stats <span style="font-weight:bold">as</span> ss
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">datetime</span> <span style="font-weight:bold">import</span> datetime <span style="font-weight:bold">as</span> dt
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">arch.unitroot</span> <span style="font-weight:bold">import</span> PhillipsPerron, ADF
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">matplotlib</span> <span style="font-weight:bold">import</span> pyplot <span style="font-weight:bold">as</span> plt
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">matplotlib</span> <span style="font-weight:bold">import</span> dates <span style="font-weight:bold">as</span> mdates
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">statsmodels.graphics.api</span> <span style="font-weight:bold">import</span> qqplot
+</span></span><span style="display:flex;"><span>pytrend <span style="font-weight:bold">=</span> TrendReq(<span style="color:#b84">&#39;aaaaaaa@aaaa.com&#39;</span>, <span style="color:#b84">&#39;aaaaaaaaaa&#39;</span>, hl<span style="font-weight:bold">=</span><span style="color:#b84">&#39;en-US&#39;</span>, tz<span style="font-weight:bold">=</span><span style="color:#099">360</span>, custom_useragent<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>)
+</span></span><span style="display:flex;"><span>warnings<span style="font-weight:bold">.</span>filterwarnings(<span style="color:#b84">&#39;ignore&#39;</span>)
+</span></span><span style="display:flex;"><span>quandl<span style="font-weight:bold">.</span>ApiConfig<span style="font-weight:bold">.</span>api_key <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;aaaaaaaaaaaaaaa&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pd<span style="font-weight:bold">.</span>set_option(<span style="color:#b84">&#34;display.width&#34;</span>,<span style="color:#099">999</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcdefaults()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>style<span style="font-weight:bold">.</span>use(<span style="color:#b84">&#39;seaborn-paper&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;axes.facecolor&#39;</span>]<span style="font-weight:bold">=</span><span style="color:#b84">&#39;w&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;axes.grid&#39;</span>]<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;font.family&#39;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;serif&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;figure.figsize&#39;</span>] <span style="font-weight:bold">=</span> [<span style="color:#099">12</span>, <span style="color:#099">4</span>]
+</span></span></code></pre></div><h1 id="step-2-data-retrieving-and-cleaning">Step 2: Data Retrieving and Cleaning</h1>
+<p>Data source: <a href="https://www.quandl.com/data/">https://www.quandl.com/data/</a>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exchangelist <span style="font-weight:bold">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BTCE&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;KRAKEN&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BITFINEX&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BITSTAMP&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">#     &#39;COINBASE&#39;,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;ROCK&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;HITBTC&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;ITBIT&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BITBAY&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BITKONAN&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;CBX&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;VCX&#39;</span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>n <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(exchangelist)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;there are </span><span style="color:#b84">{}</span><span style="color:#b84"> exchanges in total&#39;</span><span style="font-weight:bold">.</span>format(n))
+</span></span></code></pre></div><pre tabindex="0"><code class="language-log" data-lang="log">there are 11 exchanges in total
+</code></pre><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exchanges <span style="font-weight:bold">=</span> [quandl<span style="font-weight:bold">.</span>get(<span style="color:#b84">&#39;BCHARTS/&#39;</span> <span style="font-weight:bold">+</span> e <span style="font-weight:bold">+</span> <span style="color:#b84">&#39;USD&#39;</span>) <span style="font-weight:bold">for</span> e <span style="font-weight:bold">in</span> exchangelist]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n):
+</span></span><span style="display:flex;"><span>    daterange <span style="font-weight:bold">=</span> exchanges[i]<span style="font-weight:bold">.</span>index<span style="font-weight:bold">.</span>tolist()
+</span></span><span style="display:flex;"><span>    <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">{:&gt;8}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(exchangelist[i]), daterange[<span style="color:#099">0</span>]<span style="font-weight:bold">.</span>date(), daterange[<span style="font-weight:bold">-</span><span style="color:#099">1</span>]<span style="font-weight:bold">.</span>date())
+</span></span></code></pre></div><pre><code>    BTCE 2011-08-14 2017-05-19
+  KRAKEN 2014-01-07 2017-05-19
+BITFINEX 2013-03-31 2016-12-22
+BITSTAMP 2011-09-13 2017-05-19
+    ROCK 2011-11-12 2017-05-19
+  HITBTC 2013-12-27 2017-05-19
+   ITBIT 2013-08-25 2017-05-19
+  BITBAY 2014-05-16 2017-05-19
+BITKONAN 2013-07-02 2017-05-19
+     CBX 2011-07-05 2017-04-16
+     VCX 2011-12-25 2017-05-19
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>start_date <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>to_datetime(<span style="color:#b84">&#39;2014-07-01&#39;</span>)
+</span></span><span style="display:flex;"><span>mid_date <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>to_datetime(<span style="color:#b84">&#39;2016-01-01&#39;</span>)
+</span></span><span style="display:flex;"><span>end_date <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>to_datetime(<span style="color:#b84">&#39;2016-07-01&#39;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>price <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([e<span style="font-weight:bold">.</span>ix[start_date:end_date,<span style="color:#b84">&#39;Close&#39;</span>] <span style="font-weight:bold">for</span> e <span style="font-weight:bold">in</span> exchanges], join<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outer&#39;</span>, axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>volume <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([e<span style="font-weight:bold">.</span>ix[start_date:end_date,<span style="color:#b84">&#39;Volume (Currency)&#39;</span>] <span style="font-weight:bold">for</span> e <span style="font-weight:bold">in</span> exchanges], join<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outer&#39;</span>, axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>price<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> exchangelist
+</span></span><span style="display:flex;"><span>volume<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> exchangelist
+</span></span><span style="display:flex;"><span>price <span style="font-weight:bold">=</span> price[price <span style="font-weight:bold">&gt;</span> <span style="color:#099">0</span>]<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ffill&#39;</span>)<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bfill&#39;</span>)
+</span></span><span style="display:flex;"><span>volume <span style="font-weight:bold">=</span> price[volume <span style="font-weight:bold">&gt;</span> <span style="color:#099">0</span>]<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ffill&#39;</span>)<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bfill&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(price<span style="font-weight:bold">.</span>describe())
+</span></span></code></pre></div><pre><code>             BTCE      KRAKEN    BITFINEX    BITSTAMP        ROCK      HITBTC       ITBIT      BITBAY    BITKONAN         CBX         VCX
+count  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000  732.000000
+mean   359.045682  363.799398  363.647027  363.204795  363.963907  373.581913  362.888860  367.052036  369.847240  367.836366  388.325161
+std    119.611681  122.473245  122.182031  122.020091  121.643524  115.354405  121.729241  125.084653  123.984738  119.057448   94.745641
+min    170.000000  175.000000  182.000000  171.410000  185.000000  186.760000  183.160000  186.890000  171.030000  200.040000  210.000001
+25%    245.123250  249.669390  249.235000  249.047500  249.887500  272.900000  249.252500  253.750000  254.972500  254.757500  312.249915
+50%    349.933000  358.429990  353.825000  356.495000  355.015000  357.610000  353.475000  359.995000  360.765000  365.005000  380.000000
+75%    429.812500  430.136262  433.410000  432.535000  433.282500  438.695000  432.302500  435.082500  442.192500  432.992500  425.000000
+max    729.855000  765.490000  769.500000  766.620000  767.800000  768.590000  767.180000  999.000000  771.670000  690.000000  658.000000
+</code></pre>
+<h1 id="step-3-data-analysis">Step 3: Data Analysis</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>min_exchange <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series([np<span style="font-weight:bold">.</span>argmin(price<span style="font-weight:bold">.</span>iloc[i], axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(price))],
+</span></span><span style="display:flex;"><span>                         index<span style="font-weight:bold">=</span>price<span style="font-weight:bold">.</span>index)<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> fn: exchangelist<span style="font-weight:bold">.</span>index(fn))
+</span></span><span style="display:flex;"><span>max_exchange <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series([np<span style="font-weight:bold">.</span>argmax(price<span style="font-weight:bold">.</span>iloc[i], axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(price))],
+</span></span><span style="display:flex;"><span>                         index<span style="font-weight:bold">=</span>price<span style="font-weight:bold">.</span>index)<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> fn: exchangelist<span style="font-weight:bold">.</span>index(fn))
+</span></span><span style="display:flex;"><span>dmin <span style="font-weight:bold">=</span> price<span style="font-weight:bold">.</span>min(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>dmax <span style="font-weight:bold">=</span> price<span style="font-weight:bold">.</span>max(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>thermal <span style="font-weight:bold">=</span> cmocean<span style="font-weight:bold">.</span>cm<span style="font-weight:bold">.</span>thermal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((price<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>], price<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>]), (<span style="color:#099">0</span>, <span style="color:#099">0</span>), c<span style="font-weight:bold">=</span>thermal(i<span style="font-weight:bold">/</span>n), label<span style="font-weight:bold">=</span>exchangelist[i])
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(price)):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((price<span style="font-weight:bold">.</span>index[i], price<span style="font-weight:bold">.</span>index[i]), (<span style="color:#099">0</span>, <span style="font-weight:bold">-</span>dmin[i]), lw<span style="font-weight:bold">=</span><span style="color:#099">1.5</span>, c<span style="font-weight:bold">=</span>thermal(min_exchange[i]<span style="font-weight:bold">/</span>n))
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((price<span style="font-weight:bold">.</span>index[i], price<span style="font-weight:bold">.</span>index[i]), (<span style="color:#099">0</span>, dmax[i]), lw<span style="font-weight:bold">=</span><span style="color:#099">1.5</span>, c<span style="font-weight:bold">=</span>thermal(max_exchange[i]<span style="font-weight:bold">/</span>n))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">1500</span>,<span style="color:#099">1500</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span>n<span style="font-weight:bold">//</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;price1.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_1.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>active_price <span style="font-weight:bold">=</span> price <span style="font-weight:bold">*</span> (price<span style="font-weight:bold">.</span>diff() <span style="font-weight:bold">!=</span> <span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>active_price <span style="font-weight:bold">=</span> active_price[active_price <span style="font-weight:bold">&gt;</span> <span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>err_count <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>isnan(active_price)<span style="font-weight:bold">.</span>sum()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#099">100</span><span style="font-weight:bold">*</span>max_exchange<span style="font-weight:bold">.</span>value_counts()<span style="font-weight:bold">.</span>sort_index()<span style="font-weight:bold">.</span>reindex(<span style="color:#999">range</span>(<span style="color:#999">len</span>(exchangelist)))<span style="font-weight:bold">.</span>fillna(<span style="color:#099">0</span>)<span style="font-weight:bold">/</span><span style="color:#999">len</span>(price))<span style="font-weight:bold">.</span>plot<span style="font-weight:bold">.</span>bar(ax<span style="font-weight:bold">=</span>ax1, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, align<span style="font-weight:bold">=</span><span style="color:#b84">&#39;center&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;% being highest&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#099">100</span><span style="font-weight:bold">*</span>min_exchange<span style="font-weight:bold">.</span>value_counts()<span style="font-weight:bold">.</span>sort_index()<span style="font-weight:bold">.</span>reindex(<span style="color:#999">range</span>(<span style="color:#999">len</span>(exchangelist)))<span style="font-weight:bold">.</span>fillna(<span style="color:#099">0</span>)<span style="font-weight:bold">/</span><span style="color:#999">len</span>(price))<span style="font-weight:bold">.</span>plot<span style="font-weight:bold">.</span>bar(ax<span style="font-weight:bold">=</span>ax1, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, align<span style="font-weight:bold">=</span><span style="color:#b84">&#39;center&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;% being lowest&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">80</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;%&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>xticks(<span style="color:#999">range</span>(<span style="color:#999">len</span>(err_count)), err_count<span style="font-weight:bold">.</span>index<span style="font-weight:bold">.</span>tolist(), rotation<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper left&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> ax1<span style="font-weight:bold">.</span>twinx()
+</span></span><span style="display:flex;"><span>err_count<span style="font-weight:bold">.</span>plot(ax<span style="font-weight:bold">=</span>ax2, marker<span style="font-weight:bold">=</span><span style="color:#b84">&#39;o&#39;</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;total number of error days&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>,<span style="color:#999">len</span>(err_count)<span style="font-weight:bold">-</span><span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="color:#999">len</span>(err_count)), err_count<span style="font-weight:bold">.</span>index<span style="font-weight:bold">.</span>tolist())
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">35</span>,<span style="color:#099">500</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.grid(None)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_2.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>irr_exchanges <span style="font-weight:bold">=</span> [<span style="color:#099">10</span>,<span style="color:#099">9</span>,<span style="color:#099">8</span>,<span style="color:#099">7</span>,<span style="color:#099">5</span>,<span style="color:#099">0</span>]  <span style="color:#998;font-style:italic"># delete those that have over 200 error days, or dominate over 10% of all time range</span>
+</span></span><span style="display:flex;"><span>n <span style="font-weight:bold">-=</span> <span style="color:#999">len</span>(irr_exchanges)
+</span></span><span style="display:flex;"><span>active_price<span style="font-weight:bold">.</span>drop(active_price<span style="font-weight:bold">.</span>columns[[irr_exchanges]], axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>, inplace<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> irr_exchanges:
+</span></span><span style="display:flex;"><span>    exchangelist<span style="font-weight:bold">.</span>pop(i)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>min_exchange <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series([np<span style="font-weight:bold">.</span>argmin(active_price<span style="font-weight:bold">.</span>iloc[i], axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(active_price))], index<span style="font-weight:bold">=</span>active_price<span style="font-weight:bold">.</span>index)<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> fn: exchangelist<span style="font-weight:bold">.</span>index(fn))
+</span></span><span style="display:flex;"><span>dmin <span style="font-weight:bold">=</span> active_price<span style="font-weight:bold">.</span>min(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>max_exchange <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series([np<span style="font-weight:bold">.</span>argmax(active_price<span style="font-weight:bold">.</span>iloc[i], axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(active_price))], index<span style="font-weight:bold">=</span>active_price<span style="font-weight:bold">.</span>index)<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> fn: exchangelist<span style="font-weight:bold">.</span>index(fn))
+</span></span><span style="display:flex;"><span>dmax <span style="font-weight:bold">=</span> active_price<span style="font-weight:bold">.</span>max(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>thermal <span style="font-weight:bold">=</span> cmocean<span style="font-weight:bold">.</span>cm<span style="font-weight:bold">.</span>thermal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((active_price<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>], active_price<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>]), (<span style="color:#099">0</span>, <span style="color:#099">0</span>), c<span style="font-weight:bold">=</span>thermal(i<span style="font-weight:bold">/</span>n), label<span style="font-weight:bold">=</span>exchangelist[i])
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(active_price)):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((active_price<span style="font-weight:bold">.</span>index[i], active_price<span style="font-weight:bold">.</span>index[i]), (<span style="color:#099">0</span>, <span style="font-weight:bold">-</span>dmin[i]), lw<span style="font-weight:bold">=</span><span style="color:#099">1.5</span>, c<span style="font-weight:bold">=</span>thermal(min_exchange[i]<span style="font-weight:bold">/</span>n))
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot((active_price<span style="font-weight:bold">.</span>index[i], active_price<span style="font-weight:bold">.</span>index[i]), (<span style="color:#099">0</span>, dmax[i]), lw<span style="font-weight:bold">=</span><span style="color:#099">1.5</span>, c<span style="font-weight:bold">=</span>thermal(max_exchange[i]<span style="font-weight:bold">/</span>n))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">1500</span>,<span style="color:#099">1500</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span>n)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;price2.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_3.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>err_count <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>isnan(active_price)<span style="font-weight:bold">.</span>sum()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#099">100</span><span style="font-weight:bold">*</span>max_exchange<span style="font-weight:bold">.</span>value_counts()<span style="font-weight:bold">.</span>sort_index()<span style="font-weight:bold">.</span>reindex(<span style="color:#999">range</span>(<span style="color:#999">len</span>(exchangelist)))<span style="font-weight:bold">.</span>fillna(<span style="color:#099">0</span>)<span style="font-weight:bold">/</span><span style="color:#999">len</span>(price))<span style="font-weight:bold">.</span>plot<span style="font-weight:bold">.</span>bar(ax<span style="font-weight:bold">=</span>ax1, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, align<span style="font-weight:bold">=</span><span style="color:#b84">&#39;center&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;% being highest&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#099">100</span><span style="font-weight:bold">*</span>min_exchange<span style="font-weight:bold">.</span>value_counts()<span style="font-weight:bold">.</span>sort_index()<span style="font-weight:bold">.</span>reindex(<span style="color:#999">range</span>(<span style="color:#999">len</span>(exchangelist)))<span style="font-weight:bold">.</span>fillna(<span style="color:#099">0</span>)<span style="font-weight:bold">/</span><span style="color:#999">len</span>(price))<span style="font-weight:bold">.</span>plot<span style="font-weight:bold">.</span>bar(ax<span style="font-weight:bold">=</span>ax1, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, align<span style="font-weight:bold">=</span><span style="color:#b84">&#39;center&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;% being lowest&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">80</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;%&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>xticks(<span style="color:#999">range</span>(<span style="color:#999">len</span>(err_count)), err_count<span style="font-weight:bold">.</span>index<span style="font-weight:bold">.</span>tolist(), rotation<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper left&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> ax1<span style="font-weight:bold">.</span>twinx()
+</span></span><span style="display:flex;"><span>err_count<span style="font-weight:bold">.</span>plot(ax<span style="font-weight:bold">=</span>ax2, marker<span style="font-weight:bold">=</span><span style="color:#b84">&#39;o&#39;</span>, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;total number of error days&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>,<span style="color:#999">len</span>(err_count)<span style="font-weight:bold">-</span><span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="color:#999">len</span>(err_count)), err_count<span style="font-weight:bold">.</span>index<span style="font-weight:bold">.</span>tolist())
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;upper right&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">7</span>,<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.grid(None)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_4.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(active_price<span style="font-weight:bold">.</span>ix[:,i], c<span style="font-weight:bold">=</span>thermal(i<span style="font-weight:bold">/</span>n), label<span style="font-weight:bold">=</span>exchangelist[i])
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="color:#099">0</span>,<span style="color:#099">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span>n)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;Historical Prices&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;price3.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_5.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>price_spread <span style="font-weight:bold">=</span> active_price<span style="font-weight:bold">.</span>max(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>) <span style="font-weight:bold">-</span> active_price<span style="font-weight:bold">.</span>min(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>price_spread<span style="font-weight:bold">.</span>describe()
+</span></span></code></pre></div><pre><code>count    732.000000
+mean       7.418801
+std        7.705870
+min        0.150000
+25%        2.430000
+50%        4.914920
+75%        9.461703
+max       78.191470
+dtype: float64
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(price_spread, lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>,c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(price_spread<span style="font-weight:bold">.</span>mean(), alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\mu$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">+</span>price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\pm3\sigma$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">-</span>price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">60</span>,<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;spread.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_6.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>log_price_spread <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>log(price_spread)
+</span></span><span style="display:flex;"><span>log_price_spread<span style="font-weight:bold">.</span>describe()
+</span></span></code></pre></div><pre><code>count    732.000000
+mean       1.584788
+std        0.939405
+min       -1.897120
+25%        0.887891
+50%        1.592275
+75%        2.247244
+max        4.359161
+dtype: float64
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean(), alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\mu$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">+</span>log_price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\pm3\sigma$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">-</span>log_price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">6</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;logspread.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_7.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#999">print</span>(ADF(log_price_spread, trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>), <span style="color:#b84">&#39;</span><span style="color:#b84">\n</span><span style="color:#b84">&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(PhillipsPerron(log_price_spread, trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>), <span style="color:#b84">&#39;</span><span style="color:#b84">\n</span><span style="color:#b84">&#39;</span>)
+</span></span></code></pre></div><pre><code>   Augmented Dickey-Fuller Results   
+=====================================
+Test Statistic                 -2.346
+P-value                         0.158
+Lags                               17
+-------------------------------------
+
+Trend: Constant
+Critical Values: -3.44 (1%), -2.87 (5%), -2.57 (10%)
+Null Hypothesis: The process contains a unit root.
+Alternative Hypothesis: The process is weakly stationary. 
+
+     Phillips-Perron Test (Z-tau)    
+=====================================
+Test Statistic                -21.389
+P-value                         0.000
+Lags                               20
+-------------------------------------
+</code></pre>
+<p>Trend: Constant
+Critical Values: -3.44 (1%), -2.87 (5%), -2.57 (10%)
+Null Hypothesis: The process contains a unit root.
+Alternative Hypothesis: The process is weakly stationary.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">z_norm</span>(s):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> (s <span style="font-weight:bold">-</span> s<span style="font-weight:bold">.</span>mean(axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)) <span style="font-weight:bold">/</span> s<span style="font-weight:bold">.</span>std(axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>log_price_spread <span style="font-weight:bold">=</span> z_norm(log_price_spread<span style="font-weight:bold">.</span>rolling(<span style="color:#099">5</span>)<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bfill&#39;</span>))
+</span></span><span style="display:flex;"><span>log_price_spread<span style="font-weight:bold">.</span>describe()
+</span></span></code></pre></div><pre><code>count    7.320000e+02
+mean    -4.284976e-15
+std      1.000000e+00
+min     -1.902323e+00
+25%     -8.414662e-01
+50%     -1.734537e-02
+75%      7.996859e-01
+max      2.645812e+00
+Name: None, dtype: float64
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#999">print</span>(ADF(log_price_spread, trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>), <span style="color:#b84">&#39;</span><span style="color:#b84">\n</span><span style="color:#b84">&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(PhillipsPerron(log_price_spread, trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>), <span style="color:#b84">&#39;</span><span style="color:#b84">\n</span><span style="color:#b84">&#39;</span>)
+</span></span></code></pre></div><pre><code>   Augmented Dickey-Fuller Results   
+=====================================
+Test Statistic                 -2.229
+P-value                         0.025
+Lags                               20
+-------------------------------------
+
+Trend: No Trend
+Critical Values: -2.57 (1%), -1.94 (5%), -1.62 (10%)
+Null Hypothesis: The process contains a unit root.
+Alternative Hypothesis: The process is weakly stationary. 
+
+     Phillips-Perron Test (Z-tau)    
+=====================================
+Test Statistic                 -3.321
+P-value                         0.001
+Lags                               20
+-------------------------------------
+
+Trend: No Trend
+Critical Values: -2.57 (1%), -1.94 (5%), -1.62 (10%)
+Null Hypothesis: The process contains a unit root.
+Alternative Hypothesis: The process is weakly stationary. 
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean(), alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\mu$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">+</span>log_price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;$\pm3\sigma$&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axhline(log_price_spread<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">-</span>log_price_spread<span style="font-weight:bold">.</span>std()<span style="font-weight:bold">*</span><span style="color:#099">3</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;logspreadnorm.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_8.png" style="width: 100%"/>
+<h1 id="step-4-univariate-model---armapq">Step 4: Univariate Model - ARMA(p,q)</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>train <span style="font-weight:bold">=</span> log_price_spread<span style="font-weight:bold">.</span>loc[:mid_date]
+</span></span><span style="display:flex;"><span>test <span style="font-weight:bold">=</span> log_price_spread<span style="font-weight:bold">.</span>loc[mid_date:]
+</span></span><span style="display:flex;"><span>train<span style="font-weight:bold">.</span>name <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;LogPs&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">8</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">211</span>)
+</span></span><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>graphics<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>plot_acf(train, lags<span style="font-weight:bold">=</span><span style="color:#099">40</span>, ax<span style="font-weight:bold">=</span>ax1, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ACF&#39;</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">.55</span>,<span style="color:#099">1.25</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_yticks(np<span style="font-weight:bold">.</span>arange(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>,<span style="color:#099">1.5</span>,<span style="color:#099">.5</span>))
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="color:#099">0</span>,<span style="color:#099">40</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>handles, labels<span style="font-weight:bold">=</span> ax1<span style="font-weight:bold">.</span>get_legend_handles_labels()
+</span></span><span style="display:flex;"><span>handles <span style="font-weight:bold">=</span> handles[:<span style="font-weight:bold">-</span><span style="color:#999">len</span>(handles)<span style="font-weight:bold">//</span><span style="color:#099">3</span>][<span style="color:#099">1</span>::<span style="color:#099">2</span>]
+</span></span><span style="display:flex;"><span>labels <span style="font-weight:bold">=</span> labels[:<span style="font-weight:bold">-</span><span style="color:#999">len</span>(handles)<span style="font-weight:bold">//</span><span style="color:#099">3</span>][<span style="color:#099">1</span>::<span style="color:#099">2</span>]
+</span></span><span style="display:flex;"><span>ax1<span style="font-weight:bold">.</span>legend(handles<span style="font-weight:bold">=</span>handles, labels<span style="font-weight:bold">=</span>labels,loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;best&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, numpoints<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">212</span>)
+</span></span><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>graphics<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>plot_pacf(train, lags<span style="font-weight:bold">=</span><span style="color:#099">40</span>, ax<span style="font-weight:bold">=</span>ax2, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;PACF&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">.55</span>,<span style="color:#099">1.25</span>)
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_yticks(np<span style="font-weight:bold">.</span>arange(<span style="font-weight:bold">-</span><span style="color:#099">.5</span>,<span style="color:#099">1.5</span>,<span style="color:#099">.5</span>))
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="color:#099">0</span>,<span style="color:#099">40</span>,<span style="color:#099">5</span>))
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>set_title(<span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>handles, labels<span style="font-weight:bold">=</span> ax2<span style="font-weight:bold">.</span>get_legend_handles_labels()
+</span></span><span style="display:flex;"><span>handles <span style="font-weight:bold">=</span> handles[:<span style="font-weight:bold">-</span><span style="color:#999">len</span>(handles)<span style="font-weight:bold">//</span><span style="color:#099">3</span>][<span style="color:#099">1</span>::<span style="color:#099">2</span>]
+</span></span><span style="display:flex;"><span>labels <span style="font-weight:bold">=</span> labels[:<span style="font-weight:bold">-</span><span style="color:#999">len</span>(handles)<span style="font-weight:bold">//</span><span style="color:#099">3</span>][<span style="color:#099">1</span>::<span style="color:#099">2</span>]
+</span></span><span style="display:flex;"><span>ax2<span style="font-weight:bold">.</span>legend(handles<span style="font-weight:bold">=</span>handles, labels<span style="font-weight:bold">=</span>labels,loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;best&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, numpoints<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;uniacfpacf.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_9.png" style="width: 67%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>min_aic <span style="font-weight:bold">=</span> min_bic <span style="font-weight:bold">=</span> <span style="color:#099">1e5</span>
+</span></span><span style="display:flex;"><span>min_aic_order <span style="font-weight:bold">=</span> min_bic_order <span style="font-weight:bold">=</span> (<span style="color:#099">0</span>,<span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> p <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>,<span style="color:#099">10</span>):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> q <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">6</span>):
+</span></span><span style="display:flex;"><span>        model <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>ARMA(train, (p, q))
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>            result <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fit(trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>)
+</span></span><span style="display:flex;"><span>            stat <span style="font-weight:bold">=</span> <span style="color:#999">abs</span>(sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>durbin_watson(result<span style="font-weight:bold">.</span>resid)<span style="font-weight:bold">-</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>            stat_score <span style="font-weight:bold">=</span> (stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">.01</span>) <span style="font-weight:bold">*</span> <span style="color:#099">3</span> <span style="font-weight:bold">+</span> (<span style="color:#099">.01</span> <span style="font-weight:bold">&lt;</span> stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">.05</span>) <span style="font-weight:bold">*</span> <span style="color:#099">2</span> <span style="font-weight:bold">+</span> (<span style="color:#099">.05</span> <span style="font-weight:bold">&lt;</span> stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">.10</span>) <span style="font-weight:bold">*</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> np<span style="font-weight:bold">.</span>abs(np<span style="font-weight:bold">.</span>concatenate([result<span style="font-weight:bold">.</span>arroots, result<span style="font-weight:bold">.</span>maroots]))<span style="font-weight:bold">.</span>min() <span style="font-weight:bold">&gt;</span> <span style="color:#099">1.05</span>:
+</span></span><span style="display:flex;"><span>                aic <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>aic
+</span></span><span style="display:flex;"><span>                bic <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>bic
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">if</span> aic <span style="font-weight:bold">&lt;</span> min_aic: 
+</span></span><span style="display:flex;"><span>                    min_aic <span style="font-weight:bold">=</span> aic
+</span></span><span style="display:flex;"><span>                    min_aic_order <span style="font-weight:bold">=</span> (p,q)
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">if</span> bic <span style="font-weight:bold">&lt;</span> min_bic: 
+</span></span><span style="display:flex;"><span>                    min_bic <span style="font-weight:bold">=</span> bic
+</span></span><span style="display:flex;"><span>                    min_bic_order <span style="font-weight:bold">=</span> (p,q)
+</span></span><span style="display:flex;"><span>                <span style="color:#999">print</span>(<span style="color:#b84">&#39;(</span><span style="color:#b84">{}</span><span style="color:#b84">,</span><span style="color:#b84">{}</span><span style="color:#b84">) AIC = </span><span style="color:#b84">{:&gt;7.2f}</span><span style="color:#b84">, BIC = </span><span style="color:#b84">{:&gt;7.2f}</span><span style="color:#b84">, |DW-2| = </span><span style="color:#b84">{:.8f}</span><span style="color:#b84"> </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(p,q,aic,bic,stat,stat_score<span style="font-weight:bold">*</span><span style="color:#b84">&#39;*&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">except</span>:
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>()
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;Minimum AIC = </span><span style="color:#b84">{:.2f}</span><span style="color:#b84"> at </span><span style="color:#b84">{}</span><span style="color:#b84">, minimum BIC = </span><span style="color:#b84">{:.2f}</span><span style="color:#b84"> at </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(min_aic, min_aic_order, min_bic, min_bic_order))
+</span></span></code></pre></div><pre><code>(1,1) AIC =  113.26, BIC =  126.19, |DW-2| = 0.07497044 *
+(1,2) AIC =  113.04, BIC =  130.28, |DW-2| = 0.06298702 *
+(2,0) AIC =  111.43, BIC =  124.36, |DW-2| = 0.03723533 **
+(2,1) AIC =  112.01, BIC =  129.25, |DW-2| = 0.04461551 **
+(2,2) AIC =  113.29, BIC =  134.84, |DW-2| = 0.06107177 *
+(3,0) AIC =  111.72, BIC =  128.96, |DW-2| = 0.05226283 *
+(3,1) AIC =  113.64, BIC =  135.19, |DW-2| = 0.05401722 *
+(4,0) AIC =  113.37, BIC =  134.92, |DW-2| = 0.05788130 *
+(4,1) AIC =  115.31, BIC =  141.17, |DW-2| = 0.05672657 *
+(5,0) AIC =  113.33, BIC =  139.19, |DW-2| = 0.00835075 ***
+
+Minimum AIC = 111.43 at (2, 0), minimum BIC = 124.36 at (2, 0)
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>ARMA(train, (<span style="color:#099">2</span>,<span style="color:#099">0</span>))
+</span></span><span style="display:flex;"><span>result <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fit(trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(result<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><pre><code>                              ARMA Model Results                              
+==============================================================================
+Dep. Variable:                  LogPs   No. Observations:                  550
+Model:                     ARMA(2, 0)   Log Likelihood                 -52.713
+Method:                       css-mle   S.D. of innovations              0.266
+Date:                Sun, 21 May 2017   AIC                            111.426
+Time:                        01:10:53   BIC                            124.355
+Sample:                    07-01-2014   HQIC                           116.478
+                         - 01-01-2016                                         
+===============================================================================
+                  coef    std err          z      P&gt;|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+ar.L1.LogPs     1.1236      0.042     26.763      0.000       1.041       1.206
+ar.L2.LogPs    -0.1672      0.042     -3.976      0.000      -0.250      -0.085
+                                    Roots                                    
+=============================================================================
+                 Real           Imaginary           Modulus         Frequency
+-----------------------------------------------------------------------------
+AR.1            1.0559           +0.0000j            1.0559            0.0000
+AR.2            5.6627           +0.0000j            5.6627            0.0000
+-----------------------------------------------------------------------------
+</code></pre>
+<p>Normality test.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>jarque_bera(result<span style="font-weight:bold">.</span>resid)[<span style="color:#099">1</span>]
+</span></span></code></pre></div><pre><code>2.6180738344018359e-23
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>acorr_ljungbox(result<span style="font-weight:bold">.</span>resid, lags<span style="font-weight:bold">=</span><span style="color:#099">1</span>)[<span style="color:#099">1</span>][<span style="color:#099">0</span>]
+</span></span></code></pre></div><pre><code>0.81633813674691746
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">4</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> qqplot(result<span style="font-weight:bold">.</span>resid, line<span style="font-weight:bold">=</span><span style="color:#b84">&#39;45&#39;</span>, ax<span style="font-weight:bold">=</span>ax, fit<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>lines <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>findobj(<span style="font-weight:bold">lambda</span> x: <span style="color:#999">hasattr</span>(x, <span style="color:#b84">&#39;get_color&#39;</span>) <span style="font-weight:bold">and</span> x<span style="font-weight:bold">.</span>get_color() <span style="font-weight:bold">==</span> <span style="color:#b84">&#39;r&#39;</span>)
+</span></span><span style="display:flex;"><span>dots <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>findobj(<span style="font-weight:bold">lambda</span> x: <span style="color:#999">hasattr</span>(x, <span style="color:#b84">&#39;get_color&#39;</span>) <span style="font-weight:bold">and</span> x<span style="font-weight:bold">.</span>get_color() <span style="font-weight:bold">==</span> <span style="color:#b84">&#39;b&#39;</span>)
+</span></span><span style="display:flex;"><span>[l<span style="font-weight:bold">.</span>set_linewidth(<span style="color:#099">2</span>) <span style="font-weight:bold">for</span> l <span style="font-weight:bold">in</span> lines]
+</span></span><span style="display:flex;"><span>[d<span style="font-weight:bold">.</span>set_alpha(<span style="color:#099">0.3</span>) <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> dots]
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># [d.set_color(&#39;c&#39;) for d in dots]</span>
+</span></span><span style="display:flex;"><span>[d<span style="font-weight:bold">.</span>set_markersize(<span style="color:#099">5</span>) <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> dots]
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">3</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">3</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;p-value = {}&#39;.format(ss.normaltest(result.resid)[1]))</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;uniqqplot.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_10.png" style="width: 33%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>phi <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>arparams <span style="font-weight:bold">*</span> (result<span style="font-weight:bold">.</span>pvalues[:result<span style="font-weight:bold">.</span>k_ar]<span style="font-weight:bold">&lt;=</span><span style="color:#099">0.05</span>)<span style="font-weight:bold">.</span>values
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">yhat</span>(y):  <span style="color:#998;font-style:italic"># y is now nparray of shape (k_ar,2)</span>
+</span></span><span style="display:flex;"><span>    ylag <span style="font-weight:bold">=</span> y[::<span style="font-weight:bold">-</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> ylag<span style="font-weight:bold">.</span>T <span style="font-weight:bold">@</span> phi
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fit <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>fittedvalues
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> test <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>nan
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(phi)):
+</span></span><span style="display:flex;"><span>    pred[i] <span style="font-weight:bold">=</span> yhat(train[<span style="font-weight:bold">-</span><span style="color:#099">1</span><span style="font-weight:bold">-</span>i<span style="font-weight:bold">-</span><span style="color:#999">len</span>(phi):<span style="font-weight:bold">-</span><span style="color:#099">1</span><span style="font-weight:bold">-</span>i])
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(phi), <span style="color:#999">len</span>(test)):
+</span></span><span style="display:flex;"><span>    pred[i] <span style="font-weight:bold">=</span> yhat(test[i<span style="font-weight:bold">-</span><span style="color:#999">len</span>(phi):i])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fcst <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>forecast(<span style="color:#999">len</span>(test))
+</span></span><span style="display:flex;"><span>forecast <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>Series(fcst[<span style="color:#099">0</span>], index<span style="font-weight:bold">=</span>test<span style="font-weight:bold">.</span>index)
+</span></span><span style="display:flex;"><span>conf_interval <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>DataFrame(fcst[<span style="color:#099">2</span>], index<span style="font-weight:bold">=</span>test<span style="font-weight:bold">.</span>index)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(fit, <span style="color:#b84">&#39;ro-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">10</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;insample fitted data&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ax.plot(result.fittedvalues, &#39;b-&#39;)</span>
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;co-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">10</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample point forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(forecast, <span style="color:#b84">&#39;c--&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>fill_between(conf_interval<span style="font-weight:bold">.</span>index, conf_interval<span style="font-weight:bold">.</span>ix[:,<span style="color:#099">0</span>], conf_interval<span style="font-weight:bold">.</span>ix[:,<span style="color:#099">1</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;95</span><span style="color:#b84">% c</span><span style="color:#b84">onf. interval&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;First Difference Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;unifit1.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_11.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>temp_date <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>to_datetime(<span style="color:#b84">&#39;2015-12-01&#39;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(fit, <span style="color:#b84">&#39;ro-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">5</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;insample fitted data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;co-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">5</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample point forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(forecast, <span style="color:#b84">&#39;c--&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>fill_between(conf_interval<span style="font-weight:bold">.</span>index, conf_interval<span style="font-weight:bold">.</span>ix[:,<span style="color:#099">0</span>], conf_interval<span style="font-weight:bold">.</span>ix[:,<span style="color:#099">1</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;95</span><span style="color:#b84">% c</span><span style="color:#b84">onf. interval&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(temp_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;First Difference Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;unifit2.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_12.png" style="width: 100%"/>
+<p>MASE (Mean Absolute Scaled Error): <a href="https://en.wikipedia.org/wiki/Mean_absolute_scaled_error">https://en.wikipedia.org/wiki/Mean_absolute_scaled_error</a></p>
+<ul>
+<li>Better than MAPE: MASE is symmetric while MAPE punishes on negative errors</li>
+<li>Better than RMSE: scaled to the data</li>
+<li>Better than R-squares: parameter number irrelavant</li>
+<li>Better than AUC and Predictive Likelihood: easier to compute</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">mase</span>(data, pred):
+</span></span><span style="display:flex;"><span>    error <span style="font-weight:bold">=</span> data <span style="font-weight:bold">-</span> pred
+</span></span><span style="display:flex;"><span>    ydiff <span style="font-weight:bold">=</span> data<span style="font-weight:bold">.</span>diff()<span style="font-weight:bold">.</span>dropna()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> error<span style="font-weight:bold">.</span>abs()<span style="font-weight:bold">.</span>mean() <span style="font-weight:bold">/</span> ydiff<span style="font-weight:bold">.</span>abs()<span style="font-weight:bold">.</span>mean()
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mase_uni_is <span style="font-weight:bold">=</span> mase(train, fit)
+</span></span><span style="display:flex;"><span>mase_uni_osp <span style="font-weight:bold">=</span> mase(test, pred)
+</span></span><span style="display:flex;"><span>mase_uni_os <span style="font-weight:bold">=</span> mase(test, forecast)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE insample is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_uni_is))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE outsample point is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_uni_osp))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE outsample is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_uni_os))
+</span></span></code></pre></div><pre><code>MASE insample is 0.996
+MASE outsample point is 0.991
+MASE outsample is 4.704
+</code></pre>
+<h1 id="step-5-multivariate-model---arimaxpdq">Step 5: Multivariate Model - ARIMAX(p,d,q)</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data <span style="font-weight:bold">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BCHAIN/ATRCT&#39;</span>,     <span style="color:#998;font-style:italic"># Bitcoin Median Transaction Confirmation Time</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BCHAIN/CPTRA&#39;</span>,     <span style="color:#998;font-style:italic"># Bitcoin Cost Per Transaction</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BCHAIN/DIFF&#39;</span>,      <span style="color:#998;font-style:italic"># Bitcoin Mining Difficulty</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;BCHAIN/TVTVR&#39;</span>,     <span style="color:#998;font-style:italic"># Bitcoin Trade Volume vs Transaction Volume Ratio</span>
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ind <span style="font-weight:bold">=</span> [quandl<span style="font-weight:bold">.</span>get(d)[start_date:end_date] <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> data]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>max_volume <span style="font-weight:bold">=</span> ((volume<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> v:v<span style="font-weight:bold">.</span>index, axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">==</span> max_exchange<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> i:exchangelist[i]))<span style="font-weight:bold">.</span>T <span style="font-weight:bold">*</span> volume)<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>min_volume <span style="font-weight:bold">=</span> ((volume<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> v:v<span style="font-weight:bold">.</span>index, axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">==</span> min_exchange<span style="font-weight:bold">.</span>apply(<span style="font-weight:bold">lambda</span> i:exchangelist[i]))<span style="font-weight:bold">.</span>T <span style="font-weight:bold">*</span> volume)<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>trade_volume <span style="font-weight:bold">=</span> max_volume <span style="font-weight:bold">+</span> min_volume
+</span></span><span style="display:flex;"><span>transaction_volume <span style="font-weight:bold">=</span> (trade_volume <span style="font-weight:bold">*</span> ind[<span style="font-weight:bold">-</span><span style="color:#099">1</span>]<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>T
+</span></span><span style="display:flex;"><span>ind[<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">=</span> transfer_volume <span style="font-weight:bold">=</span> transaction_volume<span style="font-weight:bold">.</span>Value <span style="font-weight:bold">-</span> trade_volume
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>dataset <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([price_spread, trade_volume] <span style="font-weight:bold">+</span> ind, axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>, join<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outer&#39;</span>)
+</span></span><span style="display:flex;"><span>dataset<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;Ps&#39;</span>, <span style="color:#b84">&#39;Tr&#39;</span>, <span style="color:#b84">&#39;Ct&#39;</span>, <span style="color:#b84">&#39;Co&#39;</span>, <span style="color:#b84">&#39;Di&#39;</span>, <span style="color:#b84">&#39;Tf&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(dataset<span style="font-weight:bold">.</span>describe())
+</span></span></code></pre></div><pre><code>               Ps           Tr          Ct          Co            Di             Tf
+count  732.000000   732.000000  732.000000  732.000000  7.320000e+02     732.000000
+mean     7.418801   727.610416    8.056266   12.379825  7.563867e+10   22286.774041
+std      7.705870   243.943093    1.111682    8.532508  5.491585e+10   23071.094095
+min      0.150000   356.410000    5.883333    3.442916  1.681846e+10    1057.026608
+25%      2.430000   499.281875    7.333333    7.574733  4.055572e+10    7382.009772
+50%      4.914920   713.810010    7.875000    8.890402  4.969239e+10   12993.766448
+75%      9.461703   864.820000    8.600000   13.035012  9.605659e+10   29144.912952
+max     78.191470  1532.508000   14.130000   49.667654  2.094532e+11  136972.126998
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>googletrends <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span>kw_list <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;bitcoin robot&#39;</span>, <span style="color:#b84">&#39;bitcoin arbitrage&#39;</span>, <span style="color:#b84">&#39;bitcoin spread&#39;</span>]
+</span></span><span style="display:flex;"><span>pytrend<span style="font-weight:bold">.</span>build_payload(kw_list<span style="font-weight:bold">=</span>kw_list)
+</span></span><span style="display:flex;"><span>googletrends <span style="font-weight:bold">=</span> pytrend<span style="font-weight:bold">.</span>interest_over_time()<span style="font-weight:bold">.</span>ix[start_date:end_date, :] <span style="font-weight:bold">+</span> <span style="color:#099">1</span>  <span style="color:#998;font-style:italic"># as googletrends can be 0 from time to time, which is troublesome for taking log</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(kw_list)):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(googletrends<span style="font-weight:bold">.</span>ix[:,i], c<span style="font-weight:bold">=</span>cmocean<span style="font-weight:bold">.</span>cm<span style="font-weight:bold">.</span>algae(i<span style="font-weight:bold">/</span><span style="color:#999">len</span>(kw_list)), label<span style="font-weight:bold">=</span>kw_list[i])
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(googletrends<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>), c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;all&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#999">len</span>(kw_list)<span style="font-weight:bold">+</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>ylim(<span style="font-weight:bold">-</span><span style="color:#099">10</span>,<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>yticks(<span style="color:#999">range</span>(<span style="color:#099">0</span>,<span style="color:#099">101</span>,<span style="color:#099">10</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;multrend.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_13.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exchangetrends <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span>kw_list <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>setdiff1d(exchangelist, [<span style="color:#b84">&#39;ROCK&#39;</span>])
+</span></span><span style="display:flex;"><span>pytrend<span style="font-weight:bold">.</span>build_payload(kw_list<span style="font-weight:bold">=</span>kw_list)
+</span></span><span style="display:flex;"><span>exchangetrends <span style="font-weight:bold">=</span> pytrend<span style="font-weight:bold">.</span>interest_over_time()<span style="font-weight:bold">.</span>ix[start_date:end_date, :] <span style="font-weight:bold">+</span> <span style="color:#099">1</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(kw_list)):
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(exchangetrends<span style="font-weight:bold">.</span>ix[:,i], color<span style="font-weight:bold">=</span>cmocean<span style="font-weight:bold">.</span>cm<span style="font-weight:bold">.</span>algae(i<span style="font-weight:bold">/</span><span style="color:#999">len</span>(kw_list)), label<span style="font-weight:bold">=</span>kw_list[i])
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(exchangetrends<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>), c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;all&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#999">len</span>(kw_list)<span style="font-weight:bold">+</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>ylim(<span style="font-weight:bold">-</span><span style="color:#099">10</span>,<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>yticks(<span style="color:#999">range</span>(<span style="color:#099">0</span>,<span style="color:#099">101</span>,<span style="color:#099">10</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;multrend.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_14.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>dataset <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>concat([dataset, googletrends<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>), exchangetrends<span style="font-weight:bold">.</span>sum(axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)], axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>, join<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outer&#39;</span>)<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ffill&#39;</span>)<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bfill&#39;</span>)
+</span></span><span style="display:flex;"><span>dataset<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(dataset<span style="font-weight:bold">.</span>columns[:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]) <span style="font-weight:bold">+</span> [<span style="color:#b84">&#39;Gt1&#39;</span>, <span style="color:#b84">&#39;Gt2&#39;</span>]
+</span></span><span style="display:flex;"><span>dataset<span style="font-weight:bold">.</span>Gt1<span style="font-weight:bold">.</span>interpolate(inplace<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>dataset<span style="font-weight:bold">.</span>Gt2<span style="font-weight:bold">.</span>interpolate(inplace<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>log_dataset <span style="font-weight:bold">=</span> z_norm(np<span style="font-weight:bold">.</span>log(dataset)<span style="font-weight:bold">.</span>rolling(<span style="color:#099">5</span>)<span style="font-weight:bold">.</span>mean()<span style="font-weight:bold">.</span>fillna(method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;bfill&#39;</span>))
+</span></span><span style="display:flex;"><span>log_dataset<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;Log&#39;</span><span style="font-weight:bold">+</span>c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> log_dataset<span style="font-weight:bold">.</span>columns]
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(log_dataset<span style="font-weight:bold">.</span>describe())
+</span></span></code></pre></div><pre><code>              LogPs         LogTr         LogCt         LogCo         LogDi         LogTf        LogGt1        LogGt2
+count  7.320000e+02  7.320000e+02  7.320000e+02  7.320000e+02  7.320000e+02  7.320000e+02  7.320000e+02  7.320000e+02
+mean  -4.284976e-15  1.526951e-14  2.660744e-14 -2.311827e-16  5.078330e-14 -1.000566e-14  4.753939e-15  9.735989e-15
+std    1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00
+min   -1.902323e+00 -1.600349e+00 -2.681378e+00 -1.602305e+00 -1.918163e+00 -2.449733e+00 -2.868102e+00 -1.541291e+00
+25%   -8.414662e-01 -1.003732e+00 -6.189083e-01 -6.491453e-01 -5.965383e-01 -7.432149e-01 -6.731405e-01 -6.369187e-01
+50%   -1.734537e-02  8.771289e-02 -2.819185e-02 -4.128926e-01 -2.796970e-01 -1.754303e-01  4.339693e-02 -2.954394e-01
+75%    7.996859e-01  6.973955e-01  5.295034e-01  4.580167e-01  6.834602e-01  6.506610e-01  7.555832e-01  4.566839e-01
+max    2.645812e+00  2.439251e+00  3.834172e+00  2.765270e+00  1.896075e+00  2.321454e+00  2.077746e+00  4.822614e+00
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">5</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>idx <span style="font-weight:bold">=</span> log_dataset<span style="font-weight:bold">.</span>corr()<span style="font-weight:bold">.</span>sort_values(by<span style="font-weight:bold">=</span><span style="color:#b84">&#39;LogPs&#39;</span>, ascending<span style="font-weight:bold">=</span><span style="color:#099">0</span>)<span style="font-weight:bold">.</span>index
+</span></span><span style="display:flex;"><span>log_dataset <span style="font-weight:bold">=</span> log_dataset<span style="font-weight:bold">.</span>ix[:,idx]
+</span></span><span style="display:flex;"><span>corr <span style="font-weight:bold">=</span> log_dataset<span style="font-weight:bold">.</span>corr()
+</span></span><span style="display:flex;"><span>sns<span style="font-weight:bold">.</span>heatmap(corr, square<span style="font-weight:bold">=</span><span style="color:#099">1</span>, ax<span style="font-weight:bold">=</span>ax)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>yticks(rotation<span style="font-weight:bold">=</span><span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>xticks(rotation<span style="font-weight:bold">=</span><span style="color:#099">90</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;mulcorr.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_15.png" style="width: 33%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">12</span>,<span style="color:#099">4</span><span style="font-weight:bold">*</span><span style="color:#999">len</span>(corr)))
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(corr)<span style="font-weight:bold">-</span><span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>    ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#999">len</span>(corr)<span style="font-weight:bold">-</span><span style="color:#099">1</span>,<span style="color:#099">1</span>,i<span style="font-weight:bold">+</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;r&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;LogPs&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>plot(log_dataset<span style="font-weight:bold">.</span>ix[:,i<span style="font-weight:bold">+</span><span style="color:#099">1</span>], c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.5</span>, label<span style="font-weight:bold">=</span>log_dataset<span style="font-weight:bold">.</span>columns[i<span style="font-weight:bold">+</span><span style="color:#099">1</span>])
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>legend(frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>,loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>    ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_16.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>endog <span style="font-weight:bold">=</span> log_dataset<span style="font-weight:bold">.</span>LogPs
+</span></span><span style="display:flex;"><span>exog <span style="font-weight:bold">=</span> log_dataset<span style="font-weight:bold">.</span>ix[:,np<span style="font-weight:bold">.</span>setdiff1d(log_dataset<span style="font-weight:bold">.</span>columns,[<span style="color:#b84">&#39;LogPs&#39;</span>])]
+</span></span><span style="display:flex;"><span>train_endog <span style="font-weight:bold">=</span> endog<span style="font-weight:bold">.</span>ix[start_date:mid_date]
+</span></span><span style="display:flex;"><span>train_exog <span style="font-weight:bold">=</span> exog<span style="font-weight:bold">.</span>ix[start_date:mid_date]
+</span></span><span style="display:flex;"><span>test_endog <span style="font-weight:bold">=</span> endog<span style="font-weight:bold">.</span>ix[mid_date:end_date]
+</span></span><span style="display:flex;"><span>test_exog <span style="font-weight:bold">=</span> exog<span style="font-weight:bold">.</span>ix[mid_date:end_date]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>min_aic <span style="font-weight:bold">=</span> min_bic <span style="font-weight:bold">=</span> <span style="color:#099">1e5</span>
+</span></span><span style="display:flex;"><span>min_aic_order <span style="font-weight:bold">=</span> min_bic_order <span style="font-weight:bold">=</span> (<span style="color:#099">0</span>,<span style="color:#099">0</span>,<span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">for</span> p <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>,<span style="color:#099">10</span>):
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> q <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">3</span>):
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>            model <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>SARIMAX(train_endog, train_exog, (p, d, q))
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>                result <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fit(trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>)
+</span></span><span style="display:flex;"><span>                result<span style="font-weight:bold">.</span>summary()
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">except</span>:
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span>            stat <span style="font-weight:bold">=</span> <span style="color:#999">abs</span>(sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>durbin_watson(result<span style="font-weight:bold">.</span>resid)<span style="font-weight:bold">-</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>            stat_score <span style="font-weight:bold">=</span> (stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">0.01</span>) <span style="font-weight:bold">*</span> <span style="color:#099">3</span> <span style="font-weight:bold">+</span> (<span style="color:#099">0.01</span> <span style="font-weight:bold">&lt;</span> stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">0.05</span>) <span style="font-weight:bold">*</span> <span style="color:#099">2</span> <span style="font-weight:bold">+</span> (<span style="color:#099">0.05</span> <span style="font-weight:bold">&lt;</span> stat <span style="font-weight:bold">&lt;=</span> <span style="color:#099">0.10</span>) <span style="font-weight:bold">*</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> np<span style="font-weight:bold">.</span>abs(np<span style="font-weight:bold">.</span>concatenate([result<span style="font-weight:bold">.</span>arroots, result<span style="font-weight:bold">.</span>maroots]))<span style="font-weight:bold">.</span>min() <span style="font-weight:bold">&gt;</span> <span style="color:#099">1.05</span>:
+</span></span><span style="display:flex;"><span>                aic <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>aic
+</span></span><span style="display:flex;"><span>                bic <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>bic
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">if</span> aic <span style="font-weight:bold">&lt;</span> min_aic: 
+</span></span><span style="display:flex;"><span>                    min_aic <span style="font-weight:bold">=</span> aic
+</span></span><span style="display:flex;"><span>                    min_aic_order <span style="font-weight:bold">=</span> (p,d,q)
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">if</span> bic <span style="font-weight:bold">&lt;</span> min_bic: 
+</span></span><span style="display:flex;"><span>                    min_bic <span style="font-weight:bold">=</span> bic
+</span></span><span style="display:flex;"><span>                    min_bic_order <span style="font-weight:bold">=</span> (p,d,q)
+</span></span><span style="display:flex;"><span>                <span style="color:#999">print</span>(<span style="color:#b84">&#39;(</span><span style="color:#b84">{}</span><span style="color:#b84">,</span><span style="color:#b84">{}</span><span style="color:#b84">,</span><span style="color:#b84">{}</span><span style="color:#b84">) AIC = </span><span style="color:#b84">{:&gt;7.2f}</span><span style="color:#b84">, BIC = </span><span style="color:#b84">{:&gt;7.2f}</span><span style="color:#b84">, |DW-2| = </span><span style="color:#b84">{:.8f}</span><span style="color:#b84"> </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(p,d,q,aic,bic,stat,stat_score<span style="font-weight:bold">*</span><span style="color:#b84">&#39;*&#39;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>()
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;Minimum AIC = </span><span style="color:#b84">{:.2f}</span><span style="color:#b84"> at </span><span style="color:#b84">{}</span><span style="color:#b84">, minimum BIC = </span><span style="color:#b84">{:.2f}</span><span style="color:#b84"> at </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(min_aic, min_aic_order, min_bic, min_bic_order))
+</span></span></code></pre></div><pre><code>(1,0,0) AIC =   95.23, BIC =  134.02, |DW-2| = 0.32750528 
+(1,0,1) AIC =   82.47, BIC =  125.56, |DW-2| = 0.03040248 **
+(1,0,2) AIC =   81.51, BIC =  128.92, |DW-2| = 0.01859667 **
+(2,0,0) AIC =   79.67, BIC =  122.77, |DW-2| = 0.02601878 **
+(2,0,1) AIC =   77.37, BIC =  124.78, |DW-2| = 0.02101876 **
+(2,0,2) AIC =   77.46, BIC =  129.18, |DW-2| = 0.02477762 **
+(3,0,0) AIC =   77.69, BIC =  125.10, |DW-2| = 0.00997169 ***
+(3,0,1) AIC =   75.14, BIC =  126.85, |DW-2| = 0.00109986 ***
+(4,0,0) AIC =   75.70, BIC =  127.42, |DW-2| = 0.00565012 ***
+(4,0,1) AIC =   77.69, BIC =  133.72, |DW-2| = 0.00489150 ***
+(5,0,0) AIC =   77.64, BIC =  133.67, |DW-2| = 0.00382267 ***
+(5,0,1) AIC =   56.67, BIC =  117.01, |DW-2| = 0.11066651 
+(6,0,0) AIC =  -11.64, BIC =   48.69, |DW-2| = 0.10243475 
+(6,0,1) AIC =  -16.11, BIC =   48.54, |DW-2| = 0.02155382 **
+(6,0,2) AIC =  -16.40, BIC =   52.56, |DW-2| = 0.00558554 ***
+(7,0,0) AIC =  -18.40, BIC =   46.25, |DW-2| = 0.00766101 ***
+(7,0,1) AIC =  -16.75, BIC =   52.20, |DW-2| = 0.00203650 ***
+(7,0,2) AIC =  -15.06, BIC =   58.20, |DW-2| = 0.00505927 ***
+(8,0,0) AIC =  -17.85, BIC =   51.11, |DW-2| = 0.00599037 ***
+(8,0,1) AIC =  -21.57, BIC =   51.70, |DW-2| = 0.01490724 **
+(8,0,2) AIC =  -18.89, BIC =   58.69, |DW-2| = 0.02765866 **
+(9,0,0) AIC =  -15.87, BIC =   57.40, |DW-2| = 0.00530673 ***
+(9,0,1) AIC =  -20.02, BIC =   57.56, |DW-2| = 0.00183866 ***
+(9,0,2) AIC =  -17.87, BIC =   64.01, |DW-2| = 0.01105891 **
+
+Minimum AIC = -21.57 at (8, 0, 1), minimum BIC = 46.25 at (7, 0, 0)
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>SARIMAX(train_endog, train_exog, (<span style="color:#099">8</span>,<span style="color:#099">0</span>,<span style="color:#099">1</span>), freq<span style="font-weight:bold">=</span><span style="color:#b84">&#39;D&#39;</span>)
+</span></span><span style="display:flex;"><span>result <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>fit(trend<span style="font-weight:bold">=</span><span style="color:#b84">&#39;nc&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(result<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><pre><code>                           Statespace Model Results                           
+==============================================================================
+Dep. Variable:                  LogPs   No. Observations:                  550
+Model:               SARIMAX(8, 0, 1)   Log Likelihood                  27.783
+Date:                Sun, 21 May 2017   AIC                            -21.566
+Time:                        01:13:14   BIC                             51.703
+Sample:                    07-01-2014   HQIC                             7.066
+                         - 01-01-2016                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+LogCo          0.3659      0.181      2.024      0.043       0.012       0.720
+LogCt          0.0089      0.039      0.224      0.823      -0.069       0.086
+LogDi         -0.0414      0.266     -0.156      0.876      -0.563       0.480
+LogGt1         0.0069      0.061      0.113      0.910      -0.113       0.127
+LogGt2        -0.0132      0.084     -0.157      0.875      -0.178       0.152
+LogTf         -0.3987      0.087     -4.557      0.000      -0.570      -0.227
+LogTr          0.3262      0.180      1.815      0.069      -0.026       0.678
+ar.L1          0.3475      0.168      2.063      0.039       0.017       0.678
+ar.L2          0.7677      0.183      4.200      0.000       0.409       1.126
+ar.L3         -0.1169      0.054     -2.171      0.030      -0.222      -0.011
+ar.L4         -0.0721      0.051     -1.402      0.161      -0.173       0.029
+ar.L5         -0.4598      0.047     -9.752      0.000      -0.552      -0.367
+ar.L6          0.2162      0.088      2.468      0.014       0.045       0.388
+ar.L7          0.3528      0.077      4.600      0.000       0.202       0.503
+ar.L8         -0.1733      0.044     -3.953      0.000      -0.259      -0.087
+ma.L1          0.7612      0.174      4.369      0.000       0.420       1.103
+sigma2         0.0526      0.003     18.715      0.000       0.047       0.058
+===================================================================================
+Ljung-Box (Q):                      138.21   Jarque-Bera (JB):                28.29
+Prob(Q):                              0.00   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.54   Skew:                            -0.30
+Prob(H) (two-sided):                  0.00   Kurtosis:                         3.93
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>durbin_watson(result<span style="font-weight:bold">.</span>resid)
+</span></span></code></pre></div><pre><code>1.9750927630586519
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>jarque_bera(result<span style="font-weight:bold">.</span>resid)[<span style="color:#099">1</span>]
+</span></span></code></pre></div><pre><code>7.8859408081166919e-07
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sm<span style="font-weight:bold">.</span>stats<span style="font-weight:bold">.</span>acorr_ljungbox(result<span style="font-weight:bold">.</span>resid, lags<span style="font-weight:bold">=</span><span style="color:#099">1</span>)[<span style="color:#099">1</span>][<span style="color:#099">0</span>]
+</span></span></code></pre></div><pre><code>0.87455062641970893
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">4</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> qqplot(result<span style="font-weight:bold">.</span>resid, line<span style="font-weight:bold">=</span><span style="color:#b84">&#39;45&#39;</span>, ax<span style="font-weight:bold">=</span>ax, fit<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>lines <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>findobj(<span style="font-weight:bold">lambda</span> x: <span style="color:#999">hasattr</span>(x, <span style="color:#b84">&#39;get_color&#39;</span>) <span style="font-weight:bold">and</span> x<span style="font-weight:bold">.</span>get_color() <span style="font-weight:bold">==</span> <span style="color:#b84">&#39;r&#39;</span>)
+</span></span><span style="display:flex;"><span>dots <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>findobj(<span style="font-weight:bold">lambda</span> x: <span style="color:#999">hasattr</span>(x, <span style="color:#b84">&#39;get_color&#39;</span>) <span style="font-weight:bold">and</span> x<span style="font-weight:bold">.</span>get_color() <span style="font-weight:bold">==</span> <span style="color:#b84">&#39;b&#39;</span>)
+</span></span><span style="display:flex;"><span>[l<span style="font-weight:bold">.</span>set_linewidth(<span style="color:#099">2</span>) <span style="font-weight:bold">for</span> l <span style="font-weight:bold">in</span> lines]
+</span></span><span style="display:flex;"><span>[d<span style="font-weight:bold">.</span>set_alpha(<span style="color:#099">0.3</span>) <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> dots]
+</span></span><span style="display:flex;"><span>[d<span style="font-weight:bold">.</span>set_markersize(<span style="color:#099">5</span>) <span style="font-weight:bold">for</span> d <span style="font-weight:bold">in</span> dots]
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">3</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">3</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">3</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;p-value = {}&#39;.format(ss.normaltest(result.resid)[1]))</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;mulqqplot.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_17.png" style="width: 33%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>forecast <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>forecast(steps<span style="font-weight:bold">=</span><span style="color:#999">len</span>(test_endog), exog<span style="font-weight:bold">=</span>test_exog)
+</span></span><span style="display:flex;"><span>fit <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>fittedvalues
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>statespace<span style="font-weight:bold">.</span>SARIMAX(endog, exog, model<span style="font-weight:bold">.</span>order)
+</span></span><span style="display:flex;"><span>result <span style="font-weight:bold">=</span> model<span style="font-weight:bold">.</span>filter(result<span style="font-weight:bold">.</span>params)
+</span></span><span style="display:flex;"><span>predict <span style="font-weight:bold">=</span> result<span style="font-weight:bold">.</span>get_prediction()
+</span></span><span style="display:flex;"><span>pred <span style="font-weight:bold">=</span> predict<span style="font-weight:bold">.</span>predicted_mean[mid_date:]
+</span></span><span style="display:flex;"><span>conf_interval <span style="font-weight:bold">=</span> [forecast<span style="font-weight:bold">+</span>predict<span style="font-weight:bold">.</span>se_mean[<span style="color:#999">len</span>(train_endog):]<span style="font-weight:bold">*</span><span style="color:#099">1.96</span>,forecast<span style="font-weight:bold">-</span>predict<span style="font-weight:bold">.</span>se_mean[<span style="color:#999">len</span>(train_endog):]<span style="font-weight:bold">*</span><span style="color:#099">1.96</span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(fit, <span style="color:#b84">&#39;ro-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">10</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;insample fitted data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;co-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">10</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample point forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(forecast, <span style="color:#b84">&#39;c--&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>fill_between(test_endog<span style="font-weight:bold">.</span>index, conf_interval[<span style="color:#099">0</span>], conf_interval[<span style="color:#099">1</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;95</span><span style="color:#b84">% c</span><span style="color:#b84">onf. interval&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(start_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;First Difference Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;mulfit1.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_18.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(log_price_spread, c<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;true data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(fit, <span style="color:#b84">&#39;ro-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">5</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;insample fitted data&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(pred, <span style="color:#b84">&#39;co-&#39;</span>, markevery<span style="font-weight:bold">=</span><span style="color:#099">5</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample point forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>plot(forecast, <span style="color:#b84">&#39;c--&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;outsample forecast&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>axvspan(mid_date, end_date, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;c&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">0.05</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>fill_between(test_endog<span style="font-weight:bold">.</span>index, conf_interval[<span style="color:#099">0</span>], conf_interval[<span style="color:#099">1</span>], color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, alpha<span style="font-weight:bold">=</span><span style="color:#099">.1</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;95</span><span style="color:#b84">% c</span><span style="color:#b84">onf. interval&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_locator(mdates<span style="font-weight:bold">.</span>MonthLocator(interval<span style="font-weight:bold">=</span><span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>xaxis<span style="font-weight:bold">.</span>set_major_formatter(mdates<span style="font-weight:bold">.</span>DateFormatter(<span style="color:#b84">&#39;%Y</span><span style="color:#b84">\n</span><span style="color:#b84"> %b&#39;</span>))
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlim(temp_date, end_date)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylim(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_yticks(<span style="color:#999">range</span>(<span style="font-weight:bold">-</span><span style="color:#099">5</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, framealpha<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;First Difference Log Price Spreads&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;mulfit2.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_19.png" style="width: 100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mase_mul_is <span style="font-weight:bold">=</span> mase(train_endog, fit)
+</span></span><span style="display:flex;"><span>mase_mul_osp <span style="font-weight:bold">=</span> mase(test_endog, pred)
+</span></span><span style="display:flex;"><span>mase_mul_os <span style="font-weight:bold">=</span> mase(test_endog, forecast)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE insample is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_mul_is))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE outsample is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_mul_osp))
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;MASE outsample is </span><span style="color:#b84">{:.3f}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(mase_mul_os))
+</span></span></code></pre></div><pre><code>MASE insample is 0.858
+MASE outsample is 0.857
+MASE outsample is 2.688
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>uni <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array([mase_uni_is, mase_uni_osp, mase_uni_os])
+</span></span><span style="display:flex;"><span>mul <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array([mase_mul_is, mase_mul_osp, mase_mul_os])
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(uni)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(mul)
+</span></span></code></pre></div><pre><code>[ 0.99605648  0.99134227  4.70378576]
+[ 0.8576784   0.85705027  2.68798458]
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">8</span>,<span style="color:#099">4</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot((<span style="color:#099">0</span>,<span style="color:#099">0</span>),(<span style="color:#099">0</span>,<span style="color:#099">5</span>),<span style="color:#b84">&#39;#eeeeee&#39;</span>,ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot((<span style="color:#099">1</span>,<span style="color:#099">1</span>),(<span style="color:#099">0</span>,<span style="color:#099">5</span>),<span style="color:#b84">&#39;#eeeeee&#39;</span>,ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot((<span style="color:#099">2</span>,<span style="color:#099">2</span>),(<span style="color:#099">0</span>,<span style="color:#099">5</span>),<span style="color:#b84">&#39;#eeeeee&#39;</span>,ls<span style="font-weight:bold">=</span><span style="color:#b84">&#39;--&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(uni, <span style="color:#b84">&#39;ro-&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;univariate model&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>plot(mul, <span style="color:#b84">&#39;ko-&#39;</span>, label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;multivariate model&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>legend(loc<span style="font-weight:bold">=</span><span style="color:#b84">&#39;lower center&#39;</span>, frameon<span style="font-weight:bold">=</span><span style="color:#099">0</span>, ncol<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>xticks(<span style="color:#999">range</span>(<span style="color:#099">3</span>),[<span style="color:#b84">&#39;insample&#39;</span>, <span style="color:#b84">&#39;outsample point&#39;</span>, <span style="color:#b84">&#39;outsample&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># plt.title(&#39;MASE Scores&#39;)</span>
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>yticks(np<span style="font-weight:bold">.</span>arange(<span style="color:#099">0</span>,<span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>ylim(<span style="color:#099">0</span>,<span style="color:#099">5</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>savefig(<span style="color:#b84">&#39;mase.pdf&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/btc2_20.png" style="width: 67%"/>
+<h1 id="step-6-conclusion">Step 6: Conclusion</h1>
+<p>So our exogenous indicators do work. We&rsquo;ll see what else we can do with the multivariate model next time.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/notes-on-operations-research/">Notes on Operations Research</a></span>
+  <span class="nav-next"><a href="/blog/an-interesting-econometrics-problem/">An Interesting Econometrics Problem</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/notes-on-operations-research\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/an-interesting-econometrics-problem\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

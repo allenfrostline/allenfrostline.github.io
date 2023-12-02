@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Literature Review on Optimal Order Execution (5) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Literature Review on Optimal Order Execution (5) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction &amp;hellip;">
+      <meta property="og:description" content="This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Literature Review on Optimal Order Execution (5)</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-05-12
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction data, we have the approximation $dS = \eta\cdot dQ$ and thus can easily estimate it by the method of Ordinary Least Squares (OLS), using the message book data provided by <a href="https://lobsterdata.com">LOBSTER</a>.</p>
+<!-- more -->
+<h1 id="experiment-apple">Experiment: Apple</h1>
+<p>We first explore the message book of Apple Inc. (symbol: <code>AAPL</code>) from 09:30 to 16:00 on June 21, 2012.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">pandas</span> <span style="font-weight:bold">as</span> <span style="color:#555">pd</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">statsmodels.formula.api</span> <span style="font-weight:bold">as</span> <span style="color:#555">sm</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.pyplot</span> <span style="font-weight:bold">as</span> <span style="color:#555">plt</span>
+</span></span><span style="display:flex;"><span>pd<span style="font-weight:bold">.</span>options<span style="font-weight:bold">.</span>mode<span style="font-weight:bold">.</span>chained_assignment <span style="font-weight:bold">=</span> <span style="font-weight:bold">None</span>
+</span></span></code></pre></div><p>According to the instructions by LOBSTER, the columns of the message book are defined as follows:</p>
+<ul>
+<li><strong>time</strong>: seconds after midnight with decimal precision of at least milliseconds and up to nanoseconds depending on the requested period</li>
+<li><strong>type</strong>: <code>1</code> means submission of a new limit order; <code>2</code> means Cancellation (partial deletion of a limit order); <code>3</code> means deletion (total deletion of a limit order); <code>4</code> means execution  a visible limit order; <code>5</code> means Execution of a hidden limit order; <code>7</code> means Trading halt indicator (detailed information below)</li>
+<li><strong>id</strong>: unique order reference number (assigned in order flow)</li>
+<li><strong>size</strong>: number of shares</li>
+<li><strong>price</strong>: dollar price times 10000 (i.e., a stock price of 91.14USD is given by 911400)</li>
+<li><strong>direction</strong>: <code>-1</code> means means Sell limit order; <code>1</code> means Buy limit order</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>message <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>read_csv(<span style="color:#b84">&#39;data/AAPL_2012-06-21_34200000_57600000_message_1.csv&#39;</span>, header<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>)
+</span></span><span style="display:flex;"><span>message<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;time&#39;</span>, <span style="color:#b84">&#39;type&#39;</span>, <span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;direction&#39;</span>]
+</span></span><span style="display:flex;"><span>message<span style="font-weight:bold">.</span>price <span style="font-weight:bold">/=</span> <span style="color:#099">10000</span>
+</span></span><span style="display:flex;"><span>message<span style="font-weight:bold">.</span>head()
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">time</th>
+<th style="text-align:center">type</th>
+<th style="text-align:center">id</th>
+<th style="text-align:center">size</th>
+<th style="text-align:center">price</th>
+<th style="text-align:center">direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">34200.004241</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">16113575</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.33</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">34200.025552</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">16120456</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.91</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">34200.201743</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">16120456</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.91</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">34200.201781</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">16120480</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.92</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">34200.205573</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">16167159</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.36</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">34200.201781</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">16120480</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.92</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">34200.205573</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">16167159</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">585.36</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>message_plce <span style="font-weight:bold">=</span> message[message<span style="font-weight:bold">.</span>type<span style="font-weight:bold">==</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>message_exec <span style="font-weight:bold">=</span> message[message<span style="font-weight:bold">.</span>type<span style="font-weight:bold">==</span><span style="color:#099">4</span>]
+</span></span><span style="display:flex;"><span>message_temp <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>merge(message_plce, message_exec, on<span style="font-weight:bold">=</span><span style="color:#b84">&#39;id&#39;</span>, how<span style="font-weight:bold">=</span><span style="color:#b84">&#39;inner&#39;</span>)
+</span></span><span style="display:flex;"><span>message_temp<span style="font-weight:bold">.</span>columns
+</span></span></code></pre></div><pre><code>Index(['time_x', 'type_x', 'id', 'size_x', 'price_x', 'direction_x', 'time_y',
+       'type_y', 'size_y', 'price_y', 'direction_y'],
+      dtype='object')
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df <span style="font-weight:bold">=</span> message_temp[[<span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;time_x&#39;</span>, <span style="color:#b84">&#39;time_y&#39;</span>, <span style="color:#b84">&#39;size_y&#39;</span>, <span style="color:#b84">&#39;price_x&#39;</span>, <span style="color:#b84">&#39;direction_x&#39;</span>]]
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;ts&#39;</span>, <span style="color:#b84">&#39;te&#39;</span>, <span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;direction&#39;</span>]
+</span></span><span style="display:flex;"><span>df[<span style="color:#b84">&#39;duration&#39;</span>] <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>te <span style="font-weight:bold">-</span> df<span style="font-weight:bold">.</span>ts
+</span></span><span style="display:flex;"><span>df<span style="font-weight:bold">.</span>shape
+</span></span></code></pre></div><pre><code>(15099, 7)
+</code></pre>
+<p>Here I defined a function <code>impact</code> to calculate the market impact (reflected on price deviation), such that for each successful execution, we calculate the price change after the same duration of the order.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">impact</span>(idx):
+</span></span><span style="display:flex;"><span>    S0, t, duration <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>loc[idx, [<span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;te&#39;</span>, <span style="color:#b84">&#39;duration&#39;</span>]]
+</span></span><span style="display:flex;"><span>    i <span style="font-weight:bold">=</span> <span style="font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(message_exec[message_exec<span style="font-weight:bold">.</span>time<span style="font-weight:bold">==</span>t]<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>], <span style="color:#999">len</span>(message_exec)):
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>            T <span style="font-weight:bold">=</span> message_exec<span style="font-weight:bold">.</span>loc[i, <span style="color:#b84">&#39;time&#39;</span>]
+</span></span><span style="display:flex;"><span>            ST <span style="font-weight:bold">=</span> message_exec<span style="font-weight:bold">.</span>loc[i, <span style="color:#b84">&#39;price&#39;</span>]
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> T <span style="font-weight:bold">-</span> t <span style="font-weight:bold">&gt;=</span> duration: <span style="font-weight:bold">break</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">except</span>:
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> i: <span style="font-weight:bold">return</span> np<span style="font-weight:bold">.</span>nan
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> ST <span style="font-weight:bold">-</span> S0
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[<span style="color:#b84">&#39;impact&#39;</span>] <span style="font-weight:bold">=</span> [impact(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> df<span style="font-weight:bold">.</span>index]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df_reg <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>dropna()[[<span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;impact&#39;</span>]]
+</span></span><span style="display:flex;"><span>df_reg<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;dQ&#39;</span>, <span style="color:#b84">&#39;dS&#39;</span>]
+</span></span><span style="display:flex;"><span>df_reg<span style="font-weight:bold">.</span>dS <span style="font-weight:bold">=</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>abs()
+</span></span><span style="display:flex;"><span>df_reg<span style="font-weight:bold">.</span>T
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">&hellip;</th>
+<th style="text-align:center">2456</th>
+<th style="text-align:center">2457</th>
+<th style="text-align:center">2458</th>
+<th style="text-align:center">2459</th>
+<th style="text-align:center">2460</th>
+<th style="text-align:center">2461</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">dQ</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">10.0</td>
+<td style="text-align:center">9.00</td>
+<td style="text-align:center">40.00</td>
+<td style="text-align:center">18.00</td>
+<td style="text-align:center">100.00</td>
+<td style="text-align:center">18.00</td>
+<td style="text-align:center">&hellip;</td>
+<td style="text-align:center">10.00</td>
+<td style="text-align:center">40.00</td>
+<td style="text-align:center">50.00</td>
+<td style="text-align:center">1.00</td>
+<td style="text-align:center">100.00</td>
+<td style="text-align:center">100.00</td>
+</tr>
+<tr>
+<td style="text-align:center">dS</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">0.03</td>
+<td style="text-align:center">0.19</td>
+<td style="text-align:center">0.07</td>
+<td style="text-align:center">0.09</td>
+<td style="text-align:center">0.21</td>
+<td style="text-align:center">&hellip;</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.08</td>
+<td style="text-align:center">0.08</td>
+<td style="text-align:center">0.03</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">14</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>scatter(df_reg<span style="font-weight:bold">.</span>dQ, df_reg<span style="font-weight:bold">.</span>dS, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, s<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;dQ&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;dS&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/eta_estimation1.png" style="width:100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>res <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>ols(formula<span style="font-weight:bold">=</span><span style="color:#b84">&#39;dS ~ dQ + 0&#39;</span>, data<span style="font-weight:bold">=</span>df_reg)<span style="font-weight:bold">.</span>fit()
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(res<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.148
+Model:                            OLS   Adj. R-squared:                  0.148
+Method:                 Least Squares   F-statistic:                     427.7
+Date:                Sat, 12 May 2018   Prob (F-statistic):           1.01e-87
+Time:                        14:02:16   Log-Likelihood:                 1535.7
+No. Observations:                2459   AIC:                            -3069.
+Df Residuals:                    2458   BIC:                            -3064.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ             0.0005   2.37e-05     20.680      0.000       0.000       0.001
+==============================================================================
+Omnibus:                     2646.045   Durbin-Watson:                   1.287
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           323199.873
+Skew:                           5.154   Prob(JB):                         0.00
+Kurtosis:                      58.210   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<p>Apparently there&rsquo;re several outliers that result in a low $R^2$. Here we remove outliers that are lying outside three standard deviations.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df_reg_no <span style="font-weight:bold">=</span> df_reg[((df_reg<span style="font-weight:bold">.</span>dQ <span style="font-weight:bold">-</span> df_reg<span style="font-weight:bold">.</span>dQ<span style="font-weight:bold">.</span>mean())<span style="font-weight:bold">.</span>abs() <span style="font-weight:bold">&lt;</span> df_reg<span style="font-weight:bold">.</span>dQ<span style="font-weight:bold">.</span>std() <span style="font-weight:bold">*</span> <span style="color:#099">3</span>) <span style="font-weight:bold">&amp;</span>
+</span></span><span style="display:flex;"><span>                   ((df_reg<span style="font-weight:bold">.</span>dS <span style="font-weight:bold">-</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>mean())<span style="font-weight:bold">.</span>abs() <span style="font-weight:bold">&lt;</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>std() <span style="font-weight:bold">*</span> <span style="color:#099">3</span>)]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure(figsize<span style="font-weight:bold">=</span>(<span style="color:#099">14</span>, <span style="color:#099">6</span>))
+</span></span><span style="display:flex;"><span>ax <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">111</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>scatter(df_reg_no<span style="font-weight:bold">.</span>dQ, df_reg_no<span style="font-weight:bold">.</span>dS, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;k&#39;</span>, s<span style="font-weight:bold">=</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;dQ&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;dS&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/eta_estimation2.png" style="width:100%"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>res <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>ols(formula<span style="font-weight:bold">=</span><span style="color:#b84">&#39;dS ~ dQ + 0&#39;</span>, data<span style="font-weight:bold">=</span>df_reg_no)<span style="font-weight:bold">.</span>fit()
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(res<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.296
+Model:                            OLS   Adj. R-squared:                  0.295
+Method:                 Least Squares   F-statistic:                     1005.
+Date:                Sat, 12 May 2018   Prob (F-statistic):          1.45e-184
+Time:                        14:02:20   Log-Likelihood:                 2470.2
+No. Observations:                2397   AIC:                            -4938.
+Df Residuals:                    2396   BIC:                            -4933.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ             0.0006   1.97e-05     31.710      0.000       0.001       0.001
+==============================================================================
+Omnibus:                      356.596   Durbin-Watson:                   1.108
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              567.767
+Skew:                           1.012   Prob(JB):                    5.14e-124
+Kurtosis:                       4.259   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<p>So we conclude $\hat{\eta}_{\text{AAPL}}=0.0006$ for the underlying timespan. However, what about other companies? The coefficients are expected to vary largely, which is though the very worst case we&rsquo;d like to see.</p>
+<h1 id="comparison">Comparison</h1>
+<p>We first define a function <code>estimate</code> to automate what we&rsquo;ve done above.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">estimate</span>(symbol):
+</span></span><span style="display:flex;"><span>    message <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>read_csv(<span style="color:#b84">&#39;data/</span><span style="color:#b84">{}</span><span style="color:#b84">_2012-06-21_34200000_57600000_message_1.csv&#39;</span><span style="font-weight:bold">.</span>format(symbol), header<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>)
+</span></span><span style="display:flex;"><span>    message<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;time&#39;</span>, <span style="color:#b84">&#39;type&#39;</span>, <span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;direction&#39;</span>]
+</span></span><span style="display:flex;"><span>    message<span style="font-weight:bold">.</span>price <span style="font-weight:bold">/=</span> <span style="color:#099">10000</span>
+</span></span><span style="display:flex;"><span>    message_plce <span style="font-weight:bold">=</span> message[message<span style="font-weight:bold">.</span>type<span style="font-weight:bold">==</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>    message_exec <span style="font-weight:bold">=</span> message[message<span style="font-weight:bold">.</span>type<span style="font-weight:bold">==</span><span style="color:#099">4</span>]
+</span></span><span style="display:flex;"><span>    message_temp <span style="font-weight:bold">=</span> pd<span style="font-weight:bold">.</span>merge(message_plce, message_exec, on<span style="font-weight:bold">=</span><span style="color:#b84">&#39;id&#39;</span>, how<span style="font-weight:bold">=</span><span style="color:#b84">&#39;inner&#39;</span>)
+</span></span><span style="display:flex;"><span>    df <span style="font-weight:bold">=</span> message_temp[[<span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;time_x&#39;</span>, <span style="color:#b84">&#39;time_y&#39;</span>, <span style="color:#b84">&#39;size_y&#39;</span>, <span style="color:#b84">&#39;price_x&#39;</span>, <span style="color:#b84">&#39;direction_x&#39;</span>]]
+</span></span><span style="display:flex;"><span>    df<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;id&#39;</span>, <span style="color:#b84">&#39;ts&#39;</span>, <span style="color:#b84">&#39;te&#39;</span>, <span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;direction&#39;</span>]
+</span></span><span style="display:flex;"><span>    df[<span style="color:#b84">&#39;duration&#39;</span>] <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>te <span style="font-weight:bold">-</span> df<span style="font-weight:bold">.</span>ts
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">impact</span>(idx):
+</span></span><span style="display:flex;"><span>        S0, t, duration <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>loc[idx, [<span style="color:#b84">&#39;price&#39;</span>, <span style="color:#b84">&#39;te&#39;</span>, <span style="color:#b84">&#39;duration&#39;</span>]]
+</span></span><span style="display:flex;"><span>        i <span style="font-weight:bold">=</span> <span style="font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(message_exec[message_exec<span style="font-weight:bold">.</span>time<span style="font-weight:bold">==</span>t]<span style="font-weight:bold">.</span>index[<span style="color:#099">0</span>], <span style="color:#999">len</span>(message_exec)):
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>                T <span style="font-weight:bold">=</span> message_exec<span style="font-weight:bold">.</span>loc[i, <span style="color:#b84">&#39;time&#39;</span>]
+</span></span><span style="display:flex;"><span>                ST <span style="font-weight:bold">=</span> message_exec<span style="font-weight:bold">.</span>loc[i, <span style="color:#b84">&#39;price&#39;</span>]
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">if</span> T <span style="font-weight:bold">-</span> t <span style="font-weight:bold">&gt;=</span> duration: <span style="font-weight:bold">break</span>
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">except</span>:
+</span></span><span style="display:flex;"><span>                <span style="font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> i: <span style="font-weight:bold">return</span> np<span style="font-weight:bold">.</span>nan
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span> ST <span style="font-weight:bold">-</span> S0
+</span></span><span style="display:flex;"><span>    df[<span style="color:#b84">&#39;impact&#39;</span>] <span style="font-weight:bold">=</span> [impact(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> df<span style="font-weight:bold">.</span>index]
+</span></span><span style="display:flex;"><span>    df_reg <span style="font-weight:bold">=</span> df<span style="font-weight:bold">.</span>dropna()[[<span style="color:#b84">&#39;size&#39;</span>, <span style="color:#b84">&#39;impact&#39;</span>]]
+</span></span><span style="display:flex;"><span>    df_reg<span style="font-weight:bold">.</span>columns <span style="font-weight:bold">=</span> [<span style="color:#b84">&#39;dQ&#39;</span>, <span style="color:#b84">&#39;dS&#39;</span>]
+</span></span><span style="display:flex;"><span>    df_reg<span style="font-weight:bold">.</span>dS <span style="font-weight:bold">=</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>abs()
+</span></span><span style="display:flex;"><span>    df_reg_no <span style="font-weight:bold">=</span> df_reg[((df_reg<span style="font-weight:bold">.</span>dQ <span style="font-weight:bold">-</span> df_reg<span style="font-weight:bold">.</span>dQ<span style="font-weight:bold">.</span>mean())<span style="font-weight:bold">.</span>abs() <span style="font-weight:bold">&lt;</span> df_reg<span style="font-weight:bold">.</span>dQ<span style="font-weight:bold">.</span>std() <span style="font-weight:bold">*</span> <span style="color:#099">3</span>) <span style="font-weight:bold">&amp;</span>
+</span></span><span style="display:flex;"><span>                       ((df_reg<span style="font-weight:bold">.</span>dS <span style="font-weight:bold">-</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>mean())<span style="font-weight:bold">.</span>abs() <span style="font-weight:bold">&lt;</span> df_reg<span style="font-weight:bold">.</span>dS<span style="font-weight:bold">.</span>std() <span style="font-weight:bold">*</span> <span style="color:#099">3</span>)]
+</span></span><span style="display:flex;"><span>    res <span style="font-weight:bold">=</span> sm<span style="font-weight:bold">.</span>ols(formula<span style="font-weight:bold">=</span><span style="color:#b84">&#39;dS ~ dQ + 0&#39;</span>, data<span style="font-weight:bold">=</span>df_reg_no)<span style="font-weight:bold">.</span>fit()
+</span></span><span style="display:flex;"><span>    <span style="color:#999">print</span>(res<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><p>The estimation for Microsoft Corp. (symbol: <code>MSFT</code>) is as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>estimate(<span style="color:#b84">&#39;MSFT&#39;</span>)
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.229
+Model:                            OLS   Adj. R-squared:                  0.228
+Method:                 Least Squares   F-statistic:                     550.7
+Date:                Sat, 12 May 2018   Prob (F-statistic):          7.20e-107
+Time:                        14:04:51   Log-Likelihood:                 5732.8
+No. Observations:                1859   AIC:                        -1.146e+04
+Df Residuals:                    1858   BIC:                        -1.146e+04
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ          1.859e-05   7.92e-07     23.467      0.000     1.7e-05    2.01e-05
+==============================================================================
+Omnibus:                      201.842   Durbin-Watson:                   0.778
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              381.770
+Skew:                           0.703   Prob(JB):                     1.26e-83
+Kurtosis:                       4.719   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<p>The estimation for Amazon.com, Inc. (symbol: <code>AMZN</code>) is as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>estimate(<span style="color:#b84">&#39;AMZN&#39;</span>)
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.294
+Model:                            OLS   Adj. R-squared:                  0.293
+Method:                 Least Squares   F-statistic:                     328.9
+Date:                Sat, 12 May 2018   Prob (F-statistic):           1.02e-61
+Time:                        14:06:56   Log-Likelihood:                 809.19
+No. Observations:                 791   AIC:                            -1616.
+Df Residuals:                     790   BIC:                            -1612.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ             0.0007   3.74e-05     18.136      0.000       0.001       0.001
+==============================================================================
+Omnibus:                      141.501   Durbin-Watson:                   1.022
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              250.801
+Skew:                           1.083   Prob(JB):                     3.46e-55
+Kurtosis:                       4.709   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<p>The estimation for Alphabet Inc. (symbol: <code>GOOG</code>) is as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>estimate(<span style="color:#b84">&#39;GOOG&#39;</span>)
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.419
+Model:                            OLS   Adj. R-squared:                  0.418
+Method:                 Least Squares   F-statistic:                     324.2
+Date:                Sat, 12 May 2018   Prob (F-statistic):           5.96e-55
+Time:                        14:07:20   Log-Likelihood:                 169.55
+No. Observations:                 450   AIC:                            -337.1
+Df Residuals:                     449   BIC:                            -333.0
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ             0.0017   9.57e-05     18.005      0.000       0.002       0.002
+==============================================================================
+Omnibus:                       48.913   Durbin-Watson:                   1.331
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               61.896
+Skew:                           0.864   Prob(JB):                     3.63e-14
+Kurtosis:                       3.563   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<p>The estimation for Intel Corp. (symbol: <code>INTC</code>) is as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>estimate(<span style="color:#b84">&#39;INTC&#39;</span>)
+</span></span></code></pre></div><pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                     dS   R-squared:                       0.237
+Model:                            OLS   Adj. R-squared:                  0.237
+Method:                 Least Squares   F-statistic:                     444.2
+Date:                Sat, 12 May 2018   Prob (F-statistic):           4.52e-86
+Time:                        14:08:47   Log-Likelihood:                 4480.8
+No. Observations:                1429   AIC:                            -8960.
+Df Residuals:                    1428   BIC:                            -8954.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+dQ          2.275e-05   1.08e-06     21.076      0.000    2.06e-05    2.49e-05
+==============================================================================
+Omnibus:                      164.136   Durbin-Watson:                   0.716
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              284.351
+Skew:                           0.762   Prob(JB):                     1.79e-62
+Kurtosis:                       4.566   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</code></pre>
+<h1 id="conclusion">Conclusion</h1>
+<p>In sum, the market impact are generally significant but not leading to high $R^2$ values, which suggests the linear assumption might be too strong. Also, it is noteworthy that $\hat{\eta}$ does vary largely between companies (let alone industries or equity types), which means we cannot use one estimation as a benchmark for general production usage.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/optimal-order-execution-4/">Literature Review on Optimal Order Execution (4)</a></span>
+  <span class="nav-next"><a href="/blog/lda-rmda/">LDA and R-MDA</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/optimal-order-execution-4\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/lda-rmda\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

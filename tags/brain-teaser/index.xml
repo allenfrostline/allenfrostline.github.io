@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>brain teaser on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/brain-teaser/</link>
+    <description>Recent content in brain teaser on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 14 Nov 2019 13:56:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/brain-teaser/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Josephus Problem</title>
+      <link>https://allenfrostline.com/blog/josephus-problem/</link>
+      <pubDate>Thu, 14 Nov 2019 13:56:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/josephus-problem/</guid>
+      <description>A terribly large number of hostages, say $n=1000$ people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the $k=4$-th people to the left of him/her. Since the queue is circular, when it comes to the people standing on the leftmost spots, the next person to be killed may be from the first several ones as the procedure can repeat untill there&amp;rsquo;s only one person alive.</description>
+    </item>
+  </channel>
+</rss>

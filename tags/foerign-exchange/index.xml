@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>foerign exchange on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/foerign-exchange/</link>
+    <description>Recent content in foerign exchange on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 21 Feb 2019 23:08:49 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/foerign-exchange/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Foreign Exchange</title>
+      <link>https://allenfrostline.com/blog/notes-on-foreign-exchange/</link>
+      <pubDate>Thu, 21 Feb 2019 23:08:49 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-foreign-exchange/</guid>
+      <description>These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&amp;rsquo;s contents and thus please feel free to point out if there&amp;rsquo;s anything you find important but missing here. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\MGF}{\text{MGF}}$
+Pricing in Theory Notations $d$ $\equiv$ superscript for domestic currency $f$ $\equiv$ superscript for foreign currency $t$ $\equiv$ current time $T$ $\equiv$ delivery time $S_t$ $\equiv$ spot price of a foreign currency in domestic currency $N$ $\equiv$ number of units in transaction $R$ $\equiv$ fixed contract rate $r$ $\equiv$ interest rate $PV$ $\equiv$ present value $P$ $\equiv$ PV of a zero-coupon bond $D$ $\equiv$ currency deposit (money market account) FX Spot Price The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) $1 = S_t$.</description>
+    </item>
+  </channel>
+</rss>

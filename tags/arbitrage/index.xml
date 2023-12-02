@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>arbitrage on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/arbitrage/</link>
+    <description>Recent content in arbitrage on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 27 Jul 2018 16:04:01 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/arbitrage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cryptocurrency Arbitrage (3): One More Strategy</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</link>
+      <pubDate>Fri, 27 Jul 2018 16:04:01 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</guid>
+      <description>It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market is primitive and savage in many senses, by which I mean there&amp;rsquo;re supposed to be a bunch of inefficiency and corresponding arbitrage opportunities.
+On the top of the page is the backtest PnL of the new strategy 4 from 01/01 up to yesterday, 07/26.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (2): Performance</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</link>
+      <pubDate>Tue, 09 Jan 2018 02:28:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</guid>
+      <description>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. Europe/Amsterdam. Cheers!
+Update April 11:
+Strategy offline before I realized my AWS bills was being owed and the server down due to that&amp;hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc.</description>
+    </item>
+    <item>
+      <title>Cryptocurrency Arbitrage (1): Some Ideas</title>
+      <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</link>
+      <pubDate>Thu, 21 Dec 2017 19:52:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</guid>
+      <description>Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within 24 hours. Together with BTC, mainstream altcoins like ETH and ETC faced significant slump since a week ago. On contrary, XRP, because of the rumored endorcement from big companies like Amazon, is experiencing a straight appreciation of almost 100% since two weeks ago.</description>
+    </item>
+  </channel>
+</rss>

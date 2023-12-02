@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>How to Set Up an Algo-trading System on Aliyun - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="How to Set Up an Algo-trading System on Aliyun - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>How to Set Up an Algo-trading System on Aliyun</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-01-25
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It&rsquo;s been a while since I first heard of the GitHub project <a href="https://github.com/shidenggui/easytrader">easytrader</a>, which is a well wrapped API for transporting the paper trading signals on <a href="https://www.ricequant.com">Ricequant</a> or <a href="https://www.joinquant.com">Joinquant</a> to the broker&rsquo;s trading softwares or <a href="https://www.xueqiu.com">Xueqiu</a>, as I will introduce below.<!-- more --></p>
+<h1 id="server-aliyun-ecs">Server: Aliyun ECS</h1>
+<p>Aliyun Elastic Compute Service (ECS) is by far the most stable server option in mainland China. Costs less than $7 p/m and offering free trial for months. I also considered Amazon&rsquo;s AWS &ndash; more stable and famous, cheaper, longer free trial, but not as fast as Aliyun if I&rsquo;m gonna run scripts crawling data from servers right in China.</p>
+<h1 id="system-centos-7">System: CentOS 7</h1>
+<p>Light and again, stable, with update cycles famous to be as long as years. The inheritance of the system configuration is expected to be better than other options. At least, I can find more information about my could-happen-in-the-future problems on websites like <em>Stackoverflow</em>, with no confusion about the versions.</p>
+<h1 id="interface-bash--jupyter-notebook">Interface: bash &amp; Jupyter Notebook</h1>
+<p>Well although bash may be the &ldquo;universal&rdquo; impression of Linux systems, I choose Jupyter Notebook on Safari using my own Mac.</p>
+<p>Mostly, of course. Frist run the following scripts in the bash terminal on your localhost</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh root@your_host_ip
+</span></span></code></pre></div><p>and enter the password for the root user. The terminal now enters through ssh onto your server, and if nothing goes wrong, it should prints</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Last login: Wed Jan <span style="color:#099">25</span> 19:56:04 <span style="color:#099">2017</span> from 85.149.7.103
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Welcome to aliyun Elastic Compute Service!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">[</span>root@your_hostname ~<span style="font-weight:bold">]</span><span style="color:#998;font-style:italic"># ...</span>
+</span></span></code></pre></div><p>Now, enter</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo yum update -y
+</span></span><span style="display:flex;"><span>sudo yum install bzip2 -y
+</span></span><span style="display:flex;"><span>sudo shutdown -r now
+</span></span></code></pre></div><p>Then reboot the system. Go to the official <a href="https://www.continuum.io/downloads">Anaconda</a> website to check the most up-to-date version, and do the following.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#999">cd</span> ~
+</span></span><span style="display:flex;"><span>wget http://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh
+</span></span><span style="display:flex;"><span>sudo bash Anaconda3-4.1.1-Linux-x86_64.sh
+</span></span></code></pre></div><p>Notice that the second &amp; third lines should vary with the version you opt. Now, the terminal will ask a lot of questions, just press ENTER until you cannot. It will be</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Do you approve the license terms? <span style="font-weight:bold">[</span>yes|no<span style="font-weight:bold">]</span>
+</span></span></code></pre></div><p>Of course yes, and then again press ENTER till you can&rsquo;t. After the Anaconda is installed, type the following.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#999">cd</span> ~
+</span></span><span style="display:flex;"><span>jupyter notebook --generate-config
+</span></span></code></pre></div><p>Let&rsquo;s see whether it&rsquo;s successfully done by entering</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>jupyter notebook --ip<span style="font-weight:bold">=</span>your_host_ip
+</span></span></code></pre></div><p>This should open a service on <code>https://host:8888/</code>, go check it out on your browser.</p>
+<h1 id="tradepy">trade.py</h1>
+<p>New a textfile on the top right corner of Jupyter Notebook, rename it to <code>trade.py</code> and then paste the following.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">easytrader</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">json</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">logging</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">os</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">subprocess</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logger <span style="font-weight:bold">=</span> logging<span style="font-weight:bold">.</span>getLogger(<span style="color:#b84">&#39;mylogger&#39;</span>)  
+</span></span><span style="display:flex;"><span>logger<span style="font-weight:bold">.</span>setLevel(logging<span style="font-weight:bold">.</span>DEBUG)  
+</span></span><span style="display:flex;"><span>fh <span style="font-weight:bold">=</span> logging<span style="font-weight:bold">.</span>FileHandler(<span style="color:#b84">&#39;trade.log&#39;</span>)  
+</span></span><span style="display:flex;"><span>fh<span style="font-weight:bold">.</span>setLevel(logging<span style="font-weight:bold">.</span>DEBUG)  
+</span></span><span style="display:flex;"><span>formatter <span style="font-weight:bold">=</span> logging<span style="font-weight:bold">.</span>Formatter(<span style="color:#b84">&#39;</span><span style="color:#b84">%(asctime)s</span><span style="color:#b84"> - </span><span style="color:#b84">%(levelname)s</span><span style="color:#b84"> - </span><span style="color:#b84">%(message)s</span><span style="color:#b84">&#39;</span>)  
+</span></span><span style="display:flex;"><span>fh<span style="font-weight:bold">.</span>setFormatter(formatter)    
+</span></span><span style="display:flex;"><span>logger<span style="font-weight:bold">.</span>addHandler(fh)   
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>    xq_user <span style="font-weight:bold">=</span> easytrader<span style="font-weight:bold">.</span>use(<span style="color:#b84">&#39;xq&#39;</span>)
+</span></span><span style="display:flex;"><span>    xq_user<span style="font-weight:bold">.</span>prepare(user<span style="font-weight:bold">=</span><span style="color:#b84">&#39;your_xq_mail_address&#39;</span>, account<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>, password<span style="font-weight:bold">=</span><span style="color:#b84">&#39;your_xq_pwd&#39;</span>, portfolio_code<span style="font-weight:bold">=</span><span style="color:#b84">&#39;your_xq_portfolio_code&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> pos <span style="font-weight:bold">in</span> xq_user<span style="font-weight:bold">.</span>position:
+</span></span><span style="display:flex;"><span>        logger<span style="font-weight:bold">.</span>info(json<span style="font-weight:bold">.</span>dumps(pos, indent<span style="font-weight:bold">=</span><span style="color:#099">4</span>, ensure_ascii<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    jq_follower <span style="font-weight:bold">=</span> easytrader<span style="font-weight:bold">.</span>follower(<span style="color:#b84">&#39;jq&#39;</span>)
+</span></span><span style="display:flex;"><span>    jq_follower<span style="font-weight:bold">.</span>login(user<span style="font-weight:bold">=</span><span style="color:#b84">&#39;your_jq_account&#39;</span>, password<span style="font-weight:bold">=</span><span style="color:#b84">&#39;your_jq_pwd&#39;</span>)
+</span></span><span style="display:flex;"><span>    jq_follower<span style="font-weight:bold">.</span>follow(xq_user, <span style="color:#b84">&#39;your_paper_trade_url&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">except</span>:
+</span></span><span style="display:flex;"><span>    logger<span style="font-weight:bold">.</span>error(<span style="color:#b84">&#39;Error receiving signals.&#39;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    git_dir <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;easytrader_git&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> os<span style="font-weight:bold">.</span>path<span style="font-weight:bold">.</span>exists(git_dir):
+</span></span><span style="display:flex;"><span>        subprocess<span style="font-weight:bold">.</span>getoutput(<span style="color:#b84">&#39;git clone http://github.com/shidenggui/easytrader&#39;</span>)
+</span></span><span style="display:flex;"><span>        subprocess<span style="font-weight:bold">.</span>getoutput(<span style="color:#b84">&#39;mv easytrader </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(git_dir))
+</span></span><span style="display:flex;"><span>        subprocess<span style="font-weight:bold">.</span>getoutput(<span style="color:#b84">&#39;ln -s `pwd`/</span><span style="color:#b84">{}</span><span style="color:#b84">/easytrader easytrader&#39;</span><span style="font-weight:bold">.</span>format(git_dir))
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>        subprocess<span style="font-weight:bold">.</span>getoutput(<span style="color:#b84">&#39;cd </span><span style="color:#b84">{}</span><span style="color:#b84"> &amp;&amp; git pull&#39;</span><span style="font-weight:bold">.</span>format(git_dir))
+</span></span><span style="display:flex;"><span>    logger<span style="font-weight:bold">.</span>info(<span style="color:#b84">&#39;easytrader updated.&#39;</span>)
+</span></span></code></pre></div><p>This is the main course of our big meal. The script should be kept running and anytime (including the first time) it find the easytrader version not up-to-date, it clones the repository from GitHub automatically.</p>
+<p>Talking about keeping it running, we need yet another tool to make our little script a daemon service and enable it to restart anytime the process dies somehow. I tried <code>nohup</code>, which keeps the script running when I log off the server, but has no function on restarting dead scripts. Later I considered <code>supervisor</code>, <code>screen</code> and <code>tmux</code>, which are all very famous monitoring applications on Linux, but also all too redundant. Finally I found a <a href="https://github.com/dspinellis/pmonitor">repository</a> on GitHub called <code>pmonitor</code>, which perfectly met my need, with no other functions trivial.</p>
+<p>After installation according to the instruction on the GitHub page, enter the following</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pmonitor python trade.py &gt; trade.log 2&gt;&amp;<span style="color:#099">1</span> &lt;/dev/null &amp;
+</span></span></code></pre></div><p>Now exit the server and try to check whether the process is still there:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ps ax | grep python
+</span></span></code></pre></div><p>Well, it should be :)</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/strategy-lstm-neural-network-small-cap/">Strategy: LSTM Neural Network &#43; Small Cap</a></span>
+  <span class="nav-next"><a href="/blog/strategy-trump-tweets/">What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/strategy-lstm-neural-network-small-cap\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/strategy-trump-tweets\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

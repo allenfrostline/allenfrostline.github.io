@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>order execution on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/order-execution/</link>
+    <description>Recent content in order execution on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 12 May 2018 14:33:11 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/order-execution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Literature Review on Optimal Order Execution (5)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-5/</link>
+      <pubDate>Sat, 12 May 2018 14:33:11 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-5/</guid>
+      <description>This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction data, we have the approximation $dS = \eta\cdot dQ$ and thus can easily estimate it by the method of Ordinary Least Squares (OLS), using the message book data provided by LOBSTER.
+Experiment: Apple We first explore the message book of Apple Inc.</description>
+    </item>
+    <item>
+      <title>Literature Review on Optimal Order Execution (4)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-4/</link>
+      <pubDate>Sun, 06 May 2018 13:24:11 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-4/</guid>
+      <description>Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size $Q$, we can estimate the probability to perform the optimal strategy in the paper within time horizon of $T$.
+Mathematical Formulation It is tolerable1 in HFT that we assume stock price evolves according to the discrete time arithmetic Brownian motion:
+\begin{cases} dS(t) = \mu dt + \sigma dW(t),\\ dQ(t) = -\dot{Q}(t)dt \end{cases}</description>
+    </item>
+    <item>
+      <title>Literature Review on Optimal Order Execution (3)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-3/</link>
+      <pubDate>Sun, 29 Apr 2018 22:50:27 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-3/</guid>
+      <description>Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying to abandon the assumption of unified order sizes. To implement that, I need to shift from a Markov chain which is supported by discrete spaces, onto some other stochastic process that is estimatable. Moreover, although I actually considered supervised learning for this problem, I gave it up at last.</description>
+    </item>
+    <item>
+      <title>Literature Review on Optimal Order Execution (2)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-2/</link>
+      <pubDate>Sun, 29 Apr 2018 18:53:21 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-2/</guid>
+      <description>Today, I&amp;rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&amp;rsquo;ll mainly walk through six papers by Rama Cont, respectively in 2010 and 2018. Professor Cont is renowned for his indepth research in stochastic analysis, stochastic processes and mathematical modeling in quantitative finance. He&amp;rsquo;s written dozens of papers concerning the order book dynamics by building rigorous mathematical models.
+Rama Cont, Sasha Stoikov and Rishi Talreja (2010) In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain.</description>
+    </item>
+    <item>
+      <title>Literature Review on Optimal Order Execution (1)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-1/</link>
+      <pubDate>Mon, 23 Apr 2018 11:41:38 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-1/</guid>
+      <description>I&amp;rsquo;m recently reading several papers on modelling stock order behavior and its corresponding optimal strategies. Compared with classical quantitative trading strategies, serious research on order optimization has a short history as its major importance dazzles in high frequency trading (HFT), one of the youngest childs of finance. I&amp;rsquo;ll wrap up the main ideas and methodologies below in a paper-wise manner. Further unregular updates on this post are expected. Specifically, the models below are trying to answer this question: how much time should I expect before my limit order gets executed?</description>
+    </item>
+  </channel>
+</rss>

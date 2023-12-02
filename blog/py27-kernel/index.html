@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Adding a Python 2.7 Kernel in Jupyter - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Adding a Python 2.7 Kernel in Jupyter - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:
+[&amp;hellip;] Before we start installing anything, let&amp;rsquo;s update anaconda.
+conda update &amp;hellip;">
+      <meta property="og:description" content="It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:
+[&amp;hellip;] Before we start installing anything, let&amp;rsquo;s update anaconda.
+conda update &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Adding a Python 2.7 Kernel in Jupyter</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-10-30
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:</p>
+<h1 id="up-to-date-anaconda">Up-to-Date Anaconda</h1>
+<p>Before we start installing anything, let&rsquo;s update anaconda.</p>
+<pre tabindex="0"><code>conda update conda
+</code></pre><p>In case of error concerning <code>setuptools</code>, you may reinstall it before the update. In that case, the scripts would be</p>
+<pre tabindex="0"><code>conda uninstall setuptools
+conda install setuptools
+conda update --force conda
+</code></pre><h1 id="python-27-environment">Python 2.7 Environment</h1>
+<p>We need, of course, a brand new python 2.7 installed.</p>
+<pre tabindex="0"><code>conda create -n py27 python=2.7
+conda activate py27
+</code></pre><p>where we name the new environment as &ldquo;py27&rdquo;. You can name it otherwise as you like.</p>
+<h1 id="new-ipython-kernel">New IPython Kernel</h1>
+<p>Last, let&rsquo;s create the kernel we need.</p>
+<pre tabindex="0"><code>(py27) conda install ipykernel
+(py27) python -m ipykernel install --name Python2.7
+(py27) conda deactivate
+</code></pre><p>where we name the new python 2.7 kernel as &ldquo;Python2.7&rdquo;, which again can be named differently. If you now launch jupyter notebook from your terminal, you shall be able to see this &ldquo;Python2.7&rdquo; kernel right below the original one, usually named &ldquo;Python 3&rdquo;.</p>
+<p><img src="/images/py27-kernel.png" style="width:min(300px, 100%)"></img></p>
+<h1 id="one-more-thing">One More Thing</h1>
+<p>Although we&rsquo;ve finished creating the python 2.7 kernel, there&rsquo;s still something to carry in one&rsquo;s mind. The fact is, since we are running everything within the &ldquo;py27&rdquo; conda environment, it is suggested that you install any new python 2.7 packages also within this environment, e.g.</p>
+<pre tabindex="0"><code>conda activate py27
+(py27) conda install xxx
+(py27) ...
+(py27) conda deactivate
+</code></pre>
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/bokeh-in-post/">Bokeh Plots in a Blog Post</a></span>
+  <span class="nav-next"><a href="/blog/canned-yellow-peach/">黄桃罐头</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/bokeh-in-post\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/canned-yellow-peach\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

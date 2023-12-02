@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>STDIN on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/stdin/</link>
+    <description>Recent content in STDIN on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 10 Oct 2017 19:45:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/stdin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3</title>
+      <link>https://allenfrostline.com/blog/how-to-build-cpp-with-stdin/</link>
+      <pubDate>Tue, 10 Oct 2017 19:45:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-build-cpp-with-stdin/</guid>
+      <description>I&amp;rsquo;ve been a die-hard fan of Sublime Text (ST), all the time from the 2nd to the 3rd version now. To be frank, I use ST in almost all situations: taking lecture notes in LaTeX, drafting small projects in Python or R (while for large projects, Jupyter Notebook and RStudio are stronger platforms), or tracking my Todo-list in Markdown. Everything works so smoothly and lightly with ST, especially compared with IDEs like Xcode or Visual Studio.</description>
+    </item>
+  </channel>
+</rss>

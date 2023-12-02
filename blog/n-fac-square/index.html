@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Can n! be a Square Number? - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Can n! be a Square Number? - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I read about this simple yet interesting question the other day:
+[&amp;hellip;] Can $n!$ be a square number?
+[&amp;hellip;] Of course, here we implcitly assume that $n$ is a positive integer. Moreover, &amp;hellip;">
+      <meta property="og:description" content="I read about this simple yet interesting question the other day:
+[&amp;hellip;] Can $n!$ be a square number?
+[&amp;hellip;] Of course, here we implcitly assume that $n$ is a positive integer. Moreover, &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Can n! be a Square Number?</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-09-11
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>I read about this simple yet interesting question the other day:</p>
+<blockquote>
+<p>Can <code>$n!$</code> be a square number?</p>
+</blockquote>
+<p>Of course, here we implcitly assume that <code>$n$</code> is a positive integer. Moreover, we&rsquo;re aware of the trivial case when <code>$n=1$</code> (and yes it holds in that case). The problem seems easy at first glance but turns out not at all. There are a bunch of ways for you to factorize <code>$n!$</code> into prime numbers, to construct a pattern of products in the form of a square number, etc. Some may work, some not.</p>
+<h1 id="original-problem">Original Problem</h1>
+<p>The best solution is given by the <a href="https://en.wikipedia.org/wiki/Bertrand%27s_postulate">Bertrand&rsquo;s postulate</a>, which is a theorem that states for any positive integer <code>$n&gt;1$</code> we&rsquo;ll always have at least one prime number <code>$p$</code> s.t. <code>$n&lt;p&lt;2n$</code>. The <a href="https://en.wikipedia.org/wiki/Proof_of_Bertrand%27s_postulate">proof</a> is not easy and the statement is just as strong — With Bertrand&rsquo;s postulate we know there&rsquo;s always a prime <code>$p$</code> that satifies <code>$\lfloor n / 2\rfloor &lt; p &lt; n$</code> and thus in no way can we find another number <code>$m&lt;n$</code> that has factor <code>$p$</code>. Being a prime number, <code>$p$</code> itself is not a square either, so we conclude <code>$n!$</code> can never be a square number for any <code>$n&gt;1$</code>.</p>
+<h1 id="generalized-problem">Generalized Problem</h1>
+<p>Now that we&rsquo;ve successfully arrived at a conclusion for <code>$n!$</code>, let&rsquo;s try another problem that highly resembles the one we just solved:</p>
+<blockquote>
+<p>Can product of <code>$n$</code> consecutive integers be a square number?</p>
+</blockquote>
+<p>Again we&rsquo;re here neglecting the trivial cases when <code>$n=1$</code> &lsquo;cause that then is a problem of whether the only number is a square or not. When <code>$n&gt;1$</code>, the resemblance is apparent: when we consider the first <code>$n$</code> positive integers, the problem falls back to the first one. However, how are we gonna answer this question in general? An educated guess would be a &ldquo;no&rdquo; with the conclusion from the first problem and the straightforward observation for <code>$n=2$</code>. When <code>$n=2$</code>, we&rsquo;re basically asking if <code>$k\cdot(k+1)$</code> can be a perfect square for positive <code>$k$</code>. It can&rsquo;t, because <code>$k^2&lt;k\cdot(k+1)&lt;(k+1)^2$</code> and there&rsquo;s simply no square number in between of two consecutive squares.</p>
+<p>When <code>$n=3$</code>, it&rsquo;s a little trickier but still we can handle it. Notice by Euclidean, <code>$k$</code> is coprime with both <code>$k-1$</code> and <code>$k+1$</code> respectively and therefore also with <code>$k^1-1$</code>. This means <code>$k$</code> shares no common factors with <code>$k^2-1$</code>. Hence the product of the two has no duplicate factors and cannot be a perfect square.</p>
+<p>When <code>$n=4$</code>, let <code>$x=k+1/2$</code> and we know the product can be written as</p>
+<p>$$
+\begin{align}
+(n-1)\cdot n\cdot (n+1)\cdot (n+2) &amp;=
+\left(k-\frac{3}{2}\right)\left(k-\frac{1}{2}\right)\left(k+\frac{1}{2}\right)\left(k+\frac{3}{2}\right)\&amp;=
+\left(k^2-\frac{9}{4}\right)\left(k^2 - \frac{1}{4}\right) \&amp;=
+\left(k^2-\frac{5}{4} - 1\right)\left(k^2 - \frac{5}{4} + 1\right) = \left(k^2- \frac{5}{4}\right)^{!!2} - 1
+\end{align}
+$$</p>
+<p>and thus by Euclidean (again) this product cannot be a perfect square. What about <code>$n=5$</code>? What about larger and even general <code>$n&gt;1$</code>? It turns out to be an extremely hard one to answer but luckily, <a href="https://en.wikipedia.org/wiki/Paul_Erd%C5%91s">Paul Erdös</a> and <a href="https://en.wikipedia.org/wiki/John_Selfridge">John Selfridge</a> gave a rigorous proof in their <a href="https://www.renyi.hu/~p_erdos/1975-46.pdf">paper</a> published back in 1975. The conclusion, namely that the product of any two or more consecutive positive integers is never a perfect square, is merely a special case of their first result. Actually, theorem 1 in the paper states that the product of two or more consecutive positive integers is never a <strong>power</strong>, i.e. can never be represented in the form of <code>$p^t$</code> where both <code>$p$</code> and <code>$t$</code> are positive integers.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/continuous-integration-blog/">Continuous Integration in Blogging</a></span>
+  <span class="nav-next"><a href="/blog/suitcase/">行李箱</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/continuous-integration-blog\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/suitcase\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

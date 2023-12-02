@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>price on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/price/</link>
+    <description>Recent content in price on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sun, 03 Sep 2017 06:50:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/price/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How I collected over 600k lines of prices in China</title>
+      <link>https://allenfrostline.com/blog/how-i-collected-over-600k/</link>
+      <pubDate>Sun, 03 Sep 2017 06:50:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-i-collected-over-600k/</guid>
+      <description>Hey there you are. I&amp;rsquo;m finally back here after over two months without posting anything. Was I being lazy? No, definitely not. It would be the busiest summer you&amp;rsquo;ve ever heard. I carried out several projects, some still in progress and the others finished in July and August. Start from today on, I&amp;rsquo;m gonna share you guys what I did this summer, in five or six posts I suppose. In</description>
+    </item>
+    <item>
+      <title>Bitcoin Inter-exchange Price Spread Prediction</title>
+      <link>https://allenfrostline.com/blog/bitcoin-time-series/</link>
+      <pubDate>Sun, 21 May 2017 00:59:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/bitcoin-time-series/</guid>
+      <description>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. Step 1: Import All Packages import quandl import cmocean import warnings import numpy as np import pandas as pd import seaborn as sns import statsmodels.api as sm from pytrends.request import TrendReq from scipy import stats as ss from datetime import datetime as dt from arch.</description>
+    </item>
+  </channel>
+</rss>

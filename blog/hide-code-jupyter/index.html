@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Hide Codes/Prompts in Jupyter Notebook - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Hide Codes/Prompts in Jupyter Notebook - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I&amp;rsquo;m recently asked this question many times: how do I hide the codes in a Jupyter notebook? In fact, I myself encountered this need one or two years ago and had found an almost perfect solution. &amp;hellip;">
+      <meta property="og:description" content="I&amp;rsquo;m recently asked this question many times: how do I hide the codes in a Jupyter notebook? In fact, I myself encountered this need one or two years ago and had found an almost perfect solution. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Hide Codes/Prompts in Jupyter Notebook</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2020-02-27
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>I&rsquo;m recently asked this question many times: how do I hide the codes in a Jupyter notebook? In fact, I myself encountered this need one or two years ago and had found an almost perfect solution. Check out the steps below.</p>
+<h1 id="magic-scripts">Magic Scripts</h1>
+<p>Add on top of the notebook a new cell with scripts:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">IPython.display</span> <span style="font-weight:bold">import</span> HTML
+</span></span><span style="display:flex;"><span>HTML(<span style="color:#b84">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">&lt;script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">code_show=false;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">function code_toggle(){
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    if(code_show){$(&#39;.prompt, .input, .output_stderr, .output_error&#39;).hide();}
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    else{$(&#39;.input, .prompt, .output_stderr, .output_error&#39;).show();}
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    code_show=!code_show;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">}
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">function initialize(){
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    document.body.style.fontFamily=&#39;Palatino&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    var output=$(&#39;.output_subarea.output_text.output_stream.output_stdout&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    $.merge(output,$(&#39;.output_subarea.output_text.output_result&#39;));
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    for(var i=0;i&lt;output.length;i++)for(var j=0;j&lt;output[i].children.length;j++)
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        output[i].children[j].style.fontFamily=&#39;Palatino&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    code_toggle();
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">}
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">$(document).ready(initialize);
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">Click &lt;a href=&#34;javascript:code_toggle()&#34;&gt;here&lt;/a&gt; to show/hide codes in this notebook.
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">&#39;&#39;&#39;</span>)
+</span></span></code></pre></div><p>and at the bottom, an ending cell with scripts as follows:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>HTML(<span style="color:#b84">&#39;&#39;&#39;&lt;script&gt;initialize();&lt;/script&gt;Click &lt;a href=&#34;javascript:code_toggle()&#34;&gt;here&lt;/a&gt; to show/hide codes in this notebook.&#39;&#39;&#39;</span>)
+</span></span></code></pre></div><p>A sample notebook with these two cells added would look like this:</p>
+<img src="/images/hide-code-jupyter1.png" width="100%" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
+<h1 id="re-run-the-notebook">Re-run the Notebook</h1>
+<p><code>Kernel</code> → <code>Restart &amp; Run All</code> and the notebook should be just as expected:</p>
+<img src="/images/hide-code-jupyter2.png" width="100%" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
+<p>Notice here the two links we added empowers you to toggle on/off the codes and the prompts (the <code>In [ ]</code> tags on the left). You can customize them however you like, but I highly recommend you not to simply hide them - trust me, you&rsquo;ll need them more when they&rsquo;re hidden by yourself.</p>
+<h1 id="export-as-html">Export as HTML</h1>
+<p>You may now <code>File</code> → <code>HTML (.html)</code> and the toggling feature should still work if nothing broken.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/yi-gongzi/">多难如何兴邦？</a></span>
+  <span class="nav-next"><a href="/blog/to-the-2020s-3/">写在2020年的第七十四天</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/yi-gongzi\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/to-the-2020s-3\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

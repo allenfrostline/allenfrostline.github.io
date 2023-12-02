@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Pythonic Swapping: How and Why - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Pythonic Swapping: How and Why - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s not hard to write a swap function. The most orthodox way that&amp;rsquo;s being used in C&#43;&#43; or Java is by using a temporary variable. For example, say we have a = 0 and b = 1, and we&amp;rsquo;d &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s not hard to write a swap function. The most orthodox way that&amp;rsquo;s being used in C&#43;&#43; or Java is by using a temporary variable. For example, say we have a = 0 and b = 1, and we&amp;rsquo;d &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Pythonic Swapping: How and Why</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-07-12
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<img src="/images/swap.png" style="width:80%"/>
+<!-- more -->
+<p>It&rsquo;s not hard to write a swap function. The most orthodox way that&rsquo;s being used in C++ or Java is by using a temporary variable. For example, say we have <code>a = 0</code> and <code>b = 1</code>, and we&rsquo;d like to swap the values of these two variables. The pseudocode shall be something as below.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>temp <span style="font-weight:bold">=</span> a
+</span></span><span style="display:flex;"><span>a <span style="font-weight:bold">=</span> b
+</span></span><span style="display:flex;"><span>b <span style="font-weight:bold">=</span> temp
+</span></span></code></pre></div><p>However, a more &ldquo;Pythonic&rdquo; way to do so is by literally &ldquo;swapping&rdquo; the values in place. Specifically, <strong>we don&rsquo;t even need to define a function for it</strong>, so the title picture is actually nonsense.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>a, b <span style="font-weight:bold">=</span> b, a
+</span></span></code></pre></div><p>How is that handled inside Python? Before answering that question, how is &ldquo;Pythonic&rdquo; defined? Well, Pythonic means code that doesn&rsquo;t just get the syntax right but that follows the conventions of the Python community and uses the language in the way it is intended to be used (Abien Fred Agarap<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>). Talking about the conventions of the Python community, we won&rsquo;t be able to miss the famous Zen of Python:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">this</span>
+</span></span></code></pre></div><pre><code>Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+</code></pre>
+<p>So our one-line swapping exactly follows these supreme principles: it&rsquo;s beautiful, explicit, simple and perfectly readable. The only remaining question is, what happened when we called <code>a, b = b, a</code>, and what are the technical differences between this lazy trick and the orthodox one?</p>
+<p>Well, here is the thing. Just like most other programming languages, Python also handles assignment statements in a right-to-left manner. So before we actually assign the value of <code>a</code> to <code>b</code> and vice versa, Python pakcages the RHS as a <strong>tuple</strong> temporarily stored in memory. Then it assigns the values of this tuple to the LHS in order. That it. As a result, different from the orthodox swap function which creates a temporary variable <code>temp</code> staying in our memory until being collected manually (if we&rsquo;re using it in the global environment) or after the function is destroyed, the Pythonic swap occupies <strong>doubled memory</strong> yet <strong>frees automatically</strong> thanks to Python&rsquo;s garbage collection. That&rsquo;s kind of a tradeoff and in some cases when absolute available memory is critically short, we might be suggested to use the more orthodox swap function.</p>
+<p>Just as a supplement, there is in fact a way to swap in place while avoid using doubled memory. The trick is illustrated as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>a <span style="font-weight:bold">=</span> a <span style="font-weight:bold">+</span> b
+</span></span><span style="display:flex;"><span>b <span style="font-weight:bold">=</span> a <span style="font-weight:bold">-</span> b
+</span></span><span style="display:flex;"><span>a <span style="font-weight:bold">=</span> a <span style="font-weight:bold">-</span> b
+</span></span></code></pre></div><p>In case of large integers, we may also use XOR functions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>a <span style="font-weight:bold">=</span> a <span style="font-weight:bold">^</span> b
+</span></span><span style="display:flex;"><span>b <span style="font-weight:bold">=</span> a <span style="font-weight:bold">^</span> b
+</span></span><span style="display:flex;"><span>a <span style="font-weight:bold">=</span> a <span style="font-weight:bold">^</span> b
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://stackoverflow.com/questions/25011078/what-does-pythonic-mean">https://stackoverflow.com/questions/25011078/what-does-pythonic-mean</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/synchronization/">Time Synchronization on Amazon EC2</a></span>
+  <span class="nav-next"><a href="/blog/cryptocurrency-arbitrage-3/">Cryptocurrency Arbitrage (3): One More Strategy</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/synchronization\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-3\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

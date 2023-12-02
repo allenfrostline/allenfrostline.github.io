@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hold &#39;em on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/hold-em/</link>
+    <description>Recent content in hold &#39;em on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 05 Nov 2019 10:11:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/hold-em/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Texas Hold&#39;em Series (6): Range Estimation</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-6/</link>
+      <pubDate>Tue, 05 Nov 2019 10:11:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-6/</guid>
+      <description>Range is important. A poker player without a mature preflop1 range is more dangerous than a blind soldier aiming at random people on the battlefield, or a vicious chef throwing anything within reach into his pot. On the other hand, given your opponents&amp;rsquo; range (think somehow from a God&amp;rsquo;s eye view) you may be able to do whatever you want with your hand cards, no matter how poor they actually are.</description>
+    </item>
+    <item>
+      <title>Texas Hold &#39;em Series (5): Poker Game (w/ GUI)</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-5/</link>
+      <pubDate>Tue, 16 Apr 2019 23:10:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-5/</guid>
+      <description>I wrote a poker game. This is a simple Texas Hold &amp;rsquo;em game running on Mac OS. All scripts are written in pure Python. The main GUI is written using the Python module PySimpleGUI, and hand evaluation is done by refering to a hand value table pre-calculated together with Monte Carlo simulation. See here for detailed explanation of hand evaluation. Together with the GUI version, I also include here a primitive commmandline version with ColorPrint support, which you may download and include from this repo.</description>
+    </item>
+    <item>
+      <title>Texas Hold &#39;em Series (4): Hand Evaluation</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-4/</link>
+      <pubDate>Tue, 09 Apr 2019 18:12:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-4/</guid>
+      <description>In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. Poker is essentially an incomplete information game. Different from Go, where you can see all stones placed on the chessboard and thereby &amp;ldquo;solve&amp;rdquo; an optimal move, you never know you opponents&amp;rsquo; pocket cards until showdown (yet even then, people mucks).</description>
+    </item>
+    <item>
+      <title>Texas Hold &#39;em Series (3): Odds Chart</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-3/</link>
+      <pubDate>Fri, 05 Apr 2019 18:35:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-3/</guid>
+      <description>One of the most important aspects of Texas Hold&amp;rsquo;em is the value of each two-card hand before the flop. The decision of how to play your first two cards is something you face every hand, and the value of your first two cards is highly correlated to your probability of winning. Regarding this people have concluded detailed results from playing (and statistics). In this post we&amp;rsquo;re gonna introduce one of the most widely-used results in hold &amp;rsquo;em: the odds chart.</description>
+    </item>
+    <item>
+      <title>Texas Hold &#39;em Series (2): Poker Hands Dataset</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-2/</link>
+      <pubDate>Sat, 30 Mar 2019 14:25:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-2/</guid>
+      <description>In this post, I&amp;rsquo;ll walk through the whole process to download, clean and then browse one of world&amp;rsquo;s largest poker hands history dataset, the IRC Poker Database1, which is a little bit aged but well-known for its huge size. The work we&amp;rsquo;re doing here is meant to be a preparation for further analysis and model training.
+History Before the advent of real-money online poker servers, there was the Internet Relay Chat (IRC) poker server.</description>
+    </item>
+    <item>
+      <title>Texas Hold &#39;em Series (1): Basic Concepts</title>
+      <link>https://allenfrostline.com/blog/texas-holdem-series-1/</link>
+      <pubDate>Thu, 28 Mar 2019 16:33:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/texas-holdem-series-1/</guid>
+      <description>Starting from today, I&amp;rsquo;m gonna write a series of posts on Texas Hold &amp;rsquo;em, one of world&amp;rsquo;s most famous forms of poker. The game is rather complicated, especially considering its origin dating back to early 20th century. In this post, I will list the bare-bones of hold &amp;rsquo;em. These concepts may sound boring to you if you are a veteran poker player, but I just want to make sure we&amp;rsquo;re talking in the same language — or building using the same bricks.</description>
+    </item>
+  </channel>
+</rss>

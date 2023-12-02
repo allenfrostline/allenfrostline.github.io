@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>virtualenv on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/virtualenv/</link>
+    <description>Recent content in virtualenv on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 28 Apr 2018 00:55:04 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/virtualenv/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Run Jupyter Notebook within Virtualenv</title>
+      <link>https://allenfrostline.com/blog/jupyter-virtualenv/</link>
+      <pubDate>Sat, 28 Apr 2018 00:55:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/jupyter-virtualenv/</guid>
+      <description> # create virtualenv myenv mkvirtualenv myenv # enter virtualenv workon myenv # install jupyter if it&amp;#39;s not done yet (myenv) pip3 install jupyter # install ipykernel if it&amp;#39;s not done yet (myenv) pip3 install ipykernel # create new kernel of python3 (myenv) python3 -m ipykernel install --user --name myenv --display-name &amp;#34;Python 3&amp;#34; # start the notebook within myenv (myenv) jupyter notebook </description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>microstructure on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/microstructure/</link>
+    <description>Recent content in microstructure on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 04 Oct 2019 18:15:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/microstructure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Mathematical Market Microstructure</title>
+      <link>https://allenfrostline.com/blog/notes-on-microstructure/</link>
+      <pubDate>Fri, 04 Oct 2019 18:15:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-microstructure/</guid>
+      <description>Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.$\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}$ Introduction In this section we start with an overview of market microstructure as a whole. Definition of Market Microstructure Maureen O&amp;rsquo;Hara defines market microstructure as &amp;hellip; the study of the process and outcomes of exchanging assets under explicit trading rules. While much of economics abstracts from the mechanics of trading, microstructure literature analyzes how specific trading mechanisms</description>
+    </item>
+  </channel>
+</rss>

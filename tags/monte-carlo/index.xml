@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>monte carlo on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/monte-carlo/</link>
+    <description>Recent content in monte carlo on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 14 Jan 2017 12:03:05 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/monte-carlo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GMM Estimation of an ARMA(2,1) Model</title>
+      <link>https://allenfrostline.com/blog/gmm-estimation/</link>
+      <pubDate>Sat, 14 Jan 2017 12:03:05 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/gmm-estimation/</guid>
+      <description>In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric models, where the parameter of interest is finite-dimensional, whereas the full shape of the data&amp;rsquo;s distribution function may not be known, and therefore maximum likelihood estimation is not applicable. Today, we are trying to write a Generalizd Method of Moments estimation framework in Python, and use it to estimate an ARMA(2,1) time series.</description>
+    </item>
+  </channel>
+</rss>

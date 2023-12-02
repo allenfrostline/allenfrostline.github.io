@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Josephus Problem - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Josephus Problem - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="A terribly large number of hostages, say $n=1000$ people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the $k=4$-th people &amp;hellip;">
+      <meta property="og:description" content="A terribly large number of hostages, say $n=1000$ people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the $k=4$-th people &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Josephus Problem</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-11-14
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>A terribly large number of hostages, say <code>$n=1000$</code> people, are standing in a circle. The terrorists claim that once the circle is formed, they&rsquo;ll ask the poor people to kill the <code>$k=4$</code>-th people to the left of him/her. Since the queue is circular, when it comes to the people standing on the leftmost spots, the next person to be killed may be from the first several ones as the procedure can repeat untill there&rsquo;s only one person alive. This problem is named after <a href="https://en.wikipedia.org/wiki/Flavius_Josephus">Flavius Josephus</a>, a Jewish historian living in the 1st century. According to Josephus&rsquo; account of the siege of Yodfat, he and his 40 soldiers were trapped in a cave by Roman invaders and faced with the aforementioned dilemma except that his problem was easier with <code>$(n,k)=(41,1)$</code>.</p>
+<p><img src="/images/josephus.png" style="max-width: min(100%, 200px)"></img></p>
+<p>We call it a dilemma because there is one opportunity where Josephus can live, and finding the only spot that stands till the end is not easy. In the illustration above shows a simple example when there&rsquo;re <code>$n=8$</code> people in the circle. Let&rsquo;s say <code>$k=1$</code>, namely a hostage always kills the person standing right to the left of him/her. Person 1 first kills person 2, and then person 3 kills 4 and so on. The procedure is as follows (numbers in red mean dead people):</p>
+<ul>
+<li>1, 2, 3, 4, 5, 6, 7, 8 (before start)</li>
+<li>1, <span style="color:red">2</span>, 3, <span style="color:red">4</span>, 5, <span style="color:red">6</span>, 7, <span style="color:red">8</span> (1st round)</li>
+<li>1, <span style="color:red">2</span>, <span style="color:red">3</span>, <span style="color:red">4</span>, 5, <span style="color:red">6</span>, <span style="color:red">7</span>, <span style="color:red">8</span> (2nd round)</li>
+<li>1, <span style="color:red">2</span>, <span style="color:red">3</span>, <span style="color:red">4</span>, <span style="color:red">5</span>, <span style="color:red">6</span>, <span style="color:red">7</span>, <span style="color:red">8</span> (3rd round, end of killing)</li>
+</ul>
+<p>So in the case <code>$(n,k)=(8,1)$</code>, Josephus should stand on the 1st spot. Let&rsquo;s denote this as <code>$f(8,1)=1$</code> just to make it look more mathematical. The general Josephus problem, therefore, becomes finding <code>$\forall n,k\in\mathbb{N}_+$</code> the optimal index<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> <code>$f(n,k)$</code>.</p>
+<h1 id="special-case-k1">Special Case: <code>$k=1$</code></h1>
+<p>There exists a closed-form solution when <code>$k=1$</code>, and I&rsquo;d like to share with you here the intuition behind it. Consider the cases where <code>$n$</code> is some power of <code>$2$</code>, e.g. <code>$n=2,4,8,16,\ldots$</code> Like the example above, you&rsquo;ll notice that a problem of some higher power of <code>$2$</code>, say <code>$n=8\equiv 2^3$</code>, reduces to the sub-power one that is <code>$n=4\equiv 2^2$</code> and so forth. It can be easily proved by mathematical induction that whenever <code>$n=2^m$</code> for some <code>$m\ge 1$</code>, the last one standing is always person 1.</p>
+<p>With the result above we may tackle problems that are slightly more general, i.e. <code>$2^m &lt; n &lt; 2^{m+1}$</code> for some <code>$m\ge 1$</code>. Notice by reverse thinking the problem will always reduce to the case <code>$n=2^m$</code> as we&rsquo;re killing people one by one, and at that moment we know the first person who kills is the person who lives till the end. There&rsquo;re in total <code>$n-2^m$</code> people died before our winner wields his sword against his ally. Since</p>
+<p>$$
+n &lt; 2^{m+1} \Rightarrow 2n - 2^{m+1} &lt; n \Rightarrow n - 2^m &lt; \left\lfloor\frac{n}{2}\right\rfloor,
+$$</p>
+<p>we know the 1st round is not yet finished and thus the winner is</p>
+<p>$$
+f(n,k) = 2(n-2^m)+1 = 2(n-2^{\lfloor\log_2 n\rfloor})+1.
+$$</p>
+<p>As a conclusion, if Josephus is smart enough to come up with this solution, he should choose the <code>$2\times(41-32)+1=19$</code>-th place.</p>
+<h1 id="general-case">General Case</h1>
+<p>There is unfortunately no general solution for any <code>$n$</code> and <code>$k$</code>. However, with the help of a computer we may come up with an algorithm that simulates the process in <code>$O(n)$</code> time, regardless of <code>$k$</code>. The Python codes are as follows:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">Josephus</span>(n, k):
+</span></span><span style="display:flex;"><span>    player <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(<span style="color:#999">range</span>(<span style="color:#099">1</span>, n <span style="font-weight:bold">+</span> <span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span>    idx_prev <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">while</span> <span style="font-weight:bold">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> <span style="color:#999">len</span>(player) <span style="font-weight:bold">==</span> <span style="color:#099">1</span>: <span style="font-weight:bold">return</span> player[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>        idx <span style="font-weight:bold">=</span> (k <span style="font-weight:bold">+</span> idx_prev) <span style="font-weight:bold">%</span> <span style="color:#999">len</span>(player)
+</span></span><span style="display:flex;"><span>        player<span style="font-weight:bold">.</span>pop(idx)
+</span></span><span style="display:flex;"><span>        idx_prev <span style="font-weight:bold">=</span> idx
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Josephus(<span style="color:#099">1000</span>, <span style="color:#099">4</span>)
+</span></span></code></pre></div><p>This prints 763, which is the answer to the first question above.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I&rsquo;m using 1-index in this post, namely the indices start with 1 rather than 0.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/texas-holdem-series-6/">Texas Hold&#39;em Series (6): Range Estimation</a></span>
+  <span class="nav-next"><a href="/blog/eigenvectors-from-eigenvalues/">Eigenvectors from Eigenvalues?</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/texas-holdem-series-6\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/eigenvectors-from-eigenvalues\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

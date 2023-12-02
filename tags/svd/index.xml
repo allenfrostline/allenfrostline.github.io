@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SVD on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/svd/</link>
+    <description>Recent content in SVD on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 23 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/svd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Orthonormal Bases for Four Subspaces using Singular Value Decomposition</title>
+      <link>https://allenfrostline.com/blog/four-spaces-svd/</link>
+      <pubDate>Wed, 23 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/four-spaces-svd/</guid>
+      <description>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\mathbf}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}C(\bs{A})$, the null space $N(\bs{A})$, the row space $C(\bs{A}&#39;)$, and the left null space $N(\bs{A}&#39;)$.
+In this post, we denote SVD of matrix $\bs{A}\in\R^{m\times n}$ as
+$$ \bs{A} = \bs{U}\boldsymbol{\Sigma}\bs{V}&#39; $$
+where $\bs{U}\in\R^{m\times m}$, $\boldsymbol{\Sigma}\in\R^{m\times n}$ and $\bs{V}\in\R^{n\times n}$. $\bs{U}$ and $\bs{V}$ are orthonormal, namely $\bs{U}&#39;\bs{U}=\bs{V}&#39;\bs{V}=\bs{I}$. $\boldsymbol{\Sigma}$ is diagonal (despite being rectangle), which means all entries $\sigma_{ij}$ are zero if $i\neq j$.</description>
+    </item>
+  </channel>
+</rss>

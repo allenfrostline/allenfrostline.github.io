@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Deep Learning on MacOS with AMD eGPU? - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Deep Learning on MacOS with AMD eGPU? - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="I&amp;rsquo;ve recently sold my Nvidia GTX 1080 eGPU1 after two month&amp;rsquo;s waiting in vain for a compatible Nvidia video driver for MacOS 10.14 (Mojave). Either Apple&amp;rsquo;s or Nvidia&amp;rsquo;s fault, I &amp;hellip;">
+      <meta property="og:description" content="I&amp;rsquo;ve recently sold my Nvidia GTX 1080 eGPU1 after two month&amp;rsquo;s waiting in vain for a compatible Nvidia video driver for MacOS 10.14 (Mojave). Either Apple&amp;rsquo;s or Nvidia&amp;rsquo;s fault, I &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Deep Learning on MacOS with AMD eGPU?</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-01-07
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>I&rsquo;ve recently sold my Nvidia GTX 1080 eGPU<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> after two month&rsquo;s waiting in vain for a compatible Nvidia video driver for MacOS 10.14 (Mojave). Either Apple&rsquo;s or Nvidia&rsquo;s fault, I don&rsquo;t care any more. Right away, I ordered an AMD Radeon RX Vega 64 on Newegg. The card arrived two days later and it looked sexy at first sight. It&rsquo;s plug-and-play as expected and performed just as good as its predecessor, regardless of serious gaming, video editing or whatever. I would have given it a 9.5/10 if not find another issue a couple of days later — wow, there is no CUDA on this card!</p>
+<!-- more -->
+<p>Of course there isn&rsquo;t. Cause CUDA was developed by Nvidia who&rsquo;s been paying great efforts on making a more user-friendly deep-learning environment. Compared with that, AMD (yes!) used to intentionally avoid a head-to-head competition against world&rsquo;s largest GPU factory and instead keep making gaming cards with better cost-to-performance ratios. <a href="https://rocm.github.io">ROCm</a>, which is an open-source HPC/Hyperscale-class platform for GPU computing that allows cards other than Nvidia&rsquo;s, does make this gap much narrower than before. However, ROCm is still publicly not supporting MacOS and you have to run a Linux bootcamp to utilize the computational benefits of your AMD card, even though you can already game smoothly on you Mac. Sad it is, AMD 😰.</p>
+<img width="70%" src="/images/amd.png">
+<p>There are, however, several solutions if you&rsquo;re people just like me who really have to run your code on a Mac and would like to accelerate those Renaissance training times with a GPU. The method I adapted was by using a framework called <a href="https://ai.intel.com/plaidml/">PlaidML</a>, and I&rsquo;d like to walk you through how I installed, and configured my GPU with it.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip3  install plaidml-keras plaidbench
+</span></span></code></pre></div><p>After installation, we can set up the intended device for computing by running:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plaidml-setup
+</span></span></code></pre></div><pre><code>PlaidML Setup (0.3.5)
+
+Thanks for using PlaidML!
+
+Some Notes:
+  * Bugs and other issues: https://github.com/plaidml/plaidml
+  * Questions: https://stackoverflow.com/questions/tagged/plaidml
+  * Say hello: https://groups.google.com/forum/#!forum/plaidml-dev
+  * PlaidML is licensed under the GNU AGPLv3
+ 
+Default Config Devices:
+   No devices.
+
+Experimental Config Devices:
+   llvm_cpu.0 : CPU (LLVM)
+   opencl_intel_intel(r)_iris(tm)_plus_graphics_655.0 : Intel Inc. Intel(R) Iris(TM) Plus Graphics 655 (OpenCL)
+   opencl_cpu.0 : Intel CPU (OpenCL)
+   opencl_amd_amd_radeon_rx_vega_64_compute_engine.0 : AMD AMD Radeon RX Vega 64 Compute Engine (OpenCL)
+   metal_intel(r)_iris(tm)_plus_graphics_655.0 : Intel(R) Iris(TM) Plus Graphics 655 (Metal)
+   metal_amd_radeon_rx_vega_64.0 : AMD Radeon RX Vega 64 (Metal)
+
+Using experimental devices can cause poor performance, crashes, and other nastiness.
+
+Enable experimental device support? (y,n)[n]:
+</code></pre>
+<p>Of course we enter <code>y</code>. Before I choose device 4 (OpenCL with AMD) or 6 (Metal with AMD), I&rsquo;d like to benchmark on the default device, CPU (LLVM). The test script (on MobileNet as an example) is</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plaidbench keras mobilenet
+</span></span></code></pre></div><p>and the result shows<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<pre><code>Running 1024 examples with mobilenet, batch size 1
+INFO:plaidml:Opening device &quot;llvm_cpu.0&quot;
+Downloading data from https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_1_0_224_tf.h5
+17227776/17225924 [==============================] - 2s 0us/step
+Model loaded.
+Compiling network...
+Warming up ...
+Main timing
+Example finished, elapsed: 3.0688607692718506 (compile), 61.17863607406616 (execution), 0.059744761791080236 (execution per example)
+Correctness: PASS, max_error: 1.7511049009044655e-05, max_abs_error: 6.556510925292969e-07, fail_ratio: 0.0
+</code></pre>
+<p>Now we run the set-up again and choose 4 (OpenCL with AMD). The result is</p>
+<pre><code>Running 1024 examples with mobilenet, batch size 1
+INFO:plaidml:Opening device &quot;opencl_amd_amd_radeon_rx_vega_64_compute_engine.0&quot;
+Model loaded.
+Compiling network...
+Warming up ...
+Main timing
+Example finished, elapsed: 2.6935510635375977 (compile), 13.741217851638794 (execution), 0.01341915805824101 (execution per example)
+Correctness: PASS, max_error: 1.7511049009044655e-05, max_abs_error: 1.1995434761047363e-06, fail_ratio: 0.0
+</code></pre>
+<p>Finally we run the test against the expected most powerful device, i.e. device 6 (Metal with AMD).</p>
+<pre><code>Running 1024 examples with mobilenet, batch size 1
+INFO:plaidml:Opening device &quot;metal_amd_radeon_rx_vega_64.0&quot;
+Model loaded.
+Compiling network...
+Warming up ...
+Main timing
+Example finished, elapsed: 2.243159055709839 (compile), 7.515545129776001 (execution), 0.007339399540796876 (execution per example)
+Correctness: PASS, max_error: 1.7974503862205893e-05, max_abs_error: 1.0952353477478027e-06, fail_ratio: 0.0
+</code></pre>
+<p>As a conclusion, by utilizing the Metal core on my Mac as well as the external AMD GPU, the training runtime was roughly 87.7% down and I&rsquo;m personally quite satisfied with that.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>eGPU = external GPU.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>You might have noticed an extra difference: it downloads the dataset on the first run. Doesn&rsquo;t really matter though.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/to-the-arctic-circle-2/">To the Arctic Circle (Again)!</a></span>
+  <span class="nav-next"><a href="/blog/billiard-tournament-martingale/">Billiard Tournament: Martingale, Kelly Criterion and More</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/to-the-arctic-circle-2\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/billiard-tournament-martingale\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

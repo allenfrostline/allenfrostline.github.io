@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tipue on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/tipue/</link>
+    <description>Recent content in tipue on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 03 May 2019 13:40:57 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/tipue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Content Filtering with Hexo Tipue-Search Engine</title>
+      <link>https://allenfrostline.com/blog/content-filtering-tipue-search/</link>
+      <pubDate>Fri, 03 May 2019 13:40:57 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/content-filtering-tipue-search/</guid>
+      <description>It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;rsquo;em to show up in a search result, like password protected posts (shown as encrypted codes) and random pages for a certain project (some even don&amp;rsquo;t have a title, and this tipue-search would still show them in the searching result — with a</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ensemble modeling on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/ensemble-modeling/</link>
+    <description>Recent content in ensemble modeling on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 15 Nov 2017 16:34:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/ensemble-modeling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</title>
+      <link>https://allenfrostline.com/blog/ensemble-modeling/</link>
+      <pubDate>Wed, 15 Nov 2017 16:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/ensemble-modeling/</guid>
+      <description>In this research paper we try to use as much information on a stock as we can on Ricequant, to train a robust binary classifier for expected returns on a rolling basis. As an extra, we create a brand-new accuracy metric based on behavioral economics for model traing, which enhanced the fitting of the models (in the language of classical metrics, e.g. accuracy or pricision scores) by 3 to 5 times.</description>
+    </item>
+  </channel>
+</rss>

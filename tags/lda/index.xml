@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LDA on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/lda/</link>
+    <description>Recent content in LDA on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 29 May 2018 15:16:28 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/lda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LDA and R-MDA</title>
+      <link>https://allenfrostline.com/blog/lda-rmda/</link>
+      <pubDate>Tue, 29 May 2018 15:16:28 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/lda-rmda/</guid>
+      <description>This is a note of Linear Discriminant Analysis (LDA) and an original Regularized Matrix Discriminant Analysis (R-MDA) method proposed by Jie Su et al, 2018. Both methods are suitable for efficient multiclass classification, while the latter is a state-of-the-art version of the classical LDA method s.t. data in matrix forms can be classified without destroying the original structure.
+A Sketch of LDA The plain idea behind Discriminant Analysis is to find the optimal partition (or projection, for higher-dimensional problems) s.</description>
+    </item>
+  </channel>
+</rss>

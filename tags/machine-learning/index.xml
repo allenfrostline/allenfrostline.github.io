@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>machine learning on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/machine-learning/</link>
+    <description>Recent content in machine learning on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 29 May 2018 15:16:28 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LDA and R-MDA</title>
+      <link>https://allenfrostline.com/blog/lda-rmda/</link>
+      <pubDate>Tue, 29 May 2018 15:16:28 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/lda-rmda/</guid>
+      <description>This is a note of Linear Discriminant Analysis (LDA) and an original Regularized Matrix Discriminant Analysis (R-MDA) method proposed by Jie Su et al, 2018. Both methods are suitable for efficient multiclass classification, while the latter is a state-of-the-art version of the classical LDA method s.t. data in matrix forms can be classified without destroying the original structure.
+A Sketch of LDA The plain idea behind Discriminant Analysis is to find the optimal partition (or projection, for higher-dimensional problems) s.</description>
+    </item>
+    <item>
+      <title>Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</title>
+      <link>https://allenfrostline.com/blog/ensemble-modeling/</link>
+      <pubDate>Wed, 15 Nov 2017 16:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/ensemble-modeling/</guid>
+      <description>In this research paper we try to use as much information on a stock as we can on Ricequant, to train a robust binary classifier for expected returns on a rolling basis. As an extra, we create a brand-new accuracy metric based on behavioral economics for model traing, which enhanced the fitting of the models (in the language of classical metrics, e.g. accuracy or pricision scores) by 3 to 5 times.</description>
+    </item>
+    <item>
+      <title>Strategy: XGBoost Classification &#43; Technical Indicators</title>
+      <link>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</link>
+      <pubDate>Sun, 12 Mar 2017 20:45:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</guid>
+      <description>On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.</description>
+    </item>
+    <item>
+      <title>Strategy: LSTM Neural Network &#43; Small Cap</title>
+      <link>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</link>
+      <pubDate>Tue, 17 Jan 2017 12:03:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
+      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
+Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
+    </item>
+  </channel>
+</rss>

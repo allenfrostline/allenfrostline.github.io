@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>matrix decomposition on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/matrix-decomposition/</link>
+    <description>Recent content in matrix decomposition on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Mon, 30 Sep 2019 21:06:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/matrix-decomposition/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Multivariate Data Analysis via Matrix Decomposition</title>
+      <link>https://allenfrostline.com/blog/notes-on-matrix-decomp/</link>
+      <pubDate>Mon, 30 Sep 2019 21:06:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-matrix-decomp/</guid>
+      <description>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning. $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}$
+Notations First let&amp;rsquo;s give some standard notations used in this course. Let&amp;rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.
+Matrix Multiplication We denote a matrix $\mathbf{A}\in\R^{m\times n}$, with its entries defined as $[a_{ij}]_{i,j=1}^{m,n}$.</description>
+    </item>
+  </channel>
+</rss>

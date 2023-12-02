@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lévy process on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/l%C3%A9vy-process/</link>
+    <description>Recent content in Lévy process on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 21 Feb 2019 23:08:38 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/l%C3%A9vy-process/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Stochastic Calculus</title>
+      <link>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</link>
+      <pubDate>Thu, 21 Feb 2019 23:08:38 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</guid>
+      <description>This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, etc. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\sgn}{\text{sgn}}\newcommand{\tr}{\text{tr}}\newcommand{\bs}{\boldsymbol}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\R}{\mathbb{R}}\newcommand{\MGF}{\text{MGF}}$
+MGF of Normal Distribution For $X\sim\N(\mu,\sigma^2)$, we have $\MGF(\theta)=\exp(\theta\mu + \theta^2\sigma^2/2)$. We have $\E(X^k) = \MGF^{\ (k)}(0)$.
+Truncated Normal Distribution Consider a two-sided truncation $(a,b)$ on $\N(\mu,\sigma^2)$, then
+$$ \E[X\mid a &amp;lt; X &amp;lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\beta)}{\Phi(\alpha) - \Phi(\beta)} $$</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>C&#43;&#43; Key Points - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="C&#43;&#43; Key Points - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="This is the first post of my ambitious plan trying to enumerate as many key points about the C&#43;&#43; language as I can. These notes are only for personal reviewing purposes and shall definitely be used &amp;hellip;">
+      <meta property="og:description" content="This is the first post of my ambitious plan trying to enumerate as many key points about the C&#43;&#43; language as I can. These notes are only for personal reviewing purposes and shall definitely be used &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>C&#43;&#43; Key Points</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-09-03
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>This is the first post of my ambitious plan trying to enumerate as many key points about the C++ language as I can. These notes are only for personal reviewing purposes and shall <strong>definitely</strong> be used commercially by anyone interested. Comment below for any missing C++ syntax or features. 👍🏻</p>
+<!-- more -->
+<h1 id="header">Header</h1>
+<p>Basically there&rsquo;re only one thing that needs attention. For standard libraries we use <code>&lt;</code> and <code>&gt;</code> and for local libraries we use quotes.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;iostream&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&#34;helloworld.h&#34;</span><span style="color:#999;font-weight:bold">
+</span></span></span></code></pre></div><p>These are files we declare functions and classes we want to use or implement in main files.</p>
+<h1 id="standard-input--output">Standard Input &amp; Output</h1>
+<p>In C++, by loading the <code>iostream</code> library we can read and write by</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;iostream&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> a;
+</span></span><span style="display:flex;"><span>    std<span style="font-weight:bold">::</span>cin <span style="font-weight:bold">&gt;&gt;</span> a;
+</span></span><span style="display:flex;"><span>    std<span style="font-weight:bold">::</span>cout <span style="font-weight:bold">&lt;&lt;</span> a <span style="font-weight:bold">&lt;&lt;</span> std<span style="font-weight:bold">::</span>endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="namespaces">Namespaces</h1>
+<p>Normally libraries come with classes, e.g. for <code>iostream</code> we need to use <code>std</code> everytime we need to print something. With namespaces we can reduce redundance.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;iostream&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>cout;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>cin;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>endl;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> a;
+</span></span><span style="display:flex;"><span>    cin <span style="font-weight:bold">&gt;&gt;</span> a;
+</span></span><span style="display:flex;"><span>    cout <span style="font-weight:bold">&lt;&lt;</span> a <span style="font-weight:bold">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We may also use <code>using namespace std;</code> which sometimes can cause problems.</p>
+<h1 id="data-types">Data Types</h1>
+<p>There are a variety of data types in C++. For real numbers we have</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Bytes</th>
+<th style="text-align:center">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$\pm 3.4E\pm38$</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">$8$</td>
+<td style="text-align:center">$\pm 1.7E\pm308$</td>
+</tr>
+</tbody>
+</table>
+<p>where we should pay enough attention to the $\pm$. For general integers we have</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Bytes</th>
+<th style="text-align:center">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">short</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$-2E15$ to $2E15-1$</td>
+</tr>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$-2E31$ to $2E31-1$</td>
+</tr>
+<tr>
+<td style="text-align:center">long</td>
+<td style="text-align:center">$8$</td>
+<td style="text-align:center">$-2E63$ to $2E63-1$</td>
+</tr>
+</tbody>
+</table>
+<p>and for each type we also have an unsigned version that starts from 0 and covers the same length of range.</p>
+<p>We may notice that <code>long</code> has a smaller range than <code>float</code> despite the fact that the first data type actually costs more bytes than the latter. This is because the 4 bytes (or 32 bits) of a <code>float</code> $V$ is not stored equally in RAM, but rather</p>
+<p>$$
+V = (-1)^S \cdot M \cdot 2^E
+$$</p>
+<p>where $S$ is the first bit, and $E$ the second through the ninth bits, and $M$ for the tenth and so forth. So in a sense, because <code>float</code> is more &ldquo;sparse&rdquo;, the <code>long</code> type has a smaller range.</p>
+<p>Apart from other fundamental types like <code>char</code> and <code>bool</code>, we can also define our own data types or use types defined in libraries, e.g. <code>std::string</code>. We may also use type aliases like</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">double</span> OptionPrice;
+</span></span></code></pre></div><h1 id="operators">Operators</h1>
+<p>We have operators for fundamental types:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Function</th>
+<th style="text-align:center">Operator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">assignment</td>
+<td style="text-align:center"><code>=</code></td>
+</tr>
+<tr>
+<td style="text-align:center">arithmetic</td>
+<td style="text-align:center"><code>+</code> <code>-</code> <code>*</code> <code>/</code></td>
+</tr>
+<tr>
+<td style="text-align:center">comparison</td>
+<td style="text-align:center"><code>&gt;</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+</tr>
+<tr>
+<td style="text-align:center">equality/nonequality</td>
+<td style="text-align:center"><code>==</code> <code>!=</code></td>
+</tr>
+<tr>
+<td style="text-align:center">logical</td>
+<td style="text-align:center"><code>&amp;&amp;</code> <code>||</code></td>
+</tr>
+<tr>
+<td style="text-align:center">modulo</td>
+<td style="text-align:center"><code>%</code></td>
+</tr>
+</tbody>
+</table>
+<p>In C++ there&rsquo;re a set of short-cuts as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Full Operator</th>
+<th style="text-align:center">Short-cut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>i = i + 1;</code></td>
+<td style="text-align:center"><code>i++;</code> <code>i += 1;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>i = i - 1;</code></td>
+<td style="text-align:center"><code>i--;</code> <code>i -= 1;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>i = i * 1;</code></td>
+<td style="text-align:center"><code>i *= 1;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>i = i / 1;</code></td>
+<td style="text-align:center"><code>i /= 1;</code></td>
+</tr>
+</tbody>
+</table>
+<p>We may also use prefix and postfix in assignment, which are totally different. After</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">3</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> y <span style="font-weight:bold">=</span> x<span style="font-weight:bold">++</span>;
+</span></span></code></pre></div><p>we have $x = 4$ and $y = 3$. After</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">3</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> y <span style="font-weight:bold">=</span> <span style="font-weight:bold">++</span>x;
+</span></span></code></pre></div><p>we have $x = y = 4$.</p>
+<h1 id="functions">Functions</h1>
+<p>A general template for a C++ function:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>resType <span style="color:#900;font-weight:bold">f</span>(argType1 arg1, argType2 arg2, ...) {
+</span></span><span style="display:flex;"><span>    Do something;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> res;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Notice we may write multiple functions with the same <code>resType</code> but with different arguments, which we call &ldquo;parameter overloading&rdquo;. Meanwhile, even withou parameter overloading we can still use a function of <code>double</code> on <code>int</code>, because <code>int</code> takes up less bytes and the implicit conversion is safe. We call it <strong>widening</strong> or <strong>promotion</strong>. In contrast, <strong>narrowing</strong> can be dangerous and cause a build warning.</p>
+<h1 id="build-process">Build Process</h1>
+<ul>
+<li>Preprocessing</li>
+<li>Compiling (where checks syntax and types)</li>
+<li>Linking</li>
+</ul>
+<h1 id="comments">Comments</h1>
+<p>In C++ we have two kinds of comments.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// This is inline comment
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">These are
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">block comments
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">*/</span>
+</span></span></code></pre></div><h1 id="references">References</h1>
+<p>In C++, people usually pass variables into functions by two methods: either <strong>by value</strong> or <strong>by reference</strong>. The first way creates a copy of the variable and nothing will happen to the original one. For the second, anything we do in the function will take effect on the original variable itself. The original variable must be declared once we create a reference, so</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&amp;</span> refx <span style="font-weight:bold">=</span> x;
+</span></span></code></pre></div><p>will compile, while below will not:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&amp;</span> refx;
+</span></span><span style="display:flex;"><span>refx <span style="font-weight:bold">=</span> x;
+</span></span></code></pre></div><p>References can be extremely useful, especially when the original variable is a large object and making a copy costs considerable time and memory. However, this is potentially risky when we don&rsquo;t want to mess up with the original object when calling a function. So we need const references.</p>
+<h1 id="const-references">Const References</h1>
+<p>There&rsquo;re two situations we should take care when using the <code>const</code> keyword with references. First, we can make a reference of a const variable, and we cannot change the value of it:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&amp;</span> refx <span style="font-weight:bold">=</span> x;
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;    <span style="color:#998;font-style:italic">// error
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>refx <span style="font-weight:bold">=</span> <span style="color:#099">2</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span></code></pre></div><p>We may also bind a const reference to a variable when the original itself is not const:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> y <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&amp;</span> refy <span style="font-weight:bold">=</span> y;
+</span></span><span style="display:flex;"><span>y <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;    <span style="color:#998;font-style:italic">// success
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>refy <span style="font-weight:bold">=</span> <span style="color:#099">2</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span></code></pre></div><p>In this case we avoid making a copy while also keep the original variable safe from unexpected editing.</p>
+<h1 id="pointers">Pointers</h1>
+<p>There is a third way of passing a variable, that is pointers. Pointers are variables the points to their addresses in memory. We declare a pointer by</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> pi;            <span style="color:#998;font-style:italic">// legal but bad without initialization
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> pi <span style="font-weight:bold">=</span> <span style="font-weight:bold">nullptr</span>;  <span style="color:#998;font-style:italic">// good when there&#39;re no proper variables
+</span></span></span></code></pre></div><p>which comes with two unique operators: <code>&amp;</code> for the address of a variable, and $*$ for the dereference of a pointer.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> i <span style="font-weight:bold">=</span> <span style="color:#099">123</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> pi <span style="font-weight:bold">=</span> <span style="font-weight:bold">&amp;</span>i;
+</span></span><span style="display:flex;"><span>cout <span style="font-weight:bold">&lt;&lt;</span> <span style="font-weight:bold">*</span>pi;
+</span></span></code></pre></div><pre><code>123
+</code></pre>
+<h1 id="new-and-delete">New and Delete</h1>
+<p>You can create a pointer pointing to a piece of dynamic memory for later deletion, in case memory is being an issue in your program.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="font-weight:bold">*</span>p <span style="font-weight:bold">=</span> <span style="font-weight:bold">new</span> <span style="color:#458;font-weight:bold">int</span>;
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// or
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#458;font-weight:bold">int</span> <span style="font-weight:bold">*</span>p <span style="font-weight:bold">=</span> <span style="color:#999">NULL</span>;
+</span></span><span style="display:flex;"><span>p <span style="font-weight:bold">=</span> <span style="font-weight:bold">new</span> <span style="color:#458;font-weight:bold">int</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">*</span>p <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">delete</span> p
+</span></span></code></pre></div><h1 id="const-pointers">Const Pointers</h1>
+<p>You can have pointers to a const variable, i.e. you cannot change its value through pointers.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> px <span style="font-weight:bold">=</span> <span style="font-weight:bold">&amp;</span>x;
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;   <span style="color:#998;font-style:italic">// error
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="font-weight:bold">*</span>px <span style="font-weight:bold">=</span> <span style="color:#099">2</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>px <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>; <span style="color:#998;font-style:italic">// success
+</span></span></span></code></pre></div><p>You can also have const pointers to variables, then you can change the value of the variable but never again the pointer (address) itself.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> <span style="font-weight:bold">const</span> px <span style="font-weight:bold">=</span> <span style="font-weight:bold">&amp;</span>x;
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;   <span style="color:#998;font-style:italic">// success
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="font-weight:bold">*</span>px <span style="font-weight:bold">=</span> <span style="color:#099">2</span>; <span style="color:#998;font-style:italic">// success
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>px <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span></code></pre></div><p>You can also have const pointers to const variables.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> <span style="font-weight:bold">const</span> px <span style="font-weight:bold">=</span> <span style="font-weight:bold">&amp;</span>x;
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;   <span style="color:#998;font-style:italic">// error
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="font-weight:bold">*</span>px <span style="font-weight:bold">=</span> <span style="color:#099">2</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>px <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>; <span style="color:#998;font-style:italic">// error
+</span></span></span></code></pre></div><h1 id="ifelse">If/Else</h1>
+<p>Below is a general template for <code>if/else</code> structures in C++.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">if</span> (condition1) {
+</span></span><span style="display:flex;"><span>    statement1;
+</span></span><span style="display:flex;"><span>} <span style="font-weight:bold">else</span> <span style="color:#900;font-weight:bold">if</span> (condition2) {
+</span></span><span style="display:flex;"><span>    statement2;
+</span></span><span style="display:flex;"><span>} <span style="font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>    statement3;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="switch">Switch</h1>
+<p>When there&rsquo;re multiple conditions, we can also use the <code>switch</code> keyword.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">switch</span> (expression) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">case</span> value1:
+</span></span><span style="display:flex;"><span>        statement1;
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">case</span> value2:
+</span></span><span style="display:flex;"><span>        statement2;
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">default</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        statement3;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="while">While</h1>
+<p>One of the most popular loops is <code>while</code> loop.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">while</span> (condition) {
+</span></span><span style="display:flex;"><span>    statement;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>It also has a variant called the <code>do/while</code> loop.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">do</span> {
+</span></span><span style="display:flex;"><span>    statement;
+</span></span><span style="display:flex;"><span>} <span style="font-weight:bold">while</span> (condition);
+</span></span></code></pre></div><p>which is slightly different from the <code>while</code> loop in sequence.</p>
+<h1 id="for">For</h1>
+<p>Another form of loop that keeps track of the iterator precisely.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">for</span> (initializer; condition; statement1) {
+</span></span><span style="display:flex;"><span>    statement2;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There is an unwritten rule that we usually write <code>++i</code> in <code>statement1</code> because compared with <code>i++</code> which need to make a copy, <code>++i</code> is more efficient. However, it&rsquo;s arguably correct because modern compilers can surely optimize this defect.</p>
+<h1 id="classes">Classes</h1>
+<p>A simple but intuitive example of classes is to describe a people in C++ (here we assume type <code>string</code> under the namespace <code>std</code> is used):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span>    string name;
+</span></span><span style="display:flex;"><span>    string email;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>We can also implement member functions in the class, just to make it more convenient:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span>    string name;
+</span></span><span style="display:flex;"><span>    string email;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    string <span style="color:#900;font-weight:bold">getName</span>();
+</span></span><span style="display:flex;"><span>    string <span style="color:#900;font-weight:bold">getEmail</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">getStuID</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setName</span>(string new_name);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setEmail</span>(string new_email);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setStuID</span>(<span style="color:#458;font-weight:bold">int</span> new_stu_id);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h1 id="protection">Protection</h1>
+<p>We have three levels of data protection in a class:</p>
+<ul>
+<li>public: anyone have access</li>
+<li>private: only members can access</li>
+<li>protected: disccuss later</li>
+</ul>
+<p>This means we can protect data in the class by declaring them as private while get access to them via public member functions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name;
+</span></span><span style="display:flex;"><span>    string email;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string getName();
+</span></span><span style="display:flex;"><span>    string <span style="color:#900;font-weight:bold">getEmail</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">getStuID</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setName</span>(string new_name);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setEmail</span>(string new_email);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setStuID</span>(<span style="color:#458;font-weight:bold">int</span> new_stu_id);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h1 id="constructor--destructor">Constructor &amp; Destructor</h1>
+<p>An instance created based on a class is called an object. To create an object, we may need a constructor, a copy constructor and a destructor.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name;
+</span></span><span style="display:flex;"><span>    string email;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    Person();                                       <span style="color:#998;font-style:italic">// default constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    Person(string name, string email, <span style="color:#458;font-weight:bold">int</span> stu_id);  <span style="color:#998;font-style:italic">// normal constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    Person(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person);           <span style="color:#998;font-style:italic">// copy constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    <span style="font-weight:bold">~</span>Person();                                      <span style="color:#998;font-style:italic">// destructor
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    string <span style="color:#900;font-weight:bold">getName</span>();
+</span></span><span style="display:flex;"><span>    string <span style="color:#900;font-weight:bold">getEmail</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">getStuID</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setName</span>(string name);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setEmail</span>(string email);
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">setStuID</span>(<span style="color:#458;font-weight:bold">int</span> stu_id);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h1 id="coding-style">Coding Style</h1>
+<ul>
+<li>We write each class definition in a separate header file</li>
+<li>We implement each class in a separate cpp file</li>
+<li>First letter of the class name is uppercase, e.g. <code>Person</code></li>
+<li>Public member functions start with a upper case letter, private members use lower case</li>
+<li>Member variable names end with underscore, e.g. <code>name_</code>.</li>
+</ul>
+<p>According to this coding style we have in <code>Person.h</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;string&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>string;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Person();
+</span></span><span style="display:flex;"><span>   Person(string name, string email, <span style="color:#458;font-weight:bold">int</span> stu_id);
+</span></span><span style="display:flex;"><span>   Person(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person);
+</span></span><span style="display:flex;"><span>   <span style="font-weight:bold">~</span>Person();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetName</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetEmail</span>();
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">GetStuID</span>();
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">SetName</span>(string name);
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">SetEmail</span>(string email);
+</span></span><span style="display:flex;"><span>   <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">SetStuID</span>(<span style="color:#458;font-weight:bold">int</span> stu_id);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name_;
+</span></span><span style="display:flex;"><span>    string email_;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>In <code>Person.cpp</code> we implement the member functions of the class:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>string Person<span style="font-weight:bold">::</span>GetEmail() {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold">return</span> email_;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> Person<span style="font-weight:bold">::</span>SetEmail(string email) {
+</span></span><span style="display:flex;"><span>   email_ <span style="font-weight:bold">=</span> email;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Just keep in mind that the constructors as well as the destructor should also be implemented:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person() {
+</span></span><span style="display:flex;"><span>   name_ <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>   email_ <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>   stu_id_ <span style="font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person(string name, string email, <span style="color:#458;font-weight:bold">int</span> stu_id) {
+</span></span><span style="display:flex;"><span>    name_ <span style="font-weight:bold">=</span> name;
+</span></span><span style="display:flex;"><span>    email_ <span style="font-weight:bold">=</span> email;
+</span></span><span style="display:flex;"><span>    stu_id_ <span style="font-weight:bold">=</span> stu_id;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person) {
+</span></span><span style="display:flex;"><span>    name_ <span style="font-weight:bold">=</span> another_person.name_;
+</span></span><span style="display:flex;"><span>    email_ <span style="font-weight:bold">=</span> another_person.email_;
+</span></span><span style="display:flex;"><span>    stu_id_ <span style="font-weight:bold">=</span> another_person.stu_id_;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Person<span style="font-weight:bold">::~</span>Person() {}
+</span></span></code></pre></div><p>We can also use the <strong>colon syntax</strong> for constructors:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person() <span style="font-weight:bold">:</span> name_(<span style="color:#b84">&#34;&#34;</span>), email_(<span style="color:#b84">&#34;&#34;</span>), stu_id_(<span style="color:#099">0</span>) {}
+</span></span><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person(string name, string email, <span style="color:#458;font-weight:bold">int</span> stu_id) <span style="font-weight:bold">:</span> name_(name), email_(email), stu_id_(stu_id) {}
+</span></span><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person) <span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    name_(another_person.name_),
+</span></span><span style="display:flex;"><span>    email_(another_person.email_),
+</span></span><span style="display:flex;"><span>    stu_id_(another_person.stu_id_)
+</span></span><span style="display:flex;"><span>{}
+</span></span></code></pre></div><h1 id="struct">Struct</h1>
+<p>a <code>struct</code> is a <code>class</code> with one difference: <code>struct</code> members are by default public, while <code>class</code> members are by default private.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span>    string name;
+</span></span><span style="display:flex;"><span>    string email;
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> stu_id;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="operator-overloading">Operator Overloading</h1>
+<p>For a newly created class we cannot use <code>person2 = person1</code> if we want to assign the whole object <code>person1</code> to <code>person2</code>. We have to use constructors. What we can do, instead, is to overload these operators (e.g. the assignment operator <code>=</code>) specifically for the class.</p>
+<p>The overloadable operators include <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> <code>^</code> <code>&amp;</code> <code>|</code> <code>~</code> <code>!</code> <code>=</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>++</code> <code>--</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>==</code> <code>!=</code> <code>&amp;&amp;</code> <code>||</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>&amp;=</code> <code>|=</code> <code>^=</code> <code>%=</code> <code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>[]</code> <code>()</code> <code>-&gt;</code> <code>-&gt;*</code> <code>new</code> <code>new[]</code> <code>delete</code> <code>delete[]</code>.</p>
+<p>The non-overloadable operators are <code>::</code> <code>.*</code> <code>.</code> <code>?=</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> Person<span style="font-weight:bold">::</span><span style="font-weight:bold">operator</span><span style="font-weight:bold">=</span>(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person) {
+</span></span><span style="display:flex;"><span>    name_ <span style="font-weight:bold">=</span> another_person.name_;
+</span></span><span style="display:flex;"><span>    email_ <span style="font-weight:bold">=</span> another_person.email_;
+</span></span><span style="display:flex;"><span>    stu_id_ <span style="font-weight:bold">=</span> another_person.stu_id_;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>However, such overloading does not support chain assignment like <code>person3 = person2 = person1</code>. We need to return a reference in order to support that.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="font-weight:bold">&amp;</span> Person<span style="font-weight:bold">::</span><span style="font-weight:bold">operator</span><span style="font-weight:bold">=</span>(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person) {
+</span></span><span style="display:flex;"><span>    name_ <span style="font-weight:bold">=</span> another_person.name_;
+</span></span><span style="display:flex;"><span>    email_ <span style="font-weight:bold">=</span> another_person.email_;
+</span></span><span style="display:flex;"><span>    stu_id_ <span style="font-weight:bold">=</span> another_person.stu_id_;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> <span style="font-weight:bold">*</span><span style="font-weight:bold">this</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>where <code>this</code> is a pointer pointing to the object itself.</p>
+<p>Another concern is self-assignment, which in some cases can be dangerous and in almost every situation is inefficient. To avoid self-assignment we need to detect and skip it.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="font-weight:bold">&amp;</span> Person<span style="font-weight:bold">::</span><span style="font-weight:bold">operator</span><span style="font-weight:bold">=</span>(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> another_person) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span> <span style="font-weight:bold">!=</span> <span style="font-weight:bold">&amp;</span>another_person) {
+</span></span><span style="display:flex;"><span>        name_ <span style="font-weight:bold">=</span> another_person.name_;
+</span></span><span style="display:flex;"><span>        email_ <span style="font-weight:bold">=</span> another_person.email_;
+</span></span><span style="display:flex;"><span>        stu_id_ <span style="font-weight:bold">=</span> another_person.stu_id_;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> <span style="font-weight:bold">*</span><span style="font-weight:bold">this</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="include-guards">Include Guards</h1>
+<p>In C++, a function can only be defined once. This is called the One Definition Rule (ODR). To avoid multiple including of the header files, we use include guards. This is being done by defining a macro at the beginning of each header file.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#ifndef MYCLASS_H
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#define MYCLASS_H
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">MyClass</span> {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#endif
+</span></span></span></code></pre></div><h1 id="containers">Containers</h1>
+<p>Here we introduce two of the most useful containers in the C++ Standard Library: <code>std::vector</code> and <code>std::map</code>. To initialize an empty vector, we use</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;vector&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>vector;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> v;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i<span style="font-weight:bold">=</span><span style="color:#099">0</span>; i<span style="font-weight:bold">&lt;=</span><span style="color:#099">10</span>; <span style="font-weight:bold">++</span>i) {
+</span></span><span style="display:flex;"><span>        v.push_back(i);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and to initialize with a specific size, we do</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;vector&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>vector;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> v(<span style="color:#099">10</span>);
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> (<span style="color:#458;font-weight:bold">int</span> i<span style="font-weight:bold">=</span><span style="color:#099">0</span>; i<span style="font-weight:bold">&lt;=</span><span style="color:#099">10</span>; <span style="font-weight:bold">++</span>i) {
+</span></span><span style="display:flex;"><span>        v[i] <span style="font-weight:bold">=</span> i;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>On the other hand, <code>map</code> containers are like <code>dict</code> in Python, which allows you to use indiced of any type, e.g. <code>std::string</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;map&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    map<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">int</span>, string<span style="font-weight:bold">&gt;</span> zipcodes;
+</span></span><span style="display:flex;"><span>    zipcodes[<span style="color:#099">60604</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Chicago&#34;</span>;
+</span></span><span style="display:flex;"><span>    zipcodes[<span style="color:#099">60637</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Hyde Park&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="data-abstraction">Data Abstraction</h1>
+<p>Data abstraction refers to the separation of interface (public functions of the class) and implementation:</p>
+<ul>
+<li>A user of a class does not need to know how a member function in that class is implemented</li>
+<li>The interface shows you how to use it</li>
+</ul>
+<h1 id="encapsulation">Encapsulation</h1>
+<p>Encapsulation refers to combining data and functions inside a class so that data is only accessed through the functions in the class.</p>
+<h1 id="friend">Friend</h1>
+<p>We can declare <code>friend</code> a function or class s.t. they can get access to the private and protected members of the base class.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">MyClass</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>	MyClass();
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">~</span>MyClass();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#458;font-weight:bold">int</span> my_data;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">friend</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">change_data</span>(MyClass<span style="font-weight:bold">&amp;</span> obj);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and you can implement and use this function <code>change_data</code> globally in the function to change <code>my_data</code>.</p>
+<h1 id="inheritance">Inheritance</h1>
+<p>Inheritance refers to based on the existing classes trying to:</p>
+<ul>
+<li>Reuse code</li>
+<li>Improve maintainability and extensibility</li>
+</ul>
+<p>A simple example would be</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Student</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Student(string name, string email, string major);
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetName</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetEmail</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetMajor</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   string name_;
+</span></span><span style="display:flex;"><span>   string email_;
+</span></span><span style="display:flex;"><span>   string major_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>with meanwhile</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Employee</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Employee(string name, string email, string job);
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetName</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetEmail</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetJob</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   string name_;
+</span></span><span style="display:flex;"><span>   string email_;
+</span></span><span style="display:flex;"><span>   string job_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Apparently a lot of functions and data are repeated. What we&rsquo;re gonna do is to build a <strong>base class</strong> and reuse it onto two <strong>derived class</strong>es. Note:</p>
+<ul>
+<li>A derived class inherits all members from the base class.</li>
+<li>A derived class may define additional members (data and/or function).</li>
+</ul>
+<p>In actual coding, this is what we do:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Person</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Person(string name, string email);
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetName</span>();
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetEmail</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   string name_;
+</span></span><span style="display:flex;"><span>   string email_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>with</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Student</span> <span style="font-weight:bold">:</span> <span style="font-weight:bold">public</span> Person {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Student(string name, string email, string major);
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetMajor</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   string major_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>and</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Employee</span> <span style="font-weight:bold">:</span> <span style="font-weight:bold">public</span> Person {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   Employee(string name, string email, string job);
+</span></span><span style="display:flex;"><span>   string <span style="color:#900;font-weight:bold">GetJob</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   string job_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>To initialize a base class, we define constructors just like what we did before:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="font-weight:bold">::</span>Person(string name, string email) <span style="font-weight:bold">:</span> name_(name), email_(email) {}
+</span></span></code></pre></div><p>while for derived classes, we need to call the base class constructor</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Student<span style="font-weight:bold">::</span>Student(string name, string email, string major) <span style="font-weight:bold">:</span> Person(name, email), major_(major) {}
+</span></span><span style="display:flex;"><span>Employer<span style="font-weight:bold">::</span>Employer(string name, string email, string job) <span style="font-weight:bold">:</span> Person(name, email), job_(job) {}
+</span></span></code></pre></div><p>A derived class can access members in the base class, subject to protection level restrictions. Protection levels public and private have their regular meanings in an inheritance class hierarchy:
+􏰀</p>
+<ul>
+<li>A derived class cannot access private members of a base class.</li>
+<li>A derived class can access public members of a base class.</li>
+</ul>
+<p>A derived class can also access protected members of a base class. If a class has protected members:
+􏰀</p>
+<ul>
+<li>That class can access them</li>
+<li>A derived class of that class can access them</li>
+<li>Everone else cannot access them</li>
+</ul>
+<h1 id="virtual">Virtual</h1>
+<p>A base class uses the <code>virtual</code> keyword to allow a derived class to override (provide a different implementation) a member function. If a function is virtual (in the base class):
+􏰀</p>
+<ul>
+<li>The base class provides an implementation for that function; we call it the default implementation
+􏰀- A derived classes inherit the function interface (definition) as well as the default implementation
+􏰀- A derived class can provide a different implementation for that function (but it does not have to)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Base1</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> Fun1();
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">Fun2</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">Fun3</span>();
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>and then functions like <code>Fun1</code> will be revisable in inheritance. Note that the base class has to implement all functions no matter they&rsquo;re virtual or not.</p>
+<h1 id="pure-virtual--abstract-classes">Pure Virtual &amp; Abstract Classes</h1>
+<p>If we don&rsquo;t give a default implementation of a virtual function, we call it pure virtual. This is been done by assigning <code>=0</code> at the time of definition.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Base2</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>   <span style="font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">void</span> Fun1() <span style="font-weight:bold">=</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>In this case the base class does not need to implement this <code>Fun1</code> and in contrast, the derived class must do so. A class with virtual functions is called an <strong>abstract class</strong>. Note that we cannot instantiate (make an object of) an abstract class until every virtual function is implemented.</p>
+<h1 id="comparing-virtual--pure-virtual">Comparing Virtual &amp; Pure Virtual</h1>
+<p>There&rsquo;s a slight difference between normal member functions, virutal functions and pure virtual functions during inheritance.</p>
+<ul>
+<li>For a normal member function, you don&rsquo;t necessarily need to implement it, but any derived class cannot change it</li>
+<li>For a virtual function, you can implement or not, and a derived class can redefine it</li>
+<li>For a pure virtual function, you must not implement it, and implementation is a must for any derived classes if you want to instantiate it</li>
+</ul>
+<h1 id="polymorphism">Polymorphism</h1>
+<p>We use a pointer or a reference to a base class object to point to an object of a derived class, which we call the Liskov Substitution Principle (LSP).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Option<span style="font-weight:bold">*</span> option1 <span style="font-weight:bold">=</span> <span style="font-weight:bold">nullptr</span>;
+</span></span><span style="display:flex;"><span>Option<span style="font-weight:bold">*</span> option2 <span style="font-weight:bold">=</span> <span style="font-weight:bold">nullptr</span>;
+</span></span><span style="display:flex;"><span>option1 <span style="font-weight:bold">=</span> <span style="font-weight:bold">new</span> EuropeanCall(...);
+</span></span><span style="display:flex;"><span>EuropeanCall(...) option_;
+</span></span><span style="display:flex;"><span>option2 <span style="font-weight:bold">=</span> option_;
+</span></span></code></pre></div><p>More direct example may be as follows. Instead of writing separately</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">Price</span>(EuropeanCall option, ...) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> option.Price(...);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">Price</span>(EuropeanPut option, ...) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> option.Price(...);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>we can use polymorphism and write it w.r.t. the base class <code>Option</code> using a reference or pointer</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">Price</span>(Option<span style="font-weight:bold">&amp;</span> option, ...) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> option.Price(...);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="const-member-functions">Const Member Functions</h1>
+<p>For variables we declare constancy by</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span> val <span style="font-weight:bold">=</span> <span style="color:#099">10</span>;
+</span></span></code></pre></div><p>For constant objects, e.g.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Student</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    string GetName();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name_;
+</span></span><span style="display:flex;"><span>    string email_;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>string Person<span style="font-weight:bold">::</span>GetName() {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> name_;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>when we call</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">const</span> Student <span style="color:#900;font-weight:bold">a</span>(<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>Allen<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>, <span style="color:#a61717;background-color:#e3d2d2">&#39;</span>allen<span style="color:#a61717;background-color:#e3d2d2">@</span>gmail.com<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>);
+</span></span><span style="display:flex;"><span>cout <span style="font-weight:bold">&lt;&lt;</span> a.GetName() <span style="font-weight:bold">&lt;&lt;</span> endl;
+</span></span></code></pre></div><p>we meed a compile error. This is due to that the compiler does not know the function <code>GetName</code> is constant. To declare that we need</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Student</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    string GetName() <span style="font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name_;
+</span></span><span style="display:flex;"><span>    string email_;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>string Person<span style="font-weight:bold">::</span>GetName() <span style="font-weight:bold">const</span> {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> name_;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When we have pure virtual constant member functions, we write like this: <code>virtual type f(...) const = 0</code>.</p>
+<h1 id="mutable">Mutable</h1>
+<p>A const member function cannot modify data members. The only exception of this issue is mutable data members.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Student</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    string GetName() <span style="font-weight:bold">const</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    string name_;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">mutable</span> string email_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h1 id="override">Override</h1>
+<p>The <code>override</code> keyword serves two purposes:</p>
+<ul>
+<li>It shows the reader of the code that &ldquo;this is a virtual method, that is overriding a virtual method of the base class.&rdquo;</li>
+<li>The compiler also knows that it&rsquo;s an override, so it can &ldquo;check&rdquo; that you are not altering/adding new methods that you think are overrides.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">base</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span> 
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">virtual</span> <span style="color:#458;font-weight:bold">int</span> foo(<span style="color:#458;font-weight:bold">float</span> x) <span style="font-weight:bold">=</span> <span style="color:#099">0</span>; 
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">derived1</span><span style="font-weight:bold">:</span> <span style="font-weight:bold">public</span> base {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> foo(<span style="color:#458;font-weight:bold">float</span> x) <span style="font-weight:bold">override</span> { ... }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">derived2</span><span style="font-weight:bold">:</span> <span style="font-weight:bold">public</span> base {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> foo(<span style="color:#458;font-weight:bold">int</span> x) <span style="font-weight:bold">override</span> { ... } 
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>In implementation of the pure virtual function <code>foo</code> in derived class <code>derived1</code>, we&rsquo;re doing just as told by the base class. In <code>derive2</code>, with the <code>override</code> keyword we&rsquo;ll get an error for overwriting the original virtual function by changing types; while without this keyword we&rsquo;ll get at most just a warning.</p>
+<h1 id="static">Static</h1>
+<p>For non-static member we change an instance&rsquo;s data and it&rsquo;s done. Nothing will happen to other instances of the same derived class. For a static member function/data the association is built and we can change one and for all.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Counter</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">static</span> <span style="color:#458;font-weight:bold">int</span> GetCount();
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">static</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">Increment</span>();
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">static</span> <span style="color:#458;font-weight:bold">int</span> count_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h1 id="function-objects">Function Objects</h1>
+<p>A regular function is generally</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">AddOne</span>(<span style="color:#458;font-weight:bold">int</span> x) {<span style="font-weight:bold">return</span> x <span style="font-weight:bold">+</span> <span style="color:#099">1</span>;}
+</span></span></code></pre></div><p>while a function object implementation is</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">AddOne</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> <span style="font-weight:bold">operator</span>()(<span style="font-weight:bold">const</span> <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&amp;</span> x) {<span style="font-weight:bold">return</span> x <span style="font-weight:bold">+</span> <span style="color:#099">1</span>;}
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>and for the latter we can use its instances as objects, which still work as functions.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> values{<span style="color:#099">1</span>, <span style="color:#099">2</span>, <span style="color:#099">4</span>, <span style="color:#099">5</span>};
+</span></span><span style="display:flex;"><span>for_each(values.begin(), values.end(), AddOne());
+</span></span></code></pre></div><p>where <code>AddOne()</code> is an unnamed instance of the class <code>AddOne</code>.</p>
+<h1 id="lambda">Lambda</h1>
+<p>In C++ we have inline function definition as</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> f <span style="font-weight:bold">=</span> [](<span style="color:#458;font-weight:bold">int</span> x, <span style="color:#458;font-weight:bold">int</span> y) { <span style="font-weight:bold">return</span> x <span style="font-weight:bold">+</span> y; };
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x <span style="font-weight:bold">=</span> [](<span style="color:#458;font-weight:bold">int</span> a, <span style="color:#458;font-weight:bold">int</span> b) { <span style="font-weight:bold">return</span> a <span style="font-weight:bold">+</span> b; }(<span style="color:#099">1</span>, <span style="color:#099">2</span>);
+</span></span></code></pre></div><p>The <code>[]</code> is called the capture operator and it has rules as follows.</p>
+<ul>
+<li><code>[=]</code> captures everything by value (read but no write access)</li>
+<li><code>[&amp;]</code> captures everything by reference (read and write access)</li>
+<li><code>[=,&amp;x]</code> captures everything but x by value, and for x by reference</li>
+<li><code>[&amp;,x]</code> captures everything but x by reference, and for x by value</li>
+</ul>
+<h1 id="oop-reviews">OOP: Reviews</h1>
+<ul>
+<li>Classes and Objects</li>
+<li>Data Abstraction and Encapsulation</li>
+<li>Inheritance</li>
+<li>Polymorphism</li>
+</ul>
+<p>Below we introduce some features in STL.</p>
+<h1 id="methods">Methods</h1>
+<p>Two of the most commenly seen methods are <code>begin()</code> and <code>end()</code></p>
+<h1 id="functions-1">Functions</h1>
+<p>We have <code>binary_search</code>, <code>for_each</code>, <code>find_if</code> and <code>sort</code>.</p>
+<h1 id="structure">Structure</h1>
+<p>In the STL, algorithms are implemented as functions, and data types in containers.</p>
+<h1 id="sorting-and-searching-in-stl">Sorting and Searching in STL</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> values {<span style="color:#099">10</span>, <span style="color:#099">1</span>, <span style="color:#099">22</span>, <span style="color:#099">12</span>, <span style="color:#099">2</span>, <span style="color:#099">7</span>};
+</span></span><span style="display:flex;"><span>    sort(values.begin(), values.end());
+</span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">bool</span> found <span style="font-weight:bold">=</span> binary_search(values.begin(), values.end(), <span style="color:#099">12</span>);
+</span></span><span style="display:flex;"><span>    cout <span style="font-weight:bold">&lt;&lt;</span> found <span style="font-weight:bold">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="copying-elements">Copying Elements</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> values1 {<span style="color:#099">10</span>, <span style="color:#099">1</span>, <span style="color:#099">22</span>, <span style="color:#099">12</span>, <span style="color:#099">2</span>, <span style="color:#099">7</span>};
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> values2;
+</span></span><span style="display:flex;"><span>    copy(values1.begin(), values1.end(), back_inserter(values2));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="predicates">Predicates</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">PersonSortCriterion</span>(<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> p1, <span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> p2) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> p1.GetAge() <span style="font-weight:bold">&lt;</span> p2.GetAge();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    Person p1(<span style="color:#b84">&#34;Jim&#34;</span>, <span style="color:#099">12</span>);
+</span></span><span style="display:flex;"><span>    Person p2(<span style="color:#b84">&#34;Joe&#34;</span>, <span style="color:#099">23</span>);
+</span></span><span style="display:flex;"><span>    Person p3(<span style="color:#b84">&#34;Jane&#34;</span>, <span style="color:#099">21</span>);
+</span></span><span style="display:flex;"><span>    vector<span style="font-weight:bold">&lt;</span>Person<span style="font-weight:bold">&gt;</span>  ppl;
+</span></span><span style="display:flex;"><span>    ppl.push_back(p1);
+</span></span><span style="display:flex;"><span>    ppl.push_back(p2);
+</span></span><span style="display:flex;"><span>    ppl.push_back(p3);
+</span></span><span style="display:flex;"><span>    sort(ppl.begin(), ppl.end(), PersonSortCriterion);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="stl--lambda">STL &amp; Lambda</h1>
+<p>By combining STL algorithms with lambdas in C++ can be very efficient. We can use lambdas in a loop without defining a function beforehand.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>vector<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> v{<span style="color:#099">1</span>, <span style="color:#099">3</span>, <span style="color:#099">2</span>, <span style="color:#099">4</span>, <span style="color:#099">6</span>};
+</span></span><span style="display:flex;"><span>for_each(v.cbegin(), v.cend(), [](<span style="color:#458;font-weight:bold">int</span> elem) { cout <span style="font-weight:bold">&lt;&lt;</span> elem <span style="font-weight:bold">&lt;&lt;</span> endl; } )
+</span></span></code></pre></div><p>We can also use it as a sorting criterion</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>std<span style="font-weight:bold">::</span>vector<span style="font-weight:bold">&lt;</span>Person<span style="font-weight:bold">&gt;</span> ppl;
+</span></span><span style="display:flex;"><span>sort(ppl.begin(), ppl.end(), [](<span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> p1,  <span style="font-weight:bold">const</span> Person<span style="font-weight:bold">&amp;</span> p2) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (p1.GetAge() <span style="font-weight:bold">&lt;</span> p2.GetAge()) <span style="font-weight:bold">return</span> <span style="color:#999">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">else</span> <span style="font-weight:bold">return</span> <span style="color:#999">false</span>;
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h1 id="templates">Templates</h1>
+<p>We can have templates of a function:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">template</span> <span style="font-weight:bold">&lt;</span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">T</span><span style="font-weight:bold">&gt;</span> T sum(T a, T b) {<span style="font-weight:bold">return</span> a <span style="font-weight:bold">+</span> b; }
+</span></span><span style="display:flex;"><span>sum(<span style="color:#099">12</span>, <span style="color:#099">13</span>) <span style="color:#998;font-style:italic">// 25
+</span></span></span></code></pre></div><p>We can also have templates of a class:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">template</span> <span style="font-weight:bold">&lt;</span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">T</span><span style="font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Pair</span> {
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">public</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    Pair(T a, T b) <span style="font-weight:bold">:</span> First(a), Second(b) {}
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">private</span><span style="font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    T First, Second;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Pair<span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span> new_pair(<span style="color:#099">12</span>, <span style="color:#099">13</span>);
+</span></span></code></pre></div><h1 id="exception-handling">Exception Handling</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> x, y;
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>y <span style="font-weight:bold">=</span> <span style="color:#099">2</span>;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">try</span> {
+</span></span><span style="display:flex;"><span>    x <span style="font-weight:bold">+=</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>    y <span style="font-weight:bold">+=</span> x;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (y <span style="font-weight:bold">==</span><span style="color:#099">4</span>) {
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">throw</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">catch</span> (<span style="color:#458;font-weight:bold">int</span> err) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (err <span style="font-weight:bold">==</span> <span style="color:#099">1</span>) {
+</span></span><span style="display:flex;"><span>        cout <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#34;Error 1&#34;</span> <span style="font-weight:bold">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="file-io">File I/O</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;iostream&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;fstream&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;string&gt;</span><span style="color:#999;font-weight:bold">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>string;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>endl;
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">using</span> std<span style="font-weight:bold">::</span>cout;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>    ifstream f_in(<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>in.txt<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>);
+</span></span><span style="display:flex;"><span>    ofstream f_out(<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>out.txt<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>, ios<span style="font-weight:bold">::</span>trunc);
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> (f_in.is_open() <span style="font-weight:bold">&amp;&amp;</span> f_out.is_open()) { cout <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#34;Files opend!&#34;</span> <span style="font-weight:bold">&lt;&lt;</span> endl; } 
+</span></span><span style="display:flex;"><span>    string line;
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">while</span> (getline(f_in, line)) { f_out <span style="font-weight:bold">&lt;&lt;</span> line <span style="font-weight:bold">&lt;&lt;</span> endl; }
+</span></span><span style="display:flex;"><span>    f_in.close();
+</span></span><span style="display:flex;"><span>    f_out.close();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Specifically, for the open modes we have</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Mode</th>
+<th style="text-align:center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>ios::app</code></td>
+<td style="text-align:center">Append to the end</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::ate</code></td>
+<td style="text-align:center">Go to the end of file on opening</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::binary</code></td>
+<td style="text-align:center">Open in binary mode</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::in</code></td>
+<td style="text-align:center">Open file for reading only</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::out</code></td>
+<td style="text-align:center">Open file for writing only</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::nocreate</code></td>
+<td style="text-align:center">Fail if you have to create it</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::noreplace</code></td>
+<td style="text-align:center">Fail if you have to replace</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ios::trunc</code></td>
+<td style="text-align:center">Remove all content if the file exists</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="references-1">References</h1>
+<ul>
+<li>Chanaka Liyanaarachchi. &ldquo;Computing for Finance I&rdquo; (2018).</li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/cryptocurrency-arbitrage-3/">Cryptocurrency Arbitrage (3): One More Strategy</a></span>
+  <span class="nav-next"><a href="/blog/color-print/">ColorPrint: Print Colorfully in Python</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/cryptocurrency-arbitrage-3\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/color-print\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

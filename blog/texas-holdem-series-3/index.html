@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Texas Hold &#39;em Series (3): Odds Chart - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Texas Hold &#39;em Series (3): Odds Chart - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="One of the most important aspects of Texas Hold&amp;rsquo;em is the value of each two-card hand before the flop. The decision of how to play your first two cards is something you face every hand, and the &amp;hellip;">
+      <meta property="og:description" content="One of the most important aspects of Texas Hold&amp;rsquo;em is the value of each two-card hand before the flop. The decision of how to play your first two cards is something you face every hand, and the &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Texas Hold &#39;em Series (3): Odds Chart</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-04-05
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>One of the most important aspects of Texas Hold&rsquo;em is the value of each two-card hand before the flop. The decision of how to play your first two cards is something you face every hand, and the value of your first two cards is highly correlated to your probability of winning. Regarding this people have concluded detailed results from playing (and statistics). In this post we&rsquo;re gonna introduce one of the most widely-used results in hold &rsquo;em: the odds chart.</p>
+<!-- more -->
+<h1 id="odds-chart">Odds Chart</h1>
+<p>Before showing the odds chart, we first give the mathematical definition of odds. Here we&rsquo;re not focusing on winning a hand, but instead our intended issue is whether we can make an expected hand with the forthcoming unshown card(s). We call the probability of doing that as the improving probability, and define its corresponding odds as</p>
+<p>$$
+\text{odds} = \frac{1}{\text{improve}\%} - 1
+$$</p>
+<p>which means we can bet every 1USD against any pot larger or equal to this amount.</p>
+<p>Now we try to calculate these probabilities and odds. We here only consider <strong>one</strong> card to expect and <strong>one/two</strong> community cards to unveil, namely odds on the river or turn. For example, when we&rsquo;re expecting any of 8 cards on the turn to make a straight, then the improving probability in this case would be</p>
+<p>$$
+\text{improve}\% = 1 - \frac{45 + 2 - 8}{45 + 2}\times \frac{45 + 1 - 8}{45 + 1} = \frac{340}{1081} \approx 31.45\%
+$$</p>
+<p>which means we have <code>$31.45\\%$</code> chance to make it and the odds, therefore, is <code>$1/31.45\\% - 1 = 2.2$</code>, which means we can bet at most 1USD against each 2.2USD pot. More generally, let <code>$\#\text{n.s.}$</code> denote the number of community cards not shown yet, then we have</p>
+<p>$$
+\text{improve}\% = 1 - \prod_{i=1}^{\#\text{n.s.}} \frac{45 + i - \text{outs}}{45 + i}.
+$$</p>
+<p>Below is the table of improving probabilities and corresponding odds w.r.t. different outs.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Outs</th>
+<th style="text-align:center">Improve% (River)</th>
+<th style="text-align:center">Odds (River)</th>
+<th style="text-align:center">Improve% (Turn)</th>
+<th style="text-align:center">Odds (Turn)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2.17%</td>
+<td style="text-align:center">45</td>
+<td style="text-align:center">4.26%</td>
+<td style="text-align:center">22</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">4.35%</td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">8.42%</td>
+<td style="text-align:center">11</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">6.52%</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">12.49%</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">8.70%</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">16.47%</td>
+<td style="text-align:center">5.1</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">10.87%</td>
+<td style="text-align:center">8.2</td>
+<td style="text-align:center">20.35%</td>
+<td style="text-align:center">3.9</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">13.04%</td>
+<td style="text-align:center">6.7</td>
+<td style="text-align:center">24.14%</td>
+<td style="text-align:center">3.1</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">15.22%</td>
+<td style="text-align:center">5.6</td>
+<td style="text-align:center">27.84%</td>
+<td style="text-align:center">2.6</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">17.39%</td>
+<td style="text-align:center">4.8</td>
+<td style="text-align:center">31.45%</td>
+<td style="text-align:center">2.2</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">19.57%</td>
+<td style="text-align:center">4.1</td>
+<td style="text-align:center">34.97%</td>
+<td style="text-align:center">1.9</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">21.74%</td>
+<td style="text-align:center">3.6</td>
+<td style="text-align:center">38.39%</td>
+<td style="text-align:center">1.6</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:center">23.91%</td>
+<td style="text-align:center">3.2</td>
+<td style="text-align:center">41.72%</td>
+<td style="text-align:center">1.4</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">26.09%</td>
+<td style="text-align:center">2.8</td>
+<td style="text-align:center">44.96%</td>
+<td style="text-align:center">1.2</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:center">28.26%</td>
+<td style="text-align:center">2.5</td>
+<td style="text-align:center">48.10%</td>
+<td style="text-align:center">1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:center">30.43%</td>
+<td style="text-align:center">2.3</td>
+<td style="text-align:center">51.16%</td>
+<td style="text-align:center">0.95</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:center">32.61%</td>
+<td style="text-align:center">2.1</td>
+<td style="text-align:center">54.12%</td>
+<td style="text-align:center">0.85</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td style="text-align:center">34.78%</td>
+<td style="text-align:center">1.9</td>
+<td style="text-align:center">56.98%</td>
+<td style="text-align:center">0.75</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td style="text-align:center">36.96%</td>
+<td style="text-align:center">1.7</td>
+<td style="text-align:center">59.76%</td>
+<td style="text-align:center">0.67</td>
+</tr>
+</tbody>
+</table>
+<h1 id="the-24-times-rule">The 2/4 Times Rule</h1>
+<p>Multiplying the number of outs by two or four gives a reasonable approximation to the improve% (river) or improve% (turn) respectively, in the above table. This is a famous (yet quite rough) approximation among hold &rsquo;em gamers. The rule is a direct corollary from the abovementioned formula, as when <code>$\#\text{n.s.}=1$</code>,</p>
+<p>$$
+\text{improve}\% = 1 - \frac{46 - \text{outs}}{46} = \frac{\text{outs}}{46} \approx (2\text{outs}) \%
+$$</p>
+<p>and when <code>$\#\text{n.s.}=2$</code>,</p>
+<p>$$
+\begin{align*}
+\text{improve}\% &amp;= 1 - \frac{46 - \text{outs}}{46}\times \frac{47-\text{outs}}{47} \
+&amp;= \frac{93}{2162}\text{outs} - \frac{1}{2162}\text{outs}^2 \approx (4\text{outs}) \%.
+\end{align*}
+$$</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/texas-holdem-series-2/">Texas Hold &#39;em Series (2): Poker Hands Dataset</a></span>
+  <span class="nav-next"><a href="/blog/texas-holdem-series-4/">Texas Hold &#39;em Series (4): Hand Evaluation</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/texas-holdem-series-2\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/texas-holdem-series-4\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

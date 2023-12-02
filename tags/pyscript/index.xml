@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PyScript on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/pyscript/</link>
+    <description>Recent content in PyScript on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/pyscript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Write (and Run) Python in Blog</title>
+      <link>https://allenfrostline.com/blog/write-and-run-python-in-blog/</link>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/write-and-run-python-in-blog/</guid>
+      <description>Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and trustworthy, at least in the long run.
+import numpy as np from types import SimpleNamespace import scipy.stats as ss import statsmodels.api as sm import matplotlib.pyplot as plt n = 1000 u = ss.pareto.rvs(1.5, size=n) v = ss.norm.rvs(0, 1, size=n) x = np.</description>
+    </item>
+  </channel>
+</rss>

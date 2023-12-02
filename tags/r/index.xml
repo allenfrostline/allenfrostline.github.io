@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/r/</link>
+    <description>Recent content in R on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 30 Sep 2017 19:54:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Get Legends Out of the Plotting Area in R</title>
+      <link>https://allenfrostline.com/blog/how-to-get-legends-out-of-the-plot/</link>
+      <pubDate>Sat, 30 Sep 2017 19:54:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-get-legends-out-of-the-plot/</guid>
+      <description>Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&amp;rsquo;t overlay the plots?
+This is easy to tackle in Python, but for the default plotting function in R I did struggle for quite a while.
+# `percentage.table()` is a function defined by me. # `f` is a vector of all classes and `len` is the length of `f`.</description>
+    </item>
+  </channel>
+</rss>

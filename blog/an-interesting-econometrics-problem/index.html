@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>An Interesting Econometrics Problem - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="An Interesting Econometrics Problem - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized &amp;hellip;">
+      <meta property="og:description" content="Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>An Interesting Econometrics Problem</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-05-21
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Today we&rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized as below.</p>
+<!-- more -->
+<h1 id="question">Question</h1>
+<p>Assume model <code>$\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}$</code> and <code>$\{u_i\}$</code> i.i.d. Let <code>$\boldsymbol{x'x}/n\to c&gt;0$</code> and <code>$\boldsymbol{\iota'x}\to0$</code> as <code>$n\to\infty$</code>. Suppose an estimator <code>$\hat\gamma$</code> is available for the ratio <code>$\gamma=\beta_1/\beta_2$</code>, which is distributed independently of <code>$\mathbf{u}$</code> and</p>
+<p>$$
+n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2).
+$$</p>
+<p>Define</p>
+<p>$$
+\hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&rsquo;\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&rsquo;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1}
+$$</p>
+<p>so <code>$\mathbf{y}$</code> is regressed on <code>$\mathbf{x}+\boldsymbol{\iota}\hat\gamma$</code>. Derive the asymptotic distribution of <code>$\hat\beta_2$</code>.</p>
+<h1 id="solution">Solution</h1>
+<p>By subtracting <code>$\beta_2$</code> on both sides of (1) we have</p>
+<div>
+$$
+\begin{align}
+\hat\beta_2-\beta_2
+&= \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)}-\beta_2\\
+&= \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\mathbf{u}]}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)}.\tag{2}
+\end{align}
+$$
+</div>
+<p>For the denominator of the RHS in (2), since</p>
+<p>$$
+n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2),
+$$</p>
+<p>we have <code>$\hat\gamma\overset{d}{\to}\gamma$</code> and thus <code>$\hat\gamma^2\overset{d}{\to}\gamma^2$</code>. So the following convergence holds</p>
+<div>
+$$
+\begin{align}
+&(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)/n\\=&
+\mathbf{x}'\mathbf{x}/n+2\hat\gamma\mathbf{x}'\boldsymbol{\iota}/n+\hat\gamma^2\boldsymbol{\iota}'\boldsymbol{\iota}/n\overset{d}{\to}c+\gamma^2>0.
+\end{align}
+$$
+</div>
+<p>For the numerator of the RHS in (2), we have</p>
+<div>
+$$
+\begin{align*}
+&(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)'[\beta_2(\gamma-\hat\gamma)\boldsymbol{\iota}+\mathbf{u}]/n^{1/2}\\
+=&\beta_2(\gamma-\hat\gamma)(\mathbf{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} + (\mathbf{x}+\boldsymbol{\iota}\gamma)'\mathbf{u}/n^{1/2} \\-& n^{1/2}(\hat\gamma-\gamma)^2\beta_2 + (\hat\gamma-\gamma)\boldsymbol{\iota}'\mathbf{u}/n^{1/2}.\tag{3}
+\end{align*}
+$$
+</div>
+<p>Now we derive the asymptotic distributions of each term in the half equation (3).</p>
+<p><strong>First term in (3)</strong>:</p>
+<div>
+$$
+\begin{align}
+&\beta_2(\gamma-\hat\gamma)(\mathbf{x}+\boldsymbol{\iota}\gamma)'\boldsymbol{\iota}/n^{1/2} \\=& n^{1/2}(\hat\gamma-\gamma)\beta_2(\mathbf{x}'\boldsymbol{\iota}/n+\gamma)\overset{A}{\sim}\mathcal{N}(0,\beta_2^2\gamma^2\lambda^2).
+\end{align}
+$$
+</div>
+<p><strong>Second term in (3)</strong>: Define <code>$\mathbf{a}$</code> as</p>
+<p>$$
+\mathbf{a} = \frac{\mathbf{x}+\boldsymbol{\iota}\gamma}{[(\mathbf{x}+\boldsymbol{\iota}\gamma)&rsquo;(\mathbf{x}+\boldsymbol{\iota}\gamma)]^{1/2}},
+$$</p>
+<p>then we have</p>
+<p>$$
+\mathbf{a}&rsquo;\mathbf{a}=1,\quad \mathbf{a}&rsquo;\boldsymbol{\iota}/n\to 0.
+$$</p>
+<p>Notice that <code>$\mathbf{x}'\mathbf{x}/n\to c$</code> implies <code>$x_n^2/n\to 0$</code> and thus <code>$x_n/n\to 0$</code>, so</p>
+<p>$$
+\mathbf{e}_n&rsquo;\mathbf{a}(\mathbf{a}&rsquo;\mathbf{a})^{-1}\mathbf{a}&rsquo;\mathbf{e}_n
+=\mathbf{e}_n&rsquo;\mathbf{a}\mathbf{a}&rsquo;\mathbf{e}_n=\frac{(x_n+\gamma)^2}{(\mathbf{x}+\boldsymbol{\iota}\gamma)&rsquo;(\mathbf{x}+\boldsymbol{\iota}\gamma)}\to 0
+$$</p>
+<p>which implies</p>
+<p>$$
+\max_{1\le i\le n}a_i^2=\max_{1\le i\le n}\mathbf{e}_i&rsquo;\mathbf{a}\mathbf{a}&rsquo;\mathbf{e}_i\to 0.
+$$</p>
+<p>Hence, by Hajek-Sidak it holds that</p>
+<p>$$
+\mathbf{a}&rsquo;\mathbf{u}\overset{A}{\sim}\mathcal{N}(0,\sigma^2)
+$$</p>
+<p>and thus the asymptotic distribution of the second term is given by</p>
+<div>
+$$
+\begin{align}
+&(\mathbf{x}+\boldsymbol{\iota}\gamma)'\mathbf{u}/n^{1/2}\\=&[(\mathbf{x}+\boldsymbol{\iota}\gamma)'(\mathbf{x}+\boldsymbol{\iota}\gamma)/n]^{1/2}\mathbf{a}'\mathbf{u}\overset{A}{\sim}\mathcal{N}(0,(c+\gamma^2)\sigma^2).
+\end{align}
+$$
+</div>
+<p><strong>Third term in (3)</strong>:</p>
+<p>$$
+t_3 = -n^{1/2}(\hat\gamma-\gamma)^2\beta_2\overset{d}{\to}0.
+$$</p>
+<p><strong>Last term in (3)</strong>:</p>
+<p>$$
+(\hat\gamma-\gamma)\boldsymbol{\iota}&rsquo;\mathbf{u}/n^{1/2}\overset{d}{\to}0.
+$$</p>
+<p>Therefore, by independence of <code>$\hat\gamma$</code> and <code>$\mathbf{u}$</code> we have</p>
+<p>$$
+n^{1/2}(\hat\beta_2-\beta_2)\overset{A}{\sim}\mathcal{N}\left(0,\frac{\beta_2^2\gamma^2\lambda^2 + (c+\gamma^2)\sigma^2}{(c+\gamma^2)^2}\right).
+$$</p>
+<h1 id="remarks">Remarks</h1>
+<p>Therefore we have succesfully derived the asymptotic normality of <code>$\hat\beta_2$</code>. Notice here compared with the normal OLS estimation of <code>$\beta_1$</code> and <code>$\beta_2$</code> together, here by introducing extra information <code>$\hat\gamma$</code> we achieve better efficiency in estimating <code>$\beta_2$</code> solely.</p>
+<p>On the other hand, there is actually a problem in the specification of the question settings. Can you find that? I&rsquo;ll soon upload another post on this.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/bitcoin-time-series/">Bitcoin Inter-exchange Price Spread Prediction</a></span>
+  <span class="nav-next"><a href="/blog/how-i-collected-over-600k/">How I collected over 600k lines of prices in China</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/bitcoin-time-series\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/how-i-collected-over-600k\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tweet on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/tweet/</link>
+    <description>Recent content in tweet on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 09 Feb 2017 21:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/tweet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo?</title>
+      <link>https://allenfrostline.com/blog/strategy-trump-tweets/</link>
+      <pubDate>Thu, 09 Feb 2017 21:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/strategy-trump-tweets/</guid>
+      <description>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)
+Update:
+Alright&amp;hellip; See this Github repository trump2cash. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do.</description>
+    </item>
+  </channel>
+</rss>

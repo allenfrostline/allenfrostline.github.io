@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>econometrics on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/econometrics/</link>
+    <description>Recent content in econometrics on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sun, 21 May 2017 13:48:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/econometrics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Interesting Econometrics Problem</title>
+      <link>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</link>
+      <pubDate>Sun, 21 May 2017 13:48:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</guid>
+      <description>Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized as below.
+Question Assume model $\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}$ and $\{u_i\}$ i.i.d. Let $\boldsymbol{x&#39;x}/n\to c&amp;gt;0$ and $\boldsymbol{\iota&#39;x}\to0$ as $n\to\infty$. Suppose an estimator $\hat\gamma$ is available for the ratio $\gamma=\beta_1/\beta_2$, which is distributed independently of $\mathbf{u}$ and
+$$ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2). $$
+Define
+$$ \hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1} $$</description>
+    </item>
+  </channel>
+</rss>

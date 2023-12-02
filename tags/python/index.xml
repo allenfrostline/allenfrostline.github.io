@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/python/</link>
+    <description>Recent content in Python on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Write (and Run) Python in Blog</title>
+      <link>https://allenfrostline.com/blog/write-and-run-python-in-blog/</link>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/write-and-run-python-in-blog/</guid>
+      <description>Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and trustworthy, at least in the long run.
+import numpy as np from types import SimpleNamespace import scipy.stats as ss import statsmodels.api as sm import matplotlib.pyplot as plt n = 1000 u = ss.pareto.rvs(1.5, size=n) v = ss.norm.rvs(0, 1, size=n) x = np.</description>
+    </item>
+    <item>
+      <title>Adding a Python 2.7 Kernel in Jupyter</title>
+      <link>https://allenfrostline.com/blog/py27-kernel/</link>
+      <pubDate>Wed, 30 Oct 2019 20:44:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/py27-kernel/</guid>
+      <description>It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:
+Up-to-Date Anaconda Before we start installing anything, let&amp;rsquo;s update anaconda.
+conda update conda In case of error concerning setuptools, you may reinstall it before the update. In that case, the scripts would be
+conda uninstall setuptools conda install setuptools conda update --force conda Python 2.7 Environment We need, of course, a brand new python 2.</description>
+    </item>
+    <item>
+      <title>Animation in Matplotlib?</title>
+      <link>https://allenfrostline.com/blog/animation-matplotlib/</link>
+      <pubDate>Thu, 25 Apr 2019 18:27:01 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/animation-matplotlib/</guid>
+      <description>In this tiny piece of post I&amp;rsquo;m gonna post how you can make animations using the matplotlib module in Python. Things get much more intuitive when they move, don&amp;rsquo;t they?
+We&amp;rsquo;re here trying to plot two (thick) sine curves which have different offsets on the x-axis direction, and those offsets increases with an indicator called frame_no.
+import numpy as np import matplotlib.pyplot as plt from matplotlib.animation import FuncAnimation plt.rcParams[&amp;#39;animation.html&amp;#39;] = &amp;#39;html5&amp;#39; x = np.</description>
+    </item>
+    <item>
+      <title>How to Get Variable Name as a String in Python</title>
+      <link>https://allenfrostline.com/blog/var-name-python/</link>
+      <pubDate>Tue, 23 Apr 2019 18:36:40 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/var-name-python/</guid>
+      <description>Although it&amp;rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable names as columns names in a pandas dataframe. How are we gonna implement this in Python?
+There is a nasty workaround provided somewhere on Stackoverflow (sorry but I forgot the actual thread):
+def varName(p): for k, v in globals().items(): if id(p) == id(v): return k foo = &amp;#39;well&amp;#39; far = 12345 print(varName(foo)) print(varName(far)) print(varName(varName)) foo far varName The method utilized the fact that Python stores all variables in the global() dictionary where keys are corresponding id values.</description>
+    </item>
+    <item>
+      <title>Bad Interpreter Error of Jupyter and its Solution</title>
+      <link>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</link>
+      <pubDate>Wed, 17 Apr 2019 14:56:13 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</guid>
+      <description>I always wanna clean up my dev environment thoroughly, once for good. After all these years messing up with virtualenv, conda, pip as well as all the other languages than Python: R, Java, Node.js, Julia, Golang&amp;hellip; My computer finally started going nuts. Jupyter notebook threw me the following error every time I start it:
+zsh: /usr/local/bin/jupyter: bad interpreter: /usr/local/opt/python/bin/python3.7: no such file or directory It turns out that the cause was that along with reinstallation of Python, the homebrew symlinks to Jupyter are now broken.</description>
+    </item>
+    <item>
+      <title>How to Write a Chatroom on a Socket Server</title>
+      <link>https://allenfrostline.com/blog/socket-chat/</link>
+      <pubDate>Wed, 05 Dec 2018 01:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/socket-chat/</guid>
+      <description>I&amp;rsquo;m trying to write a chatroom in this post, using the socket package1 in Python. The general structure of this problem can be devided into three parts. In the simplest case we have two clients, namely client0 and client1, and a server. Except for that the server provides the interface, everything else will remain the same among these three classes: they inherit from the class socket.socket and have two methods sending and recving.</description>
+    </item>
+    <item>
+      <title>ColorPrint: Print Colorfully in Python</title>
+      <link>https://allenfrostline.com/blog/color-print/</link>
+      <pubDate>Fri, 09 Nov 2018 16:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/color-print/</guid>
+      <description>This is a simple print function overwritten so that you can specify different colors in Terminal outputs.
+To use this feature, you&amp;rsquo;ll need to import this customized print function from the ColorPrint package, the GitHub repo is here.
+from ColorPrint import print print(&amp;#39;Hello World!&amp;#39;) # default printing print(&amp;#39;Hello World!&amp;#39;, &amp;#39;r&amp;#39;) # color abbreviation print(&amp;#39;Hello World!&amp;#39;, &amp;#39;c&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;red&amp;#39;) # color full names print(&amp;#39;Hello World!&amp;#39;, &amp;#39;cyan&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;rand&amp;#39;) # random color print(&amp;#39;Hello World!</description>
+    </item>
+    <item>
+      <title>Pythonic Swapping: How and Why</title>
+      <link>https://allenfrostline.com/blog/pythonic-swap/</link>
+      <pubDate>Thu, 12 Jul 2018 19:11:13 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/pythonic-swap/</guid>
+      <description>It&amp;rsquo;s not hard to write a swap function. The most orthodox way that&amp;rsquo;s being used in C++ or Java is by using a temporary variable. For example, say we have a = 0 and b = 1, and we&amp;rsquo;d like to swap the values of these two variables. The pseudocode shall be something as below.
+temp = a a = b b = temp However, a more &amp;ldquo;Pythonic&amp;rdquo; way to do so is by literally &amp;ldquo;swapping&amp;rdquo; the values in place.</description>
+    </item>
+    <item>
+      <title>Run Jupyter Notebook within Virtualenv</title>
+      <link>https://allenfrostline.com/blog/jupyter-virtualenv/</link>
+      <pubDate>Sat, 28 Apr 2018 00:55:04 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/jupyter-virtualenv/</guid>
+      <description> # create virtualenv myenv mkvirtualenv myenv # enter virtualenv workon myenv # install jupyter if it&amp;#39;s not done yet (myenv) pip3 install jupyter # install ipykernel if it&amp;#39;s not done yet (myenv) pip3 install ipykernel # create new kernel of python3 (myenv) python3 -m ipykernel install --user --name myenv --display-name &amp;#34;Python 3&amp;#34; # start the notebook within myenv (myenv) jupyter notebook </description>
+    </item>
+    <item>
+      <title>Network Visualization: Chinese Railway Transport from 1992 to 2011</title>
+      <link>https://allenfrostline.com/blog/network-visualization/</link>
+      <pubDate>Wed, 29 Nov 2017 04:54:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/network-visualization/</guid>
+      <description>This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a comprehensive table called data, where for each province there&amp;rsquo;s a matrix of 20 by 31, i.e. transport to each province w.r.t. different years. Therefore, it&amp;rsquo;s convenient to extract the actual transient matrix for each year by using the method groupby of Pandas.</description>
+    </item>
+    <item>
+      <title>How I collected over 600k lines of prices in China</title>
+      <link>https://allenfrostline.com/blog/how-i-collected-over-600k/</link>
+      <pubDate>Sun, 03 Sep 2017 06:50:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-i-collected-over-600k/</guid>
+      <description>Hey there you are. I&amp;rsquo;m finally back here after over two months without posting anything. Was I being lazy? No, definitely not. It would be the busiest summer you&amp;rsquo;ve ever heard. I carried out several projects, some still in progress and the others finished in July and August. Start from today on, I&amp;rsquo;m gonna share you guys what I did this summer, in five or six posts I suppose. In</description>
+    </item>
+  </channel>
+</rss>

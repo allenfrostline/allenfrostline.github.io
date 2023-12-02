@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>socket on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/socket/</link>
+    <description>Recent content in socket on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 05 Dec 2018 01:34:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/socket/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Write a Chatroom on a Socket Server</title>
+      <link>https://allenfrostline.com/blog/socket-chat/</link>
+      <pubDate>Wed, 05 Dec 2018 01:34:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/socket-chat/</guid>
+      <description>I&amp;rsquo;m trying to write a chatroom in this post, using the socket package1 in Python. The general structure of this problem can be devided into three parts. In the simplest case we have two clients, namely client0 and client1, and a server. Except for that the server provides the interface, everything else will remain the same among these three classes: they inherit from the class socket.socket and have two methods sending and recving.</description>
+    </item>
+  </channel>
+</rss>

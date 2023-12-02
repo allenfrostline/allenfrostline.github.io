@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Texas Hold &#39;em Series (1): Basic Concepts - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Texas Hold &#39;em Series (1): Basic Concepts - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Starting from today, I&amp;rsquo;m gonna write a series of posts on Texas Hold &amp;rsquo;em, one of world&amp;rsquo;s most famous forms of poker. The game is rather complicated, especially considering its origin &amp;hellip;">
+      <meta property="og:description" content="Starting from today, I&amp;rsquo;m gonna write a series of posts on Texas Hold &amp;rsquo;em, one of world&amp;rsquo;s most famous forms of poker. The game is rather complicated, especially considering its origin &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Texas Hold &#39;em Series (1): Basic Concepts</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-03-28
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>Starting from today, I&rsquo;m gonna write a series of posts on Texas Hold &rsquo;em, one of world&rsquo;s most famous forms of poker. The game is rather complicated, especially considering its origin dating back to early 20th century. In this post, I will list the bare-bones of hold &rsquo;em. These concepts may sound boring to you if you are a veteran poker player, but I just want to make sure we&rsquo;re talking in the same language — or building using the same bricks.</p>
+<img src="/images/holdem-royalflush.jpg" width="100%">
+<!-- more -->
+<h1 id="cards">Cards</h1>
+<p>Texas hold &rsquo;em uses all cards but the two jokers from one deck of poker. So there&rsquo;re 13 cards wearing each of the four suits: diamonds (<span style="color:red">♦</span>), hearts (<span style="color:red">♥</span>), clubs (♣) and spades (♠). The exhaustive array of cards are:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><em>(Suit)</em></th>
+<th style="text-align:center">Ace</th>
+<th style="text-align:center">Deuce</th>
+<th style="text-align:center">Three</th>
+<th style="text-align:center">Four</th>
+<th style="text-align:center">Five</th>
+<th style="text-align:center">Six</th>
+<th style="text-align:center">Seven</th>
+<th style="text-align:center">Eight</th>
+<th style="text-align:center">Nine</th>
+<th style="text-align:center">Ten</th>
+<th style="text-align:center">Jack</th>
+<th style="text-align:center">Queen</th>
+<th style="text-align:center">King</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><span style="color:red">♦</span></td>
+<td style="text-align:center"><span style="color:red">A♦</span></td>
+<td style="text-align:center"><span style="color:red">2♦</span></td>
+<td style="text-align:center"><span style="color:red">3♦</span></td>
+<td style="text-align:center"><span style="color:red">4♦</span></td>
+<td style="text-align:center"><span style="color:red">5♦</span></td>
+<td style="text-align:center"><span style="color:red">6♦</span></td>
+<td style="text-align:center"><span style="color:red">7♦</span></td>
+<td style="text-align:center"><span style="color:red">8♦</span></td>
+<td style="text-align:center"><span style="color:red">9♦</span></td>
+<td style="text-align:center"><span style="color:red">10♦</span></td>
+<td style="text-align:center"><span style="color:red">J♦</span></td>
+<td style="text-align:center"><span style="color:red">Q♦</span></td>
+<td style="text-align:center"><span style="color:red">K♦</span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span style="color:red">♥</span></td>
+<td style="text-align:center"><span style="color:red">A♥</span></td>
+<td style="text-align:center"><span style="color:red">2♥</span></td>
+<td style="text-align:center"><span style="color:red">3♥</span></td>
+<td style="text-align:center"><span style="color:red">4♥</span></td>
+<td style="text-align:center"><span style="color:red">5♥</span></td>
+<td style="text-align:center"><span style="color:red">6♥</span></td>
+<td style="text-align:center"><span style="color:red">7♥</span></td>
+<td style="text-align:center"><span style="color:red">8♥</span></td>
+<td style="text-align:center"><span style="color:red">9♥</span></td>
+<td style="text-align:center"><span style="color:red">10♥</span></td>
+<td style="text-align:center"><span style="color:red">J♥</span></td>
+<td style="text-align:center"><span style="color:red">Q♥</span></td>
+<td style="text-align:center"><span style="color:red">K♥</span></td>
+</tr>
+<tr>
+<td style="text-align:center">♣</td>
+<td style="text-align:center">A♣</td>
+<td style="text-align:center">2♣</td>
+<td style="text-align:center">3♣</td>
+<td style="text-align:center">4♣</td>
+<td style="text-align:center">5♣</td>
+<td style="text-align:center">6♣</td>
+<td style="text-align:center">7♣</td>
+<td style="text-align:center">8♣</td>
+<td style="text-align:center">9♣</td>
+<td style="text-align:center">10♣</td>
+<td style="text-align:center">J♣</td>
+<td style="text-align:center">Q♣</td>
+<td style="text-align:center">K♣</td>
+</tr>
+<tr>
+<td style="text-align:center">♠</td>
+<td style="text-align:center">A♠</td>
+<td style="text-align:center">2♠</td>
+<td style="text-align:center">3♠</td>
+<td style="text-align:center">4♠</td>
+<td style="text-align:center">5♠</td>
+<td style="text-align:center">6♠</td>
+<td style="text-align:center">7♠</td>
+<td style="text-align:center">8♠</td>
+<td style="text-align:center">9♠</td>
+<td style="text-align:center">10♠</td>
+<td style="text-align:center">J♠</td>
+<td style="text-align:center">Q♠</td>
+<td style="text-align:center">K♠</td>
+</tr>
+</tbody>
+</table>
+<p>Besides these full-length notations, I&rsquo;ll also be using abbreviations where I denote <code>d</code> for diamonds, <code>h</code> for hearts, <code>c</code> for clubs and <code>s</code> for spades. Also, I use <code>T</code> to represent cards of 10. Thereby, we can easily use a two-character string, e.g. <code>Ts</code>, to refer to the card 10♠. This short-hand is gonna be especially useful when we try to program the game in the forthcoming posts.</p>
+<h1 id="table-and-positions">Table and Positions</h1>
+<p>There are in general three types of hold &rsquo;em games based on the number of players at the table: 2 (called &ldquo;heads-up&rdquo;), 3-6 (called &ldquo;6-max&rdquo;) and 7-10 (this is called &ldquo;full-ring&rdquo;). The maximum number of players in a Texas hold &rsquo;em game is ten, which means there&rsquo;re ten players and one dealer who does not play. That makes a regular 10-player table full (well, with dealer standing).</p>
+<img src="/images/holdem-table.jpg" width="80%">
+<p>There are a variety of positions of the table (ignoring the dealer&rsquo;s), but the most important are three: button (BTN), small blind (SB) and big blind (BB). In most self-dealt games where there is no specific person serving as a dealer, the button also serves as the dealer, which is why you can see the &ldquo;dealer&rdquo; chip at the same position. The blinds are forced contributions and are paid before the pocket cards (the two cards for each player at the beginning of the game, see figure above): SB pays first and is asked half the money of BB, then BB pays his forced bet and finally the dealer gives away all the pocket cards in a clockwise manner starting from SB. Therefore, BTN would be the last one to receive his pocket cards and also to act (bet or fold, see &ldquo;betting&rdquo; below).</p>
+<p>Besides BTN, SB and BB, we also usually call the first player to the left of BB as under-the-gun (UTG), which vividly points out that he&rsquo;s the first to act on this table, as SB and BB are forced to pay their bets.</p>
+<h1 id="betting">Betting</h1>
+<p>There are four kinds of actions you can take each round:</p>
+<ul>
+<li><strong>Fold</strong>: You can discard your pocket cards and forfeit interest in the current pot, i.e. quit the game. This is a valid option throughout the game.</li>
+<li><strong>Bet/Raise</strong>: As the name indicates, you always have the right to wager your chips into the pot. It&rsquo;s called a bet when no one else has yet done so before you, and a raise if someone has bet some but you choose to put more.</li>
+<li><strong>Call</strong>: To call is to match a bet or raise. A betting round ends when all active players have bet an equal amount or everyone folds to a player&rsquo;s bet or raise. If no opponents call a player&rsquo;s bet or raise, the player wins the pot.</li>
+<li><strong>Check</strong>: If no one else has yet opened a betting round, then you&rsquo;re allowed to just pass the round, which is equivalent to betting zero and/or to calling the current bet of zero.</li>
+</ul>
+<h1 id="play-of-the-hand">Play of the Hand</h1>
+<p>The hand begins with a <strong>pre-flop</strong> betting round, beginning with UTG and continuing clockwise. A round of betting continues until every player has folded, put in all of their chips, or matched the amount put in by all other active players.</p>
+<p>After the pre-flop betting round, assuming there remain at least two players taking part in the hand, the dealer deals a <strong>flop</strong>: three face-up community cards. The flop is followed by a second betting round. This and all subsequent betting rounds begin with the player to the dealer&rsquo;s left and continue clockwise.</p>
+<p>After the flop betting round ends, a single community card (called the <strong>turn</strong> or fourth street) is dealt, followed by a third betting round. A final single community card (called the <strong>river</strong> or fifth street) is then dealt, followed by a fourth betting round and the showdown, if necessary. In the third and fourth betting rounds, the stakes double.</p>
+<p>To sum up, players have four rounds to make actions: pre-flop (given a pocket of two cards), flop (reveal three community cards), turn (reveal one more community card) and river (reveal the last one community card).</p>
+<h1 id="hand-values">Hand Values</h1>
+<p>The following table shows the possible hand values in ascending order.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Name</th>
+<th style="text-align:center">Description</th>
+<th style="text-align:center">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">High Card</td>
+<td style="text-align:center">Simple value of the card. Lowest: deuce; highest: ace.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>2c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Pair</td>
+<td style="text-align:center">Two cards with the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Two Pairs</td>
+<td style="text-align:center">Two pairs where each pair of cards have the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Three of a Kind</td>
+<td style="text-align:center">Three cards with the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>2c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Straight</td>
+<td style="text-align:center">Five cards in consecutive values (ace can precede deuce or follow up king).</td>
+<td style="text-align:center"><code>9s</code> <code>Ts</code> <code>Jh</code> <code>Qd</code> <code>Kc</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Flush</td>
+<td style="text-align:center">Five cards of the same suit.</td>
+<td style="text-align:center"><code>Ah</code> <code>4h</code> <code>7h</code> <code>Th</code> <code>2h</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Full House</td>
+<td style="text-align:center">Three of a kind with the rest two making a pair.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Four of a Kind</td>
+<td style="text-align:center">Four cards of the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>4c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Straight Flush</td>
+<td style="text-align:center">Straight of the same suit.</td>
+<td style="text-align:center"><code>9h</code> <code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Royal Flush</td>
+<td style="text-align:center">Straight flush from ten to ace.</td>
+<td style="text-align:center"><code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code> <code>Ah</code></td>
+</tr>
+</tbody>
+</table>
+<p>A player may use any five cards out of the seven available cards, namely the two pocket cards and five community cards, to reach the highest hand value he may attain. The player with the highest hand value wins the pot unless all but one player folds before showdown (showing pocket cards after the last betting round).</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/random-projection-and-expectation/">Random Projection and Its Expectation</a></span>
+  <span class="nav-next"><a href="/blog/texas-holdem-series-2/">Texas Hold &#39;em Series (2): Poker Hands Dataset</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/random-projection-and-expectation\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/texas-holdem-series-2\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

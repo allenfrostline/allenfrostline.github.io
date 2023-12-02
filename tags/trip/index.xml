@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>trip on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/trip/</link>
+    <description>Recent content in trip on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Fri, 04 Jan 2019 10:27:40 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/trip/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>To the Arctic Circle (Again)!</title>
+      <link>https://allenfrostline.com/blog/to-the-arctic-circle-2/</link>
+      <pubDate>Fri, 04 Jan 2019 10:27:40 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/to-the-arctic-circle-2/</guid>
+      <description>It&amp;rsquo;s been more than two years since my last trip to the Arctic Circle when I was still studying in the Netherlands. Our adventurous hike in Abisko, in endless Northern European Mountains, was still a frequent dream of mine. This time we went to Fairbanks, Alaska, for Aurora and also, for another Arctic experience.</description>
+    </item>
+    <item>
+      <title>To the Arctic Circle!</title>
+      <link>https://allenfrostline.com/blog/to-the-arctic-circle-1/</link>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/to-the-arctic-circle-1/</guid>
+      <description>These are the photos I took during our impromptu trip in Northern Europe. We started from Oslo, the capital of Norway and headed all the way to the Abisko National Park in Sweden, which was my first time stepping inside the Arctic Circle.</description>
+    </item>
+  </channel>
+</rss>

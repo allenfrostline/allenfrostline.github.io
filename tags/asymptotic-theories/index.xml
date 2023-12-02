@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>asymptotic theories on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/asymptotic-theories/</link>
+    <description>Recent content in asymptotic theories on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Tue, 27 Dec 2016 19:09:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/asymptotic-theories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Asymptotic Theories</title>
+      <link>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</link>
+      <pubDate>Tue, 27 Dec 2016 19:09:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</guid>
+      <description>These are the notes taken throughout my weekly meetings with Dr. Bekker at RuG. We&amp;rsquo;re using the econometrics book written by Fumio Hayashi1 in 2000 and mainly focused on the chapters about asymptotic theories. The book has covered almost every inch of classical econometrics and is by far the best advanced econometrics book in my mind. I&amp;rsquo;m sure I&amp;rsquo;ll go back to these notes from time to time. Review A</description>
+    </item>
+  </channel>
+</rss>

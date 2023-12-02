@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>method of moments on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/method-of-moments/</link>
+    <description>Recent content in method of moments on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 05 May 2018 12:22:10 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/method-of-moments/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Parameter Estimation of Brownian Motions by Method of Moments</title>
+      <link>https://allenfrostline.com/blog/estimation-brownian-motion/</link>
+      <pubDate>Sat, 05 May 2018 12:22:10 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/estimation-brownian-motion/</guid>
+      <description>How to estimate the parameters of a geometric Brownian motion (GBM)? It seems rather simple but actually took me quite some time to solve it. The most intuitive way is by using the method of moments.
+Estimation of ABM First let us consider a simpler case, an arithmetic Brownian motion (ABM). The evolution is given by
+$$ dS = \mu dt + \sigma dW. $$
+By integrating both sides over $(t,t+T]$ we have</description>
+    </item>
+  </channel>
+</rss>

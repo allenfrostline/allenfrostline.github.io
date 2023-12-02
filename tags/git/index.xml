@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/git/</link>
+    <description>Recent content in git on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Mon, 13 Feb 2017 21:26:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Deploy a Local Project onto Github</title>
+      <link>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</link>
+      <pubDate>Mon, 13 Feb 2017 21:26:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</guid>
+      <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.
+(1) Open Terminal.app and enter the directory of the folder.
+cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.
+git init Now you&amp;rsquo;ll see a .</description>
+    </item>
+  </channel>
+</rss>

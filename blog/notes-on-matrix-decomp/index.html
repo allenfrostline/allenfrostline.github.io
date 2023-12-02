@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Multivariate Data Analysis via Matrix Decomposition - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Multivariate Data Analysis via Matrix Decomposition - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on &amp;hellip;">
+      <meta property="og:description" content="These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Notes on Multivariate Data Analysis via Matrix Decomposition</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-09-30
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<style>
+code {
+    background: darkred;
+    color: white;
+    border-radius: 3px;
+    padding: 0px 2px 1px 2px;
+}
+
+header.title {counter-reset: h1 -1}
+h1 {counter-reset: h2}
+
+h1:before {counter-increment: h1; content: counter(h1) '. '}
+h2:before {counter-increment: h2; content: counter(h1) '.' counter(h2) '. '}
+header h1:before {content: ''}
+</style>
+<p>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning.
+<code>$\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}$</code></p>
+<h1 id="notations">Notations</h1>
+<p>First let&rsquo;s give some standard notations used in this course. Let&rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.</p>
+<h2 id="matrix-multiplication">Matrix Multiplication</h2>
+<p>We denote a matrix <code>$\mathbf{A}\in\R^{m\times n}$</code>, with its entries defined as <code>$[a_{ij}]_{i,j=1}^{m,n}$</code>. Similarly, we define <code>$\mathbf{B}=[b_{jk}]_{j,k=1}^{n,p}$</code> and thus the multiplication is defined as <code>$\mathbf{AB} = [\sum_{j=1}^n a_{ij}b_{jk}]_{i,k=1}^{n,p}$</code>, which can also be represented in three other ways:</p>
+<ul>
+<li>vector form, using <code>$\mathbf{a}$</code> and <code>$\mathbf{b}$</code></li>
+<li>a matrix of products of <code>$A$</code> and <code>$\mathbf{b}$</code></li>
+<li>a matrix of products of <code>$\mathbf{a}$</code> and <code>$\mathbf{B}$</code></li>
+</ul>
+<p>A special example of such representation: let&rsquo;s assume</p>
+<p>$$
+\mathbf{A}=[\mathbf{a}_1,\mathbf{a}_2,\ldots,\mathbf{a}_n]\in\R^{m\times n}\text{   and   }
+\mathbf{D} = \diag(d_1,d_2,\ldots,d_n) \in\R^{n\times n},$$</p>
+<p>then we have right away <code>$\mathbf{AD}=[\mathbf{a}_id_i]_{i=1}^n$</code>.</p>
+<p><code>Exercise</code> With multiplication we care ranks of matrices. There is a quick conclusion: If <code>$\mathbf{x}\neq \bs{0}, \mathbf{y}\neq \bs{0}$</code>, then <code>$\rank(\bs{yx'})=1$</code>. Conversely, if <code>$\rank(\mathbf{A})=1$</code>, then <code>$\exists\ \mathbf{x}\neq \bs{0}, \mathbf{y}\neq \bs{0}$</code> s.t. <code>$\bs{xy'}=\mathbf{A}$</code>. Prove it.</p>
+<h2 id="norms">Norms</h2>
+<p>There are two types of norms in this course we consider:</p>
+<ul>
+<li>(Euclidean) We define the <code>$l^1$</code>-norm as <code>$\norm{\mathbf{x}}_1 = \sum_{i=1}^n |x_i|$</code>, define <code>$l^2$</code>-norm as <code>$\norm{\mathbf{x}}_2 = \sqrt{\mathbf{x'x}}$</code>, define <code>$l^{\infty}$</code>-norm as <code>$\norm{\mathbf{x}}_{\infty} = \max_{1\le i \le n}\{|x_i|\}$</code>, and define the Mahalanobis norm as <code>$\norm{\mathbf{x}}_A = \sqrt{\mathbf{x'Ax}}$</code>.</li>
+<li>(Frobenius) We define the Frobenius norm of a matrix as <code>$\norm{\mathbf{A}}_F=\sqrt{\sum_{i=1}^m\sum_{j=1}^n a_{ij}^2}$</code>. The spectral 2-norm of a matrix is defined as <code>$\norm{\mathbf{A}}_2=\max_{\mathbf{x}\neq \bs{0}} \norm{\mathbf{Ax}}_2 / \norm{\mathbf{x}}_2$</code>.</li>
+</ul>
+<p>Properties of these norms:</p>
+<ul>
+<li><code>$\norm{\mathbf{v}}=0$</code> iff. <code>$\mathbf{v}=\bs{0}$</code>.</li>
+<li><code>$\norm{\alpha \mathbf{v}} = |\alpha|\cdot\norm{\mathbf{v}}$</code> for any <code>$\alpha\in\R$</code> and any <code>$\mathbf{v}\in\mathcal{V}$</code>.</li>
+<li>(Triangular Inequality) <code>$\norm{\mathbf{u} + \mathbf{v}} \le \norm{\mathbf{u}} + \norm{\mathbf{v}}$</code> for any <code>$\mathbf{u}, \mathbf{v}\in\mathcal{V}$</code>.</li>
+<li>(Submultiplicative) <code>$\norm{\mathbf{AB}}\le \norm{\mathbf{A}}\cdot \norm{\mathbf{B}}$</code> for every formable matrices <code>$\mathbf{A}$</code> and <code>$\mathbf{B}$</code>.</li>
+</ul>
+<p><code>Exercise</code> Try to prove them for Euclidean 2-norm, Frobenius norm and spectral 2-norm.</p>
+<h2 id="inner-products">Inner Products</h2>
+<p>There are two types of inner products we consider:</p>
+<ul>
+<li>(Euclidean) We define the inner product of vectors <code>$\mathbf{x},\mathbf{y}\in\R^n$</code> as <code>$\mathbf{x'y}=\sum_{i=1}^n x_iy_i$</code>.</li>
+<li>(Frobenius) We define the inner product of matrices <code>$\mathbf{A},\mathbf{B}\in\R^{m\times n}$</code> as <code>$\braket{\mathbf{A},\mathbf{B}}=\tr(\mathbf{A'B})=\sum_{i=1}^m\sum_{j=1}^n a_{ij}b_{ij}$</code>.</li>
+</ul>
+<p>A famous inequality related to these inner products is the Cauchy-Schwarz inequality, which states</p>
+<ul>
+<li>(Euclidean) <code>$|\mathbf{x'y}|\le \norm{\mathbf{x}}_2\cdot\norm{\mathbf{y}}_2$</code> for any <code>$\bs{x,y}\in\R^n$</code>.</li>
+<li>(Frobenius) <code>$|\braket{\mathbf{A},\mathbf{B}}|\le\norm{\mathbf{A}}_F\cdot\norm{\mathbf{B}}_F$</code> for any <code>$\mathbf{A},\mathbf{B}\in\R^{m\times n}$</code>.</li>
+</ul>
+<h1 id="eigenvalue-decomposition-evd">Eigenvalue Decomposition (EVD)</h1>
+<p>The first matrix decomposition we&rsquo;re gonna talk about is the eigenvalue decomposition.</p>
+<h2 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h2>
+<p>For square matrix <code>$\mathbf{A}\in\R^{n\times n}$</code>, if <code>$\bs{0}\neq \mathbf{x}\in\C^n$</code> and <code>$\lambda\in\C$</code> is s.t. <code>$\mathbf{Ax} = \lambda\mathbf{x}$</code>, then <code>$\lambda$</code> is called an engenvalue of <code>$\mathbf{A}$</code> and <code>$\mathbf{x}$</code> is called the <code>$\lambda$</code>-engenvector of <code>$\mathbf{A}$</code>.</p>
+<p>Ideally, we want a matrix to have <code>$n$</code> eigenvectors and <code>$n$</code> corresponding eigenvectors, linearly independent to each other. This is not always true.</p>
+<h2 id="existence-of-evd">Existence of EVD</h2>
+<p><code>Theorem</code> <code>$\mathbf{A}\in\R^{n\times n}$</code> have <code>$n$</code> eigenvalues iff. there exists an invertible <code>$\mathbf{X}\in\R^{n\times n}$</code> s.t. <code>$\mathbf{X}^{-1}\mathbf{A}\mathbf{X}=\bs{\Lambda}$</code>, i.e. <code>$\mathbf{A}$</code> is diagonizable. This gives <code>$\mathbf{A}=\mathbf{X}\bs{\Lambda}\mathbf{X}^{-1}$</code>, which is called the eigenvalue decomposition (EVD).</p>
+<p><code>Theorem</code> (Spectral Theorem for Symmetric Matrices) For symmetric matrix <code>$\mathbf{A}\in\R^{n\times n}$</code> there always exists an orthogonal matrix <code>$\mathbf{Q}$</code>, namely <code>$\mathbf{Q}'\mathbf{Q}=\mathbf{I}$</code>, that gives</p>
+<p>$$
+\mathbf{A}=\mathbf{Q}\bs{\Lambda}\mathbf{Q}&rsquo; = \sum_{i=1}^n \lambda_i \mathbf{q}_i \mathbf{q}_i'
+$$</p>
+<p>where <code>$\mathbf{q}$</code> are column vectors of <code>$\mathbf{Q}$</code>. This is called the symmetric EVD, aka. <code>$\mathbf{A}$</code> being orthogonally diagonalizable.</p>
+<h2 id="properties-of-evd">Properties of EVD</h2>
+<p>We have several properties following the second theorem above. For all <code>$i=1,2,\ldots, n$</code></p>
+<ul>
+<li><code>$\mathbf{A}\mathbf{q}_i = \lambda_i \mathbf{q}_i$</code> (can be proved using <code>$\mathbf{Q}^{-1}=\mathbf{Q}'$</code>)</li>
+<li><code>$\norm{\mathbf{q}_i}_2=1$</code> (can be proved using <code>$\mathbf{QQ}'=\mathbf{I}$</code>)</li>
+</ul>
+<p>The second theorem above can also be represented as</p>
+<p><code>Theorem</code> If <code>$\mathbf{A}=\mathbf{A}'$</code>, then <code>$\mathbf{A}$</code> has <code>$n$</code> orthogonal eigenvectors.</p>
+<h1 id="singular-value-decomposition-svd">Singular Value Decomposition (SVD)</h1>
+<p>For general matrices, we have singular value decomposition.</p>
+<h2 id="definition">Definition</h2>
+<p>The most famous form of SVD is define as</p>
+<p>$$
+\mathbf{A} = \mathbf{U} \bs{\Sigma} \mathbf{V}'
+$$</p>
+<p>where <code>$\mathbf{A}\in\R^{m\times n}$</code>, <code>$\mathbf{U}\in\R^{m\times m}$</code>, <code>$\bs{\Sigma}\in\R^{m\times n}$</code> and <code>$\mathbf{V}\in\R^{n\times n}$</code>. Specifically, both <code>$\mathbf{U}$</code> and <code>$\mathbf{V}$</code> are orthogonal (i.e. <code>$\mathbf{U}'\mathbf{U}=\mathbf{I}$</code>, same for <code>$\mathbf{V}$</code>) and <code>$\bs{\Sigma}$</code> is diagonal. Usually, we choose the singular values to be non-decreasing, namely</p>
+<p>$$
+\bs{\Sigma}=\diag(\sigma_1,\sigma_2,\ldots,\sigma_{\min{m,n}})\quad\text{where}\quad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_{\min{m,n}}.
+$$</p>
+<h2 id="terminology">Terminology</h2>
+<p>Here we define a list of terms that&rsquo;ll be used from time to time:</p>
+<ul>
+<li>(SVD) <code>$\mathbf{A} = \mathbf{U} \bs{\Sigma} \mathbf{V}'$</code>.</li>
+<li>(Left Singular Vectors) Columns of <code>$\mathbf{U}$</code>.</li>
+<li>(Right Singular Vectors) Columns of <code>$\mathbf{V}$</code>.</li>
+<li>(Singular Values) Diagonal entries of <code>$\bs{\Sigma}$</code>.</li>
+</ul>
+<h2 id="three-forms-of-svd">Three Forms of SVD</h2>
+<p>Besides the regular SVD given above, we have the <strong>outer product SVD</strong>:</p>
+<p>$$
+\mathbf{A} = \sum_{i=1}^{\min{m,n}}!!!\sigma_i \mathbf{u}_i \mathbf{v}_i'
+$$</p>
+<p>and <strong>condensed SVD</strong>:</p>
+<p>$$
+\mathbf{A} = \mathbf{U}_r\bs{\Sigma}_r\mathbf{V}_r'
+$$</p>
+<p>where <code>$r=\rank(\mathbf{A})$</code> is also the number of non-zero singular values. In this form, we have <code>$\bs{\Sigma}_r\in\R^{r\times r}$</code> with proper chunked <code>$\mathbf{U}_r$</code> and <code>$\mathbf{V}_r$</code>.</p>
+<h2 id="existence-of-svd">Existence of SVD</h2>
+<p><code>Theorem</code> (Existence of SVD) Let <code>$\mathbf{A}\in\R^{m\times n}$</code> and <code>$r=\rank(\mathbf{A})$</code>. Then <code>$\exists\ \mathbf{U}_r\in\R^{m\times r}$</code>, <code>$\mathbf{V}_r\in\R^{n\times r}$</code> and <code>$\bs{\Sigma}_r\in\R^{r\times r}$</code> s.t. <code>$\mathbf{A} = \mathbf{U}_r\bs{\Sigma}_r\mathbf{V}_r'$</code> where <code>$\mathbf{U}_r$</code> and <code>$\mathbf{V}_r$</code> are orthogonal and <code>$\bs{\Sigma}_r$</code> is diagonal. This means condensed SVD exists and therefore the rest two forms.</p>
+<p><strong>Proof</strong>. Define symmetric <code>$\mathbf{W}\in\R^{(m+n)\times(m+n)}$</code> as</p>
+<p>$$
+\mathbf{W} = \begin{bmatrix}
+\bs{0} &amp; \mathbf{A} \
+\mathbf{A}&rsquo; &amp; \bs{0}
+\end{bmatrix}
+$$</p>
+<p>which has an orthogonal EVD as <code>$\mathbf{W} = \mathbf{Z}\bs{\Lambda}\mathbf{Z}'$</code> where <code>$\mathbf{Z}'\mathbf{Z}=\mathbf{I}$</code>. Now, assume <code>$\mathbf{z}\in\R^{m+n}$</code> is an eigenvector of <code>$\mathbf{W}$</code> corresponding to <code>$\lambda$</code>, then <code>$\mathbf{W}\mathbf{z} = \lambda \mathbf{z}$</code>. Denote the first <code>$m$</code> entries of <code>$\mathbf{z}$</code> as <code>$\mathbf{x}$</code> and the rest <code>$\mathbf{y}$</code>, which gives</p>
+<p>$$
+\begin{bmatrix}
+\bs{0} &amp; \mathbf{A}\
+\mathbf{A}&rsquo; &amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\mathbf{x} \
+\mathbf{y}
+\end{bmatrix} = \lambda \begin{bmatrix}
+\mathbf{x} \
+\mathbf{y}
+\end{bmatrix} \Rightarrow \begin{cases}
+\mathbf{Ay} = \lambda \mathbf{x},\
+\mathbf{A}&rsquo;\mathbf{x} = \lambda \mathbf{y}.
+\end{cases}
+$$</p>
+<p>Using this results</p>
+<p>$$
+\begin{bmatrix}
+\bs{0} &amp; \mathbf{A}\
+\mathbf{A}&rsquo; &amp; \bs{0}
+\end{bmatrix} \begin{bmatrix}
+\mathbf{x} \
+-\mathbf{y}
+\end{bmatrix} = \begin{bmatrix}
+-\mathbf{Ay} \
+\mathbf{A}&rsquo;\mathbf{y}
+\end{bmatrix} = \begin{bmatrix}
+-\lambda \mathbf{x}\
+\lambda \mathbf{y}
+\end{bmatrix} = -\lambda\begin{bmatrix}
+\mathbf{x}\
+-\mathbf{y}
+\end{bmatrix}
+$$</p>
+<p>which means <code>$-\lambda$</code> is also an engenvalue of <code>$\mathbf{W}$</code>. Hence, we know</p>
+<p>$$
+\begin{align}
+\mathbf{W} &amp;= \mathbf{Z}\bs{\Lambda}\mathbf{Z}&rsquo; = \mathbf{Z}_r\bs{\Lambda}_r\mathbf{Z}_r&rsquo;\
+&amp;= \begin{bmatrix}
+\mathbf{X} &amp; \mathbf{X}\
+\mathbf{Y} &amp; -\mathbf{Y}
+\end{bmatrix} \begin{bmatrix}
+\bs{\Sigma} &amp; \bs{0}\
+\bs{0} &amp; -\bs{\Sigma}
+\end{bmatrix} \begin{bmatrix}
+\mathbf{X} &amp; \mathbf{X}\
+\mathbf{Y} &amp; -\mathbf{Y}
+\end{bmatrix}&rsquo;\
+&amp;= \begin{bmatrix}
+\bs{0} &amp; \mathbf{X}\bs{\Sigma}\mathbf{Y}&rsquo;\
+\mathbf{Y}\bs{\Sigma}\mathbf{X}&rsquo; &amp; \bs{0}
+\end{bmatrix}.
+\end{align}
+$$</p>
+<p>Therefore, we conclude <code>$\mathbf{A}=\mathbf{X}\bs{\Sigma}\mathbf{Y}'$</code> where now all we need to prove is the orthogonality of <code>$\mathbf{X}$</code> and <code>$\mathbf{Y}$</code>. Let&rsquo;s take a look at <code>$\mathbf{z}=(\mathbf{x},\mathbf{y})$</code> we just defined. Let</p>
+<p>$$
+\norm{\mathbf{z}}=\mathbf{z}&rsquo;\mathbf{z}=\mathbf{x}&rsquo;\mathbf{x} + \mathbf{y}&rsquo;\mathbf{y} = 2.
+$$</p>
+<p>From orthogonality of eigenvectors corresponding to different eigenvalues, we also know</p>
+<p>$$
+\mathbf{z}&rsquo;\bar{\mathbf{z}} = \mathbf{x}&rsquo;\mathbf{x} - \mathbf{y}&rsquo;\mathbf{y} = 0
+$$</p>
+<p>which altogether gives <code>$\norm{\mathbf{x}}=\norm{\mathbf{y}}=1$</code>.<span style="float: right">Q.E.D.</span></p>
+<h2 id="how-to-calculate-svd">How to Calculate SVD</h2>
+<p>Three steps to calculate the SVD of <code>$\mathbf{A}\in\R^{m\times n}$</code>:</p>
+<ul>
+<li><code>$\bs{\Sigma}$</code>: calculate eigenvalues of <code>$\mathbf{AA}'$</code>, then let <code>$\bs{\Sigma}=\diag\{\sigma_1,\sigma_2,\ldots,\sigma_r\}\in\R^{m\times n}$</code>.</li>
+<li><code>$\mathbf{U}$</code>: calculate eigenvectors of <code>$\mathbf{AA}'$</code>, then normalize them to norm <code>$1$</code>, then <code>$\mathbf{U}=(\bs{u_1},\bs{u_2},\ldots,\mathbf{u}_m)$</code>.</li>
+<li><code>$\mathbf{V}$</code>: calculate eigenvectors of <code>$\mathbf{A}'\mathbf{A}$</code>, then normalize them to norm <code>$1$</code>, then <code>$\mathbf{V}=(\mathbf{v}_1,\mathbf{v}_2,\ldots,\mathbf{v}_n)$</code>.</li>
+</ul>
+<p><strong>Remark</strong>: Alternatively you may use formula <code>$\mathbf{U}=\mathbf{AV}\bs{\Sigma}^{-1}\Rightarrow \mathbf{u}_i=\mathbf{Av}_i/\sigma_i$</code>.</p>
+<h2 id="properties-of-svd">Properties of SVD</h2>
+<p>There are several characteristics we have about SVD:</p>
+<ul>
+<li>The <code>$\mathbf{W}$</code> decomposition above.</li>
+<li>The left singular vector <code>$\mathbf{v}$</code> given by <code>$\mathbf{Au} = \sigma \mathbf{v}$</code>, and the right singular vector <code>$\mathbf{u}$</code> given by <code>$\mathbf{A}'\mathbf{v} = \sigma \mathbf{u}$</code>.</li>
+<li>Relationship with eigenvectors/eigenvalues&hellip;
+<ul>
+<li>of <code>$\mathbf{A}'\mathbf{A}$</code>: <code>$\mathbf{A}'\mathbf{A}\mathbf{u} = \sigma\mathbf{A}'\mathbf{v} = \sigma^2\mathbf{u}$</code>.</li>
+<li>of <code>$\mathbf{AA}'$</code>: <code>$\mathbf{AA}'\mathbf{v} = \sigma\mathbf{A}\mathbf{u} = \sigma^2\mathbf{v}$</code>.</li>
+</ul>
+</li>
+<li>Frobenius norms (<strong>eigenvalues cannot define a norm!</strong>):
+<ul>
+<li><code>$\norm{\mathbf{A}}_F^2 = \sum_{i,j=1}^{m,n}a_{ij}^2=\sum_{i=1}^r\sigma_i^2$</code>.</li>
+<li><code>$\norm{\mathbf{A}}_2 = \max_{\mathbf{x}\neq 0} \norm{\mathbf{Ax}}_2 / \norm{\mathbf{x}}_2 = \sigma_1$</code>.</li>
+</ul>
+</li>
+</ul>
+<p><code>Exercise</code> Show how to use SVD to calculate these two norms.</p>
+<h2 id="applications-of-svd">Applications of SVD</h2>
+<p><strong>1) Projections</strong>. One of the most importance usages of SVD is computing projections. <code>$\mathbf{P}\in\R^{n\times n}$</code> is a projection matrix iff. <code>$\mathbf{P}^2=\mathbf{P}$</code>. More commonly, we consider orthogonal projection <code>$\mathbf{P}$</code> that&rsquo;s also symmetric. Now let&rsquo;s consider dataset <code>$\mathbf{A}\in\R^{m\times n}$</code> where we have <code>$n$</code> observations, each with <code>$m$</code> dimensions. Suppose we want to project this dataset onto <code>$\mathbf{W}\subseteq\R^m$</code> that has <code>$k$</code> dimensions, i.e.</p>
+<p>$$
+\mathbf{W} = \span{\mathbf{q}_1,\mathbf{q}_2,\ldots,\mathbf{q}_k},\quad \mathbf{q}_i&rsquo;\mathbf{q}_j=\1{i=j}
+$$</p>
+<p>then the projection matrix would be <code>$\mathbf{P}_{\mathbf{W}}=\mathbf{Q}_k\mathbf{Q}_k'$</code>.</p>
+<p><strong>Nearest Orthogonal Matrix</strong>. The nearest orthogonal matrix of <code>$\mathbf{A}\in\R^{p\times p}$</code> is given by</p>
+<p>$$
+\min_{\mathbf{X}&rsquo;\mathbf{X}=\mathbf{I}}\norm{\mathbf{A}-\mathbf{X}}_F
+$$</p>
+<p>which solves if we have optima for</p>
+<div>
+$$
+\begin{align}
+\min_{\mathbf{X}'\mathbf{X}=\mathbf{I}}\norm{\mathbf{A}-\mathbf{X}}_F^2 &=
+\min_{\mathbf{X}'\mathbf{X}=\mathbf{I}}\tr[(\mathbf{A}-\mathbf{X})'(\mathbf{A}-\mathbf{X})]\\&=
+\min_{\mathbf{X}'\mathbf{X}=\mathbf{I}}\tr[\mathbf{A}'\mathbf{A} - \mathbf{X}'\mathbf{A} - \mathbf{A}'\mathbf{X} + \mathbf{X}'\mathbf{X}]\\&=
+\min_{\mathbf{X}'\mathbf{X}=\mathbf{I}} \norm{\mathbf{A}}_F^2 - \tr(\mathbf{A}'\mathbf{X}) - \tr(\mathbf{X}'\mathbf{A}) + \tr(\mathbf{X}'\mathbf{X})\\&=
+\norm{\mathbf{A}}_F^2 + n - 2\max_{\mathbf{X}'\mathbf{X}=\mathbf{I}} \tr(\mathbf{A}'\mathbf{X})
+\end{align}.
+$$
+</div>
+<p>Now we try to solve</p>
+<p>$$
+\max_{\mathbf{X}&rsquo;\mathbf{X}=\mathbf{I}} \tr(\mathbf{A}&rsquo;\mathbf{X})
+$$</p>
+<p>and claim the solution is given by <code>$\mathbf{X} = \mathbf{U}\mathbf{V}'$</code> where <code>$\mathbf{U}$</code> and <code>$\mathbf{V}$</code> are derived from SVD of <code>$\mathbf{A}$</code>, namely <code>$\mathbf{A} = \mathbf{U}\bs{\Sigma} \mathbf{V}'$</code>. Proof: We know</p>
+<p>$$
+\tr(\mathbf{A}&rsquo;\mathbf{X}) = \tr(\mathbf{V}\bs{\Sigma}&rsquo;\mathbf{U}&rsquo;\mathbf{X}) = \tr(\bs{\Sigma}&rsquo;\mathbf{U}&rsquo;\mathbf{X}\mathbf{V}) =: \tr(\bs{\Sigma}&rsquo;\mathbf{Z})
+$$</p>
+<p>where we define <code>$\mathbf{Z}$</code> as the product of the three orthogonal matrices, which therefore is orthogonal: <code>$\mathbf{Z}'\mathbf{Z}=\mathbf{I}$</code>.</p>
+<p>Orthogonality of <code>$\mathbf{Z}$</code> gives <code>$\forall i$</code></p>
+<p>$$
+z_{i1}^2 + z_{i2}^2 + \cdot + z_{ip}^2 = 1 \Rightarrow z_{ii} \ge 1.
+$$</p>
+<p>Hence, (note all singular values are non-negative)</p>
+<p>$$
+\tr(\bs{\Sigma}&rsquo;\mathbf{Z}) = \sum_{i=1}^p \sigma_i z_{ii} \le \sum_{i=1}^p \sigma_i
+$$</p>
+<p>which gives optimal <code>$\mathbf{Z}^*=\mathbf{I}$</code> and thus the solution follows.</p>
+<p><strong>2) Orthogonal Procrustes Problem</strong>. This seeks the solution to</p>
+<p>$$
+\min_{\mathbf{X}&rsquo;\mathbf{X}=\mathbf{I}}\norm{\mathbf{A}-\mathbf{BX}}_F
+$$</p>
+<p>which is, similar to the problem above, given by the SVD of <code>$\mathbf{BA}'=\mathbf{U}\bs{\Sigma} \mathbf{V}'$</code>, namely <code>$\mathbf{X}=\mathbf{UV}'$</code>.</p>
+<p><strong>3) Nearest Symmetric Matrix</strong> for <code>$\mathbf{A}\in\R^{p\times p}$</code> seeks solution to <code>$\min\norm{\mathbf{A}-\mathbf{X}}_F$</code>, which is simply</p>
+<p>$$
+\mathbf{X} = \frac{\mathbf{A}+\mathbf{A}&rsquo;}{2}.
+$$</p>
+<p>In order to prove it, write <code>$\mathbf{A}$</code> in the form of</p>
+<p>$$
+\mathbf{A} = \frac{\mathbf{A} + \mathbf{A}&rsquo;}{2} + \frac{\mathbf{A} - \mathbf{A}&rsquo;}{2} =: \mathbf{X} + \mathbf{Y}.
+$$</p>
+<p>Notice <code>$\tr(\mathbf{X}'\mathbf{Y})=0$</code>, hence by Pythagoras we know <code>$\mathbf{Y}$</code> is the minimum we can find for the problem above.</p>
+<p><strong>4) Best Rank-<code>$r$</code> Approximation</strong>. In order to find the best rank-<code>$r$</code> approximation in Frobenius norm, we need solution to</p>
+<p>$$
+\min_{\rank(\mathbf{X})\le r} \norm{\mathbf{A}-\mathbf{X}}_F
+$$</p>
+<p>which is merely <code>$\mathbf{X}=\mathbf{U}_r\bs{\Sigma}_r\mathbf{V}_r'$</code>. See condensed SVD above for notation.</p>
+<p>The best approximation in 2-norm, namely solution to</p>
+<p>$$
+\min_{\rank(\mathbf{X})\le r} \norm{\mathbf{A}-\mathbf{X}}_2,
+$$</p>
+<p>is exactly identical to the one above. We may prove both by reduction to absurdity. Proof: Suppose <code>$\exists \mathbf{B}\in\R^{n\times p}$</code> s.t.</p>
+<div>
+$$
+\norm{\mathbf{A}-\mathbf{B}}_2 < \norm{\mathbf{A}-\mathbf{X}}_2 = \sigma_{r+1}.
+$$
+</div>
+<p>Now choose <code>$\mathbf{w}$</code> from kernel of <code>$\mathbf{B}$</code> and we have</p>
+<p>$$
+\mathbf{Aw}=\mathbf{Aw}+\bs{0} = (\mathbf{A}-\mathbf{B})\mathbf{w}
+$$</p>
+<p>and thus</p>
+<div>
+$$
+\norm{\mathbf{Aw}}_2 = \norm{(\mathbf{A}-\mathbf{B})\mathbf{w}}_2 \le \norm{\mathbf{A}-\mathbf{B}}_2\cdot \norm{\mathbf{w}}_2
+<\sigma_{r+1}\norm{\mathbf{w}}_2\tag{1}.
+$$
+</div>
+<p>Meanwhile, note <code>$\mathbf{w}\in\span\{v_1,v_2,\ldots,v_{r+1}\}=\mathbf{W}$</code>, assume particularly <code>$\mathbf{w}=\mathbf{v}_{r+1}\bs{\alpha}$</code>, then</p>
+<div>
+$$
+\begin{align}
+\norm{\mathbf{Aw}}_2^2&=\norm{\mathbf{U}\bs{\Sigma}\mathbf{V}'\mathbf{w}}_2^2 = \sum_{i=1}^{r+1}\sigma_i^2\alpha_i^2 \ge \sigma_{r+1}^2\sum_{i=1}^{r+1}\alpha_i^2\\
+&= \sigma_{r+1}^2\norm{\bs{\alpha}}_2^2\equiv \sigma_{r+1}^2\norm{\mathbf{w}}_2^2.\tag{2}
+\end{align}
+$$
+</div>
+<p>Due to contradiction between eq. (1) and (2) we conclude such <code>$\mathbf{B}$</code> doesn&rsquo;t exist.</p>
+<h2 id="orthonormal-bases-for-four-subspaces-using-svd">Orthonormal Bases for Four Subspaces using SVD</h2>
+<p>SVD can be used to get orthonormal bases for each of the four subspaces: the column space <code>$C(\mathbf{A})$</code>, the null space <code>$N(\mathbf{A})$</code>, the row space <code>$C(\mathbf{A}')$</code>, and the left null space <code>$N(\mathbf{A}')$</code>.</p>
+<ul>
+<li><code>$\mathbf{U}_r$</code> forms a basis of <code>$C(\mathbf{A})$</code>.</li>
+<li><code>$\bar{\mathbf{U}}_r$</code> forms a basis of <code>$N(\mathbf{A}')$</code>.</li>
+<li><code>$\mathbf{V}_r$</code> forms a basis of <code>$C(\mathbf{A}')$</code>.</li>
+<li><code>$\bar{\mathbf{V}}_r$</code> forms a basis of <code>$N(\mathbf{A}')$</code>.</li>
+</ul>
+<p>See <a href="https://allenfrostline.com/four-spaces-svd">this post</a> for detailed proof.</p>
+<h1 id="principle-component-analysis-pca">Principle Component Analysis (PCA)</h1>
+<p>PCA is the most important matrix analysis tool. In this section we use <code>$\mathbf{X}=(X_1,X_2,\ldots,X_p)$</code> to denote a vector of random variables. Being capitalized here means they are random variables rather than observations, and thus a capitalized bold symbol stands still for a vector.</p>
+<h2 id="three-basic-formulas-for-population-analysis">Three Basic Formulas (for Population Analysis)</h2>
+<p>Expectation:</p>
+<p>$$
+\E[\mathbf{AX}] = \mathbf{A}\E[\mathbf{X}].
+$$</p>
+<p>Variance:</p>
+<p>$$
+\Var[\mathbf{Ax}] = \mathbf{A}\Var[\mathbf{X}]\mathbf{A}&rsquo;.
+$$</p>
+<p>Covariance:</p>
+<p>$$
+\Cov[\mathbf{a}&rsquo;\mathbf{X},\mathbf{b}&rsquo;\mathbf{X}] = \mathbf{a}&rsquo;\Var[\mathbf{X}]\mathbf{b}.
+$$</p>
+<h2 id="definition-of-population-pca">Definition of Population PCA</h2>
+<p>Given <code>$\mathbf{X}:\Omega\to\R^p$</code>, find <code>$\mathbf{A}\in\R^{p\times p}$</code> s.t.</p>
+<ul>
+<li><code>$Y_1,Y_2,\ldots,Y_p$</code> are uncorrelated, where <code>$\mathbf{Y}=(Y_1,Y_2,\ldots,Y_p)=\mathbf{A}\mathbf{X}$</code>.</li>
+<li><code>$Y_1,Y_2,\ldots,Y_p$</code> have variances as large as possible.</li>
+</ul>
+<p>These two condisions can be described in equations as below:</p>
+<ul>
+<li><code>$\Cov[Y_i,Y_j]=\mathbf{O}$</code> for all <code>$i\neq j$</code>.</li>
+<li><code>$\Var[Y_i]$</code> is maximized for all <code>$i=1,2,\ldots,p$</code> (under the restraints that <code>$\norm{\mathbf{a}_j}=1$</code> for all <code>$j=1,2,\ldots,p$</code>).</li>
+</ul>
+<p><img alt="We choose Y_1 to maximize it's variance, and then Y_2" src="/images/notes-on-matrix-decomp1.png" style="width:min(300px, 100%)"></img></p>
+<p>These <code>$Y_1,Y_2,\ldots,Y_p$</code> are called principle components of <code>$\mathbf{X}$</code>.</p>
+<h2 id="how-to-calculate-population-pcs">How to Calculate Population PCs</h2>
+<p>We can do it <strong>recursively</strong>:</p>
+<ul>
+<li>1st PC: for <code>$Y_1=\mathbf{a}_1'\mathbf{X}$</code>, let <code>$\mathbf{a}_1=\arg\max\{\Var[\mathbf{a}_1'\mathbf{X}]\}$</code> s.t. <code>$\norm{\mathbf{a}_1}=1$</code>.</li>
+<li>2nd PC: for <code>$Y_2=\mathbf{a}_2'\mathbf{X}$</code>, let <code>$\mathbf{a}_2=\arg\max\{\Var[\mathbf{a}_2'\mathbf{X}]\}$</code> s.t. <code>$\norm{\mathbf{a}_2}=1$</code>, <code>$\Cov[\mathbf{a}_1'\mathbf{X},\mathbf{a}_2'\mathbf{X}]=0$</code>.</li>
+<li>3rd PC: for <code>$Y_3=\mathbf{a}_3'\mathbf{X}$</code>, let <code>$\mathbf{a}_3=\arg\max\{\Var[\mathbf{a}_3'\mathbf{X}]\}$</code> s.t. <code>$\norm{\mathbf{a}_3}=1$</code>, <code>$\Cov[\mathbf{a}_1'\mathbf{X},\mathbf{a}_3'\mathbf{X}]=0$</code> and <code>$\Cov[\mathbf{a}_2'\mathbf{X},\mathbf{a}_3'\mathbf{X}]=0$</code>.</li>
+<li>&hellip;</li>
+</ul>
+<p>Or, we can do it <strong>analytically</strong> by the theorem below:</p>
+<p><code>Theorem</code> Let <code>$\bs{\Sigma}=\Cov[\mathbf{X}]$</code> and let the EVD be <code>$\bs{\Sigma} = \mathbf{A}\bs{\Lambda}\mathbf{A}'$</code>, then it can be proved that <code>$Y_k = \mathbf{a}_k'\mathbf{X}$</code> is the <code>$k$</code>-th PC.</p>
+<h2 id="properties-of-population-pcs">Properties of Population PCs</h2>
+<ul>
+<li>The total variance is not changed: <code>$\sum \Var[X_i]=\sum\Var[Y_i]$</code>. </li></li>
+<li>The proportion in variance of the <code>$k$</code>-th PC is <code>$\frac{\Var[Y_k]}{\sum \Var[Y_i]} = \frac{\lambda_k}{\sum \lambda_i}$</code> where <code>$\lambda_i$</code> is the <code>$i$</code>-th eigenvalue.</li></li>
+<li>The correlation <code>$\Corr[Y_i, X_j]=\sqrt{\lambda_i}a_{ij}/\sigma_j$</code>.</li></li>
+</ul>
+<h2 id="definition-of-sample-pca">Definition of Sample PCA</h2>
+<p>Given <code>$n$</code> samples: <code>$\{X(\omega_1), X(\omega_2), \ldots, X(\omega_n)\}$</code>. Everything is just the same except being in sample notations, e.g. <code>$\bar{\mathbf{X}}=\mathbf{X}'\bs{1} / n$</code> and <code>$S=(\mathbf{X}-\bar{\mathbf{X}}'\bs{1})'(\mathbf{X}-\bar{\mathbf{X}}'\bs{1}) / (n-1)$</code>.</p>
+<h2 id="how-to-calculate-sample-pca">How to Calculate Sample PCA</h2>
+<p>In order to avoid loss of precision in calculating the <code>$\mathbf{S}$</code>, we do SVD instead of EVD, on the mean-centered sample matrix <code>$\mathbf{X}-\bs{1}\bar{\mathbf{X}}=\mathbf{U}\bs{\Sigma} \mathbf{V}'\in\R^{n\times p}$</code>. Then it can be proved that the <code>$k$</code>-th sample PC is given by <code>$\mathbf{v}_k$</code>, <code>$k=1,2,\ldots,p$</code>.</p>
+<p><strong>Remarks</strong>: In this case, we call <code>$\mathbf{V}$</code> the <strong>loading matrix</strong>, and <code>$\mathbf{U}\bs{\Sigma}:=\mathbf{T}$</code> the <strong>score matrix</strong>. The <strong>PCA scatter plot</strong> is thereby the projection onto the PCs, i.e. the columns of <code>$\mathbf{V}$</code>. Specifically, the coordinates are gonna be <code>$\{(t_{ij}, t_{ik})\in\R^2: i=1,2,\ldots, n\}$</code> namely the selected first columns of the score matrix. This is identical to manually projecting <code>$\mathbf{X}$</code> onto selected columns of <code>$\mathbf{Q}$</code> (the principle components) as it can be proved that <code>$t_{ij}=\mathbf{x}_i'\mathbf{q}_j$</code>. However, by using SVD we avoid miss-calculating the eigenvalues in low precision systems.</p>
+<h2 id="definition-of-variable-pca">Definition of Variable PCA</h2>
+<p>This is merely population PCA on <code>$\mathbf{X}'\in\R^{p\times n}$</code>. Transposing <code>$\mathbf{X}$</code> swaps the roles of the number of variables and the size of population. The SVD now becomes</p>
+<p>$$
+\mathbf{X}&rsquo; = \mathbf{V}\bs{\Sigma}\mathbf{U}'
+$$</p>
+<p>where we now instead call <code>$\bs{V\Sigma}$</code> the <code>$\mathbf{T}$</code> variable.</p>
+<p><strong>Remarks</strong>: By plotting <code>$\mathbf{X}$</code> against <code>$\mathbf{V}$</code> we get PCA scatter plot; by plotting <code>$\mathbf{X}$</code> against <code>$\mathbf{U}$</code> on the same piece of paper where draw this PCA scatter plot, we get the so-called <strong>biplot</strong>.</p>
+<h2 id="application-of-pca-sample-factor-analysis-fa">Application of PCA: Sample Factor Analysis (FA)</h2>
+<p>One sentence to summarize it: sample factor analysis <strong>equals</strong> PCA. In formula, FA is trying to write <code>$\mathbf{X}\in\R^p$</code> into</p>
+<p>$$
+\mathbf{X} = \bs{\mu} + \mathbf{LF} + \bs{\varepsilon}
+$$</p>
+<p>where <code>$\bs{\mu}\in\R^p$</code> are <code>$p$</code> means of features (aka. <strong>alphas</strong>), <code>$\mathbf{L}\in\R^{p\times m}$</code> are loadings (aka. <strong>betas</strong>) and <code>$\mathbf{F}\in\R^m$</code> are called the factors.</p>
+<p>There are some assumptions:</p>
+<ul>
+<li><code>$m\ll p$</code> (describing a lot of features in few factors).</li>
+<li><code>$\E[\mathbf{F}] = 0$</code> (means are captured already by <code>$\bs{\mu}$</code>), <code>$\Cov[\mathbf{F}]=\mathbf{I}$</code> (factors are uncorrelated).</li>
+<li><code>$\E[\bs{\varepsilon}]=0$</code> (residuals are zero-meaned), <code>$\Cov[\bs{\varepsilon}]=\bs{\Xi}$</code> is diagonal (residuals are uncorrelated).</li>
+<li><code>$\Cov[\bs{\varepsilon},\mathbf{F}]=\E[\bs{\varepsilon F}']=\mathbf{O}$</code> ($
+\bs{\varepsilon}<code>$ is uncorrelated with $</code>\mathbf{F}$).</li>
+</ul>
+<p>With these assumptions we have <code>$\bs{\Sigma}=\mathbf{LL}'+\bs{\Xi}$</code>.</p>
+<h1 id="canonical-correlation-analysis-cca">Canonical Correlation Analysis (CCA)</h1>
+<p>Similar to PCA, we try to introduce CCA in two ways, namely w.r.t. a population and a sample.</p>
+<h2 id="notations-for-population-cca">Notations for Population CCA</h2>
+<p>Assume <code>$p\le q$</code> (important!!!). Given <code>$\mathbf{X}\in\R^p$</code> and <code>$\mathbf{Y}\in\R^q$</code>, define</p>
+<div>
+$$
+\mu_{\mathbf{X}} = \E[\mathbf{X}]\in\R^p\quad\text{and}\quad
+\mu_{\mathbf{Y}} = \E[\mathbf{Y}]\in\R^q
+$$
+</div>
+<p>and</p>
+<div>
+$$
+\bs{\Sigma}_{\mathbf{X}} = \Cov[\mathbf{X}]\in\R^{p\times p}\quad\text{and}\quad
+\bs{\Sigma}_{\mathbf{Y}} = \Cov[\mathbf{Y}]\in\R^{q\times q}.
+$$
+</div>
+<p>Furthermore, define</p>
+<div>
+$$
+\bs{\Sigma}_{\mathbf{XY}} = \Cov[\mathbf{X},\mathbf{Y}]=\E[(\mathbf{X}-\mu_{\mathbf{X}})(\mathbf{Y}-\mu_{\mathbf{Y}})']\in\R^{p\times q}
+$$
+</div>
+<p>and</p>
+<div>
+$$
+\bs{\Sigma}_{\mathbf{YX}} = \Cov[\mathbf{Y},\mathbf{X}]=\E[(\mathbf{Y}-\mu_{\mathbf{Y}})(\mathbf{X}-\mu_{\mathbf{X}})']\in\R^{q\times p}.
+$$
+</div>
+<p>Also, let</p>
+<div>
+$$
+\mathbf{W} = \begin{bmatrix}
+\mathbf{X}\\\mathbf{Y}
+\end{bmatrix} \in \R^{p+q}.
+$$
+</div>
+<p>Then with this notation we know given <code>$\mathbf{a}\in\R^p$</code> and <code>$\mathbf{b}\in\R^q$</code>, how expectation, variance and covariance (ans thus correlation) are represented for <code>$U=\mathbf{a}'\mathbf{X}$</code> and <code>$V=\mathbf{b}'\mathbf{Y}$</code>.</p>
+<h2 id="definition-of-population-cca">Definition of Population CCA</h2>
+<p>We calculate canonical correlation variables iteratively:</p>
+<ul>
+<li><code>$(U_1,V_1)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1\}$</code>.</li>
+<li><code>$(U_2,V_2)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_1]=\Cov[V,V_1]=\Cov[V,U_1]=\Cov[U,V_1]=0\}$</code>.</li>
+<li>&hellip;</li>
+<li><code>$(U_k,V_k)=\arg\max\{\Cov[U,V]:\Var[U]=\Var[V]=1,\Cov[U,U_i]=\Cov[V,V_i]=\Cov[V,U_i]=\Cov[U,V_i]=0\ \ \forall i=1,2,\ldots, k-1\}$</code>.</li>
+</ul>
+<p><code>Theorem</code> Suppose <code>$p\le q$</code>, let <code>$\Gamma_{\mathbf{XY}}=\bs{\Sigma}_{\mathbf{X}}^{-1/2}\bs{\Sigma}_{\mathbf{XY}}\bs{\Sigma}_{\mathbf{Y}}^{-1/2}\in\R^{p\times q}$</code> and the condensed SVD be<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<p>$$
+\bs{\Gamma}_{\mathbf{XY}} = \begin{bmatrix}
+\mathbf{u}_1 &amp; \mathbf{u}_2, &amp; \ldots &amp; \mathbf{u}_p
+\end{bmatrix}\begin{bmatrix}
+\sigma_1 &amp; \cdots &amp; \cdots &amp; \mathbf{O} \
+\vdots &amp; \sigma_2 &amp; \cdots &amp; \vdots \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
+\mathbf{O} &amp; \cdots &amp; \cdots &amp; \sigma_p
+\end{bmatrix}\begin{bmatrix}
+\mathbf{v}_1&rsquo;\ \mathbf{v}_2&rsquo; \ \vdots \ \mathbf{v}_p'
+\end{bmatrix}
+$$</p>
+<p>which gives</p>
+<div>
+$$
+\mathbf{U}_k = \mathbf{u}_k'\bs{\Sigma}_{\mathbf{X}}^{-1/2}\mathbf{X}\quad\text{and}\quad
+\mathbf{V}_k = \mathbf{v}_k'\bs{\Sigma}_{\mathbf{Y}}^{-1/2}\mathbf{Y}
+$$
+</div>
+<p>and that <code>$\rho_k=\sigma_k$</code>.</p>
+<p>We call <code>$\rho_k=\Corr[U_k,V_k]$</code> as the <code>$k$</code>-th population <strong>canonical correlation</strong>. We call <code>$\mathbf{a}_k=\bs{\Sigma}_{\mathbf{X}}^{-1/2}\mathbf{u}_k$</code> and <code>$\mathbf{b}_k=\bs{\Sigma}_{\mathbf{Y}}^{-1/2}\mathbf{v}_k$</code> as the population canonical vectors.</p>
+<h2 id="properties-of-population-cca">Properties of Population CCA</h2>
+<p>The canonical correlation variables have the following three basic properties:</p>
+<ul>
+<li><code>$\Cov[U_i,U_j]=\1{i=j}$</code>.</li>
+<li><code>$\Cov[V_i,V_j]=\1{i=j}$</code>.</li>
+<li><code>$\Cov[U_i,V_j]=\1{i=j} \sigma_i$</code>.</li>
+</ul>
+<p><code>Theorem</code> Let <code>$\tilde{\mathbf{X}}=\mathbf{MX}+\mathbf{c}$</code> be the affine transformation of <code>$\mathbf{X}$</code>. Similarly let <code>$\tilde{\mathbf{Y}}=\mathbf{NY}+\mathbf{d}$</code>. Then by using CCA, the results from analyzing <code>$(\tilde{\mathbf{X}},\tilde{\mathbf{Y}})$</code> remains unchanged as <code>$(\mathbf{X},\mathbf{Y})$</code>, namely <strong>CCA is affine invariant</strong>.</p>
+<p>Based on this theorem we have the following properties:</p>
+<ul>
+<li>The canonical correlations between <code>$\tilde{\mathbf{X}}$</code> and <code>$\tilde{\mathbf{Y}}$</code> are identical to those between <code>$\mathbf{X}$</code> and <code>$\mathbf{Y}$</code>.</li>
+<li>The canonical correlation vectors are <strong>not</strong> the same. They now becomes <code>$\tilde{\mathbf{a}_k}=(\mathbf{M}')^{-1}\mathbf{a}_k$</code> and <code>$\tilde{\mathbf{b}_k}=(\mathbf{N}')^{-1}\mathbf{b}_k$</code>.</li>
+<li>By using covariances <code>$\bs{\Sigma}$</code> or correlations <code>$\mathbf{P}$</code> makes <strong>no difference</strong> in CCA<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>. This is <strong>not true</strong> for PCA, i.e. there is no simple relationship between PCA obtained from covariances and PCA from correlations.</li>
+</ul>
+<h2 id="example-of-calculating-population-cca">Example of Calculating Population CCA</h2>
+<p>Let&rsquo;s assume <code>$p=q=2$</code>, let</p>
+<div>
+$$
+\mathbf{P}_{\mathbf{X}} = \begin{bmatrix}
+1 & \alpha \\ \alpha & 1
+\end{bmatrix},\quad
+\mathbf{P}_{\mathbf{Y}} = \begin{bmatrix}
+1 & \gamma\\ \gamma & 1
+\end{bmatrix}\quad\text{and}\quad
+\mathbf{P}_{\mathbf{XY}} = \begin{bmatrix}
+\beta & \beta \\
+\beta & \beta
+\end{bmatrix}
+$$
+</div>
+<p>with  <code>$|\alpha| &lt; 1$</code>, <code>$|\gamma| &lt; 1$</code>. In order to find the 1st canonical correction of <code>$\mathbf{X}$</code> and <code>$\mathbf{Y}$</code>, we first check</p>
+<div>
+$$
+\det(\mathbf{P}_{\mathbf{X}}) = 1 - \alpha^2 > 0\quad\text{and}\quad
+\det(\mathbf{P}_{\mathbf{Y}}) = 1 - \gamma^2 > 0.
+$$
+</div>
+<p>Therefore, we may calculate</p>
+<div>
+$$
+\mathbf{H}_{\mathbf{XY}} = \mathbf{P}_{\mathbf{X}}^{-1}\mathbf{P}_{\mathbf{XY}}\mathbf{P}_{\mathbf{Y}}^{-1}\mathbf{P}_{\mathbf{XY}} =
+\frac{\beta}{1-\alpha^2}\begin{bmatrix}
+1 & -\alpha \newline -\alpha & 1
+\end{bmatrix}\begin{bmatrix}
+1 & 1 \newline 1 & 1 
+\end{bmatrix} = \frac{2\beta^2}{(1+\alpha)(1+\gamma)}\bs{1}\bs{1}'.
+$$
+</div>
+<p>It&rsquo;s easy to show that <code>$\lambda_1= 2$</code> and <code>$\lambda_2=0$</code> are the two eigenvalues of <code>$\bs{11}'$</code> and thus the 1st canonical correction is</p>
+<p>$$
+\rho_1 = \sqrt{\frac{4\beta^2}{(1+\alpha)(1+\gamma)}} = \frac{2\beta}{\sqrt{(1+\alpha)(1+\gamma)}}.
+$$</p>
+<h2 id="notations-for-sample-cca">Notations for Sample CCA</h2>
+<p>Given <code>$n$</code> samples: <code>$\mathbf{X}=\{\mathbf{X}(\omega_1), \mathbf{X}(\omega_2), \ldots, \mathbf{X}(\omega_n)\}\in\R^{n\times p}$</code> and similarly <code>$\mathbf{Y}\in\R^{n\times q}$</code>. Everything is just the same except being in sample notations, e.g. <code>$\bar{\mathbf{X}}=\mathbf{X}'\bs{1} / n$</code> and <code>$S_{\mathbf{X}}=(\mathbf{X}-\bar{\mathbf{X}}'\bs{1})'(\mathbf{X}-\bar{\mathbf{X}}'\bs{1}) / (n-1)$</code>.</p>
+<p>Besides the regular notations, here we also define <code>$r_{\mathbf{XY}}(\mathbf{a},\mathbf{b})$</code> as the sample correlation of <code>$\mathbf{a}'\mathbf{X}$</code> and <code>$\mathbf{b}'\mathbf{Y}$</code>:</p>
+<div>
+$$
+r_{\mathbf{XY}}(\mathbf{a},\mathbf{b}) = \frac{\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\mathbf{b}}{\sqrt{\mathbf{a}'\mathbf{S}_{\mathbf{X}}\mathbf{a}}\sqrt{\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\mathbf{b}}}.
+$$
+</div>
+<h2 id="definition-of-sample-cca">Definition of Sample CCA</h2>
+<p>Same as population CCA, we give sample CCA iteratively (except that here we&rsquo;re talking about canonical correlation vectors directly):</p>
+<ul>
+<li><code>$(\hat{\mathbf{a}}_1,\hat{\mathbf{b}}_1)=\arg\max\{\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\mathbf{b}:\mathbf{a}'\mathbf{S}_{\mathbf{X}}\mathbf{a}=\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\mathbf{b}=1\}$</code>.</li>
+<li><code>$(\hat{\mathbf{a}}_2,\hat{\mathbf{b}}_2)=\arg\max\{\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\mathbf{b}:\mathbf{a}'\mathbf{S}_{\mathbf{X}}\mathbf{a}=\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\mathbf{b}=1,\mathbf{a}'\mathbf{S}_{X}\hat{\mathbf{a}}_1=\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\hat{\mathbf{b}}_1=\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\hat{\mathbf{b}}_1=\mathbf{b}'\mathbf{S}_{\mathbf{YX}}\hat{\mathbf{a}}_1=0\}$</code>.</li>
+<li>&hellip;</li>
+<li><code>$(\hat{\mathbf{a}}_k,\hat{\mathbf{b}}_k)=\arg\max\{\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\mathbf{b}:\mathbf{a}'\mathbf{S}_{\mathbf{X}}\mathbf{a}=\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\mathbf{b}=1,\mathbf{a}'\mathbf{S}_{X}\hat{\mathbf{a}}_i=\mathbf{b}'\mathbf{S}_{\mathbf{Y}}\hat{\mathbf{b}}_i=\mathbf{a}'\mathbf{S}_{\mathbf{XY}}\hat{\mathbf{b}}_i=\mathbf{b}'\mathbf{S}_{\mathbf{YX}}\hat{\mathbf{a}}_i=0\}\ \ \forall i=1,2,\ldots,k-1$</code>.</li>
+</ul>
+<p><code>Theorem</code> Given <code>$p\le q$</code>, let <code>$\mathbf{G}_{\mathbf{XY}} = \mathbf{S}_{\mathbf{X}}^{-1/2}\mathbf{S}_{\mathbf{XY}}\mathbf{S}_{\mathbf{Y}}^{-1/2}\in\R^{p\times q}$</code> and the SVD be</p>
+<div>
+$$
+\mathbf{G}_{\mathbf{XY}} = \begin{bmatrix}
+\mathbf{u}_1 & \mathbf{u}_2 & \cdots & \mathbf{u}_p
+\end{bmatrix}\begin{bmatrix}
+\sigma_1 & \cdots & \cdots & \mathbf{O} \\
+\vdots & \sigma_2 & \cdots & \vdots \\
+\vdots & \vdots & \ddots & \vdots \\
+\mathbf{O} & \cdots & \cdots & \sigma_p
+\end{bmatrix}\begin{bmatrix}
+\mathbf{v}_1' \\ \mathbf{v}_2' \\ \vdots \\ \mathbf{v}_p'
+\end{bmatrix}.
+$$
+</div>
+<p>Then we have</p>
+<div>
+$$
+\hat{\mathbf{a}}_k = \mathbf{S}_{\mathbf{X}}^{-1/2} \mathbf{u}_k\in\R^p\quad \text{and}\quad
+\hat{\mathbf{b}}_k = \mathbf{S}_{\mathbf{Y}}^{-1/2} \mathbf{v}_k\in\R^q.
+$$
+</div>
+<p>In addition,</p>
+<p>$$
+r_k = r_{\mathbf{XY}}(\hat{\mathbf{a}}_k, \hat{\mathbf{b}}_k) = \sigma_k.
+$$</p>
+<p>We call <code>$r_k$</code> the <code>$k$</code>-th sample canonical correlation. Also, <code>$\mathbf{Xa}_k$</code> and <code>$\mathbf{Yb}_k$</code> are called the score vectors.</p>
+<h2 id="properties-of-sample-cca">Properties of Sample CCA</h2>
+<p>Everything with population CCA, including the affine invariance, holds with sample CCA, too.</p>
+<h2 id="example-of-calculating-sample-cca">Example of Calculating Sample CCA</h2>
+<p>Let <code>$p=q=2$</code>, let</p>
+<p>$$
+\mathbf{X}=\begin{bmatrix}
+\text{head length of son1}\
+\text{head breath of son1}
+\end{bmatrix}=\begin{bmatrix}
+l_1\ b_1
+\end{bmatrix}\quad\text{and}\quad
+\mathbf{Y}=\begin{bmatrix}
+\text{head length of son2}\
+\text{head breath of son2}
+\end{bmatrix}=\begin{bmatrix}
+l_2\ b_2
+\end{bmatrix}.
+$$</p>
+<p>Assume there&rsquo;re <code>$25$</code> families, each having <code>$2$</code> sons. The <code>$\mathbf{W}$</code> matrix is therefore</p>
+<p>$$
+\mathbf{W} = \begin{bmatrix}
+\mathbf{l}_1 &amp; \mathbf{b}_1 &amp; \mathbf{l}_2 &amp; \mathbf{b}_2
+\end{bmatrix}\in\R^{25\times 4}.
+$$</p>
+<p>In addition, we may also calculate the correlations <code>$\mathbf{R}_{\mathbf{X}}$</code>, <code>$\mathbf{R}_{\mathbf{Y}}$</code> and <code>$\mathbf{R}_{\mathbf{XY}}$</code>, from which we have <code>$\mathbf{G}_{\mathbf{XY}}$</code> given by</p>
+<div>
+$$
+\mathbf{G}_{\mathbf{XY}} = \mathbf{R}_{\mathbf{X}}^{-1/2}\mathbf{R}_{\mathbf{XY}}\mathbf{R}_{\mathbf{Y}}^{-1/2}
+$$
+</div>
+<p>which gives the sample canonical correlations <code>$r_1$</code> and <code>$r_2$</code> (in most cases <code>$r_1\ll r_2$</code>). In the meantime, we have <code>$\mathbf{u}_{1,2}$</code> and <code>$\mathbf{v}_{1,2}$</code> and because of significant difference in scale of <code>$r_1$</code> and <code>$r_2$</code>, we don&rsquo;t care about <code>$\mathbf{u}_2$</code> and <code>$\mathbf{v}_2$</code>. From <code>$\mathbf{u}_1$</code> and <code>$\mathbf{v}_1$</code> we can calculate <code>$\hat{\mathbf{a}}_1$</code> and <code>$\hat{\mathbf{b}}_2$</code>, which indicate the linear relationship between the features. Specifically, the high correlation <code>$r_1$</code> tells that <code>$\hat{U}_1=\hat{\mathbf{a}}_1\mathbf{X}$</code> and <code>$\hat{V}_1=\hat{\mathbf{b}}_1\mathbf{Y}$</code>, which are essentially the &ldquo;girths&rdquo; (height <code>$+$</code> breath) of sons&rsquo; faces, are highly correlated. In comparison, data shows that <code>$\hat{U}_2$</code> and <code>$\hat{V}_2$</code>, which describes the &ldquo;shapes&rdquo; (height <code>$-$</code> breath) of sons&rsquo; faces, are poorly correlated.</p>
+<h1 id="linear-discriminant-analysis-lda">Linear Discriminant Analysis (LDA)</h1>
+<p>Different from the unsupervised learning algorithms we&rsquo;ve been discussing in the previous sections, like PCA, FA and CCA, LDA is a supervised classification method in that the number of classes to be divided into is specified explicitly.</p>
+<h2 id="notations-for-lda">Notations for LDA</h2>
+<p>Assume <code>$g$</code> different classes <code>$C_1,C_2,\ldots,C_g$</code>. We try to solve the problem asking for the optimal division of <code>$n$</code> rows of <code>$\mathbf{X}\in\R^{n\times p}$</code> into <code>$g$</code> parts: for each <code>$i=1,2,\ldots,g$</code> denote</p>
+<div>
+$$
+\mathbf{X}_i = \begin{bmatrix}
+\mathbf{x}_{i,1}'\newline
+\mathbf{x}_{i,2}'\newline
+\vdots\newline
+\mathbf{x}_{i,n_i}'
+\end{bmatrix}\in\R^{n_i\times p}
+$$
+</div>
+<p>with <code>$\sum_{i=1}^g n_i=g$</code>, then given <code>$\mathbf{a}\in\R^p$</code> we can define</p>
+<p>$$
+\mathbf{X}_i\mathbf{a} =: \mathbf{y}_i \in \R^{n_i},\quad i=1,2,\ldots,g.
+$$</p>
+<p>Now, recall the mean-centering matrix</p>
+<p>$$
+\mathbf{H} = \mathbf{I} - \frac{\bs{\iota}\bs{\iota}&rsquo;}{\bs{\iota}&rsquo;\bs{\iota}}
+$$</p>
+<p>which provides handy feature that centers a vector by its mean: for any <code>$\mathbf{X}$</code></p>
+<p>$$
+\mathbf{HX} = \mathbf{X} - \bs{\iota}&rsquo;\bar{\mathbf{X}}.
+$$</p>
+<p>With <code>$\mathbf{H}$</code> we also have the <strong>total sum-of-squares</strong> as</p>
+<p>$$
+\mathbf{T} = \mathbf{X}&rsquo;\mathbf{HX} = \mathbf{X}&rsquo;\left(\mathbf{I}-\frac{\bs{\iota}\bs{\iota}&rsquo;}{\bs{\iota}&rsquo;\bs{\iota}}\right)\mathbf{X} = (n-1)\mathbf{S}.
+$$</p>
+<p>Similarly we define <code>$\mathbf{H}_i$</code> and <code>$\mathbf{W}_i=\mathbf{X}_i'\mathbf{H}_i\mathbf{X}_i$</code> for each <code>$i=1,2,\ldots,g$</code> and thus</p>
+<div>
+$$
+\sum_{i=1}^g \mathbf{y}_i'\mathbf{H}_i\mathbf{y}_i =
+\sum_{i=1}^g \mathbf{a}'\mathbf{X}_i'\mathbf{H}_i\mathbf{X}_i\mathbf{a} =
+\mathbf{a}' \left(\sum_{i=1}^g \mathbf{X}_i'\mathbf{H}_i\mathbf{X}_i\right) \mathbf{a} =
+\mathbf{a}'\sum_{i=1}^g \mathbf{W}_i\mathbf{a} =:\mathbf{a}'\mathbf{W}\mathbf{a}
+$$
+</div>
+<p>where <code>$\mathbf{W}\in\R^{p\times p}$</code> is known as the <strong>within-group sum-of-squares</strong>. Finally, check</p>
+<div>
+$$
+\begin{align}
+\sum_{i=1}^g n_i (\bar{\mathbf{y}}_i-\bar{\mathbf{y}})^2 &=
+\sum_{i=1}^g n_i (\bar{\mathbf{X}}_i\mathbf{a}-\bar{\mathbf{X}}\mathbf{a})^2 =
+\sum_{i=1}^g n_i (\bar{\mathbf{X}}_i\mathbf{a}-\bar{\mathbf{X}}\mathbf{a})'(\bar{\mathbf{X}}_i\mathbf{a}-\bar{\mathbf{X}}\mathbf{a}) \\&=
+\mathbf{a}' \left[\sum_{i=1}^g n_i (\bar{\mathbf{X}}_i - \bar{\mathbf{X}})'(\bar{\mathbf{X}}_i - \bar{\mathbf{X}})\right] \mathbf{a} =:
+\mathbf{a}'\mathbf{B}\mathbf{a}
+\end{align}
+$$
+</div>
+<p>where we define <code>$\mathbf{B}\in\R^{p\times p}$</code> as the <strong>between-group sum-of-squares</strong>.</p>
+<p><code>Theorem</code> For any <code>$\mathbf{a}\in\R^p$</code>, <code>$\mathbf{a}'\mathbf{T}\mathbf{a} = \mathbf{a}'\mathbf{B}\mathbf{a} + \mathbf{a}'\mathbf{W}\mathbf{a}$</code>. However, <code>$\mathbf{T}\neq \mathbf{B}+\mathbf{W}$</code>.</p>
+<h2 id="definition-of-lda">Definition of LDA</h2>
+<p>First let&rsquo;s give the <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">Fisher</a> Linear Discriminant Function</p>
+<p>$$
+f(\mathbf{a}) = \frac{\mathbf{a}&rsquo;\mathbf{B}\mathbf{a}}{\mathbf{a}&rsquo;\mathbf{W}\mathbf{a}}
+$$</p>
+<p>by maximizing which, Fisher states, gives the optimal classification.</p>
+<p><code>Theorem</code> Suppose <code>$\mathbf{W}\in\R^{p\times p}$</code> is nonsingular, let <code>$\mathbf{q}_1\in\R^p$</code> be the principle eigenvector of <code>$\mathbf{W}^{-1}\mathbf{B}$</code> corresponding to <code>$\lambda_1=\lambda_{\max}(\mathbf{W}^{-1}\mathbf{B})$</code>, then it can be shown that <code>$\mathbf{q}_1=\arg\max_{\mathbf{a}}f(\mathbf{a})$</code> and <code>$\lambda_1=\max_{\mathbf{a}}f(\mathbf{a})$</code>.</p>
+<p><strong>Proof.</strong> We know</p>
+<p>$$
+\max_{\mathbf{a}} \frac{\mathbf{a}&rsquo;\mathbf{B}\mathbf{a}}{\mathbf{a}&rsquo;\mathbf{W}\mathbf{a}} =
+\max_{\mathbf{a}&rsquo;\mathbf{W}\mathbf{a}=1} \mathbf{a}&rsquo;\mathbf{B}\mathbf{a} =
+\max_{\mathbf{b}&rsquo;\mathbf{b}=1} \mathbf{b}&rsquo;\mathbf{W}^{-1/2}\mathbf{B}\mathbf{W}^{-1/2}\mathbf{b} =
+\lambda_{\max}(\mathbf{W}^{-1/2}\mathbf{B}\mathbf{W}^{-1/2}) = \lambda_{\max}(\mathbf{W}^{-1}\mathbf{B}).
+$$</p>
+<p>Therefore, we have the maximum <code>$\lambda_1$</code> and thereby we find the maxima <code>$\mathbf{q}_1$</code>.<span style="float: right">Q.E.D.</span></p>
+<p><strong>Remark</strong>: <code>$\lambda_1$</code> and <code>$\mathbf{q}_1$</code> can also be seen as the solutions to</p>
+<p>$$
+\mathbf{B}\mathbf{x} = \lambda \mathbf{W}\mathbf{x},\quad \mathbf{x}\neq\bs{0}
+$$</p>
+<p>which is known as a <strong>generalized eigenvalue problem</strong> since it reduces to the usual case when <code>$\mathbf{W}=\mathbf{I}$</code>.</p>
+<h2 id="classification-rule-of-lda">Classification Rule of LDA</h2>
+<p>Given a new data point <code>$\mathbf{t}\in\R^p$</code> we find</p>
+<p>$$
+i = \underset{j=1,2,\ldots,g}{\arg\min} |\mathbf{q}_1&rsquo;(\mathbf{t}-\bar{\mathbf{X}_j})|
+$$</p>
+<p>and assign <code>$\mathbf{t}$</code> to class <code>$C_j$</code>. This essentially the heuristic behind Fisher&rsquo;s LDA.</p>
+<p>There is no general formulae for <code>$g$</code>-class LDA, but we do have one for specifically <code>$g=2$</code>.</p>
+<h2 id="population-lda-for-binary-classification">Population LDA for Binary Classification</h2>
+<p>The population linear discriminant function is</p>
+<p>$$
+f(\mathbf{a}) = \frac{\sigma_{\text{between}}}{\sigma_{\text{within}}} =
+\frac{(\mathbf{a}&rsquo;\bs{\mu}_1 - \mathbf{a}&rsquo;\bs{\mu}-2)^2}{\mathbf{a}&rsquo;\bs{\Sigma}_1\mathbf{a} + \mathbf{a}&rsquo;\bs{\Sigma}_2\mathbf{a}} =
+\frac{[\mathbf{a}&rsquo;(\bs{\mu}_1-\bs{\mu}_2)]^2}{\mathbf{a}&rsquo;(\bs{\Sigma}_1+\bs{\Sigma}_2)\mathbf{a}}
+$$</p>
+<p>which solves to</p>
+<p>$$
+\mathbf{q}_1 = (\bs{\Sigma}_1 + \bs{\Sigma}_2)^{-1}(\bs{\mu}_1-\bs{\mu}_2) :=
+\bs{\Sigma}^{-1}(\bs{\mu}_1-\bs{\mu}_2)
+$$</p>
+<p>and the threshold</p>
+<p>$$
+c=\frac{1}{2}(\bs{\mu}_1&rsquo;\bs{\Sigma}^{-1}\bs{\mu}_1 - \bs{\mu}_2&rsquo;\bs{\Sigma}^{-1}\bs{\mu}_2).
+$$</p>
+<p>The classification is therefore given by</p>
+<p>$$
+C(\mathbf{t}) = \begin{cases}
+C_1\ &amp; \text{if}\quad\mathbf{q}_1&rsquo;\mathbf{t} &gt; c,\
+C_2\ &amp; \text{if}\quad\mathbf{q}_1&rsquo;\mathbf{t} &lt; c.\
+\end{cases}
+$$</p>
+<h1 id="mds-and-ca">MDS and CA</h1>
+<p>Variable matrix decomposition methods provide different classes of data analysis tools:</p>
+<ul>
+<li>Based on SVD we have PCA, FA, HITS and LSI for general <code>$\mathbf{A}\in\R^{n\times p}$</code>.</li>
+<li>Based on EVD we have CCA and MDS for <code>$\mathbf{A}\in\R^{p\times p}$</code>, symmetric.</li>
+<li>Based on generalized EVD (GEVD) we have LDA for <code>$\mathbf{A},\mathbf{B}\in\R^{p\times p}$</code>, both symmetric.</li>
+<li>Finally, based on generalized SVD (GSVD) we have CA for <code>$\mathbf{A}=\mathbf{U}\bs{\Sigma}\mathbf{V}'\in\R^{n\times p}$</code> where we instead of orthonormality of <code>$\mathbf{U}$</code> and <code>$\mathbf{V}$</code> assume <code>$\mathbf{U}'\mathbf{D}_1\mathbf{U}=\mathbf{I}$</code> and <code>$\mathbf{V}'\mathbf{D}_2\mathbf{V}=\mathbf{I}$</code> for diagonal <code>$\mathbf{D}_1\in\R^{n\times n}$</code> and <code>$\mathbf{D}_2\in\R^{p\times p}$</code>.</li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Every symmetric positive definite matrix has a square root given by <code>$\mathbf{A}^{1/2} = \mathbf{Q}\bs{\Lambda}^{1/2}\mathbf{Q}'$</code> where <code>$\mathbf{A}=\mathbf{Q}\bs{\Lambda}\mathbf{Q}'$</code> is the EVD of <code>$\mathbf{A}$</code>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>In fact the canonical correlation vectors are scaled by <code>$\mathbf{V}^{-1/2}_{\mathbf{X}}$</code> and <code>$\mathbf{V}^{-1/2}_{\mathbf{Y}}$</code> respectively.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/suitcase/">行李箱</a></span>
+  <span class="nav-next"><a href="/blog/notes-on-microstructure/">Notes on Mathematical Market Microstructure</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/suitcase\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/notes-on-microstructure\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Cryptocurrency Arbitrage (3): One More Strategy - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Cryptocurrency Arbitrage (3): One More Strategy - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Cryptocurrency Arbitrage (3): One More Strategy</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2018-07-27
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<img src="/images/trace2.png" style="width: 100%;"/>
+<!-- more -->
+<p>It&rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market is primitive and savage in many senses, by which I mean there&rsquo;re supposed to be a bunch of inefficiency and corresponding arbitrage opportunities.</p>
+<p>On the top of the page is the backtest PnL of the new <strong>strategy 4</strong> from 01/01 up to yesterday, 07/26. I used 1 minute historical orderbook data, 5 spreads for slippage (not sure if it&rsquo;s still too conservative, need testing) and benchmarked the simplest buy-and-hold strategy. It&rsquo;s known that the whole crypto market has experienced a huge slump since late last year, so I guess my trick works quite well. The strategy is now running on my AWS in real money and I&rsquo;ll update this post whenever any interesting (or frustrating) issue happens.</p>
+<p>Cheers.</p>
+<hr>
+<p><strong>Update Aug 3:</strong></p>
+<p>I changed the screening window length and the performance (of backtest) increased over tenfold. The image on the top has been updated with Sharpe ratios labelled.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/pythonic-swap/">Pythonic Swapping: How and Why</a></span>
+  <span class="nav-next"><a href="/blog/cpp-key-points/">C&#43;&#43; Key Points</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/pythonic-swap\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/cpp-key-points\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

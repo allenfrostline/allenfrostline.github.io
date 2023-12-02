@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Random Projection and Its Expectation - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Random Projection and Its Expectation - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="A couple of months ago I was asked the following question during an interview (for propriatary concerns I&amp;rsquo;m not gonna disclose the industry or name of the company): &amp;hellip;">
+      <meta property="og:description" content="A couple of months ago I was asked the following question during an interview (for propriatary concerns I&amp;rsquo;m not gonna disclose the industry or name of the company): &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Random Projection and Its Expectation</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-03-16
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>A couple of months ago I was asked the following question during an interview (for propriatary concerns I&rsquo;m not gonna disclose the industry or name of the company):
+<code>$\newcommand{R}{\mathbb{R}}\newcommand{E}{\text{E}}\newcommand{bs}{\mathbf}\newcommand{N}{\mathbb{N}}$</code></p>
+<blockquote>
+<p>Assume <code>$k$</code>, <code>$n\in\N$</code> and <code>$k &lt; n$</code>. For a uniformly chosen subspace <code>$\R^k\subsetneq\R^n$</code> we define the orthogonal projection as <code>$P:\R^n\mapsto\R^n$</code>. Find <code>$\E[P(\bs{v})]$</code> where <code>$\bs{v}\in\R^n$</code> is given.</p>
+</blockquote>
+<p>It&rsquo;s an interesting question and also a totally novel one to me at that time. How do we define a &ldquo;uniformly&rdquo; chosen subspace and its corresponding projection? What are the possible intuitions in this simple piece of question? Despite the busy schoolwork and student projects, these thoughts persist in my mind and drive me digging this question from time to time. Curiosity has been aroused and an appetite is meant to be satisfied.</p>
+<!-- more -->
+<h1 id="problem-re-formulation">Problem Re-formulation</h1>
+<p>In order to solve this problem, we need to fully understand what&rsquo;s been asked. So now we&rsquo;ve got two non-negative integers <code>$k&lt;n$</code> and two spaces, namely <code>$\R^n$</code> and <code>$\R^k$</code>. We know <code>$\R^k$</code> is somehow randomly selected as a subspace of <code>$\R^n$</code> and this randomness is uniform. For each of such selection, we can make an orthogonal projection of the given point<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> <code>$\bs{v}$</code> onto <code>$\R^k$</code>. Note here the projection is defined from <code>$\R^n$</code> to <code>$\R^n$</code>, which means we&rsquo;re not interested in the projected value on <code>$\R^k$</code> but the projection itself. In other words, we&rsquo;re focusing on the projected vector&rsquo;s behavior in the same space as <code>$\bs{v}$</code> here.</p>
+<h1 id="simple-example">Simple Example</h1>
+<p>The simplest example (well, it&rsquo;s in fact not THE simplest as we could always project <code>$\bs{v}$</code> onto <code>$\R^0$</code> and the resulting expectation would be a zero vector) would be <code>$n=2$</code> and <code>$k=1$</code>. For any given <code>$\bs{v}$</code>, we can always draw a graph as below.</p>
+<img width="70%" src="/images/random-projection1.png">
+<p>The random subspace in this case is illustrated by the straight gray line, which determines the projection <code>$P(\bs{v})=\bs{h}$</code> as in the graph. We know we&rsquo;re now uniformly selecting this subspace when we rotate this line centered at the origin accordingly. This means the angle between <code>$\bs{v}$</code> and <code>$\bs{h}$</code>, denoted by <code>$\theta$</code>, is a uniform random variable on <code>$[0, 2\pi)$</code>. Further, simple geometry tells us the angle between <code>$\bs{v}$</code> and <code>$\bs{h} - \bs{v}/2$</code> is merely <code>$2\theta$</code>, which is therefore, also uniformly distributed on <code>$[0, 4\pi)$</code>. Now that we know <code>$\bs{h}$</code> uniformly lies on the red circle, we conclude the expected projection, in this particular case, is <code>$\bs{v}/2$</code>.</p>
+<p>While it gets geometrically difficult to imagine, not to mention to draw, the case of larger <code>$n$</code> and <code>$k$</code>, this example has given us a pretty nice guess:</p>
+<p>$$
+\E[P(v)] = \frac{k}{n}\bs{v}.
+$$</p>
+<p>Can we prove it in higher dimensions and general cases?</p>
+<h1 id="rigorous-proof">Rigorous Proof</h1>
+<p><strong>Proof.</strong> Now we try to prove that our previous statement is true. For any set of orthogonal bases<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> <code>$\bs{e}=(\bs{e}_1,\bs{e}_2,\dots,\bs{e}_n)\in\R^{n\times n}$</code>, we uniformly choose a subset <code>$(\bs{e}_{n_1}, \bs{e}_{n_2},\dots,\bs{e}_{n_k})$</code> and define a subspace <code>$\R^k$</code> on them. The projected value on any basis <code>$\bs{e}_j$</code> is <code>$\bs{e}_j'\bs{v}$</code> and the corresponding vector component would be <code>$\bs{e}_j\bs{e}_j'\bs{v}$</code>. Therefore, the orthogonal projection of <code>$\bs{v}$</code> is given by</p>
+<div>
+$$
+P(\bs{v}) = \sum_{j=1}^{k}\bs{e}_{n_j}\bs{e}_{n_j}'\bs{v} = \bs{eDe'v} \in \R^n
+$$
+</div>
+<p>where we define the random matrix <code>$\bs{D}$</code> to be a diagonal matrix with <code>$k$</code> ones and <code>$(n-k)$</code> zeros on its diagonal. The diagonal entries are not independent, but the expectation of each entry would be the same, namely <code>$k/n$</code>. The expectation of the projection, therefore, is</p>
+<div>
+$$
+\E[P(\bs{v})] = \E[\bs{eDe'v}] = \E\{\E[\bs{eDe'v}\mid \bs{e}]\} = \E\{\bs{e}\E[\bs{D}]\bs{e'v}\} = \frac{k}{n}\E[\bs{ee'}]\bs{v}.
+$$
+</div>
+<p>where we used the tower rule<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>. Now, notice for any <code>$\bs{e}$</code> it always holds that <code>$\bs{e'e}=\bs{I}$</code>, we have</p>
+<p>$$
+(\bs{ee&rsquo;})^2 = \bs{ee&rsquo;ee&rsquo;} = \bs{e(e&rsquo;e)e&rsquo;} = \bs{eIe&rsquo;} = \bs{ee&rsquo;} \Rightarrow \bs{ee&rsquo;} = \bs{I}
+$$</p>
+<p>and thus we may finally conclude</p>
+<div>
+$$
+\E[P(\bs{v})] = \frac{k}{n}\E[\bs{ee'}]\bs{v} = \frac{k}{n}\bs{v}
+$$
+</div>
+<p>which exactly coincides with our previous guess.<span style="float:right">Q.E.D.</span></p>
+<h1 id="intuitive-implications">Intuitive Implications</h1>
+<p>TBD. May concern dimensional reduction, etc.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Points and vectors are denoted in bold and defined as column vectors unless otherwise stated.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>When we say <code>$\bs{a}=(a_1,a_2,\dots,a_n)$</code>, we&rsquo;re talking about a <strong>row</strong> vector of <code>$n$</code> entries.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>For any r.v. <code>$X$</code>, we claim <code>$\E[X] = \E\{\E[X\mid Y]\}$</code>. Also known as the law of total expectation.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/notes-on-foreign-exchange/">Notes on Foreign Exchange</a></span>
+  <span class="nav-next"><a href="/blog/texas-holdem-series-1/">Texas Hold &#39;em Series (1): Basic Concepts</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/notes-on-foreign-exchange\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/texas-holdem-series-1\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

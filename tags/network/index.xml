@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>network on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/network/</link>
+    <description>Recent content in network on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Wed, 29 Nov 2017 04:54:00 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Network Visualization: Chinese Railway Transport from 1992 to 2011</title>
+      <link>https://allenfrostline.com/blog/network-visualization/</link>
+      <pubDate>Wed, 29 Nov 2017 04:54:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/network-visualization/</guid>
+      <description>This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a comprehensive table called data, where for each province there&amp;rsquo;s a matrix of 20 by 31, i.e. transport to each province w.r.t. different years. Therefore, it&amp;rsquo;s convenient to extract the actual transient matrix for each year by using the method groupby of Pandas.</description>
+    </item>
+  </channel>
+</rss>

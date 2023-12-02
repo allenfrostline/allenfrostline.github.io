@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>random on Allen&#39;s Whiteboard</title>
+    <link>https://allenfrostline.com/tags/random/</link>
+    <description>Recent content in random on Allen&#39;s Whiteboard</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Allen Wang © 2016 - 2022</copyright>
+    <lastBuildDate>Sat, 16 Mar 2019 12:50:50 +0000</lastBuildDate>
+    <atom:link href="https://allenfrostline.com/tags/random/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Random Projection and Its Expectation</title>
+      <link>https://allenfrostline.com/blog/random-projection-and-expectation/</link>
+      <pubDate>Sat, 16 Mar 2019 12:50:50 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/random-projection-and-expectation/</guid>
+      <description>A couple of months ago I was asked the following question during an interview (for propriatary concerns I&amp;rsquo;m not gonna disclose the industry or name of the company): $\newcommand{R}{\mathbb{R}}\newcommand{E}{\text{E}}\newcommand{bs}{\mathbf}\newcommand{N}{\mathbb{N}}$
+Assume $k$, $n\in\N$ and $k &amp;lt; n$. For a uniformly chosen subspace $\R^k\subsetneq\R^n$ we define the orthogonal projection as $P:\R^n\mapsto\R^n$. Find $\E[P(\bs{v})]$ where $\bs{v}\in\R^n$ is given.
+It&amp;rsquo;s an interesting question and also a totally novel one to me at that time. How do we define a &amp;ldquo;uniformly&amp;rdquo; chosen subspace and its corresponding projection?</description>
+    </item>
+  </channel>
+</rss>

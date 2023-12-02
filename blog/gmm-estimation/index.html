@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>GMM Estimation of an ARMA(2,1) Model - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="GMM Estimation of an ARMA(2,1) Model - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric &amp;hellip;">
+      <meta property="og:description" content="In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>GMM Estimation of an ARMA(2,1) Model</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2017-01-14
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric models, where the parameter of interest is finite-dimensional, whereas the full shape of the data&rsquo;s distribution function may not be known, and therefore maximum likelihood estimation is not applicable. Today, we are trying to write a Generalizd Method of Moments estimation framework in Python, and use it to estimate an ARMA(2,1) time series.<!-- more --></p>
+<h1 id="model-description">Model Description</h1>
+<p>Assume that now we have already determined the form of a time series model. It is</p>
+<p>$$
+X_t=\phi_1X_{t-1}+\phi_2X_{t-2}+\epsilon_t+\theta_1\epsilon_{t-1},\quad \epsilon_t\sim(0,1)
+$$</p>
+<p>with at least 3 <strong>kinds</strong> of moment conditions given by</p>
+<ol>
+<li>The expectation residual: <code>$E(\epsilon_t)=0$</code></li>
+<li>The variance of the residual: <code>$E(\epsilon_t^2)=1$</code></li>
+<li>The covariance between <code>$\epsilon_s$</code> and <code>$\epsilon_t$</code> (<code>$\forall s&lt;t$</code>):
+<code>$Cov(\epsilon_s\epsilon_t)=0,\quad\forall s&lt;t$</code></li>
+</ol>
+<p>Now, assume we have a observed sample <code>$x$</code> of the population <code>$T$</code>. Let the sample moment matrix be</p>
+<div>
+$$
+g(para, x)=
+\begin{bmatrix}
+g_1(para,x_1) & g_1(para,x_2) & g_1(para,x_T)\\
+g_2(para,x_1) & g_2(para,x_2) & g_2(para,x_T)\\
+\vdots        & \vdots        & \vdots\\
+g_k(para,x_1) & g_k(para,x_2) & g_k(para,x_T)\\
+\end{bmatrix}
+$$
+</div>
+<p>where <code>$k$</code> is the number of moment conditions. We define the sample mean of <code>$g$</code> as <code>$g_m(para, x_t)$</code>:</p>
+<p>$$
+g_m(para)=\dfrac{1}{T}\sum_{t=1}^Tg(para,x_t)
+$$</p>
+<p>Now, starting with the weight matrix <code>$W_1=\mathbf{I}_{k\times k}$</code> we can proceed the iterated GMM estimation method as follows:</p>
+<ol>
+<li>
+<p>Minimize the objective function</p>
+<p>$$
+J(para)=Tg_m(para)^{\prime}W_ng_m(para)
+$$</p>
+<p>and then solve for <code>$\widehat{para}_n$</code>, that is</p>
+<p>$$
+\widehat{para}_n=\underset{para}{\text{argmin }}J
+$$</p>
+</li>
+<li>
+<p>Recompute <code>$W_n$</code> based on the sample covariance of <code>$g(\widehat{para}_n,x)$</code></p>
+<p>$$
+S_n=\dfrac{1}{T}\sum_{t=1}^Tg(\widehat{para}_n,x)g(\widehat{para}_n,x)^{\prime}
+$$</p>
+<p>$$
+W_{n+1}=S_n^{-1}
+$$</p>
+</li>
+<li>
+<p>Repeat step 1 and 2 until</p>
+<p>$$
+\left\Vert\widehat{para}_{n+1}-\widehat{para}_n\right\Vert&lt;\delta
+$$</p>
+<p>where <code>$\delta$</code> is a given positive value that is very small. We may also terminate the iteration when reach an interation threshold.</p>
+</li>
+</ol>
+<h1 id="data-simulation">Data Simulation</h1>
+<p>First we need to import some necessary Python libraries, including</p>
+<ul>
+<li><strong>numpy</strong> for massive linear operations based on C,</li>
+<li><strong>matplotlib</strong> for plotting,</li>
+<li><strong>scipy</strong> for optimizing, and</li>
+<li><strong>statsmodels</strong> in which there&rsquo;re various built-in statistical models.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">numpy</span> <span style="font-weight:bold">as</span> <span style="color:#555">np</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">matplotlib.pyplot</span> <span style="font-weight:bold">as</span> <span style="color:#555">plt</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">scipy.optimize</span> <span style="font-weight:bold">import</span> minimize
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">statsmodels.api</span> <span style="font-weight:bold">as</span> <span style="color:#555">sm</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">from</span> <span style="color:#555">time</span> <span style="font-weight:bold">import</span> time
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>rcParams[<span style="color:#b84">&#39;figure.figsize&#39;</span>] <span style="font-weight:bold">=</span> (<span style="color:#099">10</span>,<span style="color:#099">6</span>)
+</span></span></code></pre></div><p>Here we define a function called <strong>simulate</strong>, which as its name implies, simulates a time series data determined by parameters <code>$\phi_1$</code>, <code>$\phi_2$</code> and <code>$\theta_1$</code>. The initial values are given by <strong>init</strong>. The first 1/11 of the data are thrown away as burn-in, so that at last the sample size would be <strong>T</strong>.  There is a built-in parameter called <strong>plot</strong> which is set <strong>True</strong> or <strong>1</strong> to plot the graph of the data, and <strong>False</strong> or <strong>0</strong> otherwise.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">simulate</span>(T, phi, theta, init, plot<span style="font-weight:bold">=</span><span style="color:#099">0</span>):
+</span></span><span style="display:flex;"><span>    T <span style="font-weight:bold">=</span> <span style="color:#999">int</span>(T)
+</span></span><span style="display:flex;"><span>    T_ <span style="font-weight:bold">=</span> <span style="color:#999">int</span>(T <span style="font-weight:bold">*</span> <span style="color:#099">1.1</span>) <span style="color:#998;font-style:italic"># we will drop the first 1/11 observations here as burn-in</span>
+</span></span><span style="display:flex;"><span>    X <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>ndarray(T_)
+</span></span><span style="display:flex;"><span>    X[<span style="color:#099">0</span>] <span style="font-weight:bold">=</span> init[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>    e <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>normal(<span style="color:#099">0</span>, <span style="color:#099">1</span>, T_)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> t <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">max</span>(<span style="color:#999">len</span>(phi), <span style="color:#999">len</span>(theta)), T_):
+</span></span><span style="display:flex;"><span>        X[t] <span style="font-weight:bold">=</span> <span style="color:#999">sum</span>([phi[i]<span style="font-weight:bold">*</span>X[t<span style="font-weight:bold">-</span>i<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(phi))]) <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>               e[t] <span style="font-weight:bold">+</span> \
+</span></span><span style="display:flex;"><span>               <span style="color:#999">sum</span>([theta[i]<span style="font-weight:bold">*</span>e[t<span style="font-weight:bold">-</span>i<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(<span style="color:#999">len</span>(theta))])
+</span></span><span style="display:flex;"><span>    X <span style="font-weight:bold">=</span> X[T_ <span style="font-weight:bold">-</span> T:]    <span style="color:#998;font-style:italic"># burn-in</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> plot:          <span style="color:#998;font-style:italic"># plot the raw data</span>
+</span></span><span style="display:flex;"><span>        plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>        fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">211</span>)
+</span></span><span style="display:flex;"><span>        ax1<span style="font-weight:bold">.</span>set_xlim([<span style="color:#099">0</span>,T])
+</span></span><span style="display:flex;"><span>        ax1<span style="font-weight:bold">.</span>plot(X, <span style="color:#b84">&#39;k-&#39;</span>,lw<span style="font-weight:bold">=</span><span style="color:#099">0.5</span>)
+</span></span><span style="display:flex;"><span>        ax1<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;t&#39;</span>)
+</span></span><span style="display:flex;"><span>        ax1<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;x&#39;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        ax2 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">212</span>)
+</span></span><span style="display:flex;"><span>        ax2<span style="font-weight:bold">.</span>hist(X, color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;#444444&#39;</span>, bins<span style="font-weight:bold">=</span><span style="color:#099">50</span>)
+</span></span><span style="display:flex;"><span>        ax2<span style="font-weight:bold">.</span>set_xlabel(<span style="color:#b84">&#39;x&#39;</span>)
+</span></span><span style="display:flex;"><span>        ax2<span style="font-weight:bold">.</span>set_ylabel(<span style="color:#b84">&#39;observations&#39;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>        plt<span style="font-weight:bold">.</span>show()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> X
+</span></span></code></pre></div><p>Now we can set the parameters and store them in separate lists.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># true parameters, initial entries and sample size</span>
+</span></span><span style="display:flex;"><span>phi   <span style="font-weight:bold">=</span> [<span style="color:#099">0.2</span>, <span style="color:#099">0.05</span>]
+</span></span><span style="display:flex;"><span>theta <span style="font-weight:bold">=</span> [<span style="color:#099">0.8</span>]
+</span></span><span style="display:flex;"><span>para  <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array(phi <span style="font-weight:bold">+</span> theta)
+</span></span><span style="display:flex;"><span>init  <span style="font-weight:bold">=</span> [<span style="color:#099">1</span>, <span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>T     <span style="font-weight:bold">=</span> <span style="color:#099">20000</span>
+</span></span><span style="display:flex;"><span>T_    <span style="font-weight:bold">=</span> T<span style="font-weight:bold">/</span><span style="color:#099">4</span>
+</span></span></code></pre></div><p>We generate a time series dataset of size 5T/4, yet again we &ldquo;set aside&rdquo; the last T/4, so that we may compare the prediction of our estimation with the true data.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> simulate(T <span style="font-weight:bold">+</span> T_, phi, theta, init, plot<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>x_true <span style="font-weight:bold">=</span> x<span style="font-weight:bold">.</span>copy()
+</span></span><span style="display:flex;"><span>x <span style="font-weight:bold">=</span> x[:T] <span style="color:#998;font-style:italic"># We&#39;ll only use the first T observations to estimate parameters</span>
+</span></span></code></pre></div><img src="/images/output_11_0.png" style="width: 850;"/>
+<h1 id="gmm-estimation">GMM Estimation</h1>
+<p>Then we define a class named <strong>gmm</strong>, who has 2 major methods, namely <strong>fit</strong> and <strong>result</strong>. When we create an object (or model) of the class <strong>gmm</strong>, we initialize it with moment condition functions <strong>momn</strong> as well the jacobian of their mean w.r.t. the parameter vector, <strong>deriv_momn</strong>. When fitting our model to the data, we use the iterated gmm method, i.e. we alternately compute <code>$\widehat{para}_n$</code> and weight matrix <code>$W_n$</code>, the major step of which undertaken by scipy&rsquo;s <strong>minimize</strong> function, a brutal minimization method (with SLSQP method using jacobian matrix). The iteration terminates either when the square of the Euclidean distance between two estimators converges within a given value, <code>$\delta$</code>, or it reaches an iteration threshold (set at 10 here).</p>
+<p>Remark 1: when iteration threshold is set at 2, this is immediately a 2-step GMM.</p>
+<p>Remark 2: we here also estimate the asymptotic variance when fitting to the data. The derivation of this asymptotic variance estimation will be further discussed later.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">class</span> <span style="color:#458;font-weight:bold">gmm</span>():
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> __init__(self, momn, deriv_momn):
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>n_momn     <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(momn)                                     <span style="color:#998;font-style:italic"># number of moment conditions</span>
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>n_para     <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(deriv_momn)                               <span style="color:#998;font-style:italic"># number of parameters</span>
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>momn       <span style="font-weight:bold">=</span> momn                                          <span style="color:#998;font-style:italic"># moment conditions</span>
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>deriv_momn <span style="font-weight:bold">=</span> deriv_momn                                    <span style="color:#998;font-style:italic"># derivative of the moment conditions</span>
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>para       <span style="font-weight:bold">=</span> <span style="color:#099">2</span><span style="font-weight:bold">*</span>np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>rand(self<span style="font-weight:bold">.</span>n_para)<span style="font-weight:bold">-</span><span style="color:#099">1</span>               <span style="color:#998;font-style:italic"># parameters, initialized at random</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">fit</span>(self, x, plot<span style="font-weight:bold">=</span><span style="color:#099">0</span>):
+</span></span><span style="display:flex;"><span>        g  <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: np<span style="font-weight:bold">.</span>matrix([m(para, x) <span style="font-weight:bold">for</span> m <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>momn])    <span style="color:#998;font-style:italic"># g is not a vector, but a matrix of the shape k * T</span>
+</span></span><span style="display:flex;"><span>        gm <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: np<span style="font-weight:bold">.</span>mean(g(para), axis<span style="font-weight:bold">=</span><span style="color:#099">1</span>)                      <span style="color:#998;font-style:italic"># gm is a column vector</span>
+</span></span><span style="display:flex;"><span>        J  <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: np<span style="font-weight:bold">.</span>asscalar(T <span style="font-weight:bold">*</span> gm(para)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">*</span> W <span style="font-weight:bold">*</span> gm(para))    <span style="color:#998;font-style:italic"># J is a scalar</span>
+</span></span><span style="display:flex;"><span>        S  <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: g(para) <span style="font-weight:bold">*</span> g(para)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">/</span> T                       <span style="color:#998;font-style:italic"># S is the covariance matrix</span>
+</span></span><span style="display:flex;"><span>        W  <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>identity(self<span style="font-weight:bold">.</span>n_momn)                                   <span style="color:#998;font-style:italic"># W is the inverse of S</span>
+</span></span><span style="display:flex;"><span>        jacobian   <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: np<span style="font-weight:bold">.</span>asarray(<span style="color:#099">2</span> <span style="font-weight:bold">*</span> T <span style="font-weight:bold">*</span> gm(para)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">*</span> W <span style="font-weight:bold">*</span> np<span style="font-weight:bold">.</span>matrix([dm(para, x) <span style="font-weight:bold">for</span> dm <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>deriv_momn])<span style="font-weight:bold">.</span>T)
+</span></span><span style="display:flex;"><span>        iterations <span style="font-weight:bold">=</span> <span style="color:#099">2</span>                                                  <span style="color:#998;font-style:italic"># set 2 to make it a 2-step GMM</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> plot<span style="font-weight:bold">==</span><span style="color:#099">1</span>:
+</span></span><span style="display:flex;"><span>            print_len  <span style="font-weight:bold">=</span> <span style="color:#099">14</span> <span style="font-weight:bold">*</span> self<span style="font-weight:bold">.</span>n_para <span style="font-weight:bold">+</span> <span style="color:#099">4</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39; &#39;</span><span style="font-weight:bold">*</span>((print_len<span style="font-weight:bold">-</span><span style="color:#099">13</span>)<span style="font-weight:bold">//</span><span style="color:#099">2</span>)<span style="font-weight:bold">+</span><span style="color:#b84">&#39;GMM Iteration&#39;</span><span style="font-weight:bold">+</span><span style="color:#b84">&#39; &#39;</span><span style="font-weight:bold">*</span>((print_len<span style="font-weight:bold">-</span><span style="color:#099">13</span>)<span style="font-weight:bold">//</span><span style="color:#099">2</span>))
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;=&#39;</span><span style="font-weight:bold">*</span>print_len)
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;No. Observations: </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(T))
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;=&#39;</span><span style="font-weight:bold">*</span>print_len)
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;Iter      </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#b84">&#39;        &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;para_</span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i<span style="font-weight:bold">+</span><span style="color:#099">1</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(self<span style="font-weight:bold">.</span>n_para)])))
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span>print_len)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        cons <span style="font-weight:bold">=</span> [{<span style="color:#b84">&#39;type&#39;</span>:<span style="color:#b84">&#39;ineq&#39;</span>,<span style="color:#b84">&#39;fun&#39;</span>:<span style="font-weight:bold">lambda</span> t: (<span style="color:#099">1</span><span style="font-weight:bold">+</span>t[i])<span style="font-weight:bold">*</span>(<span style="color:#099">1</span><span style="font-weight:bold">-</span>t[i])} <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(self<span style="font-weight:bold">.</span>n_para)]
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(iterations):
+</span></span><span style="display:flex;"><span>            temp <span style="font-weight:bold">=</span> minimize(J, <span style="color:#099">2</span><span style="font-weight:bold">*</span>np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>rand(self<span style="font-weight:bold">.</span>n_para)<span style="font-weight:bold">-</span><span style="color:#099">1</span>, method<span style="font-weight:bold">=</span><span style="color:#b84">&#39;SLSQP&#39;</span>, constraints<span style="font-weight:bold">=</span>cons, jac<span style="font-weight:bold">=</span>jacobian)<span style="font-weight:bold">.</span>x
+</span></span><span style="display:flex;"><span>            temp <span style="font-weight:bold">/=</span> <span style="color:#999">max</span>(np<span style="font-weight:bold">.</span>abs(temp)<span style="font-weight:bold">.</span>max(), <span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>            delta <span style="font-weight:bold">=</span> ((temp <span style="font-weight:bold">-</span> self<span style="font-weight:bold">.</span>para) <span style="font-weight:bold">**</span> <span style="color:#099">2</span>)<span style="font-weight:bold">.</span>sum()
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> plot<span style="font-weight:bold">==</span><span style="color:#099">1</span>: <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">{:&gt;4}</span><span style="color:#b84">   </span><span style="color:#b84">{}</span><span style="color:#b84">   (</span><span style="color:#b84">{}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(i<span style="font-weight:bold">+</span><span style="color:#099">1</span>, <span style="color:#b84">&#39;   &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;</span><span style="color:#b84">{: .4e}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> temp]), delta), end<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">if</span> delta <span style="font-weight:bold">&lt;</span> <span style="color:#099">1e-10</span> <span style="font-weight:bold">or</span> np<span style="font-weight:bold">.</span>nan <span style="font-weight:bold">in</span> temp: <span style="font-weight:bold">break</span>
+</span></span><span style="display:flex;"><span>            self<span style="font-weight:bold">.</span>para <span style="font-weight:bold">=</span> temp
+</span></span><span style="display:flex;"><span>            W <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(S(self<span style="font-weight:bold">.</span>para))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> plot <span style="font-weight:bold">==</span> <span style="color:#099">1</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">{:&gt;4}</span><span style="color:#b84">   </span><span style="color:#b84">{}</span><span style="color:#b84">   (</span><span style="color:#b84">{}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(i<span style="font-weight:bold">+</span><span style="color:#099">1</span>, <span style="color:#b84">&#39;   &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;</span><span style="color:#b84">{: .4e}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>para]), delta))
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span><span style="color:#999">int</span>(np<span style="font-weight:bold">.</span>floor((print_len<span style="font-weight:bold">-</span><span style="color:#099">3</span>)<span style="font-weight:bold">/</span><span style="color:#099">2</span>))<span style="font-weight:bold">+</span><span style="color:#b84">&#39;end&#39;</span><span style="font-weight:bold">+</span><span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span><span style="color:#999">int</span>(np<span style="font-weight:bold">.</span>ceil((print_len<span style="font-weight:bold">-</span><span style="color:#099">3</span>)<span style="font-weight:bold">/</span><span style="color:#099">2</span>)))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        g_star <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: g(para) <span style="font-weight:bold">-</span> gm(para)
+</span></span><span style="display:flex;"><span>        S_     <span style="font-weight:bold">=</span> <span style="font-weight:bold">lambda</span> para: g_star(para) <span style="font-weight:bold">*</span> g_star(para)<span style="font-weight:bold">.</span>T <span style="font-weight:bold">/</span> T
+</span></span><span style="display:flex;"><span>        avar   <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(np<span style="font-weight:bold">.</span>matrix([dm(self<span style="font-weight:bold">.</span>para, x) <span style="font-weight:bold">for</span> dm <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>deriv_momn]) <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                               np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(S_(self<span style="font-weight:bold">.</span>para)) <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                               np<span style="font-weight:bold">.</span>matrix([dm(self<span style="font-weight:bold">.</span>para, x) <span style="font-weight:bold">for</span> dm <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>deriv_momn])<span style="font-weight:bold">.</span>T)<span style="font-weight:bold">.</span>diagonal()<span style="font-weight:bold">.</span>tolist()[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>J <span style="font-weight:bold">=</span> J
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>x <span style="font-weight:bold">=</span> x
+</span></span><span style="display:flex;"><span>        self<span style="font-weight:bold">.</span>avar <span style="font-weight:bold">=</span> avar
+</span></span><span style="display:flex;"><span>                        
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">result</span>(self, para_true):
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">{:^46}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#b84">&#39;Iterated GMM Results&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;=&#39;</span><span style="font-weight:bold">*</span><span style="color:#099">46</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;Kind      </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#b84">&#39;        &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;para_</span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i<span style="font-weight:bold">+</span><span style="color:#099">1</span>) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(self<span style="font-weight:bold">.</span>n_para)])))
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span><span style="color:#099">46</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;Estm   </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#b84">&#39;   &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;</span><span style="color:#b84">{: .4e}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>para])))
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;True   </span><span style="color:#b84">{}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#b84">&#39;   &#39;</span><span style="font-weight:bold">.</span>join([<span style="color:#b84">&#39;</span><span style="color:#b84">{: .4e}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> para_true])))
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span><span style="color:#099">46</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;Avar   &#39;</span><span style="font-weight:bold">+</span><span style="color:#b84">&#39;   &#39;</span><span style="font-weight:bold">.</span>join(<span style="color:#b84">&#39;</span><span style="color:#b84">{: .4e}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(v) <span style="font-weight:bold">for</span> v <span style="font-weight:bold">in</span> self<span style="font-weight:bold">.</span>avar))
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;-&#39;</span><span style="font-weight:bold">*</span><span style="color:#099">46</span>)
+</span></span></code></pre></div><p>Below we define the moment condition functions and the derivatives of their mean.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>momn <span style="font-weight:bold">=</span> [<span style="font-weight:bold">lambda</span> para, x: (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]),  <span style="color:#998;font-style:italic"># expectation</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">lambda</span> para, x: (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>])<span style="font-weight:bold">**</span><span style="color:#099">2</span> <span style="font-weight:bold">-</span> (<span style="color:#099">1</span> <span style="font-weight:bold">+</span> para[<span style="color:#099">2</span>]<span style="font-weight:bold">**</span><span style="color:#099">2</span>),  <span style="color:#998;font-style:italic"># variance</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">lambda</span> para, x: (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]) <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                        (x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>]) <span style="font-weight:bold">-</span> para[<span style="color:#099">2</span>],  <span style="color:#998;font-style:italic"># covariance of epsilon_t and epsilon_{t-1}</span>
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">lambda</span> para, x: (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]) <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                        (x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">0</span>:<span style="font-weight:bold">-</span><span style="color:#099">4</span>]),  <span style="color:#998;font-style:italic"># covariance of epsilon_t and epsilon_{t-2}</span>
+</span></span><span style="display:flex;"><span>       ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>deriv_momn <span style="font-weight:bold">=</span> [<span style="font-weight:bold">lambda</span> para, x: np<span style="font-weight:bold">.</span>array([(<span style="font-weight:bold">-</span>x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>])<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span><span style="color:#099">2</span> <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span>x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>]) <span style="font-weight:bold">-</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                                         (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span>x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">0</span>:<span style="font-weight:bold">-</span><span style="color:#099">4</span>]) <span style="font-weight:bold">-</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>] <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                                         (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                       ]),
+</span></span><span style="display:flex;"><span>              <span style="font-weight:bold">lambda</span> para, x: np<span style="font-weight:bold">.</span>array([(<span style="font-weight:bold">-</span>x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>])<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span><span style="color:#099">2</span> <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span>x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>]) <span style="font-weight:bold">-</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>] <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                                         (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                        (<span style="font-weight:bold">-</span>x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">*</span> (x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">1</span>:<span style="font-weight:bold">-</span><span style="color:#099">3</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">0</span>:<span style="font-weight:bold">-</span><span style="color:#099">4</span>]) <span style="font-weight:bold">-</span> x[<span style="color:#099">0</span>:<span style="font-weight:bold">-</span><span style="color:#099">4</span>] <span style="font-weight:bold">*</span> \
+</span></span><span style="display:flex;"><span>                                         (x[<span style="color:#099">4</span>:] <span style="font-weight:bold">-</span> para[<span style="color:#099">0</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">3</span>:<span style="font-weight:bold">-</span><span style="color:#099">1</span>] <span style="font-weight:bold">-</span> para[<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> x[<span style="color:#099">2</span>:<span style="font-weight:bold">-</span><span style="color:#099">2</span>]))<span style="font-weight:bold">.</span>mean(),
+</span></span><span style="display:flex;"><span>                                       ]),
+</span></span><span style="display:flex;"><span>              <span style="font-weight:bold">lambda</span> para, x: np<span style="font-weight:bold">.</span>array([<span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>                                        <span style="font-weight:bold">-</span><span style="color:#099">2</span> <span style="font-weight:bold">*</span> para[<span style="color:#099">2</span>],
+</span></span><span style="display:flex;"><span>                                        <span style="font-weight:bold">-</span><span style="color:#099">1</span>,
+</span></span><span style="display:flex;"><span>                                        <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>                                       ])
+</span></span><span style="display:flex;"><span>             ]
+</span></span></code></pre></div><p>Initialize the gmm model with moment condition functions and the respective partial derivatives, fit it to x, and then print out the result.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="font-weight:bold">=</span> gmm(momn, deriv_momn)
+</span></span><span style="display:flex;"><span>model<span style="font-weight:bold">.</span>fit(x, plot<span style="font-weight:bold">=</span><span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>()
+</span></span><span style="display:flex;"><span>model<span style="font-weight:bold">.</span>result(para)
+</span></span></code></pre></div><pre><code>                GMM Iteration                
+==============================================
+No. Observations: 20000
+==============================================
+Iter      para_1        para_2        para_3
+----------------------------------------------
+   2    1.9091e-01    5.6302e-02    8.1460e-01   (1.074866238949949e-08)
+---------------------end----------------------
+
+             Iterated GMM Results             
+==============================================
+Kind      para_1        para_2        para_3
+----------------------------------------------
+Estm    1.9091e-01    5.6302e-02    8.1460e-01
+True    2.0000e-01    5.0000e-02    8.0000e-01
+----------------------------------------------
+Avar    1.9905e+01    9.1790e+00    2.5171e+01
+----------------------------------------------
+</code></pre>
+<p>As comparison, check the maximum likelihood estimation with the help of <strong>statsmodels</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#999">print</span>(sm<span style="font-weight:bold">.</span>tsa<span style="font-weight:bold">.</span>ARMA(x, (<span style="color:#999">len</span>(phi), <span style="color:#999">len</span>(theta)))<span style="font-weight:bold">.</span>fit()<span style="font-weight:bold">.</span>summary())
+</span></span></code></pre></div><pre><code>                              ARMA Model Results                              
+==============================================================================
+Dep. Variable:                      y   No. Observations:                20000
+Model:                     ARMA(2, 1)   Log Likelihood              -28404.025
+Method:                       css-mle   S.D. of innovations              1.001
+Date:                Mon, 16 Jan 2017   AIC                          56818.050
+Time:                        11:55:46   BIC                          56857.568
+Sample:                             0   HQIC                         56830.979
+                                                                              
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+const          0.0026      0.017      0.155      0.876        -0.031     0.036
+ar.L1.y        0.1983      0.010     20.706      0.000         0.179     0.217
+ar.L2.y        0.0512      0.009      5.672      0.000         0.033     0.069
+ma.L1.y        0.8050      0.006    128.761      0.000         0.793     0.817
+                                    Roots                                    
+=============================================================================
+                 Real           Imaginary           Modulus         Frequency
+-----------------------------------------------------------------------------
+AR.1            2.8895           +0.0000j            2.8895            0.0000
+AR.2           -6.7643           +0.0000j            6.7643            0.5000
+MA.1           -1.2423           +0.0000j            1.2423            0.5000
+-----------------------------------------------------------------------------
+</code></pre>
+<h1 id="theoretical-asymptotic-variances-of-the-gmm-estimator">Theoretical Asymptotic Variances of the GMM Estimator</h1>
+<p>Some assumptions:</p>
+<div>
+$$
+e_t'g=
+\begin{bmatrix}
+x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})^2 - (1 + \theta_1^2)\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - \theta_1\\
+(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4})\\
+\end{bmatrix}=
+\begin{bmatrix}
+\epsilon_t+\theta_1\epsilon_{t-1}\\
+(\epsilon_t+\theta_1\epsilon_{t-1})^2-(1+\theta_1^2)\\
+(\epsilon_t+\theta_1\epsilon_{t-1})(\epsilon_{t-1}+\theta_1\epsilon_{t-2})-\theta_1\\
+(\epsilon_t+\theta_1\epsilon_{t-1})(\epsilon_{t-2}+\theta_1\epsilon_{t-3})\\
+\end{bmatrix}
+$$
+</div>
+<p>and</p>
+<div>
+$$
+E(e_t'g)=
+\begin{bmatrix}
+0\\
+0\\
+0\\
+0\\
+\end{bmatrix}
+$$
+</div>
+<p>where <code>$e_t\in\mathbb{R}^{T\times1}$</code> is the <code>$t^th$</code> basis vector. Hence,</p>
+<div>
+$$
+\frac{\partial e_t'g}{\partial\beta^{\prime}}=
+\begin{bmatrix}
+\mathcal{E}_1 & \mathcal{E}_2 & \mathcal{E}_3
+\end{bmatrix}
+$$
+</div>
+<p>where</p>
+<div>
+$$
+\mathcal{E}_1 = \begin{bmatrix}
+-x_{t-1}                                                                                            \\
+-2x_{t-1}(x_t-\phi_1 x_{t-1}-\phi_2 x_{t-2})                                                        \\
+-x_{t-1}(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - x_{t-2}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})\\
+-x_{t-1}(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4}) - x_{t-3}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2})
+\end{bmatrix},
+$$
+</div>
+<div>
+$$
+\mathcal{E}_2 = \begin{bmatrix}
+-x_{t-2}                                                                                             \\
+-2x_{t-2}(x_t-\phi_1 x_{t-1}-\phi_2 x_{t-2})                                                         \\
+-x_{t-2}(x_{t-1} - \phi_1 x_{t-2} - \phi_2 x_{t-3}) - x_{t-3}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}) \\
+-x_{t-2}(x_{t-2} - \phi_1 x_{t-3} - \phi_2 x_{t-4}) - x_{t-4}(x_t - \phi_1 x_{t-1} - \phi_2 x_{t-2}) 
+\end{bmatrix}
+$$
+</div>
+<p>and</p>
+<p>$$
+\mathcal{E}_3 = \begin{bmatrix}
+0\
+-2\theta_1\
+-1\
+0
+\end{bmatrix}.
+$$</p>
+<p>Let</p>
+<div>
+$$
+G=E\left(\dfrac{\partial e_t'g}{\partial \beta^{\prime}}\right)=
+\begin{bmatrix}
+-\mu & -\mu & 0\\
+2\phi_1\gamma_0+2(\phi_2-1)\gamma_1 & 2\phi_2\gamma_0+2\phi_1\gamma_1-2\gamma_2 & -2\theta_1\\
+(\phi_2-1)\gamma_0+2\phi_1\gamma_1+(\phi_2-1)\gamma_2 & \phi_1\gamma_0+(2\phi_2-1)\gamma_1+\phi_1\gamma_2-\gamma_3 & -1\\
+(\phi_2-1)\gamma_1+2\phi_1\gamma_2+(\phi_2-1)\gamma_3 & -\gamma_0+\phi_1\gamma_1+2\phi_2\gamma_2+\phi_1\gamma_3-\gamma_4 & 0
+\end{bmatrix}.
+$$
+</div>
+<p>Since</p>
+<p>$$
+\mu = 0
+$$</p>
+<p>and the autocovariances <code>$\gamma_i$</code> follows</p>
+<p>$$
+\begin{cases}
+\gamma_0-\phi_1\gamma_1-\phi_2\gamma_2=\theta_1(\phi_1+\theta_1)+1\
+\phi_1\gamma_0+(\phi_2-1)\gamma_1=-\theta_1\
+\gamma_k = \phi_1\gamma_{k-1} + \phi_2\gamma_{k-2},\quad k\ge 2
+\end{cases}
+$$</p>
+<p>we may derive <code>$G$</code> at last.</p>
+<p>Also, the covariance matrix of <code>$e_t'g$</code> is</p>
+<div>
+$$
+S=E(e_t'gg'e_t)=
+\begin{bmatrix}
+1+\theta_1^2    & 0                         & 0                        & 0\\
+0               & 2\theta_1^4+4\theta_1^2+2 & 2\theta_1^3+2\theta_1    & 0\\
+0               & 2\theta_1^3+2\theta_1     & \theta_1^4+3\theta_1^2+1 & \theta_1^3+\theta_1\\
+0               & 0                         & \theta_1^3+\theta_1      & \theta_1^4+2\theta_1^2+1\\
+\end{bmatrix}
+$$
+</div>
+<p>Now with <code>$G$</code> and <code>$S$</code>, since</p>
+<p>$$
+\sqrt{T}\ (\widehat{para} - para)\overset{d}{\to}\mathcal{N}(0,(G&rsquo;S^{-1}G)^{-1}),
+$$</p>
+<p>we may derive the theoretical asymptotic variances of <code>$\sqrt{T}\ \widehat{para}$</code> as follows.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mu <span style="font-weight:bold">=</span> <span style="color:#099">0</span> <span style="color:#998;font-style:italic"># 345112251_00121231</span>
+</span></span><span style="display:flex;"><span>A <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>matrix([[<span style="color:#099">1</span>,      <span style="font-weight:bold">-</span>phi[<span style="color:#099">0</span>],  <span style="font-weight:bold">-</span>phi[<span style="color:#099">1</span>]],
+</span></span><span style="display:flex;"><span>               [phi[<span style="color:#099">0</span>], phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>, <span style="color:#099">0</span>],
+</span></span><span style="display:flex;"><span>               [phi[<span style="color:#099">1</span>], phi[<span style="color:#099">0</span>],   <span style="font-weight:bold">-</span><span style="color:#099">1</span>]
+</span></span><span style="display:flex;"><span>              ])
+</span></span><span style="display:flex;"><span>B <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>matrix([[theta[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>(phi[<span style="color:#099">0</span>]<span style="font-weight:bold">+</span>theta[<span style="color:#099">0</span>])<span style="font-weight:bold">+</span><span style="color:#099">1</span>],
+</span></span><span style="display:flex;"><span>               [<span style="font-weight:bold">-</span>theta[<span style="color:#099">0</span>]],
+</span></span><span style="display:flex;"><span>               [<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>              ])
+</span></span><span style="display:flex;"><span>y <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(A)<span style="font-weight:bold">*</span>B
+</span></span><span style="display:flex;"><span>y0, y1, y2 <span style="font-weight:bold">=</span> [np<span style="font-weight:bold">.</span>asscalar(a) <span style="font-weight:bold">for</span> a <span style="font-weight:bold">in</span> y]
+</span></span><span style="display:flex;"><span>y3 <span style="font-weight:bold">=</span> phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y2 <span style="font-weight:bold">+</span> phi[<span style="color:#099">1</span>]<span style="font-weight:bold">*</span>y1
+</span></span><span style="display:flex;"><span>y4 <span style="font-weight:bold">=</span> phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y3 <span style="font-weight:bold">+</span> phi[<span style="color:#099">1</span>]<span style="font-weight:bold">*</span>y2
+</span></span><span style="display:flex;"><span>G <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>matrix([[<span style="font-weight:bold">-</span>mu,                                     <span style="font-weight:bold">-</span>mu,                                    <span style="color:#099">0</span>],
+</span></span><span style="display:flex;"><span>               [<span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y0<span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>(phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y1,             <span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">1</span>]<span style="font-weight:bold">*</span>y0<span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y1<span style="font-weight:bold">-</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>y2,           <span style="font-weight:bold">-</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]],
+</span></span><span style="display:flex;"><span>               [(phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y0<span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y1<span style="font-weight:bold">+</span>(phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y2, phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y0<span style="font-weight:bold">+</span>(<span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y1<span style="font-weight:bold">+</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y2<span style="font-weight:bold">-</span>y3, <span style="font-weight:bold">-</span><span style="color:#099">1</span>],
+</span></span><span style="display:flex;"><span>               [(phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y1<span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y2<span style="font-weight:bold">+</span>(phi[<span style="color:#099">1</span>]<span style="font-weight:bold">-</span><span style="color:#099">1</span>)<span style="font-weight:bold">*</span>y3, <span style="font-weight:bold">-</span>y0<span style="font-weight:bold">+</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y1<span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>phi[<span style="color:#099">1</span>]<span style="font-weight:bold">*</span>y2<span style="font-weight:bold">+</span>phi[<span style="color:#099">0</span>]<span style="font-weight:bold">*</span>y3<span style="font-weight:bold">-</span>y4, <span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>              ])
+</span></span><span style="display:flex;"><span>G<span style="font-weight:bold">.</span>round(<span style="color:#099">2</span>)
+</span></span></code></pre></div><pre><code>array([[ 0. ,  0. ,  0. ],
+       [-1.6, -0. , -1.6],
+       [-1.8, -0.8, -1. ],
+       [-1.2, -1.8,  0. ]])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>S <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>matrix([[<span style="color:#099">1</span><span style="font-weight:bold">+</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">2</span>, <span style="color:#099">0</span>,                             <span style="color:#099">0</span>,                           <span style="color:#099">0</span>],
+</span></span><span style="display:flex;"><span>               [<span style="color:#099">0</span>,             <span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">4</span><span style="font-weight:bold">+</span><span style="color:#099">4</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">2</span><span style="font-weight:bold">+</span><span style="color:#099">2</span>, <span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">3</span><span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>],    <span style="color:#099">0</span>],
+</span></span><span style="display:flex;"><span>               [<span style="color:#099">0</span>,             <span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">3</span><span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>],      theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">4</span><span style="font-weight:bold">+</span><span style="color:#099">3</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">2</span><span style="font-weight:bold">+</span><span style="color:#099">1</span>, theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">3</span><span style="font-weight:bold">+</span>theta[<span style="color:#099">0</span>]],
+</span></span><span style="display:flex;"><span>               [<span style="color:#099">0</span>,             <span style="color:#099">0</span>,                             theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">3</span><span style="font-weight:bold">+</span>theta[<span style="color:#099">0</span>],        theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">4</span><span style="font-weight:bold">+</span><span style="color:#099">2</span><span style="font-weight:bold">*</span>theta[<span style="color:#099">0</span>]<span style="font-weight:bold">**</span><span style="color:#099">2</span><span style="font-weight:bold">+</span><span style="color:#099">1</span>],
+</span></span><span style="display:flex;"><span>              ])
+</span></span><span style="display:flex;"><span>S<span style="font-weight:bold">.</span>round(<span style="color:#099">2</span>)
+</span></span></code></pre></div><pre><code>array([[ 1.64,  0.  ,  0.  ,  0.  ],
+       [ 0.  ,  5.38,  2.62,  0.  ],
+       [ 0.  ,  2.62,  3.33,  1.31],
+       [ 0.  ,  0.  ,  1.31,  2.69]])
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(G<span style="font-weight:bold">.</span>T<span style="font-weight:bold">*</span>np<span style="font-weight:bold">.</span>linalg<span style="font-weight:bold">.</span>inv(S)<span style="font-weight:bold">*</span>G)<span style="font-weight:bold">.</span>diagonal()<span style="font-weight:bold">.</span>tolist()[<span style="color:#099">0</span>]
+</span></span></code></pre></div><pre><code>[21.3174392361111, 9.980590277777774, 26.878064236111097]
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model<span style="font-weight:bold">.</span>avar
+</span></span></code></pre></div><pre><code>[19.905472617664184, 9.178999415080208, 25.170769966198534]
+</code></pre>
+<p>The estimated asymptotic variance is quite close to the theory.</p>
+<h1 id="monte-carlo-simulation">Monte Carlo Simulation</h1>
+<p>Below we use the true parameters to simulate <code>$N=10000$</code> times and each time we estimate a <code>$\widehat{para}_n$</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>N <span style="font-weight:bold">=</span> <span style="color:#099">1000</span>
+</span></span><span style="display:flex;"><span>para_mc <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">with</span> np<span style="font-weight:bold">.</span>errstate(divide<span style="font-weight:bold">=</span><span style="color:#b84">&#39;ignore&#39;</span>):
+</span></span><span style="display:flex;"><span>    start <span style="font-weight:bold">=</span> time()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(N):
+</span></span><span style="display:flex;"><span>        x_mc <span style="font-weight:bold">=</span> simulate(T <span style="font-weight:bold">+</span> T_, phi, theta, init)[:T]
+</span></span><span style="display:flex;"><span>        model<span style="font-weight:bold">.</span>fit(x_mc)
+</span></span><span style="display:flex;"><span>        pct <span style="font-weight:bold">=</span> i <span style="font-weight:bold">*</span> <span style="color:#099">100</span> <span style="font-weight:bold">//</span> N <span style="font-weight:bold">+</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>        now <span style="font-weight:bold">=</span> time()
+</span></span><span style="display:flex;"><span>        eta <span style="font-weight:bold">=</span> (<span style="color:#099">100</span> <span style="font-weight:bold">-</span> pct) <span style="font-weight:bold">/</span> pct <span style="font-weight:bold">*</span> (now <span style="font-weight:bold">-</span> start)
+</span></span><span style="display:flex;"><span>        <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">{:&gt;3}</span><span style="color:#b84">% |&#39;</span><span style="font-weight:bold">.</span>format(pct)<span style="font-weight:bold">+</span><span style="color:#b84">&#39;</span><span style="color:#b84">\u2591</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">*</span>pct<span style="font-weight:bold">+</span><span style="color:#b84">&#39; &#39;</span><span style="font-weight:bold">*</span>(<span style="color:#099">100</span><span style="font-weight:bold">-</span>pct)<span style="font-weight:bold">+</span><span style="color:#b84">&#39;| ETA: </span><span style="color:#b84">{}</span><span style="color:#b84"> s&#39;</span><span style="font-weight:bold">.</span>format(<span style="color:#999">int</span>(eta)), end<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>        para_mc<span style="font-weight:bold">.</span>append(model<span style="font-weight:bold">.</span>para)
+</span></span><span style="display:flex;"><span><span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">100% |&#39;</span><span style="font-weight:bold">+</span><span style="color:#b84">&#39;</span><span style="color:#b84">\u2591</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">*</span><span style="color:#099">100</span><span style="font-weight:bold">+</span><span style="color:#b84">&#39;| Finished.&#39;</span>, end<span style="font-weight:bold">=</span><span style="color:#b84">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>para_mc <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>array(para_mc)
+</span></span></code></pre></div><pre><code>100% |░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░| Finished.
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>close()
+</span></span><span style="display:flex;"><span>fig <span style="font-weight:bold">=</span> plt<span style="font-weight:bold">.</span>figure()
+</span></span><span style="display:flex;"><span>ax1 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">311</span>); ax1<span style="font-weight:bold">.</span>hist(para_mc[:,<span style="color:#099">0</span>],bins<span style="font-weight:bold">=</span><span style="color:#099">50</span>,color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;#444444&#39;</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;para[0]&#39;</span>); ax1<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>ax2 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">312</span>); ax2<span style="font-weight:bold">.</span>hist(para_mc[:,<span style="color:#099">1</span>],bins<span style="font-weight:bold">=</span><span style="color:#099">50</span>,color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;#444444&#39;</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;para[1]&#39;</span>); ax2<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>ax3 <span style="font-weight:bold">=</span> fig<span style="font-weight:bold">.</span>add_subplot(<span style="color:#099">313</span>); ax3<span style="font-weight:bold">.</span>hist(para_mc[:,<span style="color:#099">2</span>],bins<span style="font-weight:bold">=</span><span style="color:#099">50</span>,color<span style="font-weight:bold">=</span><span style="color:#b84">&#39;#444444&#39;</span>,label<span style="font-weight:bold">=</span><span style="color:#b84">&#39;para[2]&#39;</span>); ax3<span style="font-weight:bold">.</span>legend()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>tight_layout()
+</span></span><span style="display:flex;"><span>plt<span style="font-weight:bold">.</span>show()
+</span></span></code></pre></div><img src="/images/output_31_0.png" style="width: 850;"/>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>(para_mc<span style="font-weight:bold">.</span>var(axis<span style="font-weight:bold">=</span><span style="color:#099">0</span>)<span style="font-weight:bold">*</span>T)<span style="font-weight:bold">.</span>tolist()
+</span></span></code></pre></div><pre><code>[4.422402990203701, 2.9904249354938632, 8.796234771820194]
+</code></pre>
+<p>As we can see, the sample variance of the Monte Carlo simulated distribution of our estimator, is significantly smaller than the theoretical one. This should be a problem.</p>
+<hr>
+<h1 id="references">References:</h1>
+<ul>
+<li>Hall, Alastair R. Generalized method of moments. Oxford University Press, 2005.</li>
+<li>Hall, Alastair R. &ldquo;Hypothesis testing in models estimated by GMM.&rdquo; Generalized method of moments estimation 5 (1999): 96.</li>
+<li>Hansen, Lars Peter. &ldquo;Large sample properties of generalized method of moments estimators.&rdquo; Econometrica: Journal of the Econometric Society (1982): 1029-1054.</li>
+<li>Wooldridge, Jeffrey M. &ldquo;Applications of generalized method of moments estimation.&rdquo; The Journal of Economic Perspectives 15.4 (2001): 87-100.</li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/christmas-across-eastern-europe-4/">Christmas across Eastern Europe (4): Croatia</a></span>
+  <span class="nav-next"><a href="/blog/strategy-lstm-neural-network-small-cap/">Strategy: LSTM Neural Network &#43; Small Cap</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/christmas-across-eastern-europe-4\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/strategy-lstm-neural-network-small-cap\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>

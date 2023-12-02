@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Texas Hold &#39;em Series (4): Hand Evaluation - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Texas Hold &#39;em Series (4): Hand Evaluation - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. &amp;hellip;">
+      <meta property="og:description" content="In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script async src="/js/center-img.js"></script>
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Texas Hold &#39;em Series (4): Hand Evaluation</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2019-04-09
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. Poker is essentially an incomplete information game. Different from Go, where you can see all stones placed on the chessboard and thereby &ldquo;solve&rdquo; an optimal move, you never know you opponents&rsquo; pocket cards until showdown (yet even then, people mucks). Also, you have little clue on the unshown community cards. Therefore, in order to evaluate a hand during a poker game, we&rsquo;d better opt for a online evaluation algorithm instead of considering this as a DP-like problem.</p>
+<!-- more -->
+<h1 id="hand-values">Hand Values</h1>
+<p>For the sake of convenience, the table of hand values is shown again below.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Name</th>
+<th style="text-align:center">Description</th>
+<th style="text-align:center">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">High Card</td>
+<td style="text-align:center">Simple value of the card. Lowest: deuce; highest: ace.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>2c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Pair</td>
+<td style="text-align:center">Two cards with the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Two Pairs</td>
+<td style="text-align:center">Two pairs where each pair of cards have the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Three of a Kind</td>
+<td style="text-align:center">Three cards with the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>2c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Straight</td>
+<td style="text-align:center">Five cards in consecutive values (ace can precede deuce or follow up king).</td>
+<td style="text-align:center"><code>9s</code> <code>Ts</code> <code>Jh</code> <code>Qd</code> <code>Kc</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Flush</td>
+<td style="text-align:center">Five cards of the same suit.</td>
+<td style="text-align:center"><code>Ah</code> <code>4h</code> <code>7h</code> <code>Th</code> <code>2h</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Full House</td>
+<td style="text-align:center">Three of a kind with the rest two making a pair.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>Ac</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Four of a Kind</td>
+<td style="text-align:center">Four cards of the same value.</td>
+<td style="text-align:center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>4c</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Straight Flush</td>
+<td style="text-align:center">Straight of the same suit.</td>
+<td style="text-align:center"><code>9h</code> <code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Royal Flush</td>
+<td style="text-align:center">Straight flush from ten to ace.</td>
+<td style="text-align:center"><code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code> <code>Ah</code></td>
+</tr>
+</tbody>
+</table>
+<h1 id="evaluation">Evaluation</h1>
+<p>Our ultimate goal is to be able to evaluate the probability of a win (and tie), i.e. the relative strength of our hand. However, let&rsquo;s just try to get one step back and consider evaluating the absolute strengths. Here we denote it as the <strong>hand value</strong>. Ideally, there are $\binom{52}{5}=2,598,960$ possible hands but much less valid values. An intuitive idea to match all these hands to their values, which is also what I did, is to first generate a sparse mapping from hands to values, and then condense it. First we need a function that identifies hand types. Then, for hands within the same type, we encode them like a carry system (e.g. decimal); for hands across different types, we manually add offsets so that higher hand types always yield higher values. The final results are stored in the dictionary <code>hv</code> and serialized locally. The highest value is 6144 and here is a glance of <code>hv</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;2s3s4s5s7h&#39;</span> : <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;2s3s4s5s7c&#39;</span> : <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;2s3s4s5s7d&#39;</span> : <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;2s3s4s5h7s&#39;</span> : <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;2s3s4s5h7h&#39;</span> : <span style="color:#099">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;9dTdJdQdKd&#39;</span> : <span style="color:#099">6143</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;TsJsQsKsAs&#39;</span> : <span style="color:#099">6144</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;ThJhQhKhAh&#39;</span> : <span style="color:#099">6144</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;TcJcQcKcAc&#39;</span> : <span style="color:#099">6144</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;TdJdQdKdAd&#39;</span> : <span style="color:#099">6144</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="simulation">Simulation</h1>
+<p>Now that we have the full mapping from hands to values, there are two things we can do to calculate the probabilities:</p>
+<ol>
+<li>Enumerate all opponent hands exhaustively, and compare hand values</li>
+<li>Simulate certain number of opponent hands, and then compare</li>
+</ol>
+<p>Things are gonna be much easier when we only consider the two-player case (a.k.a. heads-up games). In that case, we can literally count and evaluate all scenarios — when there&rsquo;re 2 pocket cards for me and 3 community cards shown, we only need to enumerate $\binom{52-5}{2}=1,081$ opponent hands, which is lightning fast to finish with modern programming languages like Python or C++. However, when we have more players, like 5, the first method gets nasty. The hands of each opponent are not independent, so we have to go through $\binom{52-5}{2\times 4} &gt; 3\times 10^8$ situations and that, different to the heads-up scenario, would be unacceptably slow no matter which language we use. Therefore, we opt for the second method at some cost of precision. The code (partial) is shared below.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">def</span> <span style="color:#900;font-weight:bold">handEval</span>(my_pocket, community, n_players, hv,
+</span></span><span style="display:flex;"><span>             n_tot<span style="font-weight:bold">=</span><span style="color:#099">1024</span>, ranges<span style="font-weight:bold">=</span><span style="font-weight:bold">None</span>, verbose<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    PARAMETERS:
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        my_pocket: list of 2 strings
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        community: list of 3-5 strings
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        n_players: integer
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        hv: hand_value dictionary
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        n_tot: integer
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        ranges: list of (n_players - 1) floats (default: None)
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">        verbose: boolean
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    RETURN: (float, float)
+</span></span></span><span style="display:flex;"><span><span style="color:#b84">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">assert</span> <span style="color:#999">len</span>(<span style="color:#999">set</span>(my_pocket <span style="font-weight:bold">+</span> community)) <span style="font-weight:bold">==</span> <span style="color:#999">len</span>(my_pocket <span style="font-weight:bold">+</span> community) <span style="font-weight:bold">and</span> \
+</span></span><span style="display:flex;"><span>           <span style="color:#999">all</span>(card <span style="font-weight:bold">in</span> deck <span style="font-weight:bold">for</span> card <span style="font-weight:bold">in</span> my_pocket <span style="font-weight:bold">+</span> community), <span style="color:#b84">&#39;invalid cards&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">assert</span> n_players <span style="font-weight:bold">&lt;</span> <span style="color:#099">10</span>, <span style="color:#b84">&#39;too many players&#39;</span>
+</span></span><span style="display:flex;"><span>    n_unshown <span style="font-weight:bold">=</span> <span style="color:#099">5</span> <span style="font-weight:bold">-</span> <span style="color:#999">len</span>(community)
+</span></span><span style="display:flex;"><span>    np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>seed(<span style="color:#099">123</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> ranges <span style="font-weight:bold">is</span> <span style="font-weight:bold">None</span>: ranges <span style="font-weight:bold">=</span> [<span style="color:#099">1</span>] <span style="font-weight:bold">*</span> (n_players <span style="font-weight:bold">-</span> <span style="color:#099">1</span>)
+</span></span><span style="display:flex;"><span>    simulation <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> j <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_tot):
+</span></span><span style="display:flex;"><span>        available <span style="font-weight:bold">=</span> [c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> deck <span style="font-weight:bold">if</span> (c <span style="font-weight:bold">not</span> <span style="font-weight:bold">in</span> my_pocket <span style="font-weight:bold">+</span> community)]
+</span></span><span style="display:flex;"><span>        sim <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>choice(available, n_unshown, replace<span style="font-weight:bold">=</span><span style="font-weight:bold">False</span>)<span style="font-weight:bold">.</span>tolist()
+</span></span><span style="display:flex;"><span>        available <span style="font-weight:bold">=</span> [c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> available <span style="font-weight:bold">if</span> c <span style="font-weight:bold">not</span> <span style="font-weight:bold">in</span> sim]
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_players <span style="font-weight:bold">-</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>            pf_range <span style="font-weight:bold">=</span> [pf <span style="font-weight:bold">for</span> k, pf <span style="font-weight:bold">in</span> <span style="color:#999">enumerate</span>(pf_full) <span style="font-weight:bold">if</span>
+</span></span><span style="display:flex;"><span>                        pf[<span style="color:#099">0</span>] <span style="font-weight:bold">in</span> available <span style="font-weight:bold">and</span> pf[<span style="color:#099">1</span>] <span style="font-weight:bold">in</span> available <span style="font-weight:bold">and</span>
+</span></span><span style="display:flex;"><span>                        k <span style="font-weight:bold">&lt;</span> <span style="color:#999">len</span>(pf_full) <span style="font-weight:bold">*</span> ranges[i]]
+</span></span><span style="display:flex;"><span>            idx <span style="font-weight:bold">=</span> np<span style="font-weight:bold">.</span>random<span style="font-weight:bold">.</span>choice(<span style="color:#999">range</span>(<span style="color:#999">len</span>(pf_range)))
+</span></span><span style="display:flex;"><span>            cards <span style="font-weight:bold">=</span> pf_range[idx]
+</span></span><span style="display:flex;"><span>            sim <span style="font-weight:bold">+=</span> cards
+</span></span><span style="display:flex;"><span>            available <span style="font-weight:bold">=</span> [c <span style="font-weight:bold">for</span> c <span style="font-weight:bold">in</span> available <span style="font-weight:bold">if</span> c <span style="font-weight:bold">not</span> <span style="font-weight:bold">in</span> cards]
+</span></span><span style="display:flex;"><span>        simulation<span style="font-weight:bold">.</span>append(sim)
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">if</span> verbose:
+</span></span><span style="display:flex;"><span>            <span style="color:#999">print</span>(<span style="color:#b84">&#39;</span><span style="color:#b84">{}</span><span style="color:#b84">/</span><span style="color:#b84">{}</span><span style="color:#b84"> (</span><span style="color:#b84">{:.2%}</span><span style="color:#b84">)&#39;</span><span style="font-weight:bold">.</span>format(j <span style="font-weight:bold">+</span> <span style="color:#099">1</span>, n_tot, (j <span style="font-weight:bold">+</span> <span style="color:#099">1</span>) <span style="font-weight:bold">/</span> n_tot), end<span style="font-weight:bold">=</span><span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">&#39;</span>)
+</span></span><span style="display:flex;"><span>    n_win <span style="font-weight:bold">=</span> n_tie <span style="font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="font-weight:bold">not</span> n_tot: n_tot <span style="font-weight:bold">=</span> <span style="color:#999">len</span>(simulation)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i, cards <span style="font-weight:bold">in</span> <span style="color:#999">enumerate</span>(simulation):
+</span></span><span style="display:flex;"><span>        cards <span style="font-weight:bold">=</span> <span style="color:#999">list</span>(cards)
+</span></span><span style="display:flex;"><span>        new_community <span style="font-weight:bold">=</span> cards[:n_unshown]
+</span></span><span style="display:flex;"><span>        my_full_hand <span style="font-weight:bold">=</span> my_pocket <span style="font-weight:bold">+</span> community <span style="font-weight:bold">+</span> new_community
+</span></span><span style="display:flex;"><span>        op_full_hands <span style="font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> j <span style="font-weight:bold">in</span> <span style="color:#999">range</span>(n_players <span style="font-weight:bold">-</span> <span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>            op_pocket <span style="font-weight:bold">=</span> cards[n_unshown <span style="font-weight:bold">+</span> j <span style="font-weight:bold">*</span> <span style="color:#099">2</span>:n_unshown <span style="font-weight:bold">+</span> j <span style="font-weight:bold">*</span> <span style="color:#099">2</span> <span style="font-weight:bold">+</span> <span style="color:#099">2</span>]
+</span></span><span style="display:flex;"><span>            op_full_hands<span style="font-weight:bold">.</span>append(op_pocket <span style="font-weight:bold">+</span> community <span style="font-weight:bold">+</span> new_community)
+</span></span><span style="display:flex;"><span>        my_value <span style="font-weight:bold">=</span> value(my_full_hand, hv)[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>        op_values <span style="font-weight:bold">=</span> [value(op_full_hand, hv)[<span style="color:#099">0</span>] <span style="font-weight:bold">for</span> op_full_hand <span style="font-weight:bold">in</span> op_full_hands]
+</span></span><span style="display:flex;"><span>        op_value <span style="font-weight:bold">=</span> <span style="color:#999">max</span>(op_values)
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># print(value(my_full_hand, hv)[1])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># for op_full_hand in op_full_hands:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic">#     print(value(op_full_hand, hv)[1])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#998;font-style:italic"># print()</span>
+</span></span><span style="display:flex;"><span>        n_win <span style="font-weight:bold">+=</span> (my_value <span style="font-weight:bold">&gt;</span> op_value)
+</span></span><span style="display:flex;"><span>        n_tie <span style="font-weight:bold">+=</span> (my_value <span style="font-weight:bold">==</span> op_value)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> verbose: <span style="color:#999">print</span>(<span style="color:#b84">&#39; &#39;</span> <span style="font-weight:bold">*</span> <span style="color:#099">50</span>, end<span style="font-weight:bold">=</span><span style="color:#b84">&#39;</span><span style="color:#b84">\r</span><span style="color:#b84">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> n_win <span style="font-weight:bold">/</span> n_tot, n_tie <span style="font-weight:bold">/</span> n_tot
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">if</span> __name__ <span style="font-weight:bold">==</span> <span style="color:#b84">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">with</span> <span style="color:#999">open</span>(<span style="color:#b84">&#39;hv.json&#39;</span>, <span style="color:#b84">&#39;r&#39;</span>) <span style="font-weight:bold">as</span> f: hv <span style="font-weight:bold">=</span> json<span style="font-weight:bold">.</span>load(f)
+</span></span><span style="display:flex;"><span>    my_pocket <span style="font-weight:bold">=</span> <span style="color:#999">input</span>(<span style="color:#b84">&#39;Pocket: &#39;</span>)<span style="font-weight:bold">.</span>split()
+</span></span><span style="display:flex;"><span>    community <span style="font-weight:bold">=</span> <span style="color:#999">input</span>(<span style="color:#b84">&#39;Community: &#39;</span>)<span style="font-weight:bold">.</span>split()
+</span></span><span style="display:flex;"><span>    n_players <span style="font-weight:bold">=</span> <span style="color:#999">int</span>(<span style="color:#999">input</span>(<span style="color:#b84">&#39;Players: &#39;</span>))
+</span></span><span style="display:flex;"><span>    ranges <span style="font-weight:bold">=</span> <span style="color:#999">input</span>(<span style="color:#b84">&#39;Opponent Ranges: &#39;</span>)<span style="font-weight:bold">.</span>split()
+</span></span><span style="display:flex;"><span>    ranges <span style="font-weight:bold">=</span> [<span style="color:#999">float</span>(i) <span style="font-weight:bold">for</span> i <span style="font-weight:bold">in</span> ranges] <span style="font-weight:bold">if</span> ranges <span style="font-weight:bold">else</span> <span style="font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>    p_win, p_tie <span style="font-weight:bold">=</span> handEval(my_pocket, community, n_players, hv, ranges<span style="font-weight:bold">=</span>ranges, verbose<span style="font-weight:bold">=</span><span style="font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#999">print</span>(<span style="color:#b84">&#39;P(win) = </span><span style="color:#b84">{:.4%}</span><span style="color:#b84">\n</span><span style="color:#b84">P(tie) = </span><span style="color:#b84">{:.4%}</span><span style="color:#b84">&#39;</span><span style="font-weight:bold">.</span>format(p_win, p_tie))
+</span></span></code></pre></div><h1 id="example">Example</h1>
+<p>Below are two example tests.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Pocket: Tc Jd
+</span></span><span style="display:flex;"><span>Community: 4h 5h 6d 2h Kh
+</span></span><span style="display:flex;"><span>Players: <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>Opponent Ranges: 
+</span></span></code></pre></div><pre><code>P(win) = 5.4688%                                  
+P(tie) = 0.4883%
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Pocket: Tc Jd
+</span></span><span style="display:flex;"><span>Community: 4h 5h 6d 2h Kh
+</span></span><span style="display:flex;"><span>Players: <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span>Opponent Ranges: 0.1
+</span></span></code></pre></div><pre><code>P(win) = 1.9531%                                  
+P(tie) = 0.7812%
+</code></pre>
+<p>Note here I also implement an interesting parameter called <code>ranges</code> which represents the opponents prior ranges at pre-flop. When passing an empty value, all combinations of two cards are considered. When we specify a list of ranges (numbers from 0 to 1, say $x%$), then the opponents are assumed to only play when their pocket cards are at least in the top $x%$ pairs of all pairs. See this <a href="http://holdemtight.com/pgs/od/oddpgs/3-169holdemhands.htm">table</a> for more reasoning.</p>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  console.log(unfocusableElems.length);
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/texas-holdem-series-3/">Texas Hold &#39;em Series (3): Odds Chart</a></span>
+  <span class="nav-next"><a href="/blog/texas-holdem-series-5/">Texas Hold &#39;em Series (5): Poker Game (w/ GUI)</a> &rarr;</span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/texas-holdem-series-3\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/blog\/texas-holdem-series-5\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://utterances.allenfrostline.com/client.js"
+        repo="allenfrostline/allenfrostline.github.io"
+        issue-term="pathname"
+        label="Utterances"
+        theme="nella-red"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-93356635-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+
+</html>
