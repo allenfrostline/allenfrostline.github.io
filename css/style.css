@@ -369,6 +369,10 @@ hr {
   margin: 0
 }
 
+.footnote-ref {
+  padding-left: .3em;
+}
+
 /* Tables */
 table {
   display: inline-block;

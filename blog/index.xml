@@ -7,8 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Allen Wang © 2016 - 2022</copyright>
-    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 Dec 2023 11:42:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Visual Studio Code Shortcuts (that I Use A Lot on MacOS)</title>
+      <link>https://allenfrostline.com/blog/vscode_shortcuts/</link>
+      <pubDate>Fri, 22 Dec 2023 11:42:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/vscode_shortcuts/</guid>
+      <description>Below is a list of shortcuts (in descending order roughly based on the frequency) that I use a lot when coding in VS Code on my Mac. It&amp;rsquo;s for personal purposes only and you should definitely ignore this post if you find it any annoying. If there&amp;rsquo;s a + operator between keys, it means they&amp;rsquo;re supposed to be pressed at the same time. If there&amp;rsquo;s a divider | before a key, it means you should release the previous keys and press whatever&amp;rsquo;s following.</description>
+    </item>
     <item>
       <title>Write (and Run) Python in Blog</title>
       <link>https://allenfrostline.com/blog/write-and-run-python-in-blog/</link>
