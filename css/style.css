@@ -171,7 +171,7 @@ body {
 }
 
 .masthead .menu {
-  margin-right: 20px;
+  margin-right: 18px;
   direction: rtl;
 }
 
@@ -195,7 +195,8 @@ body {
 
 .masthead .menu a {
   display: inline-block;
-  padding: 5px 8px;
+  padding: 6px 10px 4px 6px;
+  text-align: center;
   background: #B40203;
   border-bottom: 4px solid #5E0001;
   border-right: 4px solid #5E0001;
@@ -215,7 +216,7 @@ body {
 
 .masthead .menu a:hover {
   display: inline-block;
-  padding: 5px 8px;
+  padding: 6px 10px 4px 6px;
   background: #C80004;
   border-bottom: 4px solid #5E0001;
   border-right: 4px solid #5E0001;
