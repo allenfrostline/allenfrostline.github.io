@@ -544,6 +544,37 @@ img[src$="#border"] {
 
 }
 
+.contact {
+  visibility: hidden;
+}
+
+@media print {
+
+  html,
+  body {
+    border: none;
+  }
+
+  .main {
+    width: 100%;
+    margin: 0;
+    padding: auto;
+  }
+
+  .masthead {
+    display: none;
+  }
+
+  .title hr {
+    visibility: hidden;
+  }
+
+  .contact {
+    visibility: visible;
+  }
+
+}
+
 .MathJax_Display {
   overflow-x: auto;
   overflow-y: hidden;

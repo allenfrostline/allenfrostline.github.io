@@ -285,13 +285,20 @@ enil stella norf. 🦆
       <guid>https://allenfrostline.com/vitae/</guid>
       <description>
         &lt;style&gt;
-.underline { border-bottom: 1px dashed #000; width: 100%; display: block; margin-bottom: 8px;}
+.underline {
+    border-bottom: 1px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to left, #fff, #666);
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+}
 .main li, .main p {line-height: 1.1; padding: 0; margin: 1px 0}
 .main ul {margin-top: 0; margin-bottom: 0}
 .main table { line-height: 1.2; table-layout: fixed; width: 100%; text-align: justify; font-size: 1em; border: 0; overflow: visible; }
 .main table tr td { padding: 0 10px 0 0; word-wrap: break-word; overflow-wrap: auto; white-space: normal; }
 &lt;/style&gt;
-&lt;center style=&#34;margin-top: -2.5em&#34;&gt;+1 (773) 664-4413 | &lt;a href=&#34;mailto:alvameer@gmail.com&#34;&gt;alvameer@gmail.com&lt;/a&gt; | &lt;a href=&#34;https://allenfrostline.com&#34; target=&#34;_blank&#34;&gt;allenfrostline.com&lt;/a&gt;&lt;/center&gt;
+&lt;center class=&#34;contact&#34; style=&#34;margin-top: -4.6em&#34;&gt;+1 (773) 664-4413 ▪ &lt;a href=&#34;mailto:alvameer@gmail.com&#34;&gt;ALVAMEER@GMAIL.COM&lt;/a&gt; ▪ &lt;a href=&#34;https://allenfrostline.com&#34; target=&#34;_blank&#34;&gt;ALLENFROSTLINE.COM&lt;/a&gt;&lt;/center&gt;
 &lt;h2 class=&#34;underline&#34;&gt;EDUCATION&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;THE UNIVERSITY OF CHICAGO&lt;/strong&gt; &lt;span style=&#34;float:right&#34;&gt;&lt;strong&gt;Chicago, IL&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;M.S. Financial Mathematics&lt;/em&gt; &lt;span style=&#34;float:right&#34;&gt;&lt;em&gt;Sep. 2018 — Dec. 2019&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
@@ -369,16 +376,16 @@ enil stella norf. 🦆
 &lt;h2 class=&#34;underline&#34;&gt;ADDITIONAL INFORMATION&lt;/h1&gt;
 &lt;table&gt;&lt;tbody&gt;
 &lt;tr&gt;
-&lt;td style=&#34;padding-right:30px;font-weight:bold&#34;&gt;Achievements&lt;/td&gt;
+&lt;td style=&#34;padding-right:30px;font-weight:bold&#34;&gt;Prizes&lt;/td&gt;
 &lt;td&gt;WorldQuant Spring Alphathon, Top 6 (2017); RiceQuant Sim-trading Challenge, Top 10 (2016); Chinese Mathematics Competition (CMC), National 2nd Prize (2015); Chinese Mathematical Olympiad in Senior (CMOS), National 2nd Prize (2013); Chinese Physics Olympiad in Senior (CPhOS), National 2nd Prize (2013).&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td style=&#34;font-weight:bold&#34;&gt;Programming&lt;/td&gt;
-&lt;td&gt;Proficient in Python, R, Linux, Git, LATEX and Markdown. Experience with C++, JavaScript, SQL, Stata and Julia.&lt;/td&gt;
+&lt;td style=&#34;font-weight:bold&#34;&gt;Coding&lt;/td&gt;
+&lt;td&gt;Python, C/C++, Java, SQL, R, JavaScript, HTML, Stata, Julia, Linux, Git, LaTeX and Markdown.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td style=&#34;font-weight:bold&#34;&gt;Asset Classes&lt;/td&gt;
-&lt;td&gt;Experience trading in commodities, equities and cryptocurrencies markets in discretionary or systematic styles.&lt;/td&gt;
+&lt;td style=&#34;font-weight:bold&#34;&gt;Trading&lt;/td&gt;
+&lt;td&gt;Experience with mid- to high-frequency systematic trading in commodities, equities and cryptocurrencies.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;
 
