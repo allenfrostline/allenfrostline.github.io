@@ -189,6 +189,10 @@ enil stella norf. 🦆
     overflow: hidden;
 }
 
+.grid img {
+    pointer-events: none;
+}
+
 .span-12 {
     grid-row-end: span 1;
     grid-column-end: span 2;
@@ -241,37 +245,37 @@ enil stella norf. 🦆
 &lt;/style&gt;
 &lt;p&gt;I have recently started learning pottery, specifically wheel throwing. Quite a meditative process it is to turn clay (a fine word for mud/soil/earth) into any form in your mind with nothing but a wheel and your bare hands. More than sure that it&amp;rsquo;ll be a long-term hobby of mine, I doubt anybody would be willing to pay for my pieces yet, and thus am just showing my work below for illustration.&lt;/p&gt;
 &lt;div class=&#34;grid&#34;&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34; oncontextmenu=&#34;return false;&#34;&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; oncontextmenu=&#34;return false;&#34; width=75%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-31&#34; style=&#34;margin-left:-20%;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/tall_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34; width=100%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_cup.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/pinch_cup.png&#34; oncontextmenu=&#34;return false;&#34; width=70%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/thumb_pressed_textured_cup.png&#34; oncontextmenu=&#34;return false;&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup3.png&#34; oncontextmenu=&#34;return false;&#34;&gt;&lt;/div&gt;
-    &lt;div style=&#34;margin:0 7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/lidded_jar.png&#34; oncontextmenu=&#34;return false;&#34;&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; width=75%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-31&#34; style=&#34;margin-left:-20%;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/tall_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_cup.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/pinch_cup.png&#34; width=70%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/thumb_pressed_textured_cup.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup3.png&#34;&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin:0 7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/lidded_jar.png&#34;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-42&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase.png&#34;&gt;&lt;/div&gt;
     &lt;div style=&#34;display:flex;align-items:end;margin-left:-80%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34; width=25% height=25% style=&#34;margin-right:15%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup3.png&#34; oncontextmenu=&#34;return false;&#34; width=60%&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_bud_vase.png&#34; width=25% height=25% style=&#34;margin-right:15%&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup3.png&#34; width=60%&gt;
     &lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup2.png&#34; oncontextmenu=&#34;return false;&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup.png&#34; oncontextmenu=&#34;return false;&#34; width=85%&gt;&lt;/div&gt;
-    &lt;div style=&#34;margin:0 7% 0 -7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup2.png&#34; oncontextmenu=&#34;return false;&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-33&#34; style=&#34;margin:0 -5% 0 -10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/medium_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_flowerpot.png&#34; oncontextmenu=&#34;return false;&#34; width=65%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_green_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_jar.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div style=&#34;margin-left:-72%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/go_jar.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; oncontextmenu=&#34;return false;&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin-top:-37%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase2.png&#34; oncontextmenu=&#34;return false;&#34; width=70%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-50%;margin-top:-20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; oncontextmenu=&#34;return false;&#34; width=65%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup2.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup.png&#34; width=85%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin:0 7% 0 -7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup2.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-33&#34; style=&#34;margin:0 -5% 0 -10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/medium_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_flowerpot.png&#34; width=65%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_green_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_jar.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-left:-72%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/go_jar.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin-top:-37%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase2.png&#34; width=70%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-50%;margin-top:-20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; width=65%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-20%;margin-bottom:-10%;margin-right:10%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; oncontextmenu=&#34;return false;&#34; width=60% style=&#34;margin-right:150%;margin-left:-25%;margin-bottom:-10%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; oncontextmenu=&#34;return false;&#34; width=100%&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; width=60% style=&#34;margin-right:150%;margin-left:-25%;margin-bottom:-10%&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; width=100%&gt;
     &lt;/div&gt;
-    &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-35%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; oncontextmenu=&#34;return false;&#34; width=100%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-35%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
 &lt;/div&gt;
         
       </description>
