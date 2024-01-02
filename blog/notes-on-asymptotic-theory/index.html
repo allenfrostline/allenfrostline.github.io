@@ -179,9 +179,9 @@ header h1:before {content: ''}
 <p><strong>Result 1</strong> If <code>$\mathcal{S}_j\in\mathcal{A},j=1,2,\ldots$</code> s.t. <code>$\mathcal{S}_i\subset\mathcal{S}_j$</code> if <code>$i&lt;j$</code>, then</p>
 </blockquote>
 <blockquote>
-<p>$$
-P(\lim_{n\to\infty}\mathcal{S}<em>n)=\lim</em>{n\to\infty}P(\mathcal{S_n})
-$$</p>
+<div>$$
+P(\lim_{n\to\infty}\mathcal{S}_n)=\lim_{n\to\infty}P(\mathcal{S_n})
+$$</div>
 </blockquote>
 <blockquote>
 <p>which can be proved by using the definition of probability measure and pigeonhole principle (or Dirichlet&rsquo;s principle)</p>
@@ -537,9 +537,9 @@ $$</p>
 <p>Now define <code>$\mathcal{S}_n=\{\omega\mid\left|X_n-X\right|\ge\epsilon_n\}$</code>, then <code>$\mathcal{S}_1\subset\mathcal{S}_2\subset\ldots$</code> and <code>$\displaystyle\lim_{n\to\infty}\mathcal{S}_n=\{\omega\mid\left|X_n-X\right|=0\}$</code>. By applying  Result 1 yields</p>
 </blockquote>
 <blockquote>
-<p>$$
-\lim_{n\to\infty}P(\mathcal{S}<em>n)=P(\lim</em>{n\to\infty}\mathcal{S}_n)=0
-$$</p>
+<div>$$
+ \lim_{n\to\infty}P(\mathcal{S}_n)=P(\lim_{n\to\infty}\mathcal{S}_n)=0
+ $$</div>
 </blockquote>
 <blockquote>
 <p>Consider the LHS,</p>
@@ -847,8 +847,8 @@ X_n\overset{d}{\to}X\Rightarrow X_n=O_p(1).\tag*{Q.E.D.}
 $$</p>
 </blockquote>
 <blockquote>
-<p><strong>Result 22</strong> <code>$o_p(1)O_p(1)=o_p(1).$</code>
-<strong>Exercise 8</strong> Prove Result 22.
+<p><strong>Result 22</strong> <code>$o_p(1)O_p(1)=o_p(1).$</code></p>
+<p><strong>Exercise 8</strong> Prove Result 22.
 Proof. Let <code>$X_n=o_p(1)$</code> and <code>$Y_n=O_p(1)$</code>, then:</p>
 <ol>
 <li>for all <code>$\epsilon&gt;0$</code> and all <code>$\Delta_X&gt;0$</code> there exists an <code>$N_X(\epsilon/2,\Delta_X)$</code> s.t. <code>$P(\left|X_n\right|&gt;\Delta_X)&lt;\epsilon/2$</code> if <code>$n\ge N_X$</code>, and</li>

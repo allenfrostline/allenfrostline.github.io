@@ -140,7 +140,7 @@
 <!-- more -->
 <p>Apart from <code>M</code>, we define trading thresholds <code>g</code> and <code>j</code>, together with stop-loss threshold <code>s</code>. Total capital limit <code>K</code> is assumed to be twice of <code>N</code>, namely the 15-day rolling median volume (of the less liquid ETF). Specifically, we first calculate the array of daily minimums of the two (adjusted) volume series, and then calculate the 15-day rolling median of this series as <code>N</code>. Apart from the capital limit, we also define daily position value (if any) based on <code>N</code>, which is <code>N/100</code>.</p>
 <p>Specifically, for each trading day, we have workflow as below.</p>
-<img src="/images/spread0.png" style="max-width:min(100%, 600px)">
+<center><img src="/images/spread0.png" style="max-width:min(100%, 600px)"></center>
 <p>Apart from this process, we also keep track of our risk exposure with a stop-loss threshold, and try to do trading only within a month&rsquo;s time, i.e. we start trading only when it&rsquo;s the start of a new month, and kill any position every time it&rsquo;s the end of a month.</p>
 <h1 id="dependencies">Dependencies</h1>
 <p>Import necessary modules and set up corresponding configurations. In this research notebook, we are using the following packages:</p>

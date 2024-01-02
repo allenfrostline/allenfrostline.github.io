@@ -429,16 +429,16 @@
 <p>First is the <a href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">t-distribution</a>. It is well-known for its leptokurtosis which suits well in many financial time series as a better alternative to Normal distribution. The PDF and CDF of the t-distribution involves the Gamma function and thus would be computationally troublesome when we want to calculate the MSE of the parameters. However, notice for any r.v. <code>$X\sim t(\nu,\mu,\sigma)$</code>, we have relationship</p>
 <p>$$
 \text{Var}(X) = \begin{cases}
-\frac{\nu}{\nu - 2} &amp; \text{for }\nu &gt; 2,\
-\infty &amp; \text{for }1 &lt; \nu \le 2,\
+\frac{\nu}{\nu - 2} &amp; \text{for }\nu &gt; 2,\\
+\infty &amp; \text{for }1 &lt; \nu \le 2,\\
 \text{undefined} &amp; \text{otherwise}
 \end{cases}
 $$</p>
 <p>and</p>
 <p>$$
 \text{Kur}_+(X) = \begin{cases}
-\frac{6}{\nu - 4} &amp; \text{for }\nu &gt; 4,\
-\infty &amp; \text{for }2 &lt; \nu \le 4,\
+\frac{6}{\nu - 4} &amp; \text{for }\nu &gt; 4,\\
+\infty &amp; \text{for }2 &lt; \nu \le 4,\\
 \text{undefined} &amp; \text{otherwise}
 \end{cases}
 $$</p>
@@ -447,7 +447,7 @@ $$</p>
 <p>For the <a href="https://www.sciencedirect.com/science/article/pii/S0169207013000332">two-sided Weibull distribution</a>, it is given by</p>
 <p>$$
 Y = \begin{cases}
--\text{Weibull}(\lambda_1, k_1) &amp; \text{if } Y &lt; 0,\
+-\text{Weibull}(\lambda_1, k_1) &amp; \text{if } Y &lt; 0,\\
 \text{Weibull}(\lambda_2, k_2) &amp; \text{otherwise}
 \end{cases}
 $$</p>
@@ -455,7 +455,7 @@ $$</p>
 <p>Therefore, the pdf is</p>
 <p>$$
 f(y \mid \lambda_1, k_1, \lambda_2, k_2) = \begin{cases}
-\left(\frac{-y}{(\lambda_1)}\right)^{k_1 -1}\exp\left(-\left(\frac{-y}{(\lambda_1)}\right)^{k_1}\right) &amp; \text{if y &lt; 0},\
+\left(\frac{-y}{(\lambda_1)}\right)^{k_1 -1}\exp\left(-\left(\frac{-y}{(\lambda_1)}\right)^{k_1}\right) &amp; \text{if y &lt; 0},\\
 \left(\frac{y}{(\lambda_2}\right)^{k_2 -1}\exp\left(-\left(\frac{y}{(\lambda_2)}\right)^{k_2}\right)
 &amp; \text{otherwise}
 \end{cases}
@@ -466,13 +466,15 @@ $$</p>
 $$</p>
 <p>which means there&rsquo;re in fact only three parameters to estimate.</p>
 <p>Now we rewrite the log-likelihood as</p>
-<p>$$
+<div>
+$$
 \begin{align*}
 LL = \sum_{i=1}^n \log(f(y_i))
-= \sum_{i=1}^n &amp;\left((k_1-1)(\log^<em>(-y_i) - \log^</em>(\lambda_1)) - (-y_i / \lambda_1)^{k_1}\right)\mathbb{I}<em>{y_i &lt; 0} + \
-&amp;\left((k_2-1)(\log^<em>(y_i) - \log^</em>(\lambda_2)) - (y_i / \lambda_2)^{k_2}\right)\mathbb{I}</em>{y_i \ge 0}.
+= \sum_{i=1}^n &\left((k_1-1)(\log^*(-y_i) - \log^*(\lambda_1)) - (-y_i / \lambda_1)^{k_1}\right)\mathbb{I}_{y_i < 0} + \\
+               &\left((k_2-1)(\log^*(y_i) - \log^*(\lambda_2)) - (y_i / \lambda_2)^{k_2}\right)\mathbb{I}_{y_i \ge 0}.
 \end{align*}
-$$</p>
+$$
+</div>
 <p>where we have the special <code>$\log^*(y)\equiv 0$</code> if <code>$y\le0$</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>i <span style="font-weight:bold">=</span> <span style="color:#099">15</span>  <span style="color:#998;font-style:italic"># take ask_15 for example</span>
 </span></span><span style="display:flex;"><span>

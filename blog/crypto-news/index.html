@@ -1903,8 +1903,8 @@ $$</p>
 <p>The optimization problem, therefore, is</p>
 <p>$$
 \begin{align*}
-\max_{\bs{O}^{+/-}}\ &amp; LL(\bs{d};\bs{O}^{+/-})\
-\text{s.t. }         &amp; \textstyle{\sum_{j=1}^k} O_j^+ = \textstyle{\sum_{j=1}^k} O_j^- = 1\
+\max_{\bs{O}^{+/-}}\ &amp; LL(\bs{d};\bs{O}^{+/-})\\
+\text{s.t. }         &amp; \textstyle{\sum_{j=1}^k} O_j^+ = \textstyle{\sum_{j=1}^k} O_j^- = 1\\
 &amp; O_j^+ \ge 0 ,\quad O_j^- \ge 0,\quad \forall 1 \le j \le k.
 \end{align*}
 $$</p>
@@ -1914,7 +1914,7 @@ O_j^{+/-}:=\exp(Q_j^{+/-})
 $$</p>
 <p>so that the unknowns are now <code>$Q_j^{+/-}\in\mathbb{R}$</code> and we no longer need any inequality constraints. The Lagrangian is</p>
 <p>$$
-f(\bs{Q}^{+/-}) = LL!\left[\bs{d};\exp(\bs{Q}^{+/-})\right] + \lambda^+!\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^+)\right] + \lambda^-!\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^-)\right]
+f(\bs{Q}^{+/-}) = LL\left[\bs{d};\exp(\bs{Q}^{+/-})\right] + \lambda^+\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^+)\right] + \lambda^-\left[1 - \textstyle{\sum_{j=1}^k} \exp(Q_j^-)\right]
 $$</p>
 <p>and the FOCs are <code>$2k$</code> equations</p>
 <p>$$
@@ -1934,8 +1934,8 @@ $$</p>
 <p>Assume there&rsquo;re in total <code>$\newcommand{\T}{\mathsf{T}}n$</code> days. Define</p>
 <p>$$
 \bs{W} = \begin{bmatrix}
-p_1 &amp; p_2 &amp; \cdots &amp; p_n\
-1 - p_1 &amp; 1 - p_2 &amp; \cdots &amp; 1 - p_n\
+p_1 &amp; p_2 &amp; \cdots &amp; p_n\\
+1 - p_1 &amp; 1 - p_2 &amp; \cdots &amp; 1 - p_n\\
 \end{bmatrix}^\T
 $$</p>
 <p>and <code>$\bs{D} = \left(\hat{\bs{d}}_1, \hat{\bs{d}}_1, \cdots, \hat{\bs{d}}_n\right)^{\!\T}$</code> where <code>$\hat{\bs{d}}_i = \bs{d}_i / \textstyle{\sum_j} d_{i,j}$</code>. Then <code>$\bs{O}^{+/-}$</code> would be estimated by regressing <code>$\bs{D}$</code> on <code>$\bs{W}$</code>, namely</p>

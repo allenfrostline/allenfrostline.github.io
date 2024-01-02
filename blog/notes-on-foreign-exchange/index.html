@@ -224,11 +224,12 @@ $$</p>
 $$</p>
 <p>where <code>$V$</code> is any derivative w.r.t. <code>$S$</code> (remark: remember that all subscript <code>$t$</code> here denote derivatives w.r.t. <code>$t$</code>, not time). Now, noticing the hedged portfolio <code>$\Pi = \{+1 \text{ unit of }V; -V_S \text{ units of } D^f\}$</code> has dynamics</p>
 <p>$$
-\begin{align*}
-\d\Pi &amp;= \d V - V_S\d  (S\cdot D^f) \
-&amp;= \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t\right) \d t + V_S\d S - V_S(D^f \d S + S\cdot r^f \d t) \
+\begin{align}
+\d\Pi &amp;= \d V - V_S\d  (S\cdot D^f) \\
+&amp;= \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t\right) \d t + V_S\d S - V_S(D^f \d S + S\cdot r^f \d t) \\
 &amp;= \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right) \d t
-\end{align*}</p>
+\end{align}
+$$</p>
 <p>where we used the fact that <code>$D^f(t)=1$</code>. Now under risk-neutral measure, we know</p>
 <p>$$
 \left(\frac{1}{2}\sigma^2S^2V_{SS} + V_t - r^fV_S S\right)\d t = r^d(V  - V_S S)\d t

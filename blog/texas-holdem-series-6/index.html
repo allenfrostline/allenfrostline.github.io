@@ -178,22 +178,22 @@
 <p>The above beautiful table<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> is <strong>NOT</strong> a range chart. It is the natural winning probability given any hand in a heads-up game, calculated using my hand evaluation tool in <a href="https://allenfrostline.com/blog/texas-holdem-series-4">this post</a>. Let&rsquo;s call it <code>$\mathbf{W}$</code> just for now. The table can, however, in a very truthful and exemplary way represent one&rsquo;s preference of entering a game. With higher natural winning rate, I would enter the game with a higher probability. That makes sense to me. Also, the table shares some straightforward properties with a range chart, like the diagonals are exceptionally better than surrounding entries (as they&rsquo;re in pairs) and that upper right entering probabilities are higher than lower left ones (as by definition they&rsquo;ve got an edge for being suited). Furthermore, if we assume that hero is playing under Kelly criterion, namely maximizing his (conditional) expected log returns, then it&rsquo;s also easy to show that in a heads-up game it&rsquo;s ideal to submit to a range that is equal to <code>$\mathbf{R}_{\text{kelly}}=(2\mathbf{W}-1)_+$</code>. Hence, it would be unwise if you enter the game with a hand like 3♠<span style="color:red">A♦</span> (winning rate <code>$49.3\%$</code>) though it looks quite good sometimes.</p>
 <p>Enough for intro. Let&rsquo;s start estimation. Assume now that we&rsquo;re playing against someone, enemy, with his fixed but unknown range <code>$\mathbf{R}$</code>. What we do observe are multiple (enough for a good estimation if you know how) games that he&rsquo;s involved — sometimes our enemy enters the game, sometimes not. We don&rsquo;t always have the chance to see his hands unless he&rsquo;s made it to showdown, so calculating simple average entering probabilities becomes a method out of our consideration right away. We do have his average entering probability <code>$\pi\in(0,1)$</code>. What else? We also know, regardless of him being any kind of player, the natural probability matrix<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> of getting any hand, denoted by <code>$\mathbf{P}$</code>, which is given by</p>
 <p>$$
-\mathbf{P}_{ij} := \P{\ \text{hand}\ (i,j)\ } = \frac{8\cdot\1{i&lt;j} + 12\cdot \1{i=j} + 24\cdot\1{i&gt;j}}{52\times 51} =
+\mathbf{P}_{ij} := \P\{\ \text{hand}\ (i,j)\ \} = \frac{8\cdot\1{i&lt;j} + 12\cdot \1{i=j} + 24\cdot\1{i&gt;j}}{52\times 51} =
 \frac{2\cdot\1{i&lt;j} + 3\cdot \1{i=j} + 6\cdot\1{i&gt;j}}{663}
 $$</p>
 <p><code>$\forall i,j=1,2,\ldots,13$</code>. Meanwhile, by definition we know</p>
 <p>$$
-\mathbf{R}_{ij}:=\P{\ \text{enter}\mid\text{hand}\ (i,j)\ }.
+\mathbf{R}_{ij}:=\P\{\ \text{enter}\mid\text{hand}\ (i,j)\ \}.
 $$</p>
 <p>Hence, let <code>$\bs{\iota}\in\R^{13}$</code> be the one-vector, we know</p>
 <p>$$
-\pi := \P{\ \text{enter}\ } = \bs{\iota}&rsquo;(\mathbf{R}\odot\mathbf{P})\bs{\iota}\tag{1}
+\pi := \P\{\ \text{enter}\ \} = \bs{\iota}&rsquo;(\mathbf{R}\odot\mathbf{P})\bs{\iota}\tag{1}
 $$</p>
 <p>where <code>$\mathbf{A}\odot\mathbf{B}$</code>, a.k.a. the <a href=https://en.wikipedia.org/wiki/Hadamard_product_(matrices)>Hadamard product</a>, means the elementwise product of <code>$\mathbf{A}$</code> and <code>$\mathbf{B}$</code>. This introduces <code>$\mathbf{H}\in\R^{13\times 13}$</code>, which by Bayes&rsquo; rule follows</p>
 <div>
 $$
-\mathbf{H}_{ij} := \P\{\ \text{hand}\ (i,j)\mid\text{enter}\ \} =
-\frac{\P\{\ \text{enter}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{enter}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}} =
+\mathbf{H}_{ij} := \P\\\{\ \text{hand}\ (i,j)\mid\text{enter}\ \\\} =
+\frac{\P\\\{\ \text{enter}\mid\text{hand}\ (i,j)\\\}\cdot\P\\\{\ \text{hand}\ (i,j)\ \\\}}{\sum_{\forall u,v}\P\\\{\ \text{enter}\mid\text{hand}\ (u,v)\\\}\cdot\P\\\{\ \text{hand}\ (u,v)\ \\\}} =
 \frac{(\mathbf{R}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\mathbf{R}\odot\mathbf{P})\bs{\iota}}
 $$
 </div>
@@ -204,14 +204,14 @@ $$</p>
 <p>With <code>$n$</code> equations there is no way we can estimate <code>$2n$</code> variables (<code>$n=13^2=169$</code> in this context) from <code>$\mathbf{R}$</code> and <code>$\mathbf{H}$</code>. Seems we&rsquo;ve come to a dead end. It&rsquo;s a good time to add an assumption. If we assume that <strong>probability of enemy entering the game is then proportional to him staying until showdown</strong> (in which case we can see his cards), then</p>
 <div>
 $$
-(\kappa\mathbf{R}\odot\mathbf{R})_{ij} \equiv \kappa \mathbf{R}^{\circ 2}_{ij} := \P\{\ \text{showdown}\mid\text{hand}\ (i,j)\ \},\quad\kappa\in(0,1)
+(\kappa\mathbf{R}\odot\mathbf{R})_{ij} \equiv \kappa \mathbf{R}^{\circ 2}_{ij} := \P\\\{\ \text{showdown}\mid\text{hand}\ (i,j)\ \\\},\quad\kappa\in(0,1)
 $$
 </div>
 <p>where <code>$\mathbf{R}^{\circ 2}$</code> is the Hadamard power of <code>$2$</code>, namely elementwise square of <code>$\mathbf{R}$</code>. By Bayes&rsquo; rule again we know</p>
 <div>
 $$
-\mathbf{S}_{ij} = \P\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \} =
-\frac{\P\{\ \text{showdown}\mid\text{hand}\ (i,j)\}\cdot\P\{\ \text{hand}\ (i,j)\ \}}{\sum_{\forall u,v}\P\{\ \text{showdown}\mid\text{hand}\ (u,v)\}\cdot\P\{\ \text{hand}\ (u,v)\ \}}
+\mathbf{S}_{ij} = \P\\\{\ \text{hand}\ (i,j)\mid\text{showdown}\ \\\} =
+\frac{\P\\\{\ \text{showdown}\mid\text{hand}\ (i,j)\\\}\cdot\P\\\{\ \text{hand}\ (i,j)\ \\\}}{\sum_{\forall u,v}\P\\\{\ \text{showdown}\mid\text{hand}\ (u,v)\\\}\cdot\P\\\{\ \text{hand}\ (u,v)\ \\\}}
 = \frac{(\kappa\mathbf{R}^{\circ 2}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\kappa\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}}
 = \frac{(\mathbf{R}^{\circ 2}\odot\mathbf{P})_{ij}}{\bs{\iota}'(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}}
 $$
@@ -222,23 +222,23 @@ $$
 $$</p>
 <p>Notice that the probability of our enemy reaching showdown is observable, so we have</p>
 <p>$$
-\xi := \P{\ \text{showdown}\ } = \kappa \bs{\iota}&rsquo;(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}.\tag{4}
+\xi := \P\{\ \text{showdown}\ \} = \kappa \bs{\iota}&rsquo;(\mathbf{R}^{\circ 2}\odot\mathbf{P})\bs{\iota}.\tag{4}
 $$</p>
 <p>There&rsquo;re in total <code>$2n+1$</code> equations by combining eq. (1) - (4) together, which makes it possible to solve for <code>$2n+1$</code> variables including all entries in <code>$\mathbf{R}$</code> and <code>$\mathbf{H}$</code> together with scalar <code>$\kappa$</code>. Simple algebra gives the solution as follows:</p>
 <p>$$
 \begin{cases}
-\kappa = \displaystyle{\frac{\xi [\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}]^2}{\pi^2}},\
+\kappa = \displaystyle{\frac{\xi [\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}]^2}{\pi^2}},\\
 \mathbf{R} =
 \displaystyle{\frac{\pi\mathbf{S}^{\circ \frac{1}{2}}\odot\mathbf{P}^{\circ -\frac{1}{2}}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}} =
-\displaystyle{\frac{\pi(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}\odot\mathbf{P}^{\circ -1}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}},\
+\displaystyle{\frac{\pi(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}\odot\mathbf{P}^{\circ -1}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}},\\
 \mathbf{H} = \displaystyle{\frac{(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}}{\bs{\iota}&rsquo;(\mathbf{S}\odot\mathbf{P})\bs{\iota}}}
 \end{cases}
 $$</p>
 <p>which, you may have noticed, can be written in a more succinct form by denoting <code>$\bs{\Sigma}:=(\mathbf{S}\odot\mathbf{P})^{\circ \frac{1}{2}}$</code> and <code>$\sigma:=\bs{\iota}'(\mathbf{S}\odot\mathbf{P})\bs{\iota}$</code>:</p>
 <p>$$
 \begin{cases}
-\kappa = \xi\sigma^2/\pi^2,\
-\mathbf{R} = \pi\bs{\Sigma}\oslash\mathbf{P} / \sigma,\
+\kappa = \xi\sigma^2/\pi^2,\\
+\mathbf{R} = \pi\bs{\Sigma}\oslash\mathbf{P} / \sigma,\\
 \mathbf{H} = \bs{\Sigma} / \sigma
 \end{cases}
 $$</p>

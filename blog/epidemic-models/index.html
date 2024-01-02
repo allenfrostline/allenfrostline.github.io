@@ -221,7 +221,7 @@ $$</p>
 <p>where <code>$N_t = S_t + I_t\equiv N$</code> remains a constant. We have closed-form solution as follows</p>
 <p>$$
 \begin{cases}
-\displaystyle{I_t = \frac{N_tI_0}{I_0 + S_0\exp(-\beta t)}}\
+\displaystyle{I_t = \frac{N_tI_0}{I_0 + S_0\exp(-\beta t)}}\\
 S_t = N_t - I_t
 \end{cases}
 $$</p>
@@ -230,7 +230,7 @@ $$</p>
 <p>With significant birth or death happening, we need to adjust our model s.t. the two rates, <code>$\mu$</code> and <code>$\nu$</code>, are taken into consideration. The ODE then becomes</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t}}\
+\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t}}\\
 \displaystyle{\frac{\d I_t}{\d t}=\frac{\beta S_t I_t}{N_t} - \nu I_t}
 \end{cases}
 $$</p>
@@ -251,7 +251,7 @@ $$</p>
 <p>where <code>$N_t=S_t+I_t\equiv N$</code> is a constant. The solution is</p>
 <p>$$
 \begin{cases}
-\displaystyle{I_t = \frac{\varphi N_tI_0}{[\varphi N_t - I_0\beta]\exp(-\varphi t)+1}}\
+\displaystyle{I_t = \frac{\varphi N_tI_0}{[\varphi N_t - I_0\beta]\exp(-\varphi t)+1}}\\
 S_t = N_t - I_t
 \end{cases}
 $$</p>
@@ -263,7 +263,7 @@ $$</p>
 <p>With birth and death, the SIS model becomes</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t + \gamma I_t - \frac{\beta S_t I_t}{N_t}}\
+\displaystyle{\frac{\d S_t}{\d t}=\mu N_t - \nu S_t + \gamma I_t - \frac{\beta S_t I_t}{N_t}}\\
 \displaystyle{\frac{\d I_t}{\d t}=\frac{\beta S_t I_t}{N_t} - \nu I_t - \gamma I_t}
 \end{cases}
 $$</p>
@@ -277,8 +277,8 @@ $$</p>
 <p>First we assume no vital dynamics. The model, where <code>$N_t=S_t+I_t+R_t\equiv N$</code>, now becomes</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t}
 \end{cases}
 $$</p>
@@ -287,8 +287,8 @@ $$</p>
 <p>When including potential vital dynamics into the SIR model, the ODE becomes</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \nu I_t - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t}{N_t} - \nu I_t - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t}
 \end{cases}
 $$</p>
@@ -299,8 +299,8 @@ $$</p>
 <p>The model is</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = - \frac{\beta S_t I_t}{N_t} + \xi R_t}\
-\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = - \frac{\beta S_t I_t}{N_t} + \xi R_t}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \xi R_t}
 \end{cases}
 $$</p>
@@ -309,8 +309,8 @@ $$</p>
 <p>We can also add vital dynamics into the SIRS model. The ODE becomes</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t} + \xi R_t}\
-\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \nu I_t - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t - \frac{\beta S_t I_t}{N_t} + \xi R_t}\\
+\displaystyle{\frac{\d I_t}{\d t} = \frac{\beta S_t I_t }{N_t} - \nu I_t - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \xi R_t - \nu R_t}
 \end{cases}
 $$</p>
@@ -322,9 +322,9 @@ $$</p>
 <p>Without considering birth or death, we may assume model as follows</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\
-\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t}
 \end{cases}
 $$</p>
@@ -333,9 +333,9 @@ $$</p>
 <p>Similar to SIR with vital dynamics, the SEIR model gives an oscillated convergence towards a steady state should we allow for birth and death to be significant:</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\
-\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t -\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t}
 \end{cases}
 $$</p>
@@ -346,9 +346,9 @@ $$</p>
 <p>The ODE is</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \xi R_t-\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\
-\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \xi R_t-\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\sigma E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t-\xi R_t}
 \end{cases}
 $$</p>
@@ -357,9 +357,9 @@ $$</p>
 <p>The ODE is</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t + \xi R_t-\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\
-\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t + \xi R_t-\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t - \xi R_t}
 \end{cases}
 $$</p>
@@ -368,9 +368,9 @@ $$</p>
 <p>Below is a simple visualization of the SEIRS model which you can interactive with. Specifically, here I also include the fatality rate <code>$v$</code> due to the underlying infectious disease. By doing so, the final model we simulate here becomes a so-called deadly SEIRS model:</p>
 <p>$$
 \begin{cases}
-\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t + \xi R_t-\frac{\beta S_t I_t}{N_t}}\
-\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\
-\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t - v I_t}\
+\displaystyle{\frac{\d S_t}{\d t} = \mu N_t - \nu S_t + \xi R_t-\frac{\beta S_t I_t}{N_t}}\\
+\displaystyle{\frac{\d E_t}{\d t} = \frac{\beta S_t I_t}{N_t}}-\nu E_t\\
+\displaystyle{\frac{\d I_t}{\d t} = \sigma E_t - \gamma I_t - \nu I_t - v I_t}\\
 \displaystyle{\frac{\d R_t}{\d t} = \gamma I_t - \nu R_t - \xi R_t}
 \end{cases}
 $$</p>

@@ -444,11 +444,11 @@ $$
 Consider the following problem:</p>
 <p>$$
 \begin{aligned}
-&amp;\text{min }Z=3x_1+2x_2\
+&amp;\text{min }Z=3x_1+2x_2\\
 &amp;\text{s.t. }
 \begin{cases}
-2x_1+x_2\ge 10\
--3x_1+2x_2\le 6\
+2x_1+x_2\ge 10\\
+-3x_1+2x_2\le 6\\
 x_1+x_2\ge 6\
 x_1\ge 0,x_2\ge 0
 \end{cases}
@@ -553,11 +553,11 @@ $$</p>
  </div>
 <p>from which we can directly read the initial basic feasible solution: <code>$(0,0,0,0,6,10,6)$</code>. Now choose in the nonbasic variables whose coefficient in objective  function</p>
 <p>$$Z=(3M-3)x_1+(2M-2)x_2-Mx_3-Mx_4$$</p>
-<p>is largest. So we get <code>$x_1$</code> as entering basic variable. With <code>$x_1$</code> entering the basic, we need to find a leaving basic variable. So, as <code>$x_1$</code> get larger,   which basic variable (namely <code>$x_5$</code>, <code>$x_6$</code> and <code>$x_7$</code>) will leave basic the first? We should do the <strong>minimum ratio test</strong>, which is equivalently to compare the  ratios of the return matrix (on the right) devided by the coefficients of <code>$x_1$</code>.</p>
+<p>is largest. So we get <code>$x_1$</code> as entering basic variable. With <code>$x_1$</code> entering the basic, we need to find a leaving basic variable. So, as <code>$x_1$</code> get larger,   which basic variable (namely <code>$x_5$</code>, <code>$x_6$</code> and <code>$x_7$</code>) will leave basic the first? We should do the <strong>minimum ratio test</strong>, which is equivalently to compare the  ratios of the return matrix (on the right) divided by the coefficients of <code>$x_1$</code>.</p>
 <p>$$
 \begin{aligned}
-&amp;x_6\quad\text{constraint 1}: 10/2=5\
-&amp;x_5\quad\text{constraint 2}: 6/(-3)&lt;0,\text{ ignore}\
+&amp;x_6\quad\text{constraint 1}: 10/2=5\\
+&amp;x_5\quad\text{constraint 2}: 6/(-3)&lt;0,\text{ ignore}\\
 &amp;x_7\quad\text{constraint 3}: 6/1=6
 \end{aligned}
 $$</p>
@@ -565,18 +565,18 @@ $$</p>
 <p>$$
 x_B=
 \begin{bmatrix}
-x_1\
-x_5\
+x_1\\
+x_5\\
 x_7
 \end{bmatrix},c_B=
 \begin{bmatrix}
-3M-3\
-0\
+3M-3\\
+0\\
 0
 \end{bmatrix}\text{ and }B=
 \begin{bmatrix}
-2 &amp; 0 &amp; 0\
--3&amp; 1 &amp; 0\
+2 &amp; 0 &amp; 0\\
+-3&amp; 1 &amp; 0\\
 1 &amp; 0 &amp; 1
 \end{bmatrix}
 $$</p>
@@ -745,25 +745,25 @@ $$</p>
 <p>Definition:<br>
 <strong>Original Problem</strong>:</p>
 <p>$$
-\begin{aligned}
-&amp; \text{max }Z=c^Tx\
+\begin{align}
+&amp; \text{max }Z=c^Tx\\
 &amp; \text{s.t.}
 \begin{cases}
-Ax\le b\
+Ax\le b\\
 x\ge 0
 \end{cases}
-\end{aligned}
+\end{align}
 $$</p>
 <p><strong>Dual Probelm</strong>:</p>
 <p>$$
-\begin{aligned}
-&amp; \text{min }W=b^Ty\
+\begin{align}
+&amp; \text{min }W=b^Ty\\
 &amp; \text{s.t.}
 \begin{cases}
-A^Ty\ge c\
+A^Ty\ge c\\
 y\ge 0
 \end{cases}
-\end{aligned}
+\end{align}
 $$</p>
 </li>
 <li>

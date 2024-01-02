@@ -268,6 +268,10 @@ body {
   margin-left: 30px
 }
 
+.blog {
+  width: 100%;
+}
+
 /* Main */
 .main {
   max-width: 1000px;

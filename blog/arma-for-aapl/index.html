@@ -324,13 +324,13 @@ dtype: float64
 </ul>
 <p>Here we are of course using the latter one, and thus we need to specify the parameters of the model:</p>
 <ul>
-<li><strong>Number of AR (Auto-Regressive) terms ($p$)</strong>: AR terms are just lags of dependent variable. For instance if $p$ is $5$, the predictors for $x_t$ will be $x_{t-1},x_{t-2},\ldots,x_{t-5}$.</li>
-<li><strong>Number of MA (Moving Average) terms ($q$)</strong>: MA terms are lagged forecast errors in prediction equation. For instance if $q$ is $5$, the predictors for $x_t$ will be $e_{t-1},e_{t-2},\ldots,e_{t-5}$ where $e_i$ is the difference between the moving average at $i^{th}$ instant and actual value.</li>
+<li><strong>Number of AR (Auto-Regressive) terms (<code>$p$</code>)</strong>: AR terms are just lags of dependent variable. For instance if <code>$p$</code> is <code>$5$</code>, the predictors for <code>$x_t$</code> will be <code>$x_{t-1},x_{t-2},\ldots,x_{t-5}$</code>.</li>
+<li><strong>Number of MA (Moving Average) terms (<code>$q$</code>)</strong>: MA terms are lagged forecast errors in prediction equation. For instance if <code>$q$</code> is <code>$5$</code>, the predictors for <code>$x_t$</code> will be <code>$e_{t-1},e_{t-2},\ldots,e_{t-5}$</code> where <code>$e_i$</code> is the difference between the moving average at <code>$i^{th}$</code> instant and actual value.</li>
 </ul>
-<p>An importance concern here is how to determine the values of $p$ and $q$. Below we plot the ACF and PACF charts to determine them. The rules are:</p>
+<p>An importance concern here is how to determine the values of <code>$p$</code> and <code>$q$</code>. Below we plot the ACF and PACF charts to determine them. The rules are:</p>
 <ul>
-<li>$p$: The lag value where the PACF chart crosses the upper confidence interval for the first time.</li>
-<li>$q$: The lag value where the ACF chart crosses the upper confidence interval for the first time.</li>
+<li><code>$p$</code>: The lag value where the PACF chart crosses the upper confidence interval for the first time.</li>
+<li><code>$q$</code>: The lag value where the ACF chart crosses the upper confidence interval for the first time.</li>
 </ul>
 <p>So first, let&rsquo;s plot the ACF and PACF charts.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="font-weight:bold">%</span>config InlineBackend<span style="font-weight:bold">.</span>figure_format <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;retina&#39;</span>
@@ -368,7 +368,7 @@ dtype: float64
 </span></span></code></pre></div><p><img src="/images/arma_for_aapl5.png" alt="png"></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>acfplot(res_Volume)
 </span></span></code></pre></div><p><img src="/images/arma_for_aapl6.png" alt="png"></p>
-<p>From the charts it is clear that for $Adj\ Close$ we have $p=2$, $q=14$ and for $Volume$ we have $p=2$, $q=5$. Then we can load the ARIMA models for prediction. However, there&rsquo;re actually built-in method for that, which is quite more direct.</p>
+<p>From the charts it is clear that for <code>$Adj\ Close$</code> we have <code>$p=2$</code>, <code>$q=14$</code> and for <code>$Volume$</code> we have <code>$p=2$</code>, <code>$q=5$</code>. Then we can load the ARIMA models for prediction. However, there&rsquo;re actually built-in method for that, which is quite more direct.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>order <span style="font-weight:bold">=</span> arma_order_select_ic(res_Adj_Close, max_ar<span style="font-weight:bold">=</span><span style="color:#099">5</span>, max_ma<span style="font-weight:bold">=</span><span style="color:#099">20</span>, ic<span style="font-weight:bold">=</span>[<span style="color:#b84">&#39;aic&#39;</span>, <span style="color:#b84">&#39;bic&#39;</span>, <span style="color:#b84">&#39;hqic&#39;</span>])
 </span></span><span style="display:flex;"><span>order<span style="font-weight:bold">.</span>bic_min_order
 </span></span></code></pre></div><pre><code>/Users/Allen_Frostline/anaconda3/lib/python3.6/site-packages/statsmodels/base/model.py:466: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
