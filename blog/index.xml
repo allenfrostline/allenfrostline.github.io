@@ -14,9 +14,8 @@
       <pubDate>Wed, 10 Jan 2024 22:40:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup/</guid>
       <description>Below are some notes I recently took when trying to set up a terminal-only development environment for Python and C++. Everything is assuming a MacOS but should be fairly easy to be ported to a general Unix system. This post will be updated from time to time.
-Set Up ZSH Install ZSH: brew install zsh and eza for better ls:
-brew install eza Inside ~/.zshrc add:
-# Allow partial searching autoload -U up-line-or-beginning-search autoload -U down-line-or-beginning-search zle -N up-line-or-beginning-search zle -N down-line-or-beginning-search bindkey &amp;#34;^[[A&amp;#34; up-line-or-beginning-search # Up bindkey &amp;#34;^[[B&amp;#34; down-line-or-beginning-search # Down # Allow case-insensitive completion zstyle &amp;#39;:completion:*&amp;#39; matcher-list &amp;#39;&amp;#39; &amp;#39;m:{a-zA-Z}={A-Za-z}&amp;#39; &amp;#39;r:|=*&amp;#39; &amp;#39;l:|=* r:|=*&amp;#39; autoload -Uz compinit &amp;amp;&amp;amp; compinit # Shortcut commands alias ls=&amp;#39;eza --icons -F -H --group-directories-first --git -1&amp;#39; alias ll=&amp;#39;ls -alF&amp;#39; Install Starship: brew install starship Inside ~/.</description>
+1. Set Up ZSH We will need a terminal before we can call it a terminal-based environment.
+To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</description>
     </item>
     <item>
       <title>Visual Studio Code Shortcuts (that I Use A Lot on MacOS)</title>

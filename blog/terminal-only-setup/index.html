@@ -137,7 +137,11 @@
 
 
 <p>Below are some notes I recently took when trying to set up a terminal-only development environment for Python and C++. Everything is assuming a MacOS but should be fairly easy to be ported to a general Unix system. This post will be updated from time to time.</p>
-<h1 id="set-up-zsh">Set Up ZSH</h1>
+<h1 id="1-set-up-zsh">1. Set Up ZSH</h1>
+<p>We will need a terminal before we can call it a terminal-based environment.</p>
+<blockquote>
+<p>To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</p>
+</blockquote>
 <h3 id="install-zsh">Install ZSH:</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install zsh
 </span></span></code></pre></div><p>and <a href="https://github.com/eza-community/eza">eza</a> for better <code>ls</code>:</p>
@@ -158,6 +162,8 @@
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Shortcut commands</span>
 </span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ls</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;eza --icons -F -H --group-directories-first --git -1&#39;</span>
 </span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ll</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;ls -alF&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vi</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;nvim&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vim</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;nvim&#39;</span>
 </span></span></code></pre></div><h3 id="install-starshiphttpsgithubcomstarship">Install <a href="https://github.com/starship">Starship</a>:</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install starship
 </span></span></code></pre></div><p>Inside <code>~/.config/starship.toml</code> (disregard the strange squares &ndash; they&rsquo;ll render just fine as long as we have the correct nerd fonts installed):</p>
