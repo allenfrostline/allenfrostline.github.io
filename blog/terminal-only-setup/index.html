@@ -237,9 +237,21 @@
 </span></span></code></pre></div><h3 id="enter-neovim-and-install-the-needed-lsps-and-validate-using-lspinfo">Enter neovim and install the needed LSPs (and validate using <code>:LspInfo</code>):</h3>
 <ul>
 <li><code>clangd</code> (automatically installed already by NvChad)</li>
-<li><code>pyright</code> (manually installed via <code>:Mason</code>)</li>
+<li><code>pyright</code> (manually installed via <code>:Mason</code>, same for below)</li>
+<li><code>ruff</code></li>
+<li><code>neocmakelsp</code></li>
+<li>etc</li>
 </ul>
-<h3 id="under-confignvimluacustom-make-the-following-edits">Under <code>~/.config/nvim/lua/custom</code> make the following edits:</h3>
+<p>Note that <code>Mason</code> might inherently call <code>npm</code> which should be installed and validated as a prior through</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install node
+</span></span><span style="display:flex;"><span>npm -v
+</span></span></code></pre></div><p>and in order to avoid using <code>sudo</code> when installing packages globally, we can specify an alternative location for the NPM prefix:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir ~/.npm-packages
+</span></span><span style="display:flex;"><span>npm config <span style="color:#999">set</span> prefix <span style="color:#b84">&#34;</span><span style="color:#b84">${</span><span style="color:#008080">HOME</span><span style="color:#b84">}</span><span style="color:#b84">/.npm-packages&#34;</span>
+</span></span></code></pre></div><p>and put the following two lines inside <code>~/.bashrc</code> or <code>~/.zshrc</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zshrc" data-lang="zshrc"><span style="display:flex;"><span><span style="color:#999">export</span> <span style="color:#008080">NPM_PACKAGES</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;</span><span style="color:#b84">${</span><span style="color:#008080">HOME</span><span style="color:#b84">}</span><span style="color:#b84">/.npm-packages&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">export</span> <span style="color:#008080">PATH</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;</span><span style="color:#008080">$NPM_PACKAGES</span><span style="color:#b84">/bin:</span><span style="color:#008080">$PATH</span><span style="color:#b84">&#34;</span>
+</span></span></code></pre></div><h3 id="under-confignvimluacustom-make-the-following-edits">Under <code>~/.config/nvim/lua/custom</code> make the following edits:</h3>
 <ul>
 <li>In <code>configs/lspconfig.lua</code>, add <code>pyright</code> to <code>servers</code>.</li>
 <li>In <code>configs/conform.lua</code>, turn on <code>format_on_save</code> add following to <code>formatters_by_ft</code>:</li>
