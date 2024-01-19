@@ -6,15 +6,22 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Jan 2024 22:40:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 18 Jan 2024 23:44:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My Terminal-Only Development Setup</title>
+      <title>My Terminal-Only Development Setup (2)</title>
+      <link>https://allenfrostline.com/blog/terminal-only-setup2/</link>
+      <pubDate>Thu, 18 Jan 2024 23:44:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/terminal-only-setup2/</guid>
+      <description>It&amp;rsquo;s definitely been quite a journey recently considering how many editors/IDEs I have tried out, most of which being pure terminal based. It&amp;rsquo;s a fascinating experience to start &amp;ldquo;retro-coding&amp;rdquo; in 2024 on an emulated terminal with an ANSI art banner designed by yourself. It&amp;rsquo;s also about a lot of1 back-and-forth in tooling and configuring which forces me to write this second post on the same topic. The setup in this post is similar to the previous one but with a strong less-is-better preference.</description>
+    </item>
+    <item>
+      <title>My Terminal-Only Development Setup (1)</title>
       <link>https://allenfrostline.com/blog/terminal-only-setup/</link>
       <pubDate>Wed, 10 Jan 2024 22:40:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup/</guid>
       <description>Below are some notes I recently took when trying to set up a terminal-only development environment for Python and C++. Everything is assuming a MacOS but should be fairly easy to be ported to a general Unix system. This post will be updated from time to time.
-1. Set Up ZSH We will need a terminal before we can call it a terminal-based environment.
+1. Set up ZSH We will need a terminal before we can call it a terminal-based environment.
 To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</description>
     </item>
     <item>

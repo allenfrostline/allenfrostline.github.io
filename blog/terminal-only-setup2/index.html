@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>My Terminal-Only Development Setup (2) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="My Terminal-Only Development Setup (2) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s definitely been quite a journey recently considering how many editors/IDEs I have tried out, most of which being pure terminal based. It&amp;rsquo;s a fascinating experience to start &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s definitely been quite a journey recently considering how many editors/IDEs I have tried out, most of which being pure terminal based. It&amp;rsquo;s a fascinating experience to start &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+
+<script>
+    window.minimalAnalytics = {
+        trackingId: 'G-B4WMGBPB4Z',
+        autoTrack: true, 
+    };
+</script>
+<script src="/index_1423847519945263698.js" async></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  <li><a href="/pottery/">Pottery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>My Terminal-Only Development Setup (2)</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2024-01-18
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It&rsquo;s definitely been quite a journey recently considering how many editors/IDEs I have tried out, most of which being pure terminal based. It&rsquo;s a fascinating experience to start &ldquo;retro-coding&rdquo; in 2024 on an emulated terminal with an ANSI art banner designed by yourself. It&rsquo;s also about a lot of<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> back-and-forth in tooling and configuring which forces me to write this second post on the same topic. The setup in this post is similar to the previous one but with a strong <strong>less-is-better</strong> preference.</p>
+<p>We&rsquo;re going to skip the first step, setting up ZSH, which is gonna be identical to the last post. The only difference is the addition of custom terminal colors (matching the editor color scheme) in <code>~/.config/alacritty/alacritty.toml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>live_config_reload = <span style="font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[window]
+</span></span><span style="display:flex;"><span>dimensions = { columns = <span style="color:#099">120</span>, lines = <span style="color:#099">80</span> }
+</span></span><span style="display:flex;"><span>padding = { x = <span style="color:#099">0</span>, y = <span style="color:#099">0</span> }
+</span></span><span style="display:flex;"><span>opacity = <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>blur = <span style="font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>title = <span style="color:#b84">&#34;Terminal&#34;</span>
+</span></span><span style="display:flex;"><span>option_as_alt = <span style="color:#b84">&#34;Both&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[shell]
+</span></span><span style="display:flex;"><span>program = <span style="color:#b84">&#34;/bin/zsh&#34;</span>
+</span></span><span style="display:flex;"><span>args = [<span style="color:#b84">&#34;-l&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[font]
+</span></span><span style="display:flex;"><span>size = <span style="color:#099">13</span>
+</span></span><span style="display:flex;"><span>offset = { x = <span style="color:#099">0</span>, y = <span style="color:#099">0</span> }
+</span></span><span style="display:flex;"><span>normal = { family = <span style="color:#b84">&#34;Hack Nerd Font&#34;</span>, style = <span style="color:#b84">&#34;Regular&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[colors.primary]
+</span></span><span style="display:flex;"><span>background = <span style="color:#b84">&#34;#282828&#34;</span>
+</span></span><span style="display:flex;"><span>foreground = <span style="color:#b84">&#34;#eeeeee&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[colors.normal]
+</span></span><span style="display:flex;"><span>black = <span style="color:#b84">&#34;#282828&#34;</span>
+</span></span><span style="display:flex;"><span>red = <span style="color:#b84">&#34;#f43753&#34;</span>
+</span></span><span style="display:flex;"><span>green = <span style="color:#b84">&#34;#c9d05c&#34;</span>
+</span></span><span style="display:flex;"><span>yellow = <span style="color:#b84">&#34;#ffc24b&#34;</span>
+</span></span><span style="display:flex;"><span>blue = <span style="color:#b84">&#34;#b3deef&#34;</span>
+</span></span><span style="display:flex;"><span>magenta = <span style="color:#b84">&#34;#d3b987&#34;</span>
+</span></span><span style="display:flex;"><span>cyan = <span style="color:#b84">&#34;#73cef4&#34;</span>
+</span></span><span style="display:flex;"><span>white = <span style="color:#b84">&#34;#eeeeee&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[colors.bright]
+</span></span><span style="display:flex;"><span>black = <span style="color:#b84">&#34;#4c4c4c&#34;</span>
+</span></span><span style="display:flex;"><span>red = <span style="color:#b84">&#34;#f43753&#34;</span>
+</span></span><span style="display:flex;"><span>green = <span style="color:#b84">&#34;#c9d05c&#34;</span>
+</span></span><span style="display:flex;"><span>yellow = <span style="color:#b84">&#34;#ffc24b&#34;</span>
+</span></span><span style="display:flex;"><span>blue = <span style="color:#b84">&#34;#b3deef&#34;</span>
+</span></span><span style="display:flex;"><span>magenta = <span style="color:#b84">&#34;#d3b987&#34;</span>
+</span></span><span style="display:flex;"><span>cyan = <span style="color:#b84">&#34;#73cef4&#34;</span>
+</span></span><span style="display:flex;"><span>white = <span style="color:#b84">&#34;#feffff&#34;</span>
+</span></span></code></pre></div><p>Now, instead of NvChad, we&rsquo;re going to install LunarVim this time (the URL below corresponds to the last version of LunarVim as of this post, and thus is very likely stale; please go to their official website for the up-to-date installation):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#008080">LV_BRANCH</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;release-1.3/neovim-0.9&#39;</span> bash &lt;<span style="font-weight:bold">(</span>curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh<span style="font-weight:bold">)</span>
+</span></span></code></pre></div><p>The next and also last step is <code>~/.config/lvim/config.lua</code> (yes, LunarVim doesn&rsquo;t share the same config directory with other NeoVim frameworks, which is very much appreciated):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------- GLOBAL OPTIONS -------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.opt.fillchars <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;eob: &#34;</span> <span style="color:#998;font-style:italic">-- avoid the ~ fillchars at the borders</span>
+</span></span><span style="display:flex;"><span>vim.opt.shiftwidth <span style="font-weight:bold">=</span> <span style="color:#099">4</span>
+</span></span><span style="display:flex;"><span>vim.opt.tabstop <span style="font-weight:bold">=</span> <span style="color:#099">4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.format_on_save.enabled <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>lvim.transparent_window <span style="font-weight:bold">=</span> <span style="font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">---------------------------------------- KEYBINDINGS --------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;BufferLineCycleNext&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;S-Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;BufferLineCyclePrev&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;e&#34;</span>] <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;Neotree toggle&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Toggle file explorer&#34;</span> }
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-e&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;Neotree toggle&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-p&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_session&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-b&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:ene &lt;BAR&gt; startinsert &lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-s&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:w&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-w&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:BufferKill&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;p&#34;</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Project&#34;</span>,
+</span></span><span style="display:flex;"><span>    p <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load project&#34;</span> },
+</span></span><span style="display:flex;"><span>    l <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_last_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load last project&#34;</span> },
+</span></span><span style="display:flex;"><span>    s <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager save_current_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Save current project&#34;</span> },
+</span></span><span style="display:flex;"><span>    d <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager delete_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Delete project&#34;</span> },
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">------------------------------------ PLUGINS AND STYLING ----------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.plugins <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for multi-cursor</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;mg979/vim-visual-multi&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for telescope selection instead of native UI</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;nvim-telescope/telescope-ui-select.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for add/delete/change surrounding pairs (of quotes and brackets etc)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;kylechui/nvim-surround&#34;</span>,
+</span></span><span style="display:flex;"><span>        config <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>()
+</span></span><span style="display:flex;"><span>            require(<span style="color:#b84">&#34;nvim-surround&#34;</span>).setup()
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for color highlighting on hex strings (see below)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;nvchad/nvim-colorizer.lua&#34;</span>,
+</span></span><span style="display:flex;"><span>        config <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>()
+</span></span><span style="display:flex;"><span>            require(<span style="color:#b84">&#39;colorizer&#39;</span>).setup()
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for text wrapping</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;andrewferrier/wrapping.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        config <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>()
+</span></span><span style="display:flex;"><span>            require(<span style="color:#b84">&#34;wrapping&#34;</span>).setup()
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for file explorer</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;nvim-neo-tree/neo-tree.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        dependencies <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#34;nvim-lua/plenary.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#34;nvim-tree/nvim-web-devicons&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#34;MunifTanjim/nui.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for python venv</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;linux-cultist/venv-selector.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>        dependencies <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#39;neovim/nvim-lspconfig&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#39;nvim-telescope/telescope.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#39;mfussenegger/nvim-dap-python&#39;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        opts <span style="font-weight:bold">=</span> { name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;.venv&#34;</span>, auto_refresh <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span> },
+</span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;VeryLazy&#39;</span>,
+</span></span><span style="display:flex;"><span>        keys <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vs&#39;</span>, <span style="color:#b84">&#39;&lt;CMD&gt;VenvSelect&lt;CR&gt;&#39;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vc&#39;</span>, <span style="color:#b84">&#39;&lt;CMD&gt;VenvSelectCached&lt;CR&gt;&#39;</span> },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for git diff</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;sindrets/diffview.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;BufRead&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for by-project sessions</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;shatur/neovim-session-manager&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for colorscheme</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;jacoborus/tender.vim&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for consistent colorscheme between vim and terminal</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;typicode/bg.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        lazy <span style="font-weight:bold">=</span> <span style="font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for access to a library of ascii arts</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;MaximilianLloyd/ascii.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        dependencies <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#34;MunifTanjim/nui.nvim&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for searching nerd glyphs</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;2kabhishek/nerdy.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;VeryLazy&#34;</span>,
+</span></span><span style="display:flex;"><span>        dependencies <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#39;stevearc/dressing.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#b84">&#39;nvim-telescope/telescope.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        cmd <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;Nerdy&#39;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for markdown preview</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;iamcco/markdown-preview.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>        cmd <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;MarkdownPreviewToggle&#34;</span>, <span style="color:#b84">&#34;MarkdownPreview&#34;</span>, <span style="color:#b84">&#34;MarkdownPreviewStop&#34;</span> },
+</span></span><span style="display:flex;"><span>        ft <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;markdown&#34;</span> },
+</span></span><span style="display:flex;"><span>        build <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>() vim.fn[<span style="color:#b84">&#34;mkdp#util#install&#34;</span>]() <span style="font-weight:bold">end</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- turn off netrw when neo-tree is the file explorer</span>
+</span></span><span style="display:flex;"><span>vim.g.loaded_netrw <span style="font-weight:bold">=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>vim.g.loaded_netrwPlugin <span style="font-weight:bold">=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.nvimtree.active <span style="font-weight:bold">=</span> <span style="font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- color schemes</span>
+</span></span><span style="display:flex;"><span>lvim.colorscheme <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;tender&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.builtin.lualine.style <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;default&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.lualine.options.theme <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;powerline&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.lualine.sections.lualine_x <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;encoding&#34;</span> }
+</span></span><span style="display:flex;"><span>lvim.builtin.lualine.sections.lualine_y <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;filetype&#34;</span> }
+</span></span><span style="display:flex;"><span>lvim.builtin.lualine.sections.lualine_z <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;location&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for session manager</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> _ <span style="font-weight:bold">=</span> require(<span style="color:#b84">&#39;plenary.path&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> config <span style="font-weight:bold">=</span> require(<span style="color:#b84">&#39;session_manager.config&#39;</span>)
+</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#39;session_manager&#39;</span>).setup({
+</span></span><span style="display:flex;"><span>    autoload_mode <span style="font-weight:bold">=</span> config.AutoloadMode.Disabled, <span style="color:#998;font-style:italic">-- Disabled|CurrentDir|LastSession</span>
+</span></span><span style="display:flex;"><span>    autosave_last_session <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span>,                 <span style="color:#998;font-style:italic">-- autosave on exit and switch</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for markdown preview</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> g <span style="font-weight:bold">=</span> vim.g
+</span></span><span style="display:flex;"><span>g.mkdp_theme <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;light&#39;</span>
+</span></span><span style="display:flex;"><span>g.mkdp_markdown_css <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;~/configs/nvim/lua/custom/markdown.css&#39;</span>
+</span></span><span style="display:flex;"><span>g.mkdp_port <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;8842&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for telescope selection</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.telescope.extensions <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    [<span style="color:#b84">&#34;ui-select&#34;</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>        require(<span style="color:#b84">&#34;telescope.themes&#34;</span>).get_dropdown {}
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;telescope&#34;</span>).load_extension(<span style="color:#b84">&#34;ui-select&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for terminal</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.terminal.direction <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;horizontal&#34;</span> <span style="color:#998;font-style:italic">-- default to be horizontal</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.terminal.size <span style="font-weight:bold">=</span> <span style="color:#099">30</span>                <span style="color:#998;font-style:italic">-- &lt;not&gt; in percentage of screen</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for telescope ascii art</span>
+</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;telescope&#34;</span>).load_extension(<span style="color:#b84">&#34;ascii&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- lvim.builtin.alpha.dashboard.section.header.val = require(&#39;ascii&#39;).art.anime.onepiece.nami</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.header.val <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░                                  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                  ░ ░░░░  ░                                &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░  ░ ░ ░                           &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                   ░░░ ░░░░░ ░  ░                          &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                     ░░░░░░░░░░░░░                         &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                      ░░░░░▒▓▓▒░░                          &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░▓▒▒░░                          &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░░                          &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░▒░░         ░░░               &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░       ░░░▒░░░░            &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░    ░░░░▓▓▒░░░░            &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;            ░░▓▓░░░    ░░░░░░░░  ░░░░░▒▓▓░░░░              &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;           ░░░░▒▓░░     ░░░░░░  ░░░░░░░░░                  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░ ░░░▓░░░   ░ ░░░░░░░░░░░                        &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;           ░░░░░░     ░ ░░░░░░░░░                          &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;          ░░░░░░       ░░░░░░░░░                           &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░░░░░       ░░░░░░░░░░░  ░                       &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░          ░░░░░░░ ░░▒▒░░ ░░                     &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                  ░░░░░░░░   ░░░▒▓▒░░░                     &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                ░░░░░░ ░        ░░▒▓▒░░░░ ░                &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;            ░░░░░░░            ░░░░░░▒▓▓░░░░░░░░░░░░       &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;░░   ░░░░░░░░░░                    ░ ░░░▒▓▓▓▒░▒░░░░░░ ░░ ░░&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;   ░░░ ░░░                            ░░░░░░░░░░░░░░░░░  ░ &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                                         ░░░   ░ ░  ░░     &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                                                 ░░░    ░  &#34;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.header.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;DiagnosticError&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;String&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.footer.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Constant&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for alpha dashboard buttons</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">1</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;b&#34;</span>, <span style="color:#b84">&#34;  Open New Buffer&#34;</span>, <span style="color:#b84">&#34;:ene &lt;BAR&gt; startinsert &lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">2</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;r&#34;</span>, <span style="color:#b84">&#34;  Open Recent File&#34;</span>, <span style="color:#b84">&#34;:Telescope oldfiles &lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">3</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;f&#34;</span>, <span style="color:#b84">&#34;  Find Files&#34;</span>, <span style="color:#b84">&#34;&lt;CMD&gt;Telescope find_files&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">4</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;p&#34;</span>, <span style="color:#b84">&#34;  Load Project&#34;</span>, <span style="color:#b84">&#34;:SessionManager load_session&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">5</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;t&#34;</span>, <span style="color:#b84">&#34;  Find Text&#34;</span>, <span style="color:#b84">&#34;:Telescope live_grep &lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> config_path <span style="font-weight:bold">=</span> require(<span style="color:#b84">&#34;lvim.config&#34;</span>):get_user_config_path()
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">6</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;c&#34;</span>, <span style="color:#b84">&#34;  Configuration&#34;</span>, <span style="color:#b84">&#34;&lt;CMD&gt;edit &#34;</span> <span style="font-weight:bold">..</span> config_path <span style="font-weight:bold">..</span> <span style="color:#b84">&#34; &lt;CR&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">7</span>] <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;q&#34;</span>, <span style="color:#b84">&#34;  Quit&#34;</span>, <span style="color:#b84">&#34;:qa&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for alpha dashboard footer</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> <span style="font-weight:bold">function</span> <span style="color:#900;font-weight:bold">footer</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">---@diagnostic disable-next-line: param-type-mismatch</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> plugins_paths <span style="font-weight:bold">=</span> vim.fn.globpath(<span style="color:#b84">&#34;~/.local/share/nvim/lazy&#34;</span>, <span style="color:#b84">&#34;*.nvim&#34;</span>, <span style="font-weight:bold">false</span>, <span style="font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> plugins_count <span style="font-weight:bold">=</span> vim.fn.len(plugins_paths)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> datetime_str <span style="font-weight:bold">=</span> os.date(<span style="color:#b84">&#34;  %Y-%m-%d       %H:%M:%S&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> plugins_str <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;  &#34;</span> <span style="font-weight:bold">..</span> plugins_count <span style="font-weight:bold">..</span> <span style="color:#b84">&#34; Plugins&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> version <span style="font-weight:bold">=</span> vim.version()
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">local</span> nvim_version_str <span style="font-weight:bold">=</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;  v&#34;</span> <span style="font-weight:bold">..</span> version.major <span style="font-weight:bold">..</span> <span style="color:#b84">&#34;.&#34;</span> <span style="font-weight:bold">..</span>
+</span></span><span style="display:flex;"><span>        version.minor <span style="font-weight:bold">..</span> <span style="color:#b84">&#34;.&#34;</span> <span style="font-weight:bold">..</span> version.patch
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">return</span> (
+</span></span><span style="display:flex;"><span>        datetime_str <span style="font-weight:bold">..</span> <span style="color:#b84">&#34;     &#34;</span> <span style="font-weight:bold">..</span> plugins_str <span style="font-weight:bold">..</span> <span style="color:#b84">&#34;     &#34;</span> <span style="font-weight:bold">..</span> nvim_version_str
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.footer.val <span style="font-weight:bold">=</span> footer()
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.opts.width <span style="font-weight:bold">=</span> <span style="color:#099">61</span>
+</span></span></code></pre></div><p>That&rsquo;s it. No more fuss about plugins (they will automatically install as long as you list them in the above file; they actually automatically uninstall as well, as soon as you remove them from the file) and LSPs (ask Mason! he&rsquo;ll do it for you) and config directories. Everything dumped in one file and working out-of-box cuz LunarVim has pre-installed a bunch core plugins (making it slightly slower, to be noted). In other words, compared with NvChad which now seems like an unfurnished<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> house, LunarVim is just a maybe-a-tad-more-expensive-but-hey-I-see-kitchen-bed-and-everything condo. Depending on what kind of developer you are (I confess, I&rsquo;m the lazy type) and what the underlying circumstance is (maybe you need to set up your development environment as quickly as possible, who knows), LunarVim is definitely offering a compelling alternative in the game.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>But not too much, as these projects tend to have rather long lifespans and update cycles and you can almost rely on your fine-tuned config for however long you like.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>But not unfinished &ndash; NvChad is still way better than native NeoVim which we all know deserves a ton of credits!&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/terminal-only-setup/">My Terminal-Only Development Setup (1)</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/terminal-only-setup\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://giscus.app/client.js" data-repo="allenfrostline/allenfrostline.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NzEzOTkxNg==" data-category="General" data-category-id="DIC_kwDOBJkPzM4CbgIQ"
+        data-mapping="pathname" data-strict="0" data-reactions-enabled="0" data-emit-metadata="0"
+        data-input-position="bottom" data-theme="light" data-lang="en" data-loading="lazy" crossorigin="anonymous"
+        async>
+        </script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+</body>
+
+</html>
