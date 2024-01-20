@@ -202,14 +202,14 @@
 </span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;e&#34;</span>] <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Toggle file explorer&#34;</span> }
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-e&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;M-v&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:vsplit&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;M-h&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:split&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-p&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager load_session&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-b&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:ene &lt;BAR&gt; startinsert &lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-s&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:w&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-w&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:BufferKill&lt;CR&gt;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.keys.insert_mode[<span style="color:#b84">&#34;&lt;C-1&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Plug&gt;(luasnip-next-choice)&#34;</span>
-</span></span><span style="display:flex;"><span>lvim.keys.insert_mode[<span style="color:#b84">&#34;&lt;C-2&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Plug&gt;(luasnip-prev-choice)&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;p&#34;</span>] <span style="font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>    name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Project&#34;</span>,
@@ -218,6 +218,25 @@
 </span></span><span style="display:flex;"><span>    s <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager save_current_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Save current project&#34;</span> },
 </span></span><span style="display:flex;"><span>    d <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager delete_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Delete project&#34;</span> },
 </span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">--------------------------------------- AUTOCOMMANDS --------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.autocommands <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;ColorScheme&#34;</span>,
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            command <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;hi WinSeparator guifg=#666666 ctermfg=245&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -233,6 +252,12 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for telescope selection instead of native UI</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;nvim-telescope/telescope-ui-select.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for colorful split window borders</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;nvim-zh/colorful-winsep.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>        config <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;WinNew&#34;</span> },
 </span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for add/delete/change surrounding pairs (of quotes and brackets etc)</span>
@@ -346,6 +371,19 @@
 </span></span><span style="display:flex;"><span>lvim.builtin.lualine.sections.lualine_z <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;location&#34;</span> }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for colorful-winsep</span>
+</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;colorful-winsep&#34;</span>).setup({
+</span></span><span style="display:flex;"><span>    highlight <span style="font-weight:bold">=</span> { fg <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;#ffc24b&#34;</span> },
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for colorizer</span>
+</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;colorizer&#34;</span>).setup {
+</span></span><span style="display:flex;"><span>    user_default_options <span style="font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>        mode <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;virtualtext&#34;</span>, <span style="color:#998;font-style:italic">-- foreground, background,  virtualtext</span>
+</span></span><span style="display:flex;"><span>        virtualtext <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;■&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for session manager</span>
