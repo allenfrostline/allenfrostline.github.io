@@ -3,714 +3,300 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://allenfrostline.com/</loc>
-    <lastmod>2024-01-18T23:44:00+00:00</lastmod>
+    <lastmod>2024-01-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/</loc>
-    <lastmod>2024-01-18T23:44:00+00:00</lastmod>
+    <lastmod>2024-01-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/terminal-only-setup2/</loc>
-    <lastmod>2024-01-18T23:44:00+00:00</lastmod>
+    <lastmod>2024-01-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/terminal-only-setup/</loc>
-    <lastmod>2024-01-10T22:40:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/python/</loc>
-    <lastmod>2023-12-22T11:42:00+00:00</lastmod>
+    <lastmod>2024-01-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/vscode_shortcuts/</loc>
-    <lastmod>2023-12-22T11:42:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/pyscript/</loc>
-    <lastmod>2022-05-05T00:00:00+00:00</lastmod>
+    <lastmod>2023-12-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/write-and-run-python-in-blog/</loc>
     <lastmod>2022-05-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/photo/</loc>
-    <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/two_shots/</loc>
     <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/beautify-dataframe/</loc>
-    <lastmod>2020-03-29T11:08:00+00:00</lastmod>
+    <lastmod>2020-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/streamlit/</loc>
-    <lastmod>2020-03-29T10:05:00+00:00</lastmod>
+    <lastmod>2020-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/to-the-2020s-3/</loc>
-    <lastmod>2020-03-15T22:22:00+00:00</lastmod>
+    <lastmod>2020-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/hide-code-jupyter/</loc>
-    <lastmod>2020-02-27T11:12:00+00:00</lastmod>
+    <lastmod>2020-02-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/yi-gongzi/</loc>
-    <lastmod>2020-02-02T21:38:00+00:00</lastmod>
+    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/epidemic-models/</loc>
-    <lastmod>2020-01-29T03:12:00+00:00</lastmod>
+    <lastmod>2020-01-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/to-the-2020s-2/</loc>
-    <lastmod>2020-01-27T12:25:00+00:00</lastmod>
+    <lastmod>2020-01-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/to-the-2020s-1/</loc>
-    <lastmod>2020-01-01T11:39:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E4%BF%A1/</loc>
-    <lastmod>2019-12-29T12:15:00+00:00</lastmod>
+    <lastmod>2020-01-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/letter50/</loc>
-    <lastmod>2019-12-29T12:15:00+00:00</lastmod>
+    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/moving/</loc>
-    <lastmod>2019-12-17T08:50:00+00:00</lastmod>
+    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/on-desire/</loc>
-    <lastmod>2019-11-30T08:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/eigenvalues/</loc>
-    <lastmod>2019-11-15T17:13:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/eigenvectors/</loc>
-    <lastmod>2019-11-15T17:13:00+00:00</lastmod>
+    <lastmod>2019-11-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</loc>
-    <lastmod>2019-11-15T17:13:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/brain-teaser/</loc>
-    <lastmod>2019-11-14T13:56:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/combinatory/</loc>
-    <lastmod>2019-11-14T13:56:00+00:00</lastmod>
+    <lastmod>2019-11-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/josephus-problem/</loc>
-    <lastmod>2019-11-14T13:56:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/hold-em/</loc>
-    <lastmod>2019-11-05T10:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/poker/</loc>
-    <lastmod>2019-11-05T10:11:00+00:00</lastmod>
+    <lastmod>2019-11-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-6/</loc>
-    <lastmod>2019-11-05T10:11:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/food/</loc>
-    <lastmod>2019-10-31T10:15:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E9%BB%84%E6%A1%83%E7%BD%90%E5%A4%B4/</loc>
-    <lastmod>2019-10-31T10:15:00+00:00</lastmod>
+    <lastmod>2019-11-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/canned-yellow-peach/</loc>
-    <lastmod>2019-10-31T10:15:00+00:00</lastmod>
+    <lastmod>2019-10-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/py27-kernel/</loc>
-    <lastmod>2019-10-30T20:44:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/jupyter/</loc>
-    <lastmod>2019-10-30T20:44:00+00:00</lastmod>
+    <lastmod>2019-10-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/bokeh-in-post/</loc>
-    <lastmod>2019-10-28T15:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/linear-algebra/</loc>
-    <lastmod>2019-10-23T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/four-spaces-svd/</loc>
     <lastmod>2019-10-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/svd/</loc>
-    <lastmod>2019-10-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/book/</loc>
-    <lastmod>2019-10-21T10:49:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E7%AC%91%E5%82%B2%E6%B1%9F%E6%B9%96/</loc>
-    <lastmod>2019-10-21T10:49:00+00:00</lastmod>
-  </url><url>
     <loc>https://allenfrostline.com/blog/xiao-ao-jiang-hu/</loc>
-    <lastmod>2019-10-21T10:49:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/microstructure/</loc>
-    <lastmod>2019-10-04T18:15:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/notes/</loc>
-    <lastmod>2019-10-04T18:15:00+00:00</lastmod>
+    <lastmod>2019-10-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-microstructure/</loc>
-    <lastmod>2019-10-04T18:15:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/matrix-decomposition/</loc>
-    <lastmod>2019-09-30T21:06:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/multivariate/</loc>
-    <lastmod>2019-09-30T21:06:00+00:00</lastmod>
+    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-matrix-decomp/</loc>
-    <lastmod>2019-09-30T21:06:00+00:00</lastmod>
+    <lastmod>2019-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/suitcase/</loc>
-    <lastmod>2019-09-28T08:40:00+00:00</lastmod>
+    <lastmod>2019-09-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/n-fac-square/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/continuous-integration/</loc>
     <lastmod>2019-09-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/continuous-integration-blog/</loc>
     <lastmod>2019-09-11T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/hugo/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/number-theory/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://allenfrostline.com/blog/an-old-article/</loc>
-    <lastmod>2019-09-01T14:48:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/cryptocurrency/</loc>
-    <lastmod>2019-06-09T11:04:00+00:00</lastmod>
+    <lastmod>2019-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/crypto-news/</loc>
-    <lastmod>2019-06-09T11:04:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/momentum/</loc>
-    <lastmod>2019-06-09T11:04:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/sentiment/</loc>
-    <lastmod>2019-06-09T11:04:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/strategy/</loc>
-    <lastmod>2019-06-09T11:04:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/markdown/</loc>
-    <lastmod>2019-06-01T00:00:00+00:00</lastmod>
+    <lastmod>2019-06-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/markdown-test/</loc>
     <lastmod>2019-06-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/brownian-motion/</loc>
-    <lastmod>2019-05-10T14:17:22+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/gbm/</loc>
-    <lastmod>2019-05-10T14:17:22+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/heston/</loc>
-    <lastmod>2019-05-10T14:17:22+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/simulation/</loc>
-    <lastmod>2019-05-10T14:17:22+00:00</lastmod>
-  </url><url>
     <loc>https://allenfrostline.com/blog/stock-price-simulation/</loc>
-    <lastmod>2019-05-10T14:17:22+00:00</lastmod>
+    <lastmod>2019-05-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/content-filtering-tipue-search/</loc>
-    <lastmod>2019-05-03T13:40:57+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/hexo/</loc>
-    <lastmod>2019-05-03T13:40:57+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/search/</loc>
-    <lastmod>2019-05-03T13:40:57+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/tipue/</loc>
-    <lastmod>2019-05-03T13:40:57+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/github/</loc>
-    <lastmod>2019-05-03T13:28:04+00:00</lastmod>
+    <lastmod>2019-05-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/revert-github-commit/</loc>
-    <lastmod>2019-05-03T13:28:04+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/animation/</loc>
-    <lastmod>2019-04-25T18:27:01+00:00</lastmod>
+    <lastmod>2019-05-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/animation-matplotlib/</loc>
-    <lastmod>2019-04-25T18:27:01+00:00</lastmod>
+    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/var-name-python/</loc>
-    <lastmod>2019-04-23T18:36:40+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/market-making/</loc>
-    <lastmod>2019-04-23T01:02:36+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/blog/perfect-market-maker/</loc>
-    <lastmod>2019-04-23T01:02:36+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/etf/</loc>
-    <lastmod>2019-04-23T00:32:04+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/spread/</loc>
-    <lastmod>2019-04-23T00:32:04+00:00</lastmod>
+    <lastmod>2019-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/spread-trading-etf/</loc>
-    <lastmod>2019-04-23T00:32:04+00:00</lastmod>
+    <lastmod>2019-04-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://allenfrostline.com/blog/perfect-market-maker/</loc>
+    <lastmod>2019-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</loc>
-    <lastmod>2019-04-17T14:56:13+00:00</lastmod>
+    <lastmod>2019-04-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-5/</loc>
-    <lastmod>2019-04-16T23:10:00+00:00</lastmod>
+    <lastmod>2019-04-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-4/</loc>
-    <lastmod>2019-04-09T18:12:00+00:00</lastmod>
+    <lastmod>2019-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-3/</loc>
-    <lastmod>2019-04-05T18:35:00+00:00</lastmod>
+    <lastmod>2019-04-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-2/</loc>
-    <lastmod>2019-03-30T14:25:00+00:00</lastmod>
+    <lastmod>2019-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/texas-holdem-series-1/</loc>
-    <lastmod>2019-03-28T16:33:00+00:00</lastmod>
+    <lastmod>2019-03-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/untitled/</loc>
     <lastmod>2019-03-26T22:05:50+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/expectation/</loc>
-    <lastmod>2019-03-16T12:50:50+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/random/</loc>
-    <lastmod>2019-03-16T12:50:50+00:00</lastmod>
-  </url><url>
     <loc>https://allenfrostline.com/blog/random-projection-and-expectation/</loc>
-    <lastmod>2019-03-16T12:50:50+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/foerign-exchange/</loc>
-    <lastmod>2019-02-21T23:08:49+00:00</lastmod>
+    <lastmod>2019-03-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-foreign-exchange/</loc>
-    <lastmod>2019-02-21T23:08:49+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/black-scholes/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/ito%CC%82-calculus/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/l%C3%A9vy-process/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/martingale/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
+    <lastmod>2019-02-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/stochastic-calculus/</loc>
-    <lastmod>2019-02-21T23:08:38+00:00</lastmod>
+    <lastmod>2019-02-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/billiard-tournament-martingale/</loc>
     <lastmod>2019-01-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/kelly-criterion/</loc>
-    <lastmod>2019-01-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/amd/</loc>
-    <lastmod>2019-01-07T02:05:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/deep-learning/</loc>
-    <lastmod>2019-01-07T02:05:00+00:00</lastmod>
-  </url><url>
     <loc>https://allenfrostline.com/blog/deep-learning-amd-gpu/</loc>
-    <lastmod>2019-01-07T02:05:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/egpu/</loc>
-    <lastmod>2019-01-07T02:05:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/macos/</loc>
-    <lastmod>2019-01-07T02:05:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/alaska/</loc>
-    <lastmod>2019-01-04T10:27:40+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/arctic/</loc>
-    <lastmod>2019-01-04T10:27:40+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/photos/</loc>
-    <lastmod>2019-01-04T10:27:40+00:00</lastmod>
+    <lastmod>2019-01-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/to-the-arctic-circle-2/</loc>
-    <lastmod>2019-01-04T10:27:40+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/trip/</loc>
-    <lastmod>2019-01-04T10:27:40+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/king-crab/</loc>
-    <lastmod>2019-01-03T14:35:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E6%8B%94%E8%8D%89/</loc>
-    <lastmod>2019-01-03T14:35:00+00:00</lastmod>
+    <lastmod>2019-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/checkin-pump-house/</loc>
-    <lastmod>2019-01-03T14:35:00+00:00</lastmod>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/socket-chat/</loc>
-    <lastmod>2018-12-05T01:34:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/socket/</loc>
-    <lastmod>2018-12-05T01:34:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/japanese/</loc>
-    <lastmod>2018-11-23T23:35:00+00:00</lastmod>
+    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/checkin-niu-japanese-fusion-lounge/</loc>
-    <lastmod>2018-11-23T23:35:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E6%97%A5%E6%96%99/</loc>
-    <lastmod>2018-11-23T23:35:00+00:00</lastmod>
+    <lastmod>2018-11-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/color-print/</loc>
-    <lastmod>2018-11-09T16:34:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/c&#43;&#43;/</loc>
-    <lastmod>2018-09-03T00:00:05+00:00</lastmod>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/cpp-key-points/</loc>
-    <lastmod>2018-09-03T00:00:05+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/arbitrage/</loc>
-    <lastmod>2018-07-27T16:04:01+00:00</lastmod>
+    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</loc>
-    <lastmod>2018-07-27T16:04:01+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/ethereum/</loc>
-    <lastmod>2018-07-27T16:04:01+00:00</lastmod>
+    <lastmod>2018-07-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/pythonic-swap/</loc>
-    <lastmod>2018-07-12T19:11:13+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/amazon/</loc>
-    <lastmod>2018-07-12T17:44:25+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/ec2/</loc>
-    <lastmod>2018-07-12T17:44:25+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/synchronization/</loc>
-    <lastmod>2018-07-12T17:44:25+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/giethorn/</loc>
-    <lastmod>2018-07-11T00:33:08+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/giethoorn/</loc>
-    <lastmod>2018-07-11T00:33:08+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/netherlands/</loc>
-    <lastmod>2018-07-11T00:33:08+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/lda/</loc>
-    <lastmod>2018-05-29T15:16:28+00:00</lastmod>
+    <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/lda-rmda/</loc>
-    <lastmod>2018-05-29T15:16:28+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/machine-learning/</loc>
-    <lastmod>2018-05-29T15:16:28+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/r-mda/</loc>
-    <lastmod>2018-05-29T15:16:28+00:00</lastmod>
+    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/optimal-order-execution-5/</loc>
-    <lastmod>2018-05-12T14:33:11+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/order-execution/</loc>
-    <lastmod>2018-05-12T14:33:11+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/paper/</loc>
-    <lastmod>2018-05-12T14:33:11+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/trading/</loc>
-    <lastmod>2018-05-12T14:33:11+00:00</lastmod>
+    <lastmod>2018-05-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/optimal-order-execution-4/</loc>
-    <lastmod>2018-05-06T13:24:11+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/estimation/</loc>
-    <lastmod>2018-05-05T12:22:10+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/method-of-moments/</loc>
-    <lastmod>2018-05-05T12:22:10+00:00</lastmod>
+    <lastmod>2018-05-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/estimation-brownian-motion/</loc>
-    <lastmod>2018-05-05T12:22:10+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/blog/optimal-order-execution-3/</loc>
-    <lastmod>2018-04-29T22:50:27+00:00</lastmod>
+    <lastmod>2018-05-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/optimal-order-execution-2/</loc>
-    <lastmod>2018-04-29T18:53:21+00:00</lastmod>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://allenfrostline.com/tags/notebook/</loc>
-    <lastmod>2018-04-28T00:55:04+00:00</lastmod>
+    <loc>https://allenfrostline.com/blog/optimal-order-execution-3/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/jupyter-virtualenv/</loc>
-    <lastmod>2018-04-28T00:55:04+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/virtualenv/</loc>
-    <lastmod>2018-04-28T00:55:04+00:00</lastmod>
+    <lastmod>2018-04-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/questions/</loc>
     <lastmod>2018-04-23T11:44:38+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/optimal-order-execution-1/</loc>
-    <lastmod>2018-04-23T11:41:38+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/apollo/</loc>
-    <lastmod>2018-04-22T14:33:29+00:00</lastmod>
+    <lastmod>2018-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/switch-hexo-theme-to-apollo/</loc>
-    <lastmod>2018-04-22T14:33:29+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/theme/</loc>
-    <lastmod>2018-04-22T14:33:29+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/bitcoin/</loc>
-    <lastmod>2018-01-09T02:28:00+00:00</lastmod>
+    <lastmod>2018-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</loc>
-    <lastmod>2018-01-09T02:28:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/plotly/</loc>
-    <lastmod>2018-01-09T02:28:00+00:00</lastmod>
+    <lastmod>2018-01-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</loc>
-    <lastmod>2017-12-21T19:52:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/network/</loc>
-    <lastmod>2017-11-29T04:54:00+00:00</lastmod>
+    <lastmod>2017-12-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/network-visualization/</loc>
-    <lastmod>2017-11-29T04:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/visualization/</loc>
-    <lastmod>2017-11-29T04:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/ensemble-modeling/</loc>
-    <lastmod>2017-11-15T16:34:00+00:00</lastmod>
+    <lastmod>2017-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/ensemble-modeling/</loc>
-    <lastmod>2017-11-15T16:34:00+00:00</lastmod>
+    <lastmod>2017-11-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/how-to-build-cpp-with-stdin/</loc>
-    <lastmod>2017-10-10T19:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/stdin/</loc>
-    <lastmod>2017-10-10T19:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/sublime-text/</loc>
-    <lastmod>2017-10-10T19:45:00+00:00</lastmod>
+    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/how-to-get-legends-out-of-the-plot/</loc>
-    <lastmod>2017-09-30T19:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/legends/</loc>
-    <lastmod>2017-09-30T19:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/plot/</loc>
-    <lastmod>2017-09-30T19:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/r/</loc>
-    <lastmod>2017-09-30T19:54:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/disease/</loc>
-    <lastmod>2017-09-07T22:14:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/grandfather/</loc>
-    <lastmod>2017-09-07T22:14:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E5%A4%96%E5%85%AC/</loc>
-    <lastmod>2017-09-07T22:14:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/%E8%B7%AF/</loc>
-    <lastmod>2017-09-07T22:14:00+00:00</lastmod>
+    <lastmod>2017-09-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/route/</loc>
-    <lastmod>2017-09-07T22:14:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/china/</loc>
-    <lastmod>2017-09-03T06:50:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/data-crawling/</loc>
-    <lastmod>2017-09-03T06:50:00+00:00</lastmod>
+    <lastmod>2017-09-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/how-i-collected-over-600k/</loc>
-    <lastmod>2017-09-03T06:50:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/price/</loc>
-    <lastmod>2017-09-03T06:50:00+00:00</lastmod>
+    <lastmod>2017-09-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</loc>
-    <lastmod>2017-05-21T13:48:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/econometrics/</loc>
-    <lastmod>2017-05-21T13:48:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/arimax/</loc>
-    <lastmod>2017-05-21T00:59:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/arma/</loc>
-    <lastmod>2017-05-21T00:59:00+00:00</lastmod>
+    <lastmod>2017-05-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/bitcoin-time-series/</loc>
-    <lastmod>2017-05-21T00:59:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/exchange/</loc>
-    <lastmod>2017-05-21T00:59:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/time-series/</loc>
-    <lastmod>2017-05-21T00:59:00+00:00</lastmod>
+    <lastmod>2017-05-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-operations-research/</loc>
-    <lastmod>2017-03-27T11:40:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/operations-research/</loc>
-    <lastmod>2017-03-27T11:40:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/apple/</loc>
-    <lastmod>2017-03-26T16:32:00+00:00</lastmod>
+    <lastmod>2017-03-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</loc>
-    <lastmod>2017-03-26T16:32:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/pencil/</loc>
-    <lastmod>2017-03-26T16:32:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/classification/</loc>
-    <lastmod>2017-03-12T20:45:00+00:00</lastmod>
+    <lastmod>2017-03-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</loc>
-    <lastmod>2017-03-12T20:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/technical-indicators/</loc>
-    <lastmod>2017-03-12T20:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/xgboost/</loc>
-    <lastmod>2017-03-12T20:45:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/aapl/</loc>
-    <lastmod>2017-03-11T13:37:00+00:00</lastmod>
+    <lastmod>2017-03-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/arma-for-aapl/</loc>
-    <lastmod>2017-03-11T13:37:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/git/</loc>
-    <lastmod>2017-02-13T21:26:00+00:00</lastmod>
+    <lastmod>2017-03-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</loc>
-    <lastmod>2017-02-13T21:26:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/algo/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/crawl/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/trump/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/tweet/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/twitter/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
+    <lastmod>2017-02-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/strategy-trump-tweets/</loc>
-    <lastmod>2017-02-09T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/aliyun/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/centos/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/easytrader/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
+    <lastmod>2017-02-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/trading-system-on-aliyun/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/joinquant/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/jupyter-notebook/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/linux/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/pip/</loc>
-    <lastmod>2017-01-25T15:55:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/lstm/</loc>
-    <lastmod>2017-01-17T12:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/neural-network/</loc>
-    <lastmod>2017-01-17T12:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/prediction/</loc>
-    <lastmod>2017-01-17T12:03:00+00:00</lastmod>
+    <lastmod>2017-01-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</loc>
-    <lastmod>2017-01-17T12:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/gmm/</loc>
-    <lastmod>2017-01-14T12:03:05+00:00</lastmod>
+    <lastmod>2017-01-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/gmm-estimation/</loc>
-    <lastmod>2017-01-14T12:03:05+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/monte-carlo/</loc>
-    <lastmod>2017-01-14T12:03:05+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/christmas/</loc>
-    <lastmod>2017-01-07T12:00:00+00:00</lastmod>
+    <lastmod>2017-01-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/christmas-across-eastern-europe-4/</loc>
-    <lastmod>2017-01-07T12:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/croatia/</loc>
-    <lastmod>2017-01-07T12:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/eastern-europe/</loc>
-    <lastmod>2017-01-07T12:00:00+00:00</lastmod>
+    <lastmod>2017-01-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/christmas-across-eastern-europe-3/</loc>
-    <lastmod>2017-01-04T09:12:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/hungary/</loc>
-    <lastmod>2017-01-04T09:12:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/austria/</loc>
-    <lastmod>2017-01-02T09:12:00+00:00</lastmod>
+    <lastmod>2017-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</loc>
-    <lastmod>2017-01-02T09:12:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/slovak/</loc>
-    <lastmod>2017-01-02T09:12:00+00:00</lastmod>
+    <lastmod>2017-01-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</loc>
-    <lastmod>2016-12-27T19:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/czech/</loc>
-    <lastmod>2016-12-27T19:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/asymptotic-theories/</loc>
-    <lastmod>2016-12-27T19:09:00+00:00</lastmod>
+    <lastmod>2016-12-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</loc>
-    <lastmod>2016-12-27T19:09:00+00:00</lastmod>
+    <lastmod>2016-12-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/to-the-arctic-circle-1/</loc>
     <lastmod>2016-10-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</loc>
-    <lastmod>2016-09-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://allenfrostline.com/tags/site/</loc>
     <lastmod>2016-09-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://allenfrostline.com/enilduck/</loc>

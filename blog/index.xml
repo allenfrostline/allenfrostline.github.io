@@ -6,28 +6,26 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 18 Jan 2024 23:44:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 18 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>My Terminal-Only Development Setup (2)</title>
       <link>https://allenfrostline.com/blog/terminal-only-setup2/</link>
-      <pubDate>Thu, 18 Jan 2024 23:44:00 +0000</pubDate>
+      <pubDate>Thu, 18 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup2/</guid>
       <description>It&amp;rsquo;s definitely been quite a journey recently considering how many editors/IDEs I have tried out, most of which being pure terminal based. It&amp;rsquo;s a fascinating experience to start &amp;ldquo;retro-coding&amp;rdquo; in 2024 on an emulated terminal with an ANSI art banner designed by yourself. It&amp;rsquo;s also about a lot of1 back-and-forth in tooling and configuring which forces me to write this second post on the same topic. The setup in this post is similar to the previous one but with a strong less-is-better preference.</description>
     </item>
     <item>
       <title>My Terminal-Only Development Setup (1)</title>
       <link>https://allenfrostline.com/blog/terminal-only-setup/</link>
-      <pubDate>Wed, 10 Jan 2024 22:40:00 +0000</pubDate>
+      <pubDate>Wed, 10 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup/</guid>
-      <description>Below are some notes I recently took when trying to set up a terminal-only development environment for Python and C++. Everything is assuming a MacOS but should be fairly easy to be ported to a general Unix system. This post will be updated from time to time.
-1. Set up ZSH We will need a terminal before we can call it a terminal-based environment.
-To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</description>
+      <description>Below are some notes I recently took when trying to set up a terminal-only development environment for Python and C++. Everything is assuming a MacOS but should be fairly easy to be ported to a general Unix system. This post will be updated from time to time.&#xA;1. Set up ZSH We will need a terminal before we can call it a terminal-based environment.&#xA;To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</description>
     </item>
     <item>
       <title>Visual Studio Code Shortcuts (that I Use A Lot on MacOS)</title>
       <link>https://allenfrostline.com/blog/vscode_shortcuts/</link>
-      <pubDate>Fri, 22 Dec 2023 11:42:00 +0000</pubDate>
+      <pubDate>Fri, 22 Dec 2023 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/vscode_shortcuts/</guid>
       <description>Below is a list of shortcuts (in descending order roughly based on the frequency) that I use a lot when coding in VS Code on my Mac. It&amp;rsquo;s for personal purposes only and you should definitely ignore this post if you find it any annoying. If there&amp;rsquo;s a + operator between keys, it means they&amp;rsquo;re supposed to be pressed at the same time. If there&amp;rsquo;s a divider | before a key, it means you should release the previous keys and press whatever&amp;rsquo;s following.</description>
     </item>
@@ -36,8 +34,7 @@ To summarize, a terminal is a device or program that provides a user interface, 
       <link>https://allenfrostline.com/blog/write-and-run-python-in-blog/</link>
       <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/write-and-run-python-in-blog/</guid>
-      <description>Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and trustworthy, at least in the long run.
-import numpy as np from types import SimpleNamespace import scipy.stats as ss import statsmodels.api as sm import matplotlib.pyplot as plt n = 1000 u = ss.pareto.rvs(1.5, size=n) v = ss.norm.rvs(0, 1, size=n) x = np.</description>
+      <description>Trying out PyScript, a new tool that embeds (runnable) Python code inside HTML. Cool huh? Even better, it&amp;rsquo;s developed and maintained by Anaconda team which makes it sound more promising and trustworthy, at least in the long run.&#xA;import numpy as np from types import SimpleNamespace import scipy.stats as ss import statsmodels.api as sm import matplotlib.pyplot as plt n = 1000 u = ss.pareto.rvs(1.5, size=n) v = ss.norm.rvs(0, 1, size=n) x = np.</description>
     </item>
     <item>
       <title>Two Pretty Shots</title>
@@ -49,126 +46,119 @@ import numpy as np from types import SimpleNamespace import scipy.stats as ss im
     <item>
       <title>How to Beautify a DataFrame?</title>
       <link>https://allenfrostline.com/blog/beautify-dataframe/</link>
-      <pubDate>Sun, 29 Mar 2020 11:08:00 +0000</pubDate>
+      <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/beautify-dataframe/</guid>
-      <description>In this example we try to visualize a dataframe more intuitively by coloring its backgrounds based on values.
-import pandas as pd import matplotlib.colors as clr First we read data from data.csv. This is expected to be a sample dataset containing two columns, both representing daily returns (in percentage). Eventually we&amp;rsquo;d like to visualize the weekly returns by coloring green for gains and red for losses.
-data = pd.read_csv(&amp;#39;data.csv&amp;#39;, index_col=0, parse_dates=[0]) data.</description>
+      <description>In this example we try to visualize a dataframe more intuitively by coloring its backgrounds based on values.&#xA;import pandas as pd import matplotlib.colors as clr First we read data from data.csv. This is expected to be a sample dataset containing two columns, both representing daily returns (in percentage). Eventually we&amp;rsquo;d like to visualize the weekly returns by coloring green for gains and red for losses.&#xA;data = pd.read_csv(&amp;#39;data.csv&amp;#39;, index_col=0, parse_dates=[0]) data.</description>
     </item>
     <item>
       <title>一个做Dashboard的包</title>
       <link>https://allenfrostline.com/blog/streamlit/</link>
-      <pubDate>Sun, 29 Mar 2020 10:05:00 +0000</pubDate>
+      <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/streamlit/</guid>
       <description>最近发现一个叫Streamlit的包，可以选择命令式或对象式画dashboard，支持富文本（collapsible）打印dict/list</description>
     </item>
     <item>
       <title>写在2020年的第七十四天</title>
       <link>https://allenfrostline.com/blog/to-the-2020s-3/</link>
-      <pubDate>Sun, 15 Mar 2020 22:22:00 +0000</pubDate>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/to-the-2020s-3/</guid>
       <description>今天（2020年3月15日周日）下午美联储紧急宣布降息至0～0.25%超低区间，并推出7000亿美元巨量QE计划。站在此刻回顾过去短短两周时</description>
     </item>
     <item>
       <title>Hide Codes/Prompts in Jupyter Notebook</title>
       <link>https://allenfrostline.com/blog/hide-code-jupyter/</link>
-      <pubDate>Thu, 27 Feb 2020 11:12:00 +0000</pubDate>
+      <pubDate>Thu, 27 Feb 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/hide-code-jupyter/</guid>
-      <description>I&amp;rsquo;m recently asked this question many times: how do I hide the codes in a Jupyter notebook? In fact, I myself encountered this need one or two years ago and had found an almost perfect solution. Check out the steps below.
-Magic Scripts Add on top of the notebook a new cell with scripts:
-from IPython.display import HTML HTML(&amp;#39;&amp;#39;&amp;#39; &amp;lt;script&amp;gt; code_show=false; function code_toggle(){ if(code_show){$(&amp;#39;.prompt, .input, .output_stderr, .output_error&amp;#39;).hide();} else{$(&amp;#39;.input, .prompt, .output_stderr, .</description>
+      <description>I&amp;rsquo;m recently asked this question many times: how do I hide the codes in a Jupyter notebook? In fact, I myself encountered this need one or two years ago and had found an almost perfect solution. Check out the steps below.&#xA;Magic Scripts Add on top of the notebook a new cell with scripts:&#xA;from IPython.display import HTML HTML(&amp;#39;&amp;#39;&amp;#39; &amp;lt;script&amp;gt; code_show=false; function code_toggle(){ if(code_show){$(&amp;#39;.prompt, .input, .output_stderr, .output_error&amp;#39;).hide();} else{$(&amp;#39;.input, .prompt, .output_stderr, .</description>
     </item>
     <item>
       <title>多难如何兴邦？</title>
       <link>https://allenfrostline.com/blog/yi-gongzi/</link>
-      <pubDate>Sun, 02 Feb 2020 21:38:00 +0000</pubDate>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/yi-gongzi/</guid>
       <description>本文转自公众号“衣公子的剑”（已得本人授权），作者衣公子。初见此文已是其被微信删文之后，见有人在这群情激愤的乱局中写这样冷静得彻骨的文章，一</description>
     </item>
     <item>
       <title>Compartmental Epidemic Models</title>
       <link>https://allenfrostline.com/blog/epidemic-models/</link>
-      <pubDate>Wed, 29 Jan 2020 03:12:00 +0000</pubDate>
+      <pubDate>Wed, 29 Jan 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/epidemic-models/</guid>
       <description>While the 2019-nCoV is spreading crazily around the globe, I&amp;rsquo;d like to investigate into the classical epidemic models that academia uses to simulate and analyze these diseases.$\newcommand{P}{\text{P}}\newcommand{d}{\text{d}}$ The most famous ones are referred to as compartmental models where the total population is divided into several compartments with assumptions upon transition rates between these Markov states. The model was first introduced in the early 20th century in literature like Kermack and McKendrick (1927).</description>
     </item>
     <item>
       <title>写在2020年的第二十七天</title>
       <link>https://allenfrostline.com/blog/to-the-2020s-2/</link>
-      <pubDate>Mon, 27 Jan 2020 12:25:00 +0000</pubDate>
+      <pubDate>Mon, 27 Jan 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/to-the-2020s-2/</guid>
       <description>没想到这么快就会写第二篇，更没想到To the 2020s居然能出到第二篇，只能说风云万变一瞬息，计划永远赶不上变化。但春节以来苦事良多，情感积郁于</description>
     </item>
     <item>
       <title>写在2020年的第一天</title>
       <link>https://allenfrostline.com/blog/to-the-2020s-1/</link>
-      <pubDate>Wed, 01 Jan 2020 11:39:00 +0000</pubDate>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/to-the-2020s-1/</guid>
       <description>昨晚脑子一热，去Navy Pier看了芝加哥的跨年烟花表演。这种活动我打小是不爱去的——不管是哪里商场促销，还是谁家饭店开门，抑或是路边又出了</description>
     </item>
     <item>
       <title>给妈妈的信</title>
       <link>https://allenfrostline.com/blog/letter50/</link>
-      <pubDate>Sun, 29 Dec 2019 12:15:00 +0000</pubDate>
+      <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/letter50/</guid>
       <description>亲妈好： 见字如面。首先祝你五十大寿夸落！毕竟五十年还是很长的，十年一次的纪念日，伢妈随随便便就已经过第五个了，这是很牛逼的事情。我从伢妈人生</description>
     </item>
     <item>
       <title>关于搬家</title>
       <link>https://allenfrostline.com/blog/moving/</link>
-      <pubDate>Tue, 17 Dec 2019 08:50:00 +0000</pubDate>
+      <pubDate>Tue, 17 Dec 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/moving/</guid>
       <description>最近一直在忙搬家的事情，自从临近毕业就在忙活各种事情：搬家具、藏书（并没有多少）、各种衣服被褥、电脑和自己。收拾屋子的时候空空落落，搬家公司</description>
     </item>
     <item>
       <title>谈欲望</title>
       <link>https://allenfrostline.com/blog/on-desire/</link>
-      <pubDate>Sat, 30 Nov 2019 08:45:00 +0000</pubDate>
+      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/on-desire/</guid>
       <description>昨天从一个地方1看到欲望的（一种）定义，觉得很是在理，所以摘抄在这里： 欲望是对缺乏的意识，以及我们为了填补缺乏所付出的努力，而缺乏却永不止息</description>
     </item>
     <item>
       <title>Eigenvectors from Eigenvalues?</title>
       <link>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</link>
-      <pubDate>Fri, 15 Nov 2019 17:13:00 +0000</pubDate>
+      <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/eigenvectors-from-eigenvalues/</guid>
       <description>The paper uploaded yesterday by Peter Denton, Stephen Parke, Terence Tao and Xining Zhang has immediately set off a heated globalwide discussion. A new theorem on something that has been deeply rooted in moderm mathematics for hundreds of years, that is unseen and unexpected, which is basically the reason why people are so excited about it. In this post, however, I&amp;rsquo;d like to share some doubts of mine on this new algorithm of finding eigenvectors.</description>
     </item>
     <item>
       <title>Josephus Problem</title>
       <link>https://allenfrostline.com/blog/josephus-problem/</link>
-      <pubDate>Thu, 14 Nov 2019 13:56:00 +0000</pubDate>
+      <pubDate>Thu, 14 Nov 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/josephus-problem/</guid>
       <description>A terribly large number of hostages, say $n=1000$ people, are standing in a circle. The terrorists claim that once the circle is formed, they&amp;rsquo;ll ask the poor people to kill the $k=4$-th people to the left of him/her. Since the queue is circular, when it comes to the people standing on the leftmost spots, the next person to be killed may be from the first several ones as the procedure can repeat untill there&amp;rsquo;s only one person alive.</description>
     </item>
     <item>
       <title>Texas Hold&#39;em Series (6): Range Estimation</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-6/</link>
-      <pubDate>Tue, 05 Nov 2019 10:11:00 +0000</pubDate>
+      <pubDate>Tue, 05 Nov 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-6/</guid>
       <description>Range is important. A poker player without a mature preflop1 range is more dangerous than a blind soldier aiming at random people on the battlefield, or a vicious chef throwing anything within reach into his pot. On the other hand, given your opponents&amp;rsquo; range (think somehow from a God&amp;rsquo;s eye view) you may be able to do whatever you want with your hand cards, no matter how poor they actually are.</description>
     </item>
     <item>
       <title>黄桃罐头</title>
       <link>https://allenfrostline.com/blog/canned-yellow-peach/</link>
-      <pubDate>Thu, 31 Oct 2019 10:15:00 +0000</pubDate>
+      <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/canned-yellow-peach/</guid>
       <description>好多年没吃黄桃罐头了，上次去HMart碰巧看见就买了一罐，美名其曰回忆童年。黄桃罐头，顾名思义就是黄桃渍在一罐糖水中间，除了糖分，还有防腐剂</description>
     </item>
     <item>
       <title>Adding a Python 2.7 Kernel in Jupyter</title>
       <link>https://allenfrostline.com/blog/py27-kernel/</link>
-      <pubDate>Wed, 30 Oct 2019 20:44:00 +0000</pubDate>
+      <pubDate>Wed, 30 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/py27-kernel/</guid>
-      <description>It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:
-Up-to-Date Anaconda Before we start installing anything, let&amp;rsquo;s update anaconda.
-conda update conda In case of error concerning setuptools, you may reinstall it before the update. In that case, the scripts would be
-conda uninstall setuptools conda install setuptools conda update --force conda Python 2.7 Environment We need, of course, a brand new python 2.</description>
+      <description>It can be tricky when someone asks you to use Python 2.7 in a jupyter notebook nowadays, but not impossible:&#xA;Up-to-Date Anaconda Before we start installing anything, let&amp;rsquo;s update anaconda.&#xA;conda update conda In case of error concerning setuptools, you may reinstall it before the update. In that case, the scripts would be&#xA;conda uninstall setuptools conda install setuptools conda update --force conda Python 2.7 Environment We need, of course, a brand new python 2.</description>
     </item>
     <item>
       <title>Bokeh Plots in a Blog Post</title>
       <link>https://allenfrostline.com/blog/bokeh-in-post/</link>
-      <pubDate>Mon, 28 Oct 2019 15:30:00 +0000</pubDate>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/bokeh-in-post/</guid>
       <description>Markdown is awesome. It is awesome &amp;lsquo;cause it provides a universal interface to write anything and store &amp;rsquo;em up. However, it&amp;rsquo;s been a frustration for me being unable to embed bokeh plots in markdown. Compared with static images, interactive plots is way more condensed in information and can sometimes save a real lot of time. Apparently, by the time I wrote this post, I&amp;rsquo;ve already figured out a way to embed this kind of plots in my blog, but the question is: how does it work?</description>
     </item>
@@ -177,38 +167,33 @@ conda uninstall setuptools conda install setuptools conda update --force conda P
       <link>https://allenfrostline.com/blog/four-spaces-svd/</link>
       <pubDate>Wed, 23 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/four-spaces-svd/</guid>
-      <description>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\mathbf}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}C(\bs{A})$, the null space $N(\bs{A})$, the row space $C(\bs{A}&#39;)$, and the left null space $N(\bs{A}&#39;)$.
-In this post, we denote SVD of matrix $\bs{A}\in\R^{m\times n}$ as
-$$ \bs{A} = \bs{U}\boldsymbol{\Sigma}\bs{V}&#39; $$
-where $\bs{U}\in\R^{m\times m}$, $\boldsymbol{\Sigma}\in\R^{m\times n}$ and $\bs{V}\in\R^{n\times n}$. $\bs{U}$ and $\bs{V}$ are orthonormal, namely $\bs{U}&#39;\bs{U}=\bs{V}&#39;\bs{V}=\bs{I}$. $\boldsymbol{\Sigma}$ is diagonal (despite being rectangle), which means all entries $\sigma_{ij}$ are zero if $i\neq j$.</description>
+      <description>The singular value decomposition (SVD) can be used to get orthonormal bases for each of the four subspaces: the column space $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\mathbf}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}C(\bs{A})$, the null space $N(\bs{A})$, the row space $C(\bs{A}&#39;)$, and the left null space $N(\bs{A}&#39;)$.&#xA;In this post, we denote SVD of matrix $\bs{A}\in\R^{m\times n}$ as&#xA;$$ \bs{A} = \bs{U}\boldsymbol{\Sigma}\bs{V}&#39; $$&#xA;where $\bs{U}\in\R^{m\times m}$, $\boldsymbol{\Sigma}\in\R^{m\times n}$ and $\bs{V}\in\R^{n\times n}$. $\bs{U}$ and $\bs{V}$ are orthonormal, namely $\bs{U}&#39;\bs{U}=\bs{V}&#39;\bs{V}=\bs{I}$. $\boldsymbol{\Sigma}$ is diagonal (despite being rectangle), which means all entries $\sigma_{ij}$ are zero if $i\neq j$.</description>
     </item>
     <item>
       <title>谈《笑傲江湖》</title>
       <link>https://allenfrostline.com/blog/xiao-ao-jiang-hu/</link>
-      <pubDate>Mon, 21 Oct 2019 10:49:00 +0000</pubDate>
+      <pubDate>Mon, 21 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/xiao-ao-jiang-hu/</guid>
       <description>初看《笑傲江湖》（下称《笑》）依稀是小学的时候，看的吕颂贤96版的国配。彼时看入眼的，从来没有儿女情长、正邪难分，只记得令狐冲潇洒恣肆嗜酒如</description>
     </item>
     <item>
       <title>Notes on Mathematical Market Microstructure</title>
       <link>https://allenfrostline.com/blog/notes-on-microstructure/</link>
-      <pubDate>Fri, 04 Oct 2019 18:15:00 +0000</pubDate>
+      <pubDate>Fri, 04 Oct 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-microstructure/</guid>
       <description>Following are my lecture notes from Prof. Yuri Balasanov&amp;rsquo;s course Mathematical Market Microstructure.$\newcommand{F}{\mathcal{F}}\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Cov}{\text{Cov}}\newcommand{P}{\text{P}}\newcommand{E}{\text{E}}\newcommand{V}{\text{V}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}\newcommand{d}{\text{d}}$ Introduction In this section we start with an overview of market microstructure as a whole. Definition of Market Microstructure Maureen O&amp;rsquo;Hara defines market microstructure as &amp;hellip; the study of the process and outcomes of exchanging assets under explicit trading rules. While much of economics abstracts from the mechanics of trading, microstructure literature analyzes how specific trading mechanisms</description>
     </item>
     <item>
       <title>Notes on Multivariate Data Analysis via Matrix Decomposition</title>
       <link>https://allenfrostline.com/blog/notes-on-matrix-decomp/</link>
-      <pubDate>Mon, 30 Sep 2019 21:06:00 +0000</pubDate>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-matrix-decomp/</guid>
-      <description>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning. $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}$
-Notations First let&amp;rsquo;s give some standard notations used in this course. Let&amp;rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.
-Matrix Multiplication We denote a matrix $\mathbf{A}\in\R^{m\times n}$, with its entries defined as $[a_{ij}]_{i,j=1}^{m,n}$.</description>
+      <description>These are the notes taken on my master course Multivariate Data Analysis via Matrix Decomposition. If you&amp;rsquo;re confused with the course name, you can think of this as a statistical course on unsupervised learning. $\newcommand{1}[1]{\unicode{x1D7D9}_{\{#1\}}}\newcommand{Corr}{\text{Corr}}\newcommand{E}{\text{E}}\newcommand{Cov}{\text{Cov}}\newcommand{Var}{\text{Var}}\newcommand{span}{\text{span}}\newcommand{bs}{\boldsymbol}\newcommand{R}{\mathbb{R}}\newcommand{rank}{\text{rank}}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}\newcommand{diag}{\text{diag}}\newcommand{tr}{\text{tr}}\newcommand{braket}[1]{\left\langle#1\right\rangle}\newcommand{C}{\mathbb{C}}$&#xA;Notations First let&amp;rsquo;s give some standard notations used in this course. Let&amp;rsquo;s assume no prior knowledge in linear algebra and start from matrix multiplication.&#xA;Matrix Multiplication We denote a matrix $\mathbf{A}\in\R^{m\times n}$, with its entries defined as $[a_{ij}]_{i,j=1}^{m,n}$.</description>
     </item>
     <item>
       <title>行李箱</title>
       <link>https://allenfrostline.com/blog/suitcase/</link>
-      <pubDate>Sat, 28 Sep 2019 08:40:00 +0000</pubDate>
+      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/suitcase/</guid>
       <description>原本应该飞近十四小时的航班，提前了足足两个小时落地在芝加哥奥黑尔机场。“很抱歉我们提前了太多，机场还在努力安排登机口给我们，感谢您的耐心等候</description>
     </item>
@@ -217,9 +202,7 @@ Matrix Multiplication We denote a matrix $\mathbf{A}\in\R^{m\times n}$, with its
       <link>https://allenfrostline.com/blog/n-fac-square/</link>
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/n-fac-square/</guid>
-      <description>I read about this simple yet interesting question the other day:
-Can $n!$ be a square number?
-Of course, here we implcitly assume that $n$ is a positive integer. Moreover, we&amp;rsquo;re aware of the trivial case when $n=1$ (and yes it holds in that case). The problem seems easy at first glance but turns out not at all. There are a bunch of ways for you to factorize $n!$ into prime numbers, to construct a pattern of products in the form of a square number, etc.</description>
+      <description>I read about this simple yet interesting question the other day:&#xA;Can $n!$ be a square number?&#xA;Of course, here we implcitly assume that $n$ is a positive integer. Moreover, we&amp;rsquo;re aware of the trivial case when $n=1$ (and yes it holds in that case). The problem seems easy at first glance but turns out not at all. There are a bunch of ways for you to factorize $n!$ into prime numbers, to construct a pattern of products in the form of a square number, etc.</description>
     </item>
     <item>
       <title>Continuous Integration in Blogging</title>
@@ -231,14 +214,14 @@ Of course, here we implcitly assume that $n$ is a positive integer. Moreover, we
     <item>
       <title>一篇旧文</title>
       <link>https://allenfrostline.com/blog/an-old-article/</link>
-      <pubDate>Sun, 01 Sep 2019 14:48:00 +0000</pubDate>
+      <pubDate>Sun, 01 Sep 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/an-old-article/</guid>
       <description>翻QQ空间，看到一篇2012年1月18日的文章，放在这里偶尔看看。 很久没有发现了，原来一年的疲惫与欣喜，可以像沙子一样顺着某种东西一涌而下，</description>
     </item>
     <item>
       <title>Hybrid Sentiment-Momentum Strategy in Cryptocurrency Market</title>
       <link>https://allenfrostline.com/blog/crypto-news/</link>
-      <pubDate>Sun, 09 Jun 2019 11:04:00 +0000</pubDate>
+      <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/crypto-news/</guid>
       <description>This is an exploratory research trying to implement a simple yet robust sentiment analysis mechanism in the cryptocurrency market. We call it a hybrid sentiment-momentum strategy as it applies context analysis (or more specifically, word analysis) into traditional momentum strategies and adjusts position automatically over time using both factors. The hybrid strategy is implemented with backtesing period from Dec. 17th 2017 to May 2nd 2019. It yields cumulative return of 229% and a remarkable Sharpe ratio of 2.</description>
     </item>
@@ -252,128 +235,114 @@ Of course, here we implcitly assume that $n$ is a positive integer. Moreover, we
     <item>
       <title>Stock Price Simulation</title>
       <link>https://allenfrostline.com/blog/stock-price-simulation/</link>
-      <pubDate>Fri, 10 May 2019 14:17:22 +0000</pubDate>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/stock-price-simulation/</guid>
-      <description>In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.
-Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:
-def prepend(arr, val=0): return np.pad(arr, (1, 0), mode=&amp;#39;constant&amp;#39;, constant_values=val) Brownian Motion Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements.</description>
+      <description>In this post, I&amp;rsquo;ll introduce four stochastic processes commonly used to simulate stock prices. Formulation and Python implementation are presented one by one, with brief comments afterwards.&#xA;Before introducing the four methods, we first define a handy function to prepend a zero before a numpy array:&#xA;def prepend(arr, val=0): return np.pad(arr, (1, 0), mode=&amp;#39;constant&amp;#39;, constant_values=val) Brownian Motion Brownian motion (BM) was initially exhibited and modeled in gas or liquid particle movements.</description>
     </item>
     <item>
       <title>Content Filtering with Hexo Tipue-Search Engine</title>
       <link>https://allenfrostline.com/blog/content-filtering-tipue-search/</link>
-      <pubDate>Fri, 03 May 2019 13:40:57 +0000</pubDate>
+      <pubDate>Fri, 03 May 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/content-filtering-tipue-search/</guid>
       <description>It&amp;rsquo;s always been a headache to me that I cannot have my blog&amp;rsquo;s search engine to show content I want — there&amp;rsquo;re always something you don&amp;rsquo;t want &amp;rsquo;em to show up in a search result, like password protected posts (shown as encrypted codes) and random pages for a certain project (some even don&amp;rsquo;t have a title, and this tipue-search would still show them in the searching result — with a</description>
     </item>
     <item>
       <title>Revert GitHub Commit History?</title>
       <link>https://allenfrostline.com/blog/revert-github-commit/</link>
-      <pubDate>Fri, 03 May 2019 13:28:04 +0000</pubDate>
+      <pubDate>Fri, 03 May 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/revert-github-commit/</guid>
       <description>There is a piece of nicely given advice I&amp;rsquo;d like to share with you: do never post anything too large on your Hexo blog. The suggestion given above was a joke to me until yesterday. I thought I can just wait for some more minutes and then everything will be fine. Pages will end up posted with probability one in the long run — well, they didn&amp;rsquo;t make it this time.</description>
     </item>
     <item>
       <title>Animation in Matplotlib?</title>
       <link>https://allenfrostline.com/blog/animation-matplotlib/</link>
-      <pubDate>Thu, 25 Apr 2019 18:27:01 +0000</pubDate>
+      <pubDate>Thu, 25 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/animation-matplotlib/</guid>
-      <description>In this tiny piece of post I&amp;rsquo;m gonna post how you can make animations using the matplotlib module in Python. Things get much more intuitive when they move, don&amp;rsquo;t they?
-We&amp;rsquo;re here trying to plot two (thick) sine curves which have different offsets on the x-axis direction, and those offsets increases with an indicator called frame_no.
-import numpy as np import matplotlib.pyplot as plt from matplotlib.animation import FuncAnimation plt.rcParams[&amp;#39;animation.html&amp;#39;] = &amp;#39;html5&amp;#39; x = np.</description>
+      <description>In this tiny piece of post I&amp;rsquo;m gonna post how you can make animations using the matplotlib module in Python. Things get much more intuitive when they move, don&amp;rsquo;t they?&#xA;We&amp;rsquo;re here trying to plot two (thick) sine curves which have different offsets on the x-axis direction, and those offsets increases with an indicator called frame_no.&#xA;import numpy as np import matplotlib.pyplot as plt from matplotlib.animation import FuncAnimation plt.rcParams[&amp;#39;animation.html&amp;#39;] = &amp;#39;html5&amp;#39; x = np.</description>
     </item>
     <item>
       <title>How to Get Variable Name as a String in Python</title>
       <link>https://allenfrostline.com/blog/var-name-python/</link>
-      <pubDate>Tue, 23 Apr 2019 18:36:40 +0000</pubDate>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/var-name-python/</guid>
-      <description>Although it&amp;rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable names as columns names in a pandas dataframe. How are we gonna implement this in Python?
-There is a nasty workaround provided somewhere on Stackoverflow (sorry but I forgot the actual thread):
-def varName(p): for k, v in globals().items(): if id(p) == id(v): return k foo = &amp;#39;well&amp;#39; far = 12345 print(varName(foo)) print(varName(far)) print(varName(varName)) foo far varName The method utilized the fact that Python stores all variables in the global() dictionary where keys are corresponding id values.</description>
-    </item>
-    <item>
-      <title>The Perfect Market Maker: Is it Possible?</title>
-      <link>https://allenfrostline.com/blog/perfect-market-maker/</link>
-      <pubDate>Tue, 23 Apr 2019 01:02:36 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/perfect-market-maker/</guid>
-      <description>In this research report we try to simulate and explore difference scenarios for a &amp;ldquo;perfect&amp;rdquo; market maker in the Bitcoin market. By &amp;ldquo;perfect&amp;rdquo; we refer to the capability to capture all spreads on the right side of any trade, i.e. there will be no spread loss at all. Although this setting is too perfect to be considered comparable with real trading, our analysis w.r.t. model parameters are believed to be insightful still.</description>
+      <description>Although it&amp;rsquo;s not recomended, people sometimes need the variable names. For example, you want to automate the process of generating a dictionary with variable names as keys, or use variable names as columns names in a pandas dataframe. How are we gonna implement this in Python?&#xA;There is a nasty workaround provided somewhere on Stackoverflow (sorry but I forgot the actual thread):&#xA;def varName(p): for k, v in globals().items(): if id(p) == id(v): return k foo = &amp;#39;well&amp;#39; far = 12345 print(varName(foo)) print(varName(far)) print(varName(varName)) foo far varName The method utilized the fact that Python stores all variables in the global() dictionary where keys are corresponding id values.</description>
     </item>
     <item>
       <title>Spread Trading: XOP and DRIP</title>
       <link>https://allenfrostline.com/blog/spread-trading-etf/</link>
-      <pubDate>Tue, 23 Apr 2019 00:32:04 +0000</pubDate>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/spread-trading-etf/</guid>
       <description>In this strategy we try to do spread trading based on the M-day (adjusted) returns of two highly related ETFs (exchange-traded funds). The intuition is to hedge the one-sided risks of buy-and-holding one specific ETF with (in expectation) increasing returns, by holding an opposite position of another ETF with decreasing returns. Once we have that the two ETFs&amp;rsquo; returns are highly correlated, we can trade and make profit by this sort of pair trading.</description>
     </item>
     <item>
+      <title>The Perfect Market Maker: Is it Possible?</title>
+      <link>https://allenfrostline.com/blog/perfect-market-maker/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/perfect-market-maker/</guid>
+      <description>In this research report we try to simulate and explore difference scenarios for a &amp;ldquo;perfect&amp;rdquo; market maker in the Bitcoin market. By &amp;ldquo;perfect&amp;rdquo; we refer to the capability to capture all spreads on the right side of any trade, i.e. there will be no spread loss at all. Although this setting is too perfect to be considered comparable with real trading, our analysis w.r.t. model parameters are believed to be insightful still.</description>
+    </item>
+    <item>
       <title>Bad Interpreter Error of Jupyter and its Solution</title>
       <link>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</link>
-      <pubDate>Wed, 17 Apr 2019 14:56:13 +0000</pubDate>
+      <pubDate>Wed, 17 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/bad-interpreter-error-jupyter/</guid>
-      <description>I always wanna clean up my dev environment thoroughly, once for good. After all these years messing up with virtualenv, conda, pip as well as all the other languages than Python: R, Java, Node.js, Julia, Golang&amp;hellip; My computer finally started going nuts. Jupyter notebook threw me the following error every time I start it:
-zsh: /usr/local/bin/jupyter: bad interpreter: /usr/local/opt/python/bin/python3.7: no such file or directory It turns out that the cause was that along with reinstallation of Python, the homebrew symlinks to Jupyter are now broken.</description>
+      <description>I always wanna clean up my dev environment thoroughly, once for good. After all these years messing up with virtualenv, conda, pip as well as all the other languages than Python: R, Java, Node.js, Julia, Golang&amp;hellip; My computer finally started going nuts. Jupyter notebook threw me the following error every time I start it:&#xA;zsh: /usr/local/bin/jupyter: bad interpreter: /usr/local/opt/python/bin/python3.7: no such file or directory It turns out that the cause was that along with reinstallation of Python, the homebrew symlinks to Jupyter are now broken.</description>
     </item>
     <item>
       <title>Texas Hold &#39;em Series (5): Poker Game (w/ GUI)</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-5/</link>
-      <pubDate>Tue, 16 Apr 2019 23:10:00 +0000</pubDate>
+      <pubDate>Tue, 16 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-5/</guid>
       <description>I wrote a poker game. This is a simple Texas Hold &amp;rsquo;em game running on Mac OS. All scripts are written in pure Python. The main GUI is written using the Python module PySimpleGUI, and hand evaluation is done by refering to a hand value table pre-calculated together with Monte Carlo simulation. See here for detailed explanation of hand evaluation. Together with the GUI version, I also include here a primitive commmandline version with ColorPrint support, which you may download and include from this repo.</description>
     </item>
     <item>
       <title>Texas Hold &#39;em Series (4): Hand Evaluation</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-4/</link>
-      <pubDate>Tue, 09 Apr 2019 18:12:00 +0000</pubDate>
+      <pubDate>Tue, 09 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-4/</guid>
       <description>In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. Poker is essentially an incomplete information game. Different from Go, where you can see all stones placed on the chessboard and thereby &amp;ldquo;solve&amp;rdquo; an optimal move, you never know you opponents&amp;rsquo; pocket cards until showdown (yet even then, people mucks).</description>
     </item>
     <item>
       <title>Texas Hold &#39;em Series (3): Odds Chart</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-3/</link>
-      <pubDate>Fri, 05 Apr 2019 18:35:00 +0000</pubDate>
+      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-3/</guid>
       <description>One of the most important aspects of Texas Hold&amp;rsquo;em is the value of each two-card hand before the flop. The decision of how to play your first two cards is something you face every hand, and the value of your first two cards is highly correlated to your probability of winning. Regarding this people have concluded detailed results from playing (and statistics). In this post we&amp;rsquo;re gonna introduce one of the most widely-used results in hold &amp;rsquo;em: the odds chart.</description>
     </item>
     <item>
       <title>Texas Hold &#39;em Series (2): Poker Hands Dataset</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-2/</link>
-      <pubDate>Sat, 30 Mar 2019 14:25:00 +0000</pubDate>
+      <pubDate>Sat, 30 Mar 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-2/</guid>
-      <description>In this post, I&amp;rsquo;ll walk through the whole process to download, clean and then browse one of world&amp;rsquo;s largest poker hands history dataset, the IRC Poker Database1, which is a little bit aged but well-known for its huge size. The work we&amp;rsquo;re doing here is meant to be a preparation for further analysis and model training.
-History Before the advent of real-money online poker servers, there was the Internet Relay Chat (IRC) poker server.</description>
+      <description>In this post, I&amp;rsquo;ll walk through the whole process to download, clean and then browse one of world&amp;rsquo;s largest poker hands history dataset, the IRC Poker Database1, which is a little bit aged but well-known for its huge size. The work we&amp;rsquo;re doing here is meant to be a preparation for further analysis and model training.&#xA;History Before the advent of real-money online poker servers, there was the Internet Relay Chat (IRC) poker server.</description>
     </item>
     <item>
       <title>Texas Hold &#39;em Series (1): Basic Concepts</title>
       <link>https://allenfrostline.com/blog/texas-holdem-series-1/</link>
-      <pubDate>Thu, 28 Mar 2019 16:33:00 +0000</pubDate>
+      <pubDate>Thu, 28 Mar 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/texas-holdem-series-1/</guid>
       <description>Starting from today, I&amp;rsquo;m gonna write a series of posts on Texas Hold &amp;rsquo;em, one of world&amp;rsquo;s most famous forms of poker. The game is rather complicated, especially considering its origin dating back to early 20th century. In this post, I will list the bare-bones of hold &amp;rsquo;em. These concepts may sound boring to you if you are a veteran poker player, but I just want to make sure we&amp;rsquo;re talking in the same language — or building using the same bricks.</description>
     </item>
     <item>
       <title>Random Projection and Its Expectation</title>
       <link>https://allenfrostline.com/blog/random-projection-and-expectation/</link>
-      <pubDate>Sat, 16 Mar 2019 12:50:50 +0000</pubDate>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/random-projection-and-expectation/</guid>
-      <description>A couple of months ago I was asked the following question during an interview (for propriatary concerns I&amp;rsquo;m not gonna disclose the industry or name of the company): $\newcommand{R}{\mathbb{R}}\newcommand{E}{\text{E}}\newcommand{bs}{\mathbf}\newcommand{N}{\mathbb{N}}$
-Assume $k$, $n\in\N$ and $k &amp;lt; n$. For a uniformly chosen subspace $\R^k\subsetneq\R^n$ we define the orthogonal projection as $P:\R^n\mapsto\R^n$. Find $\E[P(\bs{v})]$ where $\bs{v}\in\R^n$ is given.
-It&amp;rsquo;s an interesting question and also a totally novel one to me at that time. How do we define a &amp;ldquo;uniformly&amp;rdquo; chosen subspace and its corresponding projection?</description>
+      <description>A couple of months ago I was asked the following question during an interview (for propriatary concerns I&amp;rsquo;m not gonna disclose the industry or name of the company): $\newcommand{R}{\mathbb{R}}\newcommand{E}{\text{E}}\newcommand{bs}{\mathbf}\newcommand{N}{\mathbb{N}}$&#xA;Assume $k$, $n\in\N$ and $k &amp;lt; n$. For a uniformly chosen subspace $\R^k\subsetneq\R^n$ we define the orthogonal projection as $P:\R^n\mapsto\R^n$. Find $\E[P(\bs{v})]$ where $\bs{v}\in\R^n$ is given.&#xA;It&amp;rsquo;s an interesting question and also a totally novel one to me at that time. How do we define a &amp;ldquo;uniformly&amp;rdquo; chosen subspace and its corresponding projection?</description>
     </item>
     <item>
       <title>Notes on Foreign Exchange</title>
       <link>https://allenfrostline.com/blog/notes-on-foreign-exchange/</link>
-      <pubDate>Thu, 21 Feb 2019 23:08:49 +0000</pubDate>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-foreign-exchange/</guid>
-      <description>These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&amp;rsquo;s contents and thus please feel free to point out if there&amp;rsquo;s anything you find important but missing here. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\MGF}{\text{MGF}}$
-Pricing in Theory Notations $d$ $\equiv$ superscript for domestic currency $f$ $\equiv$ superscript for foreign currency $t$ $\equiv$ current time $T$ $\equiv$ delivery time $S_t$ $\equiv$ spot price of a foreign currency in domestic currency $N$ $\equiv$ number of units in transaction $R$ $\equiv$ fixed contract rate $r$ $\equiv$ interest rate $PV$ $\equiv$ present value $P$ $\equiv$ PV of a zero-coupon bond $D$ $\equiv$ currency deposit (money market account) FX Spot Price The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) $1 = S_t$.</description>
+      <description>These are the lecture notes on foreign exchange market and theories. I only covered the first half quarter&amp;rsquo;s contents and thus please feel free to point out if there&amp;rsquo;s anything you find important but missing here. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\MGF}{\text{MGF}}$&#xA;Pricing in Theory Notations $d$ $\equiv$ superscript for domestic currency $f$ $\equiv$ superscript for foreign currency $t$ $\equiv$ current time $T$ $\equiv$ delivery time $S_t$ $\equiv$ spot price of a foreign currency in domestic currency $N$ $\equiv$ number of units in transaction $R$ $\equiv$ fixed contract rate $r$ $\equiv$ interest rate $PV$ $\equiv$ present value $P$ $\equiv$ PV of a zero-coupon bond $D$ $\equiv$ currency deposit (money market account) FX Spot Price The spot price of a foreign currency is (LHS as units of foreign currency, RHS as of domestic currency) $1 = S_t$.</description>
     </item>
     <item>
       <title>Notes on Stochastic Calculus</title>
       <link>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</link>
-      <pubDate>Thu, 21 Feb 2019 23:08:38 +0000</pubDate>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-stochastic-calculus/</guid>
-      <description>This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, etc. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\sgn}{\text{sgn}}\newcommand{\tr}{\text{tr}}\newcommand{\bs}{\boldsymbol}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\R}{\mathbb{R}}\newcommand{\MGF}{\text{MGF}}$
-MGF of Normal Distribution For $X\sim\N(\mu,\sigma^2)$, we have $\MGF(\theta)=\exp(\theta\mu + \theta^2\sigma^2/2)$. We have $\E(X^k) = \MGF^{\ (k)}(0)$.
-Truncated Normal Distribution Consider a two-sided truncation $(a,b)$ on $\N(\mu,\sigma^2)$, then
-$$ \E[X\mid a &amp;lt; X &amp;lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\beta)}{\Phi(\alpha) - \Phi(\beta)} $$</description>
+      <description>This is a brief selection of my notes on the stochastic calculus course. Content may be updated at times. The general topics range from martingale, Brownian motion and its variants, option pricing, etc. $\newcommand{\E}{\text{E}}\newcommand{\P}{\text{P}}\newcommand{\Q}{\text{Q}}\newcommand{\F}{\mathcal{F}}\newcommand{\d}{\text{d}}\newcommand{\N}{\mathcal{N}}\newcommand{\sgn}{\text{sgn}}\newcommand{\tr}{\text{tr}}\newcommand{\bs}{\boldsymbol}\newcommand{\eeq}{\ \!=\mathrel{\mkern-3mu}=\ \!}\newcommand{\eeeq}{\ \!=\mathrel{\mkern-3mu}=\mathrel{\mkern-3mu}=\ \!}\newcommand{\R}{\mathbb{R}}\newcommand{\MGF}{\text{MGF}}$&#xA;MGF of Normal Distribution For $X\sim\N(\mu,\sigma^2)$, we have $\MGF(\theta)=\exp(\theta\mu + \theta^2\sigma^2/2)$. We have $\E(X^k) = \MGF^{\ (k)}(0)$.&#xA;Truncated Normal Distribution Consider a two-sided truncation $(a,b)$ on $\N(\mu,\sigma^2)$, then&#xA;$$ \E[X\mid a &amp;lt; X &amp;lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\beta)}{\Phi(\alpha) - \Phi(\beta)} $$</description>
     </item>
     <item>
       <title>Billiard Tournament: Martingale, Kelly Criterion and More</title>
@@ -385,346 +354,308 @@ $$ \E[X\mid a &amp;lt; X &amp;lt; b] = \mu - \sigma\frac{\phi(\alpha) - \phi(\be
     <item>
       <title>Deep Learning on MacOS with AMD eGPU?</title>
       <link>https://allenfrostline.com/blog/deep-learning-amd-gpu/</link>
-      <pubDate>Mon, 07 Jan 2019 02:05:00 +0000</pubDate>
+      <pubDate>Mon, 07 Jan 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/deep-learning-amd-gpu/</guid>
       <description>I&amp;rsquo;ve recently sold my Nvidia GTX 1080 eGPU1 after two month&amp;rsquo;s waiting in vain for a compatible Nvidia video driver for MacOS 10.14 (Mojave). Either Apple&amp;rsquo;s or Nvidia&amp;rsquo;s fault, I don&amp;rsquo;t care any more. Right away, I ordered an AMD Radeon RX Vega 64 on Newegg. The card arrived two days later and it looked sexy at first sight. It&amp;rsquo;s plug-and-play as expected and performed just as good as its predecessor, regardless of serious gaming, video editing or whatever.</description>
     </item>
     <item>
       <title>To the Arctic Circle (Again)!</title>
       <link>https://allenfrostline.com/blog/to-the-arctic-circle-2/</link>
-      <pubDate>Fri, 04 Jan 2019 10:27:40 +0000</pubDate>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/to-the-arctic-circle-2/</guid>
       <description>It&amp;rsquo;s been more than two years since my last trip to the Arctic Circle when I was still studying in the Netherlands. Our adventurous hike in Abisko, in endless Northern European Mountains, was still a frequent dream of mine. This time we went to Fairbanks, Alaska, for Aurora and also, for another Arctic experience.</description>
     </item>
     <item>
       <title>拔草：The Pump House</title>
       <link>https://allenfrostline.com/blog/checkin-pump-house/</link>
-      <pubDate>Thu, 03 Jan 2019 14:35:00 +0000</pubDate>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/checkin-pump-house/</guid>
-      <description>&lt;table style=&#34;box-shadow: 0; table-layout: fixed; width: 100%; border-bottom: 0;&#34;&gt;&lt;tbody&gt;&lt;tr&gt;
-&lt;td width=&#34;56.8%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/checkin2.1.png&#34;&gt;&lt;/td&gt;
-&lt;td width=&#34;43.2%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/checkin2.2.png&#34;&gt;&lt;/td&gt;
-&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
-&lt;p&gt;We spent five days in Fairbanks, five days and six nights. Apart from the two simple dinners we took on the hike and one with beef noodles at the arctic circle camp, the Pump House ended up as the very choice of our best-recommended feasts. It is a fine dining restaurant and probably the best in the town, as you get a thumb-up to this little house from nearly every local you meet. It is definitely one of the most enjoyable moments throughout our stay in Fairbanks, most warming, relaxing and taste-bud-exciting.&lt;/p&gt;</description>
+      <description>&lt;table style=&#34;box-shadow: 0; table-layout: fixed; width: 100%; border-bottom: 0;&#34;&gt;&lt;tbody&gt;&lt;tr&gt;&#xA;&lt;td width=&#34;56.8%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/checkin2.1.png&#34;&gt;&lt;/td&gt;&#xA;&lt;td width=&#34;43.2%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/checkin2.2.png&#34;&gt;&lt;/td&gt;&#xA;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&#xA;&lt;p&gt;We spent five days in Fairbanks, five days and six nights. Apart from the two simple dinners we took on the hike and one with beef noodles at the arctic circle camp, the Pump House ended up as the very choice of our best-recommended feasts. It is a fine dining restaurant and probably the best in the town, as you get a thumb-up to this little house from nearly every local you meet. It is definitely one of the most enjoyable moments throughout our stay in Fairbanks, most warming, relaxing and taste-bud-exciting.&lt;/p&gt;</description>
     </item>
     <item>
       <title>How to Write a Chatroom on a Socket Server</title>
       <link>https://allenfrostline.com/blog/socket-chat/</link>
-      <pubDate>Wed, 05 Dec 2018 01:34:00 +0000</pubDate>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/socket-chat/</guid>
       <description>I&amp;rsquo;m trying to write a chatroom in this post, using the socket package1 in Python. The general structure of this problem can be devided into three parts. In the simplest case we have two clients, namely client0 and client1, and a server. Except for that the server provides the interface, everything else will remain the same among these three classes: they inherit from the class socket.socket and have two methods sending and recving.</description>
     </item>
     <item>
       <title>拔草：Niu Japanese Fusion Lounge &amp; Lao Sze Chuan</title>
       <link>https://allenfrostline.com/blog/checkin-niu-japanese-fusion-lounge/</link>
-      <pubDate>Fri, 23 Nov 2018 23:35:00 +0000</pubDate>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/checkin-niu-japanese-fusion-lounge/</guid>
       <description>今天是黑五，在逛街。和国内几天前疯 hùn 狂 luàn 的双十一相比，芝加哥的节日气氛倒给人一种更亲切的感觉。圣诞的华彩已不知什么时候在街角巷落升</description>
     </item>
     <item>
       <title>ColorPrint: Print Colorfully in Python</title>
       <link>https://allenfrostline.com/blog/color-print/</link>
-      <pubDate>Fri, 09 Nov 2018 16:34:00 +0000</pubDate>
+      <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/color-print/</guid>
-      <description>This is a simple print function overwritten so that you can specify different colors in Terminal outputs.
-To use this feature, you&amp;rsquo;ll need to import this customized print function from the ColorPrint package, the GitHub repo is here.
-from ColorPrint import print print(&amp;#39;Hello World!&amp;#39;) # default printing print(&amp;#39;Hello World!&amp;#39;, &amp;#39;r&amp;#39;) # color abbreviation print(&amp;#39;Hello World!&amp;#39;, &amp;#39;c&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;red&amp;#39;) # color full names print(&amp;#39;Hello World!&amp;#39;, &amp;#39;cyan&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;rand&amp;#39;) # random color print(&amp;#39;Hello World!</description>
+      <description>This is a simple print function overwritten so that you can specify different colors in Terminal outputs.&#xA;To use this feature, you&amp;rsquo;ll need to import this customized print function from the ColorPrint package, the GitHub repo is here.&#xA;from ColorPrint import print print(&amp;#39;Hello World!&amp;#39;) # default printing print(&amp;#39;Hello World!&amp;#39;, &amp;#39;r&amp;#39;) # color abbreviation print(&amp;#39;Hello World!&amp;#39;, &amp;#39;c&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;red&amp;#39;) # color full names print(&amp;#39;Hello World!&amp;#39;, &amp;#39;cyan&amp;#39;) print(&amp;#39;Hello World!&amp;#39;, &amp;#39;rand&amp;#39;) # random color print(&amp;#39;Hello World!</description>
     </item>
     <item>
       <title>C&#43;&#43; Key Points</title>
       <link>https://allenfrostline.com/blog/cpp-key-points/</link>
-      <pubDate>Mon, 03 Sep 2018 00:00:05 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/cpp-key-points/</guid>
-      <description>This is the first post of my ambitious plan trying to enumerate as many key points about the C++ language as I can. These notes are only for personal reviewing purposes and shall definitely be used commercially by anyone interested. Comment below for any missing C++ syntax or features. 👍🏻
-Header Basically there&amp;rsquo;re only one thing that needs attention. For standard libraries we use &amp;lt; and &amp;gt; and for local libraries we use quotes.</description>
+      <description>This is the first post of my ambitious plan trying to enumerate as many key points about the C++ language as I can. These notes are only for personal reviewing purposes and shall definitely be used commercially by anyone interested. Comment below for any missing C++ syntax or features. 👍🏻&#xA;Header Basically there&amp;rsquo;re only one thing that needs attention. For standard libraries we use &amp;lt; and &amp;gt; and for local libraries we use quotes.</description>
     </item>
     <item>
       <title>Cryptocurrency Arbitrage (3): One More Strategy</title>
       <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</link>
-      <pubDate>Fri, 27 Jul 2018 16:04:01 +0000</pubDate>
+      <pubDate>Fri, 27 Jul 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-3/</guid>
-      <description>It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market is primitive and savage in many senses, by which I mean there&amp;rsquo;re supposed to be a bunch of inefficiency and corresponding arbitrage opportunities.
-On the top of the page is the backtest PnL of the new strategy 4 from Jan 1 up to yesterday, July 26.</description>
+      <description>It&amp;rsquo;s been months since my last update on cryptocurrency arbitrage strategies. The original version has been completely driven off the market and thus I decided to develop a new one. The market is primitive and savage in many senses, by which I mean there&amp;rsquo;re supposed to be a bunch of inefficiency and corresponding arbitrage opportunities.&#xA;On the top of the page is the backtest PnL of the new strategy 4 from Jan 1 up to yesterday, July 26.</description>
     </item>
     <item>
       <title>Pythonic Swapping: How and Why</title>
       <link>https://allenfrostline.com/blog/pythonic-swap/</link>
-      <pubDate>Thu, 12 Jul 2018 19:11:13 +0000</pubDate>
+      <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/pythonic-swap/</guid>
-      <description>It&amp;rsquo;s not hard to write a swap function. The most orthodox way that&amp;rsquo;s being used in C++ or Java is by using a temporary variable. For example, say we have a = 0 and b = 1, and we&amp;rsquo;d like to swap the values of these two variables. The pseudocode shall be something as below.
-temp = a a = b b = temp However, a more &amp;ldquo;Pythonic&amp;rdquo; way to do so is by literally &amp;ldquo;swapping&amp;rdquo; the values in place.</description>
+      <description>It&amp;rsquo;s not hard to write a swap function. The most orthodox way that&amp;rsquo;s being used in C++ or Java is by using a temporary variable. For example, say we have a = 0 and b = 1, and we&amp;rsquo;d like to swap the values of these two variables. The pseudocode shall be something as below.&#xA;temp = a a = b b = temp However, a more &amp;ldquo;Pythonic&amp;rdquo; way to do so is by literally &amp;ldquo;swapping&amp;rdquo; the values in place.</description>
     </item>
     <item>
       <title>Time Synchronization on Amazon EC2</title>
       <link>https://allenfrostline.com/blog/synchronization/</link>
-      <pubDate>Thu, 12 Jul 2018 17:44:25 +0000</pubDate>
+      <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/synchronization/</guid>
-      <description>My trading bot just ceased this morning from its loyal 24/7 service. It&amp;rsquo;s running on an Amazon EC2 server with Ubuntu 16.04 and I&amp;rsquo;m sure this time I&amp;rsquo;m not having an unpaid-bill issue any more. After some time digging I think I finally figure out the cause of this unexpected strike &amp;ndash; asynchronism.
-Asynchronism, or in simple terms, timing discrepancy, usually means a tiny bit of difference between local time on your computer/server and the global NTP time.</description>
+      <description>My trading bot just ceased this morning from its loyal 24/7 service. It&amp;rsquo;s running on an Amazon EC2 server with Ubuntu 16.04 and I&amp;rsquo;m sure this time I&amp;rsquo;m not having an unpaid-bill issue any more. After some time digging I think I finally figure out the cause of this unexpected strike &amp;ndash; asynchronism.&#xA;Asynchronism, or in simple terms, timing discrepancy, usually means a tiny bit of difference between local time on your computer/server and the global NTP time.</description>
     </item>
     <item>
       <title>A Photo Taken at Giethoorn</title>
       <link>https://allenfrostline.com/blog/giethorn/</link>
-      <pubDate>Wed, 11 Jul 2018 00:33:08 +0000</pubDate>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/giethorn/</guid>
       <description>This was the last photo taken before we left Giethoorn, a small yet heavenly village. Hundreds of fragments are surrounded by tiny rivers and connected by wooden bridges only longer than a car. Talking about cars, the village was car-free and people commute by boats or bikes. We also love the thatched-roof houses which I suppose had been standing there for centuries, along with the wheat fields and the huge reed marshes.</description>
     </item>
     <item>
       <title>LDA and R-MDA</title>
       <link>https://allenfrostline.com/blog/lda-rmda/</link>
-      <pubDate>Tue, 29 May 2018 15:16:28 +0000</pubDate>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/lda-rmda/</guid>
-      <description>This is a note of Linear Discriminant Analysis (LDA) and an original Regularized Matrix Discriminant Analysis (R-MDA) method proposed by Jie Su et al, 2018. Both methods are suitable for efficient multiclass classification, while the latter is a state-of-the-art version of the classical LDA method s.t. data in matrix forms can be classified without destroying the original structure.
-A Sketch of LDA The plain idea behind Discriminant Analysis is to find the optimal partition (or projection, for higher-dimensional problems) s.</description>
+      <description>This is a note of Linear Discriminant Analysis (LDA) and an original Regularized Matrix Discriminant Analysis (R-MDA) method proposed by Jie Su et al, 2018. Both methods are suitable for efficient multiclass classification, while the latter is a state-of-the-art version of the classical LDA method s.t. data in matrix forms can be classified without destroying the original structure.&#xA;A Sketch of LDA The plain idea behind Discriminant Analysis is to find the optimal partition (or projection, for higher-dimensional problems) s.</description>
     </item>
     <item>
       <title>Literature Review on Optimal Order Execution (5)</title>
       <link>https://allenfrostline.com/blog/optimal-order-execution-5/</link>
-      <pubDate>Sat, 12 May 2018 14:33:11 +0000</pubDate>
+      <pubDate>Sat, 12 May 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/optimal-order-execution-5/</guid>
-      <description>This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction data, we have the approximation $dS = \eta\cdot dQ$ and thus can easily estimate it by the method of Ordinary Least Squares (OLS), using the message book data provided by LOBSTER.
-Experiment: Apple We first explore the message book of Apple Inc.</description>
+      <description>This is the fifth post on optimal order execution. Based on Almgren and Chriss (2000), today we attempt to estimate the market impact coefficient $\eta$. Specifically, for high-frequency transaction data, we have the approximation $dS = \eta\cdot dQ$ and thus can easily estimate it by the method of Ordinary Least Squares (OLS), using the message book data provided by LOBSTER.&#xA;Experiment: Apple We first explore the message book of Apple Inc.</description>
     </item>
     <item>
       <title>Literature Review on Optimal Order Execution (4)</title>
       <link>https://allenfrostline.com/blog/optimal-order-execution-4/</link>
-      <pubDate>Sun, 06 May 2018 13:24:11 +0000</pubDate>
+      <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/optimal-order-execution-4/</guid>
-      <description>Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size $Q$, we can estimate the probability to perform the optimal strategy in the paper within time horizon of $T$.
-Mathematical Formulation It is tolerable1 in HFT that we assume stock price evolves according to the discrete time arithmetic Brownian motion:
-\begin{cases} dS(t) = \mu dt + \sigma dW(t),\\ dQ(t) = -\dot{Q}(t)dt \end{cases}</description>
+      <description>Today we implement the order placement strategy in Almgren and Chriss (2000) s.t. for a certain order size $Q$, we can estimate the probability to perform the optimal strategy in the paper within time horizon of $T$.&#xA;Mathematical Formulation It is tolerable1 in HFT that we assume stock price evolves according to the discrete time arithmetic Brownian motion:&#xA;\begin{cases} dS(t) = \mu dt + \sigma dW(t),\\ dQ(t) = -\dot{Q}(t)dt \end{cases}</description>
     </item>
     <item>
       <title>Parameter Estimation of Brownian Motions by Method of Moments</title>
       <link>https://allenfrostline.com/blog/estimation-brownian-motion/</link>
-      <pubDate>Sat, 05 May 2018 12:22:10 +0000</pubDate>
+      <pubDate>Sat, 05 May 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/estimation-brownian-motion/</guid>
-      <description>How to estimate the parameters of a geometric Brownian motion (GBM)? It seems rather simple but actually took me quite some time to solve it. The most intuitive way is by using the method of moments.
-Estimation of ABM First let us consider a simpler case, an arithmetic Brownian motion (ABM). The evolution is given by
-$$ dS = \mu dt + \sigma dW. $$
-By integrating both sides over $(t,t+T]$ we have</description>
-    </item>
-    <item>
-      <title>Literature Review on Optimal Order Execution (3)</title>
-      <link>https://allenfrostline.com/blog/optimal-order-execution-3/</link>
-      <pubDate>Sun, 29 Apr 2018 22:50:27 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/optimal-order-execution-3/</guid>
-      <description>Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying to abandon the assumption of unified order sizes. To implement that, I need to shift from a Markov chain which is supported by discrete spaces, onto some other stochastic process that is estimatable. Moreover, although I actually considered supervised learning for this problem, I gave it up at last.</description>
+      <description>How to estimate the parameters of a geometric Brownian motion (GBM)? It seems rather simple but actually took me quite some time to solve it. The most intuitive way is by using the method of moments.&#xA;Estimation of ABM First let us consider a simpler case, an arithmetic Brownian motion (ABM). The evolution is given by&#xA;$$ dS = \mu dt + \sigma dW. $$&#xA;By integrating both sides over $(t,t+T]$ we have</description>
     </item>
     <item>
       <title>Literature Review on Optimal Order Execution (2)</title>
       <link>https://allenfrostline.com/blog/optimal-order-execution-2/</link>
-      <pubDate>Sun, 29 Apr 2018 18:53:21 +0000</pubDate>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/optimal-order-execution-2/</guid>
-      <description>Today, I&amp;rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&amp;rsquo;ll mainly walk through six papers by Rama Cont, respectively in 2010 and 2018. Professor Cont is renowned for his indepth research in stochastic analysis, stochastic processes and mathematical modeling in quantitative finance. He&amp;rsquo;s written dozens of papers concerning the order book dynamics by building rigorous mathematical models.
-Rama Cont, Sasha Stoikov and Rishi Talreja (2010) In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain.</description>
+      <description>Today, I&amp;rsquo;ll continue introducing papers about optimal order execution and particularly, in this post I&amp;rsquo;ll mainly walk through six papers by Rama Cont, respectively in 2010 and 2018. Professor Cont is renowned for his indepth research in stochastic analysis, stochastic processes and mathematical modeling in quantitative finance. He&amp;rsquo;s written dozens of papers concerning the order book dynamics by building rigorous mathematical models.&#xA;Rama Cont, Sasha Stoikov and Rishi Talreja (2010) In this classic paper, the authors tried to model real-world order book as a discrete-time Markov chain.</description>
+    </item>
+    <item>
+      <title>Literature Review on Optimal Order Execution (3)</title>
+      <link>https://allenfrostline.com/blog/optimal-order-execution-3/</link>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/optimal-order-execution-3/</guid>
+      <description>Here I&amp;rsquo;m trying to write something partly based on Cont&amp;rsquo;s first model in the previous post. I plan to skip the Laplace transform and go for Monte Carlo simulation. Also, I&amp;rsquo;m trying to abandon the assumption of unified order sizes. To implement that, I need to shift from a Markov chain which is supported by discrete spaces, onto some other stochastic process that is estimatable. Moreover, although I actually considered supervised learning for this problem, I gave it up at last.</description>
     </item>
     <item>
       <title>Run Jupyter Notebook within Virtualenv</title>
       <link>https://allenfrostline.com/blog/jupyter-virtualenv/</link>
-      <pubDate>Sat, 28 Apr 2018 00:55:04 +0000</pubDate>
+      <pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/jupyter-virtualenv/</guid>
       <description> # create virtualenv myenv mkvirtualenv myenv # enter virtualenv workon myenv # install jupyter if it&amp;#39;s not done yet (myenv) pip3 install jupyter # install ipykernel if it&amp;#39;s not done yet (myenv) pip3 install ipykernel # create new kernel of python3 (myenv) python3 -m ipykernel install --user --name myenv --display-name &amp;#34;Python 3&amp;#34; # start the notebook within myenv (myenv) jupyter notebook </description>
     </item>
     <item>
       <title>Literature Review on Optimal Order Execution (1)</title>
       <link>https://allenfrostline.com/blog/optimal-order-execution-1/</link>
-      <pubDate>Mon, 23 Apr 2018 11:41:38 +0000</pubDate>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/optimal-order-execution-1/</guid>
       <description>I&amp;rsquo;m recently reading several papers on modelling stock order behavior and its corresponding optimal strategies. Compared with classical quantitative trading strategies, serious research on order optimization has a short history as its major importance dazzles in high frequency trading (HFT), one of the youngest childs of finance. I&amp;rsquo;ll wrap up the main ideas and methodologies below in a paper-wise manner. Further unregular updates on this post are expected. Specifically, the models below are trying to answer this question: how much time should I expect before my limit order gets executed?</description>
     </item>
     <item>
       <title>Switched Hexo Theme to Apollo</title>
       <link>https://allenfrostline.com/blog/switch-hexo-theme-to-apollo/</link>
-      <pubDate>Sun, 22 Apr 2018 14:33:29 +0000</pubDate>
+      <pubDate>Sun, 22 Apr 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/switch-hexo-theme-to-apollo/</guid>
       <description>I&amp;rsquo;ve been using the well-developed NexT theme for this Hexo blog since I built it. The old theme was fantastic, with a broad header, strong local search, neat, animated two-column layout and various comment systems including valine1 and gitment2. However, it&amp;rsquo;s a two-edged sword to have so many features binded, and more importantly, presented right within such a simple layout. Eventually, I realized that I actually don&amp;rsquo;t need the spacious header or the animated sidebar (I do, though, need local search, and we&amp;rsquo;ll return to that below).</description>
     </item>
     <item>
       <title>Cryptocurrency Arbitrage (2): Performance</title>
       <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</link>
-      <pubDate>Tue, 09 Jan 2018 02:28:00 +0000</pubDate>
+      <pubDate>Tue, 09 Jan 2018 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-2/</guid>
-      <description>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. Europe/Amsterdam. Cheers!
-Update April 11:
-Strategy offline before I realized my AWS bills was being owed and the server down due to that&amp;hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc.</description>
+      <description>Below is the PnL plot of the multi-coin arb strategy. The strategy is running on Amazon EC2 and portfolio value pulled dynamically to plot this using plotly. Timezone is set at my local time, i.e. Europe/Amsterdam. Cheers!&#xA;Update April 11:&#xA;Strategy offline before I realized my AWS bills was being owed and the server down due to that&amp;hellip; Performance excl. and incl. loss due to holding costs and enforcing execution, etc.</description>
     </item>
     <item>
       <title>Cryptocurrency Arbitrage (1): Some Ideas</title>
       <link>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</link>
-      <pubDate>Thu, 21 Dec 2017 19:52:00 +0000</pubDate>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/cryptocurrency-arbitrage-1/</guid>
       <description>Coinbase has just launched BCH as an alternative to BTC because of the high transaction fees and annoying delays of the latter one. As a result, the exchange rate of USD/BCH rocketed tenfolds within 24 hours. Together with BTC, mainstream altcoins like ETH and ETC faced significant slump since a week ago. On contrary, XRP, because of the rumored endorcement from big companies like Amazon, is experiencing a straight appreciation of almost 100% since two weeks ago.</description>
     </item>
     <item>
       <title>Network Visualization: Chinese Railway Transport from 1992 to 2011</title>
       <link>https://allenfrostline.com/blog/network-visualization/</link>
-      <pubDate>Wed, 29 Nov 2017 04:54:00 +0000</pubDate>
+      <pubDate>Wed, 29 Nov 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/network-visualization/</guid>
       <description>This is part of the preliminary data analysis of a course project. Data is collected from the National Statistical Beureau of China and in the unit of thousand tons. In the beginning, I start with a comprehensive table called data, where for each province there&amp;rsquo;s a matrix of 20 by 31, i.e. transport to each province w.r.t. different years. Therefore, it&amp;rsquo;s convenient to extract the actual transient matrix for each year by using the method groupby of Pandas.</description>
     </item>
     <item>
       <title>Ensemble Modeling in a Binary Classification Problem in Chinese A-Share Market</title>
       <link>https://allenfrostline.com/blog/ensemble-modeling/</link>
-      <pubDate>Wed, 15 Nov 2017 16:34:00 +0000</pubDate>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/ensemble-modeling/</guid>
       <description>In this research paper we try to use as much information on a stock as we can on Ricequant, to train a robust binary classifier for expected returns on a rolling basis. As an extra, we create a brand-new accuracy metric based on behavioral economics for model traing, which enhanced the fitting of the models (in the language of classical metrics, e.g. accuracy or pricision scores) by 3 to 5 times.</description>
     </item>
     <item>
       <title>How to Build C&#43;&#43; Projects with STDIN in Sublime Text 3</title>
       <link>https://allenfrostline.com/blog/how-to-build-cpp-with-stdin/</link>
-      <pubDate>Tue, 10 Oct 2017 19:45:00 +0000</pubDate>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-to-build-cpp-with-stdin/</guid>
       <description>I&amp;rsquo;ve been a die-hard fan of Sublime Text (ST), all the time from the 2nd to the 3rd version now. To be frank, I use ST in almost all situations: taking lecture notes in LaTeX, drafting small projects in Python or R (while for large projects, Jupyter Notebook and RStudio are stronger platforms), or tracking my Todo-list in Markdown. Everything works so smoothly and lightly with ST, especially compared with IDEs like Xcode or Visual Studio.</description>
     </item>
     <item>
       <title>How to Get Legends Out of the Plotting Area in R</title>
       <link>https://allenfrostline.com/blog/how-to-get-legends-out-of-the-plot/</link>
-      <pubDate>Sat, 30 Sep 2017 19:54:00 +0000</pubDate>
+      <pubDate>Sat, 30 Sep 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-to-get-legends-out-of-the-plot/</guid>
-      <description>Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&amp;rsquo;t overlay the plots?
-This is easy to tackle in Python, but for the default plotting function in R I did struggle for quite a while.
-# `percentage.table()` is a function defined by me. # `f` is a vector of all classes and `len` is the length of `f`.</description>
+      <description>Recently when writing a course report, I encountered a tricky problem in R programming: how can I include the legends while making sure that they don&amp;rsquo;t overlay the plots?&#xA;This is easy to tackle in Python, but for the default plotting function in R I did struggle for quite a while.&#xA;# `percentage.table()` is a function defined by me. # `f` is a vector of all classes and `len` is the length of `f`.</description>
     </item>
     <item>
       <title>路</title>
       <link>https://allenfrostline.com/blog/route/</link>
-      <pubDate>Thu, 07 Sep 2017 22:14:00 +0000</pubDate>
+      <pubDate>Thu, 07 Sep 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/route/</guid>
       <description>我总觉得，自从进了大学，心就变得特别坚硬。本来从小写母爱无言、春雨如酥的人，现在没日没夜地一门心思在自己选定的人生路上奔波，无暇顾及两旁。上</description>
     </item>
     <item>
       <title>How I collected over 600k lines of prices in China</title>
       <link>https://allenfrostline.com/blog/how-i-collected-over-600k/</link>
-      <pubDate>Sun, 03 Sep 2017 06:50:00 +0000</pubDate>
+      <pubDate>Sun, 03 Sep 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-i-collected-over-600k/</guid>
       <description>Hey there you are. I&amp;rsquo;m finally back here after over two months without posting anything. Was I being lazy? No, definitely not. It would be the busiest summer you&amp;rsquo;ve ever heard. I carried out several projects, some still in progress and the others finished in July and August. Start from today on, I&amp;rsquo;m gonna share you guys what I did this summer, in five or six posts I suppose. In</description>
     </item>
     <item>
       <title>An Interesting Econometrics Problem</title>
       <link>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</link>
-      <pubDate>Sun, 21 May 2017 13:48:00 +0000</pubDate>
+      <pubDate>Sun, 21 May 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</guid>
-      <description>Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized as below.
-Question Assume model $\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}$ and $\{u_i\}$ i.i.d. Let $\boldsymbol{x&#39;x}/n\to c&amp;gt;0$ and $\boldsymbol{\iota&#39;x}\to0$ as $n\to\infty$. Suppose an estimator $\hat\gamma$ is available for the ratio $\gamma=\beta_1/\beta_2$, which is distributed independently of $\mathbf{u}$ and
-$$ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2). $$
-Define
-$$ \hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1} $$</description>
+      <description>Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized as below.&#xA;Question Assume model $\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}$ and $\{u_i\}$ i.i.d. Let $\boldsymbol{x&#39;x}/n\to c&amp;gt;0$ and $\boldsymbol{\iota&#39;x}\to0$ as $n\to\infty$. Suppose an estimator $\hat\gamma$ is available for the ratio $\gamma=\beta_1/\beta_2$, which is distributed independently of $\mathbf{u}$ and&#xA;$$ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2). $$&#xA;Define&#xA;$$ \hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1} $$</description>
     </item>
     <item>
       <title>Bitcoin Inter-exchange Price Spread Prediction</title>
       <link>https://allenfrostline.com/blog/bitcoin-time-series/</link>
-      <pubDate>Sun, 21 May 2017 00:59:00 +0000</pubDate>
+      <pubDate>Sun, 21 May 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/bitcoin-time-series/</guid>
       <description>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. Step 1: Import All Packages import quandl import cmocean import warnings import numpy as np import pandas as pd import seaborn as sns import statsmodels.api as sm from pytrends.request import TrendReq from scipy import stats as ss from datetime import datetime as dt from arch.</description>
     </item>
     <item>
       <title>Notes on Operations Research</title>
       <link>https://allenfrostline.com/blog/notes-on-operations-research/</link>
-      <pubDate>Mon, 27 Mar 2017 11:40:00 +0000</pubDate>
+      <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-operations-research/</guid>
       <description>This is my lecture notes from the course Operations Research. The course was intended to be a fundamental one introducing various aspects of operations research, the thinking process of a typical optimization problem, and famous theorems and applications. Introduction Summary of this lecture: Introduction Basic Linear Programming Taha Chapters 1, 2, 3 Structure: 7 lectures 7 tutorials 2 assignments individual written open-book exam (only book and no notes in the</description>
     </item>
     <item>
       <title>Is My Apple Pencil Broken!?</title>
       <link>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</link>
-      <pubDate>Sun, 26 Mar 2017 16:32:00 +0000</pubDate>
+      <pubDate>Sun, 26 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</guid>
-      <description>A terrible thing just almost happened, to my Apple Pencil. It was not working. Not pairing with my iPad. Not charging even with the official female2female adapter. Not showing up on the Control Center. No where. It&amp;rsquo;s B-R-O-K-E-N, broken.
-My Captain does not answer, his lips are pale and still,
-My father does not feel my arm, he has no pulse nor will,
-The ship is anchor&amp;rsquo;d safe and sound, its voyage closed and done,</description>
+      <description>A terrible thing just almost happened, to my Apple Pencil. It was not working. Not pairing with my iPad. Not charging even with the official female2female adapter. Not showing up on the Control Center. No where. It&amp;rsquo;s B-R-O-K-E-N, broken.&#xA;My Captain does not answer, his lips are pale and still,&#xA;My father does not feel my arm, he has no pulse nor will,&#xA;The ship is anchor&amp;rsquo;d safe and sound, its voyage closed and done,</description>
     </item>
     <item>
       <title>Strategy: XGBoost Classification &#43; Technical Indicators</title>
       <link>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</link>
-      <pubDate>Sun, 12 Mar 2017 20:45:00 +0000</pubDate>
+      <pubDate>Sun, 12 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</guid>
       <description>On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.</description>
     </item>
     <item>
       <title>Basic Walkthrough of ARMA: Take AAPL for Example</title>
       <link>https://allenfrostline.com/blog/arma-for-aapl/</link>
-      <pubDate>Sat, 11 Mar 2017 13:37:00 +0000</pubDate>
+      <pubDate>Sat, 11 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/arma-for-aapl/</guid>
       <description>The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&amp;rsquo;re going to apply it on the stock price of Apple Inc. We will perform the prediction mainly in four parts: Data loading Decomposition ARMA: fit and predict Evaluation After the whole process, there&amp;rsquo;re some TBD concerns. Data loading import pandas as pd import numpy as np import</description>
     </item>
     <item>
       <title>How to Deploy a Local Project onto Github</title>
       <link>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</link>
-      <pubDate>Mon, 13 Feb 2017 21:26:00 +0000</pubDate>
+      <pubDate>Mon, 13 Feb 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</guid>
-      <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.
-(1) Open Terminal.app and enter the directory of the folder.
-cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.
-git init Now you&amp;rsquo;ll see a .</description>
+      <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.&#xA;(1) Open Terminal.app and enter the directory of the folder.&#xA;cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.&#xA;git init Now you&amp;rsquo;ll see a .</description>
     </item>
     <item>
       <title>What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo?</title>
       <link>https://allenfrostline.com/blog/strategy-trump-tweets/</link>
-      <pubDate>Thu, 09 Feb 2017 21:00:00 +0000</pubDate>
+      <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-trump-tweets/</guid>
-      <description>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)
-Update:
-Alright&amp;hellip; See this Github repository trump2cash. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do.</description>
+      <description>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)&#xA;Update:&#xA;Alright&amp;hellip; See this Github repository trump2cash. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do.</description>
     </item>
     <item>
       <title>How to Set Up an Algo-trading System on Aliyun</title>
       <link>https://allenfrostline.com/blog/trading-system-on-aliyun/</link>
-      <pubDate>Wed, 25 Jan 2017 15:55:00 +0000</pubDate>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/trading-system-on-aliyun/</guid>
-      <description>It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s trading softwares or Xueqiu, as I will introduce below.
-Server: Aliyun ECS Aliyun Elastic Compute Service (ECS) is by far the most stable server option in mainland China. Costs less than $7 p/m and offering free trial for months.</description>
+      <description>It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s trading softwares or Xueqiu, as I will introduce below.&#xA;Server: Aliyun ECS Aliyun Elastic Compute Service (ECS) is by far the most stable server option in mainland China. Costs less than $7 p/m and offering free trial for months.</description>
     </item>
     <item>
       <title>Strategy: LSTM Neural Network &#43; Small Cap</title>
       <link>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</link>
-      <pubDate>Tue, 17 Jan 2017 12:03:00 +0000</pubDate>
+      <pubDate>Tue, 17 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
-      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.
-Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
+      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.&#xA;Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
     </item>
     <item>
       <title>GMM Estimation of an ARMA(2,1) Model</title>
       <link>https://allenfrostline.com/blog/gmm-estimation/</link>
-      <pubDate>Sat, 14 Jan 2017 12:03:05 +0000</pubDate>
+      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/gmm-estimation/</guid>
       <description>In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric models, where the parameter of interest is finite-dimensional, whereas the full shape of the data&amp;rsquo;s distribution function may not be known, and therefore maximum likelihood estimation is not applicable. Today, we are trying to write a Generalizd Method of Moments estimation framework in Python, and use it to estimate an ARMA(2,1) time series.</description>
     </item>
     <item>
       <title>Christmas across Eastern Europe (4): Croatia</title>
       <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-4/</link>
-      <pubDate>Sat, 07 Jan 2017 12:00:00 +0000</pubDate>
+      <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-4/</guid>
       <description>The last two stops of our Christmas journal, Zagreb the capital, and Dubrovnik a small but ancient town, in Croatia. Zagreb didn&amp;rsquo;t left me much memory &amp;ndash; except for the vivid, various graffiti all throughout the whole city. It&amp;rsquo;s a bit funny when we say a Yao Ming on the wall when pulling our luggage to the airport. Yao is definately within China&amp;rsquo;s top ten most valuable icons worldwide, especially in the expression package sense.</description>
     </item>
     <item>
       <title>Christmas across Eastern Europe (3): Hungary</title>
       <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-3/</link>
-      <pubDate>Wed, 04 Jan 2017 09:12:00 +0000</pubDate>
+      <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-3/</guid>
       <description>We arrived in Budapest two days ago. It was a larger, more modern city split by the large Danube into Buda and Pest. We visited the magnificent Parliament building &amp;ndash; indeed it was magnificent, yet maybe bacause of the poor English of the guide or the seemingly too many museums, I felt kinda tired about all the decorations inside it. We all looked tired. It was a nice little cafe for yesterday&amp;rsquo;s dinner.</description>
     </item>
     <item>
       <title>Christmas across Eastern Europe (2): Austria and Slovak</title>
       <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</link>
-      <pubDate>Mon, 02 Jan 2017 09:12:00 +0000</pubDate>
+      <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</guid>
-      <description>Yesterday arrived us in Bratislava, Slovak. It was yet another small but historic city. The weather was getting colder. The sleet floated along the roads, which is kinda psychedemic, actually.
-The day before, we were in Wien, Austria. And further before were us in Hallstatt, which is also an Austria town at the foot of the Alps.
-Time to leave.</description>
+      <description>Yesterday arrived us in Bratislava, Slovak. It was yet another small but historic city. The weather was getting colder. The sleet floated along the roads, which is kinda psychedemic, actually.&#xA;The day before, we were in Wien, Austria. And further before were us in Hallstatt, which is also an Austria town at the foot of the Alps.&#xA;Time to leave.</description>
     </item>
     <item>
       <title>Christmas across Eastern Europe (1): Czech Republic</title>
       <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</link>
-      <pubDate>Tue, 27 Dec 2016 19:30:00 +0000</pubDate>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</guid>
       <description>The lifestyle in Czech Republic is far different from that in the Netherlands. The small, shabby shops near our accommodation, the depressions here and there along the quiet lanes towards Vysehrad (a castle of 10 min&amp;rsquo;s walk from our place), the queues of cars parking alongside the road seemingly with no end at all - those images arouse me of a place not so &amp;ldquo;Europa&amp;rdquo;, a place named after water,</description>
     </item>
     <item>
       <title>Notes on Asymptotic Theories</title>
       <link>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</link>
-      <pubDate>Tue, 27 Dec 2016 19:09:00 +0000</pubDate>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</guid>
       <description>These are the notes taken throughout my weekly meetings with Dr. Bekker at RuG. We&amp;rsquo;re using the econometrics book written by Fumio Hayashi1 in 2000 and mainly focused on the chapters about asymptotic theories. The book has covered almost every inch of classical econometrics and is by far the best advanced econometrics book in my mind. I&amp;rsquo;m sure I&amp;rsquo;ll go back to these notes from time to time. Review A</description>
     </item>
@@ -740,10 +671,7 @@ Time to leave.</description>
       <link>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</link>
       <pubDate>Mon, 26 Sep 2016 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</guid>
-      <description>Below are some principle steps of setting up this website using Hexo. Instead of using Wordpress, I considered using Hexo directly for higher flexibility in customization.
-Download npm and node.js, then use npm to download git and hexo.
-Then, in root folder create a new folder named &amp;lt;name&amp;gt;.github.io and within it hexo.
-cd ~/&amp;lt;name&amp;gt;.github.io/hexo git init hexo init Find /hexo/source/_post. This is the folder we put out Markdown posts, later.</description>
+      <description>Below are some principle steps of setting up this website using Hexo. Instead of using Wordpress, I considered using Hexo directly for higher flexibility in customization.&#xA;Download npm and node.js, then use npm to download git and hexo.&#xA;Then, in root folder create a new folder named &amp;lt;name&amp;gt;.github.io and within it hexo.&#xA;cd ~/&amp;lt;name&amp;gt;.github.io/hexo git init hexo init Find /hexo/source/_post. This is the folder we put out Markdown posts, later.</description>
     </item>
   </channel>
 </rss>

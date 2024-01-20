@@ -196,24 +196,27 @@
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">---------------------------------------- KEYBINDINGS --------------------------------------------</span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;BufferLineCycleNext&lt;CR&gt;&#34;</span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;S-Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;BufferLineCyclePrev&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;BufferLineCycleNext&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;S-Tab&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;BufferLineCyclePrev&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;e&#34;</span>] <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;Neotree toggle&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Toggle file explorer&#34;</span> }
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-e&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;Neotree toggle&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;e&#34;</span>] <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Toggle file explorer&#34;</span> }
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-e&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-p&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_session&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-p&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager load_session&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-b&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:ene &lt;BAR&gt; startinsert &lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-s&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:w&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-w&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:BufferKill&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lvim.keys.insert_mode[<span style="color:#b84">&#34;&lt;C-1&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Plug&gt;(luasnip-next-choice)&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.keys.insert_mode[<span style="color:#b84">&#34;&lt;C-2&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Plug&gt;(luasnip-prev-choice)&#34;</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;p&#34;</span>] <span style="font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>    name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Project&#34;</span>,
-</span></span><span style="display:flex;"><span>    p <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load project&#34;</span> },
-</span></span><span style="display:flex;"><span>    l <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager load_last_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load last project&#34;</span> },
-</span></span><span style="display:flex;"><span>    s <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager save_current_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Save current project&#34;</span> },
-</span></span><span style="display:flex;"><span>    d <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;CMD&gt;SessionManager delete_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Delete project&#34;</span> },
+</span></span><span style="display:flex;"><span>    p <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager load_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load project&#34;</span> },
+</span></span><span style="display:flex;"><span>    l <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager load_last_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Load last project&#34;</span> },
+</span></span><span style="display:flex;"><span>    s <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager save_current_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Save current project&#34;</span> },
+</span></span><span style="display:flex;"><span>    d <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager delete_session&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Delete project&#34;</span> },
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -272,8 +275,8 @@
 </span></span><span style="display:flex;"><span>        opts <span style="font-weight:bold">=</span> { name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;.venv&#34;</span>, auto_refresh <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span> },
 </span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;VeryLazy&#39;</span>,
 </span></span><span style="display:flex;"><span>        keys <span style="font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vs&#39;</span>, <span style="color:#b84">&#39;&lt;CMD&gt;VenvSelect&lt;CR&gt;&#39;</span> },
-</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vc&#39;</span>, <span style="color:#b84">&#39;&lt;CMD&gt;VenvSelectCached&lt;CR&gt;&#39;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vs&#39;</span>, <span style="color:#b84">&#39;&lt;Cmd&gt;VenvSelect&lt;CR&gt;&#39;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#b84">&#39;&lt;leader&gt;vc&#39;</span>, <span style="color:#b84">&#39;&lt;Cmd&gt;VenvSelectCached&lt;CR&gt;&#39;</span> },
 </span></span><span style="display:flex;"><span>        },
 </span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>
@@ -317,7 +320,11 @@
 </span></span><span style="display:flex;"><span>        cmd <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;MarkdownPreviewToggle&#34;</span>, <span style="color:#b84">&#34;MarkdownPreview&#34;</span>, <span style="color:#b84">&#34;MarkdownPreviewStop&#34;</span> },
 </span></span><span style="display:flex;"><span>        ft <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;markdown&#34;</span> },
 </span></span><span style="display:flex;"><span>        build <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>() vim.fn[<span style="color:#b84">&#34;mkdp#util#install&#34;</span>]() <span style="font-weight:bold">end</span>,
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for formula and table alignment</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;junegunn/vim-easy-align&#39;</span>
+</span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
@@ -369,7 +376,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for terminal</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for native terminal</span>
 </span></span><span style="display:flex;"><span>lvim.builtin.terminal.direction <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;horizontal&#34;</span> <span style="color:#998;font-style:italic">-- default to be horizontal</span>
 </span></span><span style="display:flex;"><span>lvim.builtin.terminal.size <span style="font-weight:bold">=</span> <span style="color:#099">30</span>                <span style="color:#998;font-style:italic">-- &lt;not&gt; in percentage of screen</span>
 </span></span><span style="display:flex;"><span>
@@ -422,7 +429,7 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;r&#34;</span>, <span style="color:#b84">&#34;  Open Recent File&#34;</span>, <span style="color:#b84">&#34;:Telescope oldfiles &lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">3</span>] <span style="font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;f&#34;</span>, <span style="color:#b84">&#34;  Find Files&#34;</span>, <span style="color:#b84">&#34;&lt;CMD&gt;Telescope find_files&lt;CR&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;f&#34;</span>, <span style="color:#b84">&#34;  Find Files&#34;</span>, <span style="color:#b84">&#34;&lt;Cmd&gt;Telescope find_files&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">4</span>] <span style="font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;p&#34;</span>, <span style="color:#b84">&#34;  Load Project&#34;</span>, <span style="color:#b84">&#34;:SessionManager load_session&lt;CR&gt;&#34;</span>
@@ -432,7 +439,7 @@
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> config_path <span style="font-weight:bold">=</span> require(<span style="color:#b84">&#34;lvim.config&#34;</span>):get_user_config_path()
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">6</span>] <span style="font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;c&#34;</span>, <span style="color:#b84">&#34;  Configuration&#34;</span>, <span style="color:#b84">&#34;&lt;CMD&gt;edit &#34;</span> <span style="font-weight:bold">..</span> config_path <span style="font-weight:bold">..</span> <span style="color:#b84">&#34; &lt;CR&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;c&#34;</span>, <span style="color:#b84">&#34;  Configuration&#34;</span>, <span style="color:#b84">&#34;&lt;Cmd&gt;edit &#34;</span> <span style="font-weight:bold">..</span> config_path <span style="font-weight:bold">..</span> <span style="color:#b84">&#34; &lt;CR&gt;&#34;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.entries[<span style="color:#099">7</span>] <span style="font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;q&#34;</span>, <span style="color:#b84">&#34;  Quit&#34;</span>, <span style="color:#b84">&#34;:qa&lt;CR&gt;&#34;</span>
