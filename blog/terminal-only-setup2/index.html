@@ -177,7 +177,8 @@
 </span></span></code></pre></div><p>Now, instead of NvChad, we&rsquo;re going to install LunarVim this time (the URL below corresponds to the last version of LunarVim as of this post, and thus is very likely stale; please go to their official website for the up-to-date installation):</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#008080">LV_BRANCH</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;release-1.3/neovim-0.9&#39;</span> bash &lt;<span style="font-weight:bold">(</span>curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh<span style="font-weight:bold">)</span>
 </span></span></code></pre></div><p>The next and also last step is <code>~/.config/lvim/config.lua</code> (yes, LunarVim doesn&rsquo;t share the same config directory with other NeoVim frameworks, which is very much appreciated):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------- GLOBAL OPTIONS -------------------------------------------</span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-------------------------------------------------------------------------------------------------</span>
 </span></span><span style="display:flex;"><span>
@@ -202,14 +203,10 @@
 </span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;e&#34;</span>] <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>, <span style="color:#b84">&#34;Toggle file explorer&#34;</span> }
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-e&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;Neotree toggle&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;M-v&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:vsplit&lt;CR&gt;&#34;</span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;M-h&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:split&lt;CR&gt;&#34;</span>
-</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-p&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;&lt;Cmd&gt;SessionManager load_session&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-b&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:ene &lt;BAR&gt; startinsert &lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-s&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:w&lt;CR&gt;&#34;</span>
-</span></span><span style="display:flex;"><span>lvim.keys.normal_mode[<span style="color:#b84">&#34;&lt;C-w&gt;&#34;</span>] <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;:BufferKill&lt;CR&gt;&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>lvim.builtin.which_key.mappings[<span style="color:#b84">&#34;p&#34;</span>] <span style="font-weight:bold">=</span> {
 </span></span><span style="display:flex;"><span>    name <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Project&#34;</span>,
@@ -231,7 +228,9 @@
 </span></span><span style="display:flex;"><span>    {
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;ColorScheme&#34;</span>,
 </span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            command <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;hi WinSeparator guifg=#666666 ctermfg=245&#34;</span>
+</span></span><span style="display:flex;"><span>            callback <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>()
+</span></span><span style="display:flex;"><span>                vim.cmd(<span style="color:#b84">&#34;hi WinSeparator guifg=#666666 ctermfg=245&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
@@ -254,11 +253,11 @@
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;nvim-telescope/telescope-ui-select.nvim&#34;</span>,
 </span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for colorful split window borders</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;nvim-zh/colorful-winsep.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>        config <span style="font-weight:bold">=</span> <span style="font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span>        event <span style="font-weight:bold">=</span> { <span style="color:#b84">&#34;WinNew&#34;</span> },
-</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">-- { -- for colorful split window borders</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">--     &#39;nvim-zh/colorful-winsep.nvim&#39;,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">--     config = true,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">--     event = { &#34;WinNew&#34; },</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic">-- },</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for add/delete/change surrounding pairs (of quotes and brackets etc)</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;kylechui/nvim-surround&#34;</span>,
@@ -351,6 +350,10 @@
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;junegunn/vim-easy-align&#39;</span>
 </span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#998;font-style:italic">-- for a bunch of good snippets</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#b84">&#39;honza/vim-snippets&#39;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -372,9 +375,9 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for colorful-winsep</span>
-</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;colorful-winsep&#34;</span>).setup({
-</span></span><span style="display:flex;"><span>    highlight <span style="font-weight:bold">=</span> { fg <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;#ffc24b&#34;</span> },
-</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- require(&#34;colorful-winsep&#34;).setup({</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">--     highlight = { fg = &#34;#ffc24b&#34; },</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- })</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for colorizer</span>
@@ -399,7 +402,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for markdown preview</span>
 </span></span><span style="display:flex;"><span><span style="font-weight:bold">local</span> g <span style="font-weight:bold">=</span> vim.g
 </span></span><span style="display:flex;"><span>g.mkdp_theme <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;light&#39;</span>
-</span></span><span style="display:flex;"><span>g.mkdp_markdown_css <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;~/configs/nvim/lua/custom/markdown.css&#39;</span>
+</span></span><span style="display:flex;"><span>g.mkdp_markdown_css <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;/Users/allenwang/.config/lvim/markdown.css&#39;</span>
 </span></span><span style="display:flex;"><span>g.mkdp_port <span style="font-weight:bold">=</span> <span style="color:#b84">&#39;8842&#39;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
