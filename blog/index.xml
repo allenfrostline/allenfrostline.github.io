@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 18 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Include Page Breaks to Markdown Files?</title>
+      <link>https://allenfrostline.com/blog/page-break-css/</link>
+      <pubDate>Sat, 20 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/page-break-css/</guid>
+      <description>It&amp;rsquo;s really strange but I have never thought about this question until recently, when I tried to export a Markdown file to PDF and realized myself to be adjusting the number &amp;lt;br&amp;gt; tags so that some answers don&amp;rsquo;t show up on the same page as questions. &amp;ldquo;Wait a minute&amp;rdquo;, I actually said out loud, &amp;ldquo;have I been doing this the whole time&amp;rdquo;?&#xA;Both you and I know this is stupid and should stop.</description>
+    </item>
     <item>
       <title>My Terminal-Only Development Setup (2)</title>
       <link>https://allenfrostline.com/blog/terminal-only-setup2/</link>

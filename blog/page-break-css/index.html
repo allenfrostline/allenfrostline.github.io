@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>How to Include Page Breaks to Markdown Files? - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="How to Include Page Breaks to Markdown Files? - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It&amp;rsquo;s really strange but I have never thought about this question until recently, when I tried to export a Markdown file to PDF and realized myself to be adjusting the number &amp;lt;br&amp;gt; tags so &amp;hellip;">
+      <meta property="og:description" content="It&amp;rsquo;s really strange but I have never thought about this question until recently, when I tried to export a Markdown file to PDF and realized myself to be adjusting the number &amp;lt;br&amp;gt; tags so &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+
+<script>
+    window.minimalAnalytics = {
+        trackingId: 'G-B4WMGBPB4Z',
+        autoTrack: true, 
+    };
+</script>
+<script src="/index_1423847519945263698.js" async></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  <li><a href="/pottery/">Pottery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>How to Include Page Breaks to Markdown Files?</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2024-01-20
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It&rsquo;s really strange but I have never thought about this question until recently, when I tried to export a Markdown file to PDF and realized myself to be adjusting the number <code>&lt;br&gt;</code> tags so that some answers don&rsquo;t show up on the same page as questions. &ldquo;Wait a minute&rdquo;, I actually said out loud, &ldquo;have I been doing this the whole time&rdquo;?</p>
+<p>Both you and I know this is stupid and should stop. Luckily there is a quite elegant solution. Since majority of Markdown previewers are HTML renderers, we can utilize the CSS property<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> <code>page-break-after</code> by adding this line to where we need the page break:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#000080">div</span> <span style="color:#008080">style</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;page-break-after:always&#34;</span>&gt;&lt;/<span style="color:#000080">div</span>&gt;
+</span></span></code></pre></div><p>This invisible line will do nothing to your existing Markdown document, but will break apart whatever is before and after it when you print the preview. Having been hacking my way all these years, I&rsquo;m now embarrassingly happy with this &ldquo;new&rdquo; trick.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>It seems <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/page-break-after">MDN</a> is confident that <code>break-after</code> has depreciated <code>page-break-after</code>. However, it&rsquo;s apparently not the case on the latest Safari (<code>break-after</code> didn&rsquo;t even work when I tried it).&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/terminal-only-setup2/">My Terminal-Only Development Setup (2)</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/terminal-only-setup2\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://giscus.app/client.js" data-repo="allenfrostline/allenfrostline.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NzEzOTkxNg==" data-category="General" data-category-id="DIC_kwDOBJkPzM4CbgIQ"
+        data-mapping="pathname" data-strict="0" data-reactions-enabled="0" data-emit-metadata="0"
+        data-input-position="bottom" data-theme="light" data-lang="en" data-loading="lazy" crossorigin="anonymous"
+        async>
+        </script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+</body>
+
+</html>
