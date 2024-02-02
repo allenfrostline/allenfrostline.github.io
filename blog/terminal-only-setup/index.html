@@ -142,29 +142,11 @@
 <blockquote>
 <p>To summarize, a terminal is a device or program that provides a user interface, a console can refer to physical hardware or a text-based interface, a shell is a command-line interpreter that processes commands, and the command line is the method of entering textual commands into the shell.</p>
 </blockquote>
-<h3 id="install-zsh">Install ZSH:</h3>
+<p>Install <a href="https://www.howtogeek.com/362409/what-is-zsh-and-why-should-you-use-it-instead-of-bash/">ZSH</a></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install zsh
 </span></span></code></pre></div><p>and <a href="https://github.com/eza-community/eza">eza</a> for better <code>ls</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install eza
-</span></span></code></pre></div><p>Inside <code>~/.zshrc</code> add:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zshrc" data-lang="zshrc"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Allow partial searching</span>
-</span></span><span style="display:flex;"><span>autoload -U up-line-or-beginning-search
-</span></span><span style="display:flex;"><span>autoload -U down-line-or-beginning-search
-</span></span><span style="display:flex;"><span>zle -N up-line-or-beginning-search
-</span></span><span style="display:flex;"><span>zle -N down-line-or-beginning-search
-</span></span><span style="display:flex;"><span>bindkey <span style="color:#b84">&#34;^[[A&#34;</span> up-line-or-beginning-search <span style="color:#998;font-style:italic"># Up</span>
-</span></span><span style="display:flex;"><span>bindkey <span style="color:#b84">&#34;^[[B&#34;</span> down-line-or-beginning-search <span style="color:#998;font-style:italic"># Down</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Allow case-insensitive completion</span>
-</span></span><span style="display:flex;"><span>zstyle <span style="color:#b84">&#39;:completion:*&#39;</span> matcher-list <span style="color:#b84">&#39;&#39;</span> <span style="color:#b84">&#39;m:{a-zA-Z}={A-Za-z}&#39;</span> <span style="color:#b84">&#39;r:|=*&#39;</span> <span style="color:#b84">&#39;l:|=* r:|=*&#39;</span>
-</span></span><span style="display:flex;"><span>autoload -Uz compinit <span style="font-weight:bold">&amp;&amp;</span> compinit
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Shortcut commands</span>
-</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ls</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;eza --icons -F -H --group-directories-first --git -1&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ll</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;ls -alF&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vi</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;nvim&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vim</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;nvim&#39;</span>
-</span></span></code></pre></div><h3 id="install-starshiphttpsgithubcomstarship">Install <a href="https://github.com/starship">Starship</a>:</h3>
+</span></span></code></pre></div><p>and <a href="https://github.com/starship">Starship</a> for customizable prompt:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install starship
 </span></span></code></pre></div><p>Inside <code>~/.config/starship.toml</code> (disregard the strange squares &ndash; they&rsquo;ll render just fine as long as we have the correct nerd fonts installed):</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># editor completions based on the ocnfig schema</span>
@@ -205,10 +187,32 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>[line_break]
 </span></span><span style="display:flex;"><span>disabled = <span style="font-weight:bold">true</span>
+</span></span></code></pre></div><p>Inside <code>~/.zshrc</code> add:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zshrc" data-lang="zshrc"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># shortcuts</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ls</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;eza --icons -F -H --group-directories-first --git -1&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">ll</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;ls -alF&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vimdiff</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;nvim -d&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vi</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;lvim&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">alias</span> <span style="color:#008080">vim</span><span style="font-weight:bold">=</span><span style="color:#b84">&#39;lvim&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># history substring search </span>
+</span></span><span style="display:flex;"><span>autoload -U up-line-or-beginning-search
+</span></span><span style="display:flex;"><span>autoload -U down-line-or-beginning-search
+</span></span><span style="display:flex;"><span>zle -N up-line-or-beginning-search
+</span></span><span style="display:flex;"><span>zle -N down-line-or-beginning-search
+</span></span><span style="display:flex;"><span>bindkey <span style="color:#b84">&#34;^[[A&#34;</span> up-line-or-beginning-search
+</span></span><span style="display:flex;"><span>bindkey <span style="color:#b84">&#34;^[[B&#34;</span> down-line-or-beginning-search
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># case-insensitive completion</span>
+</span></span><span style="display:flex;"><span>zstyle <span style="color:#b84">&#39;:completion:*&#39;</span> matcher-list <span style="color:#b84">&#39;&#39;</span> <span style="color:#b84">&#39;m:{a-zA-Z}={A-Za-z}&#39;</span> <span style="color:#b84">&#39;r:|=*&#39;</span> <span style="color:#b84">&#39;l:|=* r:|=*&#39;</span>
+</span></span><span style="display:flex;"><span>autoload -Uz compinit <span style="font-weight:bold">&amp;&amp;</span> compinit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># starship launched!</span>
+</span></span><span style="display:flex;"><span><span style="color:#999">eval</span> <span style="color:#b84">&#34;</span><span style="font-weight:bold">$(</span>starship init zsh<span style="font-weight:bold">)</span><span style="color:#b84">&#34;</span>
 </span></span></code></pre></div><h1 id="set-up-neovim">Set up NeoVim</h1>
 <h3 id="download-meslolg-from-a-hrefhttpsnerdfontscomnerd-fontsa">Download MesloLG from <a href="https://nerdfonts.com">Nerd Fonts</a></h3>
 <p>&hellip;and installed it to the system.</p>
-<h3 id="install-alacrittyhttpsgithubcomalacrittyalacritty-terminal-emulator">Install <a href="https://github.com/alacritty/alacritty">Alacritty</a> terminal emulator:</h3>
+<h3 id="install-alacrittyhttpsgithubcomalacrittyalacritty-terminal-emulator">Install <a href="https://github.com/alacritty/alacritty">Alacritty</a> terminal emulator</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install alacritty
 </span></span></code></pre></div><p>Create the config file for Alacritty <code>~/.config/alacritty/alacritty.toml</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>live_config_reload = <span style="font-weight:bold">true</span>
@@ -228,13 +232,13 @@
 </span></span><span style="display:flex;"><span>size = <span style="color:#099">13</span>
 </span></span><span style="display:flex;"><span>offset = { y = <span style="color:#099">0</span> }
 </span></span><span style="display:flex;"><span>normal = { family = <span style="color:#b84">&#34;MesloLGM Nerd Font&#34;</span>, style = <span style="color:#b84">&#34;Regular&#34;</span> }
-</span></span></code></pre></div><h3 id="install-neovim">Install NeoVim:</h3>
+</span></span></code></pre></div><h3 id="install-neovim">Install NeoVim</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install neovim
-</span></span></code></pre></div><h3 id="install-ripgrephttpsgithubcomburntsushiripgrep-its-a-dependency-of-nvchads-telescope-feature">Install <a href="https://github.com/BurntSushi/ripgrep">Ripgrep</a> (it&rsquo;s a dependency of NvChad&rsquo;s Telescope feature):</h3>
+</span></span></code></pre></div><h3 id="install-ripgrephttpsgithubcomburntsushiripgrep-its-a-dependency-of-nvchads-telescope-feature">Install <a href="https://github.com/BurntSushi/ripgrep">Ripgrep</a> (it&rsquo;s a dependency of NvChad&rsquo;s Telescope feature)</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install ripgrep
-</span></span></code></pre></div><h3 id="install-nvchadhttpsgithubcomnvchadnvchad-from-git">Install <a href="https://github.com/NvChad/NvChad">NvChad</a> from git:</h3>
+</span></span></code></pre></div><h3 id="install-nvchadhttpsgithubcomnvchadnvchad-from-git">Install <a href="https://github.com/NvChad/NvChad">NvChad</a> from git</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth <span style="color:#099">1</span> <span style="font-weight:bold">&amp;&amp;</span> nvim
-</span></span></code></pre></div><h3 id="enter-neovim-and-install-the-needed-lsps-and-validate-using-lspinfo">Enter neovim and install the needed LSPs (and validate using <code>:LspInfo</code>):</h3>
+</span></span></code></pre></div><h3 id="enter-neovim-and-install-the-needed-lsps-and-validate-using-lspinfo">Enter neovim and install the needed LSPs (and validate using <code>:LspInfo</code>)</h3>
 <ul>
 <li><code>clangd</code> (automatically installed already by NvChad)</li>
 <li><code>pyright</code> (manually installed via <code>:Mason</code>, same for below)</li>
@@ -251,7 +255,7 @@
 </span></span></code></pre></div><p>and put the following two lines inside <code>~/.bashrc</code> or <code>~/.zshrc</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zshrc" data-lang="zshrc"><span style="display:flex;"><span><span style="color:#999">export</span> <span style="color:#008080">NPM_PACKAGES</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;</span><span style="color:#b84">${</span><span style="color:#008080">HOME</span><span style="color:#b84">}</span><span style="color:#b84">/.npm-packages&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#999">export</span> <span style="color:#008080">PATH</span><span style="font-weight:bold">=</span><span style="color:#b84">&#34;</span><span style="color:#008080">$NPM_PACKAGES</span><span style="color:#b84">/bin:</span><span style="color:#008080">$PATH</span><span style="color:#b84">&#34;</span>
-</span></span></code></pre></div><h3 id="under-confignvimluacustom-make-the-following-edits">Under <code>~/.config/nvim/lua/custom</code> make the following edits:</h3>
+</span></span></code></pre></div><h3 id="under-confignvimluacustom-make-the-following-edits">Under <code>~/.config/nvim/lua/custom</code> make the following edits</h3>
 <ul>
 <li>In <code>configs/lspconfig.lua</code>, add <code>pyright</code> to <code>servers</code>.</li>
 <li>In <code>configs/conform.lua</code>, turn on <code>format_on_save</code> add following to <code>formatters_by_ft</code>:</li>
