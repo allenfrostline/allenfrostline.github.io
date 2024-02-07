@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 07 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Casey Neistat on Apple Vision Pro</title>
+      <link>https://allenfrostline.com/blog/vision_pro/</link>
+      <pubDate>Wed, 07 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/vision_pro/</guid>
+      <description>I am lucky enough to be one of the first users of Apple&amp;rsquo;s mixed reality headset, Vision Pro. It&amp;rsquo;s been almost a week (plus a long-distance flight) since I got it and the more time I spent wearing it, the more of this urge I feel to express how different this thing is, from all other AR/VR headsets out there, from cardboard VRs to Google Glass and HoloLens, onto Valve Index, Quest and PSVR, most of which I have either owned or tried on.</description>
+    </item>
     <item>
       <title>How to Include Page Breaks to Markdown Files?</title>
       <link>https://allenfrostline.com/blog/page-break-css/</link>
