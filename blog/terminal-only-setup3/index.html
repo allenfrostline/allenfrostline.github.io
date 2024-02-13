@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>My Terminal-Only Development Setup (3) - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="My Terminal-Only Development Setup (3) - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended &amp;hellip;">
+      <meta property="og:description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+
+<script>
+    window.minimalAnalytics = {
+        trackingId: 'G-B4WMGBPB4Z',
+        autoTrack: true, 
+    };
+</script>
+<script src="/index_1423847519945263698.js" async></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  <li><a href="/pottery/">Pottery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>My Terminal-Only Development Setup (3)</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2024-02-11
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>In this post I&rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom <a href="https://github.com/allenfrostline/LunarVimConfig/blob/main/config.lua"><code style="color:black">config.lua</code></a> so it&rsquo;s <em><strong>not</strong></em> recommended to take the following as your random online reference.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Description</th>
+<th style="text-align:center">Command</th>
+<th style="text-align:center">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Select all content</td>
+<td style="text-align:center"><code>ggVG</code></td>
+<td style="text-align:center">default keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Paste the last yanked that&rsquo;s not from delete/cut</td>
+<td style="text-align:center"><code>ctrl</code> <code>p</code></td>
+<td style="text-align:center">custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Toggle upper/lower case</td>
+<td style="text-align:center"><code>~</code></td>
+<td style="text-align:center">default keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Toggle wrap mode</td>
+<td style="text-align:center"><code>:toggleWrapMode</code></td>
+<td style="text-align:center"><code>wrapping.nvim</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Split vertically/horizontally</td>
+<td style="text-align:center"><code>|</code> and <code>-</code></td>
+<td style="text-align:center">custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Align markdown tables</td>
+<td style="text-align:center"><code>ctrl</code> <code>[</code> and <code>ctrl</code> <code>]</code></td>
+<td style="text-align:center"><code>vim-easy-align</code> and custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Shuffle tabs</td>
+<td style="text-align:center"><code>tab</code> and <code>shift</code> <code>tab</code></td>
+<td style="text-align:center">custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Close current buffer<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></td>
+<td style="text-align:center"><code>space</code> <code>c</code></td>
+<td style="text-align:center">default keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Close current window</td>
+<td style="text-align:center"><code>:q</code></td>
+<td style="text-align:center">default keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Open a new empty buffer</td>
+<td style="text-align:center"><code>space</code> <code>b</code></td>
+<td style="text-align:center">custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Save the changes of current buffer</td>
+<td style="text-align:center"><code>:w</code> or <code>ctrl</code> <code>s</code></td>
+<td style="text-align:center">default and custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Toggle file explorer</td>
+<td style="text-align:center"><code>space</code> <code>e</code> or <code>ctrl</code> <code>e</code></td>
+<td style="text-align:center"><code>neo-tree.nvim</code> and custom keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Multi-cursor select</td>
+<td style="text-align:center"><code>ctrl</code> <code>n</code></td>
+<td style="text-align:center"><code>vim-visual-multi</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Surround current word with brackets</td>
+<td style="text-align:center"><code>ysiw)</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Surround current sentence with brackets</td>
+<td style="text-align:center"><code>ys$&quot;</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Delete the square brackets around cursor</td>
+<td style="text-align:center"><code>ds]&quot;</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Delete the HTML tag around cursor</td>
+<td style="text-align:center"><code>dst&quot;</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Change the single quotes to double quotes</td>
+<td style="text-align:center"><code>cs'&quot;</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+<tr>
+<td style="text-align:center">Change the HTML tab around cursor to <code>&lt;h1&gt;</code></td>
+<td style="text-align:center"><code>csh1&lt;CR&gt;</code></td>
+<td style="text-align:center"><code>nvim-surround</code></td>
+</tr>
+</tbody>
+</table>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Very different concepts: buffers vs windows. For example, when a vertical split view is turned on, you can shuffle through all opened buffers in both left and right views. Now, in order to quit this split view, you&rsquo;re gonna close a window by <code>:q</code>. In order to close a buffer (can be seen as an opened file) across both views, we need <code>&lt;Space&gt;c</code>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/vision_pro/">Casey Neistat on Apple Vision Pro</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/vision_pro\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://giscus.app/client.js" data-repo="allenfrostline/allenfrostline.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NzEzOTkxNg==" data-category="General" data-category-id="DIC_kwDOBJkPzM4CbgIQ"
+        data-mapping="pathname" data-strict="0" data-reactions-enabled="0" data-emit-metadata="0"
+        data-input-position="bottom" data-theme="light" data-lang="en" data-loading="lazy" crossorigin="anonymous"
+        async>
+        </script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+</body>
+
+</html>

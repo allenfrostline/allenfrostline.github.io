@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 11 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Terminal-Only Development Setup (3)</title>
+      <link>https://allenfrostline.com/blog/terminal-only-setup3/</link>
+      <pubDate>Sun, 11 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/terminal-only-setup3/</guid>
+      <description>In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended to take the following as your random online reference.&#xA;Description Command Source Select all content ggVG default keybindings Paste the last yanked that&amp;rsquo;s not from delete/cut ctrl p custom keybindings Toggle upper/lower case ~ default keybindings Toggle wrap mode :toggleWrapMode wrapping.</description>
+    </item>
     <item>
       <title>Casey Neistat on Apple Vision Pro</title>
       <link>https://allenfrostline.com/blog/vision_pro/</link>
