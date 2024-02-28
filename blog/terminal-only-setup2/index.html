@@ -262,7 +262,8 @@
 </span></span><span style="display:flex;"><span>        <span style="color:#b84">&#34;ColorScheme&#34;</span>,
 </span></span><span style="display:flex;"><span>        {
 </span></span><span style="display:flex;"><span>            callback <span style="font-weight:bold">=</span> <span style="font-weight:bold">function</span>()
-</span></span><span style="display:flex;"><span>                vim.cmd(<span style="color:#b84">&#34;hi WinSeparator guifg=#666666 ctermfg=245&#34;</span>)
+</span></span><span style="display:flex;"><span>                vim.cmd(<span style="color:#b84">&#34;hi WinSeparator guifg=#666666&#34;</span>)
+</span></span><span style="display:flex;"><span>                vim.cmd(<span style="color:#b84">&#34;hi AlphaBanner guifg=#336677&#34;</span>)
 </span></span><span style="display:flex;"><span>            <span style="font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
@@ -487,40 +488,36 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- config for telescope ascii art</span>
-</span></span><span style="display:flex;"><span>require(<span style="color:#b84">&#34;telescope&#34;</span>).load_extension(<span style="color:#b84">&#34;ascii&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- lvim.builtin.alpha.dashboard.section.header.val = require(&#39;ascii&#39;).art.anime.onepiece.nami</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">-- require(&#34;telescope&#34;).load_extension(&#34;ascii&#34;)</span>
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.header.val <span style="font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░                                  &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                  ░ ░░░░  ░                                &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░  ░ ░ ░                           &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                   ░░░ ░░░░░ ░  ░                          &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                     ░░░░░░░░░░░░░                         &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                      ░░░░░▒▓▓▒░░                          &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░▓▒▒░░                          &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░░                          &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░▒░░         ░░░               &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░       ░░░▒░░░░            &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ░░░░░░░░░    ░░░░▓▓▒░░░░            &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;            ░░▓▓░░░    ░░░░░░░░  ░░░░░▒▓▓░░░░              &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;           ░░░░▒▓░░     ░░░░░░  ░░░░░░░░░                  &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░ ░░░▓░░░   ░ ░░░░░░░░░░░                        &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;           ░░░░░░     ░ ░░░░░░░░░                          &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;          ░░░░░░       ░░░░░░░░░                           &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░░░░░       ░░░░░░░░░░░  ░                       &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ░░          ░░░░░░░ ░░▒▒░░ ░░                     &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                  ░░░░░░░░   ░░░▒▓▒░░░                     &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                ░░░░░░ ░        ░░▒▓▒░░░░ ░                &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;            ░░░░░░░            ░░░░░░▒▓▓░░░░░░░░░░░░       &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;░░   ░░░░░░░░░░                    ░ ░░░▒▓▓▓▒░▒░░░░░░ ░░ ░░&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;   ░░░ ░░░                            ░░░░░░░░░░░░░░░░░  ░ &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                                         ░░░   ░ ░  ░░     &#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                                                 ░░░    ░  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                       ▓▄█▒▄                      &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;               ░▓▓▒░   ██████░▒▓░▄                &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;          ░ ░▒▓██░█░█ ▄████▓▓▒█▓█░░░              &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;           ▒▒▒██▒███░▒▒▒█░█████▓███▓▒             &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;         ▄▄██▒█░  ██▒▒██▓▓▓░░▒█░▓██   ░░░▄▄       &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;     ▄▒▄ ░██░▒█▒▓████▓▒▒▒░░▒░▒▓▓█░█▓█████▒█░░▒░   &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;    ▀███░░█░███▓▓███▓░░░░░░░▒▒░░▒▒████▓▓▒█▓▓██▒█  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;  ▄   ████░▒░█▓▓█▓▓▒░▒▒░░▓██ ▓█▒▒▓█▓▓▒▓▓░░░█▓▓▒▀  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34; ▄░▒█░▓██▓▓▓█████▓▓████████▄▓▓ ▒▒▒▒▓██▓▓▓█▓██▒▄   &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34; ▀█▒░▓░▒▓█▒░███▓▓▓███████▓░██▒▒░█████░░▒▓▓▓▒█▀▀   &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;     ██████████▀▀▓▀▓█████░▓██▓█████▓▓▒▓▓▒▓█       &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;   ▄▄█░▓▓▒▒▒   ▄   █░█████▒▒██░▓██▀ ▓▒▓▓▒▒▓██▓▓   &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;▄▄██▒▒▒░░░███ ███▄▄██▓▒█▓▒▒▒█▒▓▓▒   ▓▓▓▓██▒▒▓█▒▒▒ &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;█████░ ░▒████████▓▓█▓▒░▓█▓█▓▓░▒▒░▒ ░▒▒▒▒▓▓▒▓█▒░▒█▒&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34; ▀▒▒░░  ░▓█████░▒█▓████▒▓░░░░▒▒███▒▒▓▓█████▓█░████&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;       ░▒▒▓███▓▓▓▓▓▒▀▀█▒▒░▒▓▒  ░░▀░▒▓▓▒███░██▒▒█  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;      ░▓▓▓▒░▒██▓▀█▄▄ ░██▒▓░▓  ▄█▀   ░▒▓▒█  ██▓▀   &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;        ░▒██▒     ▀█████▒▒░▒▄██             ▀     &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                    ██▒███░▒░▀                    &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                    █▒▒▒▒▒▒░█▓                    &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                   ▄█▒▒▒▒▓▒░█                     &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                   █▒▒░█░▒▓░░░                    &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;                  ▄█▓  ▀▓▓▓▒▓▓░░                  &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;               ▄▄░▀       ▀▀▀▀░░░░░░▄             &#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#b84">&#34;            ▀▀▀▀                 ▀▀▀▀▀▀           &#34;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.header.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;DiagnosticError&#34;</span>
+</span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.header.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;AlphaBanner&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.buttons.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;String&#34;</span>
 </span></span><span style="display:flex;"><span>lvim.builtin.alpha.dashboard.section.footer.opts.hl <span style="font-weight:bold">=</span> <span style="color:#b84">&#34;Constant&#34;</span>
 </span></span><span style="display:flex;"><span>
