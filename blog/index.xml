@@ -6,14 +6,21 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 17 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Streaming Large JSON Files</title>
+      <link>https://allenfrostline.com/blog/streaming-large-json-files/</link>
+      <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/streaming-large-json-files/</guid>
+      <description>It has occurred to me multiple times that I need to read a JSON file, for whatever reason, and it&amp;rsquo;s simply too big in size. Since reading everything into the memory sounds like a terrible idea, an intuitive alternative would be to &amp;ldquo;stream&amp;rdquo; it through an interator. This is exactly what the ijson package does.&#xA;Say have a gigantic JSON file in the following structure&#xA;{ &amp;#34;earth&amp;#34;: { &amp;#34;europe&amp;#34;: [ {&amp;#34;name&amp;#34;: &amp;#34;Paris&amp;#34;, &amp;#34;type&amp;#34;: &amp;#34;city&amp;#34;, &amp;#34;info&amp;#34;: { .</description>
+    </item>
     <item>
       <title>My Terminal-Only Development Setup (3)</title>
       <link>https://allenfrostline.com/blog/terminal-only-setup3/</link>
       <pubDate>Sun, 11 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup3/</guid>
-      <description>In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended to take the following as your random online reference.&#xA;Description Command Source Select all content ggVG default keybindings Paste the last yanked that&amp;rsquo;s not from delete/cut ctrl p custom keybindings Toggle upper/lower case ~ default keybindings Toggle wrap mode :toggleWrapMode wrapping.</description>
+      <description>In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended to take the following as your random online reference.&#xA;Description Command Source Select all content ggVG default keybindings Paste the last yanked that&amp;rsquo;s not from delete/cut ctrl p custom keybindings Toggle upper/lower case ~ default keybindings Toggle wrap mode :toggleWrapMode or yow wrapping.</description>
     </item>
     <item>
       <title>Casey Neistat on Apple Vision Pro</title>

@@ -160,7 +160,7 @@
 </tr>
 <tr>
 <td style="text-align:center">Toggle wrap mode</td>
-<td style="text-align:center"><code>:toggleWrapMode</code></td>
+<td style="text-align:center"><code>:toggleWrapMode</code> or <code>yow</code></td>
 <td style="text-align:center"><code>wrapping.nvim</code></td>
 </tr>
 <tr>
@@ -171,7 +171,7 @@
 <tr>
 <td style="text-align:center">Align markdown tables</td>
 <td style="text-align:center"><code>ctrl</code> <code>[</code> and <code>ctrl</code> <code>]</code></td>
-<td style="text-align:center"><code>vim-easy-align</code> and custom keybindings</td>
+<td style="text-align:center"><code>vim-simple-align</code> and custom keybindings</td>
 </tr>
 <tr>
 <td style="text-align:center">Shuffle tabs</td>
@@ -243,13 +243,23 @@
 <td style="text-align:center"><code>csh1&lt;CR&gt;</code></td>
 <td style="text-align:center"><code>nvim-surround</code></td>
 </tr>
+<tr>
+<td style="text-align:center">Delete multiple lines</td>
+<td style="text-align:center"><code>ma</code> on first line, then <code>d'a</code> on last line</td>
+<td style="text-align:center">default keybindings</td>
+</tr>
+<tr>
+<td style="text-align:center">Select Virtual Environment</td>
+<td style="text-align:center"><code>vs</code></td>
+<td style="text-align:center"><code>venv-selector.nvim</code></td>
+</tr>
 </tbody>
 </table>
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
-<p>Very different concepts: buffers vs windows. For example, when a vertical split view is turned on, you can shuffle through all opened buffers in both left and right views. Now, in order to quit this split view, you&rsquo;re gonna close a window by <code>:q</code>. In order to close a buffer (can be seen as an opened file) across both views, we need <code>&lt;Space&gt;c</code>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Very different concepts: buffers vs windows. For example, when a vertical split view is turned on, you can shuffle through all opened buffers in both left and right views. Now, in order to quit this split view, you&rsquo;re gonna close a window by <code>:q</code>. In order to close a buffer (can be seen as an opened file) across both views, we need <code>space</code> <code>c</code>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
@@ -267,7 +277,7 @@
 <br><br>
 <nav class="post-nav">
   <span class="nav-prev">&larr; <a href="/blog/vision_pro/">Casey Neistat on Apple Vision Pro</a></span>
-  <span class="nav-next"></span>
+  <span class="nav-next"><a href="/blog/streaming-large-json-files/">Streaming Large JSON Files</a> &rarr;</span>
 </nav>
 
 <script type="text/javascript">
@@ -279,6 +289,8 @@ document.addEventListener('keyup', function(e) {
     url = '\/blog\/vision_pro\/';
     
   } else if (e.which == 39) {  
+    
+    url = '\/blog\/streaming-large-json-files\/';
     
   }
   if (url) window.location = url;

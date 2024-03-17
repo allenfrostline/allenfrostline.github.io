@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Streaming Large JSON Files - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Streaming Large JSON Files - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="It has occurred to me multiple times that I need to read a JSON file, for whatever reason, and it&amp;rsquo;s simply too big in size. Since reading everything into the memory sounds like a terrible idea, &amp;hellip;">
+      <meta property="og:description" content="It has occurred to me multiple times that I need to read a JSON file, for whatever reason, and it&amp;rsquo;s simply too big in size. Since reading everything into the memory sounds like a terrible idea, &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://allenfrostline.com/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+
+<script>
+    window.minimalAnalytics = {
+        trackingId: 'G-B4WMGBPB4Z',
+        autoTrack: true, 
+    };
+</script>
+<script src="/index_1423847519945263698.js" async></script>
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/eatery/">Eatery</a></li>
+  
+  <li><a href="/pottery/">Pottery</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Streaming Large JSON Files</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2024-03-17
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<p>It has occurred to me multiple times that I need to read a JSON file, for whatever reason, and it&rsquo;s simply too big in size. Since reading everything into the memory sounds like a terrible idea, an intuitive alternative would be to &ldquo;stream&rdquo; it through an interator. This is exactly what the <a href="https://github.com/ICRAR/ijson"><code>ijson</code></a> package does.</p>
+<p>Say have a gigantic JSON file in the following structure</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;earth&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;europe&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Paris&#34;</span>, <span style="color:#000080">&#34;type&#34;</span>: <span style="color:#b84">&#34;city&#34;</span>, <span style="color:#000080">&#34;info&#34;</span>: { <span style="color:#a61717;background-color:#e3d2d2">...</span> }},
+</span></span><span style="display:flex;"><span>      {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Thames&#34;</span>, <span style="color:#000080">&#34;type&#34;</span>: <span style="color:#b84">&#34;river&#34;</span>, <span style="color:#000080">&#34;info&#34;</span>: { <span style="color:#a61717;background-color:#e3d2d2">...</span> }},
+</span></span><span style="display:flex;"><span>      <span style="color:#998;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;america&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Texas&#34;</span>, <span style="color:#000080">&#34;type&#34;</span>: <span style="color:#b84">&#34;state&#34;</span>, <span style="color:#000080">&#34;info&#34;</span>: { <span style="color:#a61717;background-color:#e3d2d2">...</span> }},
+</span></span><span style="display:flex;"><span>      <span style="color:#998;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With the help of <code>ijson</code> we can iterate through the cities in Europe like this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">import</span> <span style="color:#555">ijson</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">with</span> <span style="color:#999">open</span>(<span style="color:#b84">&#39;filename.json&#39;</span>, <span style="color:#b84">&#39;r&#39;</span>) <span style="font-weight:bold">as</span> f:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> item <span style="font-weight:bold">in</span> ijson<span style="font-weight:bold">.</span>items(f, <span style="color:#b84">&#39;earth.europe.item&#39;</span>):
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">yield</span> item
+</span></span></code></pre></div><p>As the example above suggests, the <code>ijson.items</code> function takes two parameters, with the first being the file object and the second the <strong>prefix</strong> string. The prefix string is a dot-sequence of JSON keys/nodes ending with the leaf node <code>item</code>, and falls back to a simple <code>item</code>. For example, say we have a simple list of smaller JSONs inside a file:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Al&#34;</span>, <span style="color:#000080">&#34;age&#34;</span>: <span style="color:#099">32</span>},
+</span></span><span style="display:flex;"><span>  {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Bob&#34;</span>, <span style="color:#000080">&#34;age&#34;</span>: <span style="color:#099">25</span>},
+</span></span><span style="display:flex;"><span>  {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Candy&#34;</span>, <span style="color:#000080">&#34;age&#34;</span>: <span style="color:#099">22</span>},
+</span></span><span style="display:flex;"><span>  {<span style="color:#000080">&#34;name&#34;</span>: <span style="color:#b84">&#34;Dylan&#34;</span>, <span style="color:#000080">&#34;age&#34;</span>: <span style="color:#099">41</span>},
+</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>]
+</span></span></code></pre></div><p>We can use <code>item</code> as the prefix and stream it one by one without consuming all the available memory:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="font-weight:bold">with</span> <span style="color:#999">open</span>(<span style="color:#b84">&#39;filename.json&#39;</span>, <span style="color:#b84">&#39;r&#39;</span>) <span style="font-weight:bold">as</span> f:
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> item <span style="font-weight:bold">in</span> ijson<span style="font-weight:bold">.</span>items(f, <span style="color:#b84">&#39;item&#39;</span>):
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">yield</span> item
+</span></span></code></pre></div>
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/terminal-only-setup3/">My Terminal-Only Development Setup (3)</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/terminal-only-setup3\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://giscus.app/client.js" data-repo="allenfrostline/allenfrostline.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NzEzOTkxNg==" data-category="General" data-category-id="DIC_kwDOBJkPzM4CbgIQ"
+        data-mapping="pathname" data-strict="0" data-reactions-enabled="0" data-emit-metadata="0"
+        data-input-position="bottom" data-theme="light" data-lang="en" data-loading="lazy" crossorigin="anonymous"
+        async>
+        </script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+</body>
+
+</html>
