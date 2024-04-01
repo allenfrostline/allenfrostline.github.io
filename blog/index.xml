@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于解离和其他</title>
+      <link>https://allenfrostline.com/blog/dissociation-and-other-things/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/dissociation-and-other-things/</guid>
+      <description>今天是愚人节但无事发生，所以到了晚上会想说是不是需要看点、写点东西来让这一天过得不至于太严肃。毕竟一日再复一日的生活已经太沉重，要是放走一年</description>
+    </item>
     <item>
       <title>Streaming Large JSON Files</title>
       <link>https://allenfrostline.com/blog/streaming-large-json-files/</link>
