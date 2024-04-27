@@ -83,7 +83,7 @@ blockquote {
     position: relative;
 }
 
-blockquote>p:before {
+blockquote > p:before {
     position: absolute;
     left: 0;
     top: 0;
@@ -93,7 +93,7 @@ blockquote>p:before {
     font-size: 2.5em;
 }
 
-blockquote>p:after {
+blockquote > p:after {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -107,8 +107,8 @@ blockquote blockquote {
     background: #eee;
 }
 
-blockquote blockquote>p:after,
-blockquote blockquote>p:before {
+blockquote blockquote > p:after,
+blockquote blockquote > p:before {
     content: none;
 }
 
@@ -116,8 +116,8 @@ blockquote blockquote blockquote {
     background: #ddd;
 }
 
-blockquote blockquote blockquote>p:after,
-blockquote blockquote blockquote>p:before {
+blockquote blockquote blockquote > p:after,
+blockquote blockquote blockquote > p:before {
     content: none;
 }
 
@@ -139,7 +139,7 @@ ol {
 
 /* Code */
 pre code {
-    font-size: .9em;
+    font-size: 0.9em;
     display: block;
     padding: 1em;
     overflow-x: auto;
@@ -156,8 +156,8 @@ code {
 
 /* Links */
 a {
-    color: #B40203;
-    text-decoration: none
+    color: #b40203;
+    text-decoration: none;
 }
 
 sup a {
@@ -170,7 +170,7 @@ sup {
 }
 
 h1 a {
-    color: #000
+    color: #000;
 }
 
 /* Layout */
@@ -229,16 +229,16 @@ body {
 }
 
 .masthead .menu li li::before {
-    content: "•\00a\000a0\00a0"
+    content: "•\00a\000a0\00a0";
 }
 
 .masthead .menu a {
     display: inline-block;
     padding: 6px 4px 4px 6px;
     text-align: center;
-    background: #B40203;
-    border-bottom: 4px solid #5E0001;
-    border-right: 4px solid #5E0001;
+    background: #b40203;
+    border-bottom: 4px solid #5e0001;
+    border-right: 4px solid #5e0001;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -256,9 +256,9 @@ body {
 .masthead .menu a:hover {
     display: inline-block;
     padding: 6px 4px 4px 6px;
-    background: #C80004;
-    border-bottom: 4px solid #5E0001;
-    border-right: 4px solid #5E0001;
+    background: #c80004;
+    border-bottom: 4px solid #5e0001;
+    border-right: 4px solid #5e0001;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -277,8 +277,8 @@ body {
     display: inline-block;
     padding: 6px 4px 4px 6px;
     background: #940002;
-    border-bottom: 4px solid #5E0001;
-    border-right: 4px solid #5E0001;
+    border-bottom: 4px solid #5e0001;
+    border-right: 4px solid #5e0001;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -301,10 +301,10 @@ body {
 }
 
 .masthead img {
-    width: 60px;
+    width: 100px;
     margin-top: 15px;
     margin-bottom: -45px;
-    margin-left: 30px
+    margin-left: 30px;
 }
 
 .blog {
@@ -333,7 +333,7 @@ body {
 
 /*.main header ~ p:first-of-type::first-letter { font-size: 2.8em; padding: .1em .1em 0 0; float: left; line-height: 1em; }*/
 .subtitle {
-    font-size: .9em;
+    font-size: 0.9em;
     color: #eee;
 }
 
@@ -344,7 +344,7 @@ body {
     padding-left: 94px;
     line-height: 1.5;
     margin: 0;
-    padding-bottom: 0
+    padding-bottom: 0;
 }
 
 .archive span {
@@ -359,11 +359,11 @@ body {
 
 .archive a {
     text-decoration: none;
-    color: #000
+    color: #000;
 }
 
 .archive a:hover {
-    color: #C80004
+    color: #c80004;
 }
 
 /* Miscellanea */
@@ -397,7 +397,7 @@ hr {
 }
 
 .post-nav a {
-    color: #000
+    color: #000;
 }
 
 .comments {
@@ -406,15 +406,15 @@ hr {
 
 /* Footnotes */
 .footnotes {
-    font-size: .9em;
+    font-size: 0.9em;
 }
 
 .footnotes p {
-    margin: 0
+    margin: 0;
 }
 
 .footnote-ref {
-    padding-left: .3em;
+    padding-left: 0.3em;
 }
 
 /* Tables */
@@ -426,24 +426,24 @@ table {
     overflow: auto;
     border-collapse: collapse;
     border-spacing: 0;
-    border-bottom: 2px solid
+    border-bottom: 2px solid;
 }
 
 table thead {
     border-top: 2px solid;
-    border-bottom: 1px solid
+    border-bottom: 1px solid;
 }
 
 table tr td {
     padding: 0px 10px;
     vertical-align: top;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 table tr th {
     padding: 0px 10px;
     vertical-align: top;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 table th {
@@ -471,7 +471,7 @@ body {
 }
 
 code {
-    hyphens: none
+    hyphens: none;
 }
 
 iframe,
@@ -492,7 +492,7 @@ img[src$="#border"] {
     display: none;
 }
 
-:hover>.anchor {
+:hover > .anchor {
     display: inline;
 }
 
@@ -510,12 +510,12 @@ img[src$="#border"] {
 }
 
 /* Small Screen */
-@media screen and (max-width:1200px) {
+@media screen and (max-width: 1200px) {
     .main {
         width: 100%;
         margin: auto;
         padding: 10px;
-        padding-top: 180px
+        padding-top: 180px;
     }
 
     .multicol {
@@ -539,7 +539,7 @@ img[src$="#border"] {
         width: 100vw;
         direction: ltr;
         max-width: 100%;
-        margin: 0 auto
+        margin: 0 auto;
     }
 
     .masthead .menu ul {
@@ -575,7 +575,7 @@ img[src$="#border"] {
     }
 
     .masthead img {
-        width: 60px;
+        width: 100px;
         margin-top: 5px;
         margin-bottom: -52px;
         margin-left: auto;
@@ -583,9 +583,8 @@ img[src$="#border"] {
     }
 
     br.masthead-br {
-        display: none
+        display: none;
     }
-
 }
 
 .contact {
@@ -593,7 +592,6 @@ img[src$="#border"] {
 }
 
 @media print {
-
     html,
     body {
         border: none;
@@ -616,7 +614,6 @@ img[src$="#border"] {
     .contact {
         visibility: visible;
     }
-
 }
 
 .MathJax_Display {
@@ -625,5 +622,5 @@ img[src$="#border"] {
 }
 
 a:hover {
-    color: #C80004;
+    color: #c80004;
 }
