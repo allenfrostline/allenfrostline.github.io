@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>哥廷根</title>
+      <link>https://allenfrostline.com/blog/gottingen/</link>
+      <pubDate>Sun, 28 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/gottingen/</guid>
+      <description>四月最后一个周天的晚上，和妈妈一起去了某家有七八年没去过的商场，吃了一家据说已开了两三年的生腌。生腌的花样很多，卖相很好，但腌料的味道其实一</description>
+    </item>
     <item>
       <title>关于解离和其他</title>
       <link>https://allenfrostline.com/blog/dissociation-and-other-things/</link>
@@ -700,13 +707,6 @@
       <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/to-the-arctic-circle-1/</guid>
       <description>These are the photos I took during our impromptu trip in Northern Europe. We started from Oslo, the capital of Norway and headed all the way to the Abisko National Park in Sweden, which was my first time stepping inside the Arctic Circle.</description>
-    </item>
-    <item>
-      <title>How to Set Up a Personal Site Using Hexo?</title>
-      <link>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</link>
-      <pubDate>Mon, 26 Sep 2016 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/how-to-set-up-a-personal-site-using-hexo/</guid>
-      <description>Below are some principle steps of setting up this website using Hexo. Instead of using Wordpress, I considered using Hexo directly for higher flexibility in customization.&#xA;Download npm and node.js, then use npm to download git and hexo.&#xA;Then, in root folder create a new folder named &amp;lt;name&amp;gt;.github.io and within it hexo.&#xA;cd ~/&amp;lt;name&amp;gt;.github.io/hexo git init hexo init Find /hexo/source/_post. This is the folder we put out Markdown posts, later.</description>
     </item>
   </channel>
 </rss>
