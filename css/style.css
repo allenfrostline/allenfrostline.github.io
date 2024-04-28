@@ -234,11 +234,13 @@ body {
 
 .masthead .menu a {
     display: inline-block;
-    padding: 6px 4px 4px 6px;
+    padding: 6px 5px 4px 5px;
     text-align: center;
     background: #b40203;
-    border-bottom: 4px solid #5e0001;
-    border-right: 4px solid #5e0001;
+    border-bottom: 4px solid #702525;
+    border-right: 4px solid #702525;
+    border-top: 1px solid #702525;
+    border-left: 1px solid #702525;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -248,17 +250,24 @@ body {
     height: 34px;
     line-height: 20px;
     outline-width: 0px;
+    text-shadow:
+        0.7px 0.7px 0 #000,
+        -0.7px 0.7px 0 #000,
+        -0.7px -0.7px 0 #000,
+        0.7px -0.7px 0 #000;
     vertical-align: middle;
     color: #ffffff;
-    width: 66px;
+    width: 72px;
 }
 
 .masthead .menu a:hover {
     display: inline-block;
-    padding: 6px 4px 4px 6px;
-    background: #c80004;
-    border-bottom: 4px solid #5e0001;
-    border-right: 4px solid #5e0001;
+    padding: 6px 5px 4px 5px;
+    background: #c40607;
+    border-bottom: 4px solid #702525;
+    border-right: 4px solid #702525;
+    border-top: 1px solid #702525;
+    border-left: 1px solid #702525;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -268,17 +277,24 @@ body {
     height: 34px;
     line-height: 20px;
     outline-width: 0px;
+    text-shadow:
+        0.7px 0.7px 0 #000,
+        -0.7px 0.7px 0 #000,
+        -0.7px -0.7px 0 #000,
+        0.7px -0.7px 0 #000;
     vertical-align: middle;
     color: #ffffff;
-    width: 66px;
+    width: 72px;
 }
 
 .masthead .menu .active a {
     display: inline-block;
-    padding: 6px 4px 4px 6px;
+    padding: 6px 5px 4px 5px;
     background: #940002;
     border-bottom: 4px solid #5e0001;
     border-right: 4px solid #5e0001;
+    border-bottom: 4px solid #702525;
+    border-right: 4px solid #702525;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -290,7 +306,7 @@ body {
     outline-width: 0px;
     vertical-align: middle;
     color: #ffffff;
-    width: 66px;
+    width: 72px;
 }
 
 .masthead .menu ul {
