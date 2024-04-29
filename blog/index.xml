@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Showing Real-time Lyrics in MacOS Menu Bar</title>
+      <link>https://allenfrostline.com/blog/mac-menu-bar-lyrics/</link>
+      <pubDate>Mon, 29 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/mac-menu-bar-lyrics/</guid>
+      <description>This is a short post about my latest solution trying to show real-time lyrics (whether you&amp;rsquo;re using Apple Music or Spotify) on the menu bar of a Mac. You&amp;rsquo;ll need two apps installed, namely Lyric Fever (for live lyrics support, which needs Spotify cookies dumped locally, check its website for further instructions) and TopNotch (to black out the menu bar and hide the ugly notch) to replicate my outcome.&#xA;Once both apps are properly installed with permissions all set up, you can launch Apple Music and start a song (that has lyrics available on Spotify), and the outcome would be something like this:</description>
+    </item>
     <item>
       <title>哥廷根</title>
       <link>https://allenfrostline.com/blog/gottingen/</link>
@@ -700,13 +707,6 @@
       <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</guid>
       <description>The lifestyle in Czech Republic is far different from that in the Netherlands. The small, shabby shops near our accommodation, the depressions here and there along the quiet lanes towards Vysehrad (a castle of 10 min&amp;rsquo;s walk from our place), the queues of cars parking alongside the road seemingly with no end at all - those images arouse me of a place not so &amp;ldquo;Europa&amp;rdquo;, a place named after water,</description>
-    </item>
-    <item>
-      <title>Notes on Asymptotic Theories</title>
-      <link>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</link>
-      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/notes-on-asymptotic-theory/</guid>
-      <description>These are the notes taken throughout my weekly meetings with Dr. Bekker at RuG. We&amp;rsquo;re using the econometrics book written by Fumio Hayashi1 in 2000 and mainly focused on the chapters about asymptotic theories. The book has covered almost every inch of classical econometrics and is by far the best advanced econometrics book in my mind. I&amp;rsquo;m sure I&amp;rsquo;ll go back to these notes from time to time. Review A</description>
     </item>
   </channel>
 </rss>
