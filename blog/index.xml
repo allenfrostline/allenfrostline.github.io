@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>五月杨梅挂树</title>
+      <link>https://allenfrostline.com/blog/may2024/</link>
+      <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/may2024/</guid>
+      <description>五月杨梅挂树 田埂上的牛静默不语 大大小小的雨侵占土地 我侵占我自己</description>
+    </item>
     <item>
       <title>Showing Real-time Lyrics in MacOS Menu Bar</title>
       <link>https://allenfrostline.com/blog/mac-menu-bar-lyrics/</link>
@@ -700,13 +707,6 @@
       <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</guid>
       <description>Yesterday arrived us in Bratislava, Slovak. It was yet another small but historic city. The weather was getting colder. The sleet floated along the roads, which is kinda psychedemic, actually.&#xA;The day before, we were in Wien, Austria. And further before were us in Hallstatt, which is also an Austria town at the foot of the Alps.&#xA;Time to leave.</description>
-    </item>
-    <item>
-      <title>Christmas across Eastern Europe (1): Czech Republic</title>
-      <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</link>
-      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-1/</guid>
-      <description>The lifestyle in Czech Republic is far different from that in the Netherlands. The small, shabby shops near our accommodation, the depressions here and there along the quiet lanes towards Vysehrad (a castle of 10 min&amp;rsquo;s walk from our place), the queues of cars parking alongside the road seemingly with no end at all - those images arouse me of a place not so &amp;ldquo;Europa&amp;rdquo;, a place named after water,</description>
     </item>
   </channel>
 </rss>
