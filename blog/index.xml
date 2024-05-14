@@ -6,8 +6,22 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 May 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>(Significantly More, but Honestly Never Enough) Comprehensive Notes on C&#43;&#43;</title>
+      <link>https://allenfrostline.com/blog/learncpp-notes/</link>
+      <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/learncpp-notes/</guid>
+      <description>The following notes are based on tutorials on LearnCpp.com. I take zero credit on any of the following contents except summarizing stuff here and there to fit them into one single post (barely). If you find it useful, please feel free to express your gratitude toward Alex and other authors of the original tutorial website.&#xA;Introduction / Getting Started OK. This is a tediously long post but let&amp;rsquo;s start from the very basics.</description>
+    </item>
+    <item>
+      <title>Notes on Java Basics</title>
+      <link>https://allenfrostline.com/blog/jenkov-notes/</link>
+      <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/jenkov-notes/</guid>
+      <description>This post covers some notes I took when learning Java from scratch (literally and oddly, I had no prior experience to this language at all) using Jakob Jenkov&amp;rsquo;s tutorials. I take no credit on any of the contents below except typos if any.&#xA;What is Java? Java is a language stored in .java files, which are then compiled into Java byte code using the Java compiler, and the byte code is then executed using the Java Virtual Machine (JVM).</description>
+    </item>
     <item>
       <title>五月杨梅挂树</title>
       <link>https://allenfrostline.com/blog/may2024/</link>
@@ -693,20 +707,6 @@
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-4/</guid>
       <description>The last two stops of our Christmas journal, Zagreb the capital, and Dubrovnik a small but ancient town, in Croatia. Zagreb didn&amp;rsquo;t left me much memory &amp;ndash; except for the vivid, various graffiti all throughout the whole city. It&amp;rsquo;s a bit funny when we say a Yao Ming on the wall when pulling our luggage to the airport. Yao is definately within China&amp;rsquo;s top ten most valuable icons worldwide, especially in the expression package sense.</description>
-    </item>
-    <item>
-      <title>Christmas across Eastern Europe (3): Hungary</title>
-      <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-3/</link>
-      <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-3/</guid>
-      <description>We arrived in Budapest two days ago. It was a larger, more modern city split by the large Danube into Buda and Pest. We visited the magnificent Parliament building &amp;ndash; indeed it was magnificent, yet maybe bacause of the poor English of the guide or the seemingly too many museums, I felt kinda tired about all the decorations inside it. We all looked tired. It was a nice little cafe for yesterday&amp;rsquo;s dinner.</description>
-    </item>
-    <item>
-      <title>Christmas across Eastern Europe (2): Austria and Slovak</title>
-      <link>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</link>
-      <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/christmas-across-eastern-europe-2/</guid>
-      <description>Yesterday arrived us in Bratislava, Slovak. It was yet another small but historic city. The weather was getting colder. The sleet floated along the roads, which is kinda psychedemic, actually.&#xA;The day before, we were in Wien, Austria. And further before were us in Hallstatt, which is also an Austria town at the foot of the Alps.&#xA;Time to leave.</description>
     </item>
   </channel>
 </rss>

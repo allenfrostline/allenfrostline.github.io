@@ -77,6 +77,42 @@ h6 {
     font-size: 1em;
 }
 
+h1:before,
+h2:before,
+h3:before,
+h4:before,
+h5:before,
+h6:before {
+    content: "#";
+    font-family: Hervetica;
+    text-align: right;
+    color: #bb2222;
+    position: absolute;
+    margin-left: -0.55em;
+    margin-top: -0.1ex;
+}
+
+.archive h1:before,
+.archive h1:before,
+.archive h2:before,
+.archive h3:before,
+.archive h4:before,
+.archive h5:before,
+.title h1:before,
+.title h2:before,
+.title h3:before,
+.title h4:before,
+.title h5:before,
+.title h6:before,
+.masthead h1:before,
+.masthead h2:before,
+.masthead h3:before,
+.masthead h4:before,
+.masthead h5:before,
+.masthead h6:before {
+    content: none;
+}
+
 blockquote {
     margin: 0;
     padding: 0 2em;
