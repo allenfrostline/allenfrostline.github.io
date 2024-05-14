@@ -965,39 +965,39 @@ flowchart LR
 <tbody>
 <tr>
 <td>Floating Point</td>
-<td>float (4)<br>double (8)<br>long double (8)</td>
+<td><code>float</code> (4)<br><code>double</code> (8)<br><code>long double</code> (8)</td>
 <td>a number with a fractional part</td>
-<td>3.14159</td>
+<td><code>3.14159</code></td>
 </tr>
 <tr>
 <td>Integral (Boolean)</td>
-<td>bool (1)</td>
+<td><code>bool</code> (1)</td>
 <td>true or false</td>
-<td>true</td>
+<td><code>true</code></td>
 </tr>
 <tr>
 <td>Integral (Character)</td>
-<td>char (1)<br>wchar_t (1)<br>char8_t (1, C++20)<br>char16_t (2, C++11)<br>char32_t (4, C++11)</td>
+<td><code>char</code> (1)<br><code>wchar_t</code> (1)<br><code>char8_t</code> (1, C++20)<br><code>char16_t</code> (2, C++11)<br><code>char32_t</code> (4, C++11)</td>
 <td>a single character of text</td>
-<td>&lsquo;c&rsquo;</td>
+<td><code>'c'</code></td>
 </tr>
 <tr>
 <td>Integral (Integer)</td>
-<td>short int (2)<br>int (2)<br>long int (4)<br>long long int (8, C++11)</td>
+<td><code>short int</code> (2)<br><code>int</code> (2)<br><code>long int</code> (4)<br><code>long long int</code> (8, C++11)</td>
 <td>whole numbers including zero</td>
-<td>64</td>
+<td><code>64</code></td>
 </tr>
 <tr>
 <td>Null Pointer</td>
-<td>std::nullptr_t (4, C++11)</td>
+<td><code>std::nullptr_t</code> (4, C++11)</td>
 <td>a null pointer</td>
-<td>nullptr</td>
+<td><code>nullptr</code></td>
 </tr>
 <tr>
 <td>Void</td>
-<td>void</td>
+<td><code>void</code></td>
 <td>no type</td>
-<td>n/a</td>
+<td><code>n/a</code></td>
 </tr>
 </tbody>
 </table>
@@ -1322,7 +1322,7 @@ You entered: 0
 <h2 id="chars">Chars</h2>
 <p>Some information worth noting:</p>
 <ul>
-<li>ASCII 0-31 are unprintable chars, 32 is `` (space), 48 is <code>0</code>, 65 is <code>A</code> and 97 is <code>a</code>.</li>
+<li>ASCII 0-31 are unprintable chars, 32 is <code style="whitespace:pre"> </code> (space), 48 is <code>0</code>, 65 is <code>A</code> and 97 is <code>a</code>.</li>
 <li>Multi-character input is allowed but only one character a time can be read into a <code>char</code> variable using <code>std::cin</code>. That means the subsequent <code>std::cin</code> can still read from the remaining input from the buffer.</li>
 <li>Escape sequences are listed below
 <ul>
@@ -1372,7 +1372,7 @@ You entered: 0
 </span></span><span style="display:flex;"><span> print( <span style="font-weight:bold">static_cast</span><span style="font-weight:bold">&lt;</span><span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">&gt;</span>(<span style="color:#099">5.5</span>) ); <span style="color:#998;font-style:italic">// explicitly convert double value 5.5 to an int
 </span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span> <span style="font-weight:bold">return</span> <span style="color:#099">0</span>;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>and the output is still <code>5</code> here as expected. It&rsquo;s worth noting that by converting <code>char</code> into <code>int</code> we can effectively the the ASCII code of a character:</p>
+</span></span></code></pre></div><p>and the output is still <code>5</code> here as expected. It&rsquo;s worth noting that by converting <code>char</code> into <code>int</code> we can effectively get the the ASCII code of a character:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#999;font-weight:bold">#include</span> <span style="color:#999;font-weight:bold">&lt;iostream&gt;</span><span style="color:#999;font-weight:bold">
 </span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold"></span>
 </span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
