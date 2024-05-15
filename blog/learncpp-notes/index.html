@@ -2043,7 +2043,7 @@ Now enter your name: Hello, , you picked 2
 <tr>
 <td></td>
 <td><code>type{}</code></td>
-<td>Functional case (C++11)</td>
+<td>Functional cast (C++11)</td>
 <td><code>new_type{expression}</code></td>
 </tr>
 <tr>
@@ -4527,7 +4527,7 @@ the size of Foo2 is 12 bytes
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">double</span> m_wage {};
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>Notice the ending semicolon as class declaration is also considered a statement. It&rsquo;s apparent that classes are very similar to structs:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">Employy</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">struct</span> <span style="color:#458;font-weight:bold">Employee</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> id {};
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span> age {};
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">double</span> wage {};
@@ -4762,9 +4762,9 @@ p| Access           | Member Access   | Derived Class Access | Public Access   |
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">print</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#a61717;background-color:#e3d2d2">```</span>std<span style="font-weight:bold">::</span>cout <span style="font-weight:bold">&lt;&lt;</span> m_id <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#39; &#39;</span>  <span style="color:#998;font-style:italic">// this is the same as
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>                 <span style="font-weight:bold">&lt;&lt;</span> <span style="font-weight:bold">this</span><span style="font-weight:bold">-&gt;</span>m_id   <span style="color:#998;font-style:italic">// this with explicit this-&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>                 <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#39;\n&#39;</span>;
+</span></span><span style="display:flex;"><span>        std<span style="font-weight:bold">::</span>cout <span style="font-weight:bold">&lt;&lt;</span> m_id <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#39; &#39;</span>  <span style="color:#998;font-style:italic">// this is the same as
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>                  <span style="font-weight:bold">&lt;&lt;</span> <span style="font-weight:bold">this</span><span style="font-weight:bold">-&gt;</span>m_id   <span style="color:#998;font-style:italic">// this with explicit this-&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>                  <span style="font-weight:bold">&lt;&lt;</span> <span style="color:#b84">&#39;\n&#39;</span>;
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>As a refresher of pointers, <code>this-&gt;m_id</code> is equivalently <code>(*this).m_id</code>.</p>
