@@ -6086,7 +6086,7 @@ The length is: 5
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>There are three things that may impact timing:</p>
 <ul>
-<li>Make sure you&rsquo;r eusing a release build target instead of debug build target, which typically turn optimizatino off</li>
+<li>Make sure you&rsquo;re using a release build target instead of debug build target, which typically turn optimizatino off</li>
 <li>Make sure other system activities are not impacting your program performance</li>
 <li>If the program uses a random number generator, the particular random number used may impact timing, which a lot people overlook</li>
 </ul>
@@ -6130,7 +6130,7 @@ The length is: 5
 </span></span></code></pre></div><p>To free the memory referred by a pointer (even when it&rsquo;s null already), we can simply</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="font-weight:bold">delete</span> ptr;
 </span></span></code></pre></div><p>Dynamically allocated memory stays allocated until it is explicitly deallocated or until the program ends, assuming your operating system does regular cleanup. This means we can sometimes accidentally cause memory leak by writing functions like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">so_something_stupid</span>() {
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">do_something_stupid</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#458;font-weight:bold">int</span><span style="font-weight:bold">*</span> ptr { <span style="font-weight:bold">new</span> <span style="color:#458;font-weight:bold">int</span> };
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>By constantly calling this function, we&rsquo;re accumulating the memory allocated while deleting <code>ptr</code> as it&rsquo;s out of scope once out of the function, hence the unreferencable memory will increase until the program ends.</p>
