@@ -5,13 +5,13 @@
     <description>Recent content on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 May 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Blog</title>
       <link>https://allenfrostline.com/blog/</link>
-      <pubDate>Tue, 14 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 18 May 2024 00:00:00 +0000</pubDate>
       
       <guid>https://allenfrostline.com/blog/</guid>
       <description>
@@ -169,7 +169,11 @@ enil stella norf. 🦆
 }
 &lt;/style&gt;
 &lt;p&gt;I have recently started learning pottery, specifically wheel throwing. Quite a meditative process it is to turn clay (a fine word for mud/soil/earth) into any form in your mind with nothing but a wheel and your bare hands. More than sure that it&amp;rsquo;ll be a long-term hobby of mine, I doubt anybody would be willing to pay for my pieces yet, and thus am just showing my work below for illustration.&lt;/p&gt;
-&lt;div class=&#34;grid&#34;&gt;
+&lt;div id=&#34;spring-summer-2024&#34; class=&#34;grid&#34;&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=100% style=&#34;margin-left:15%&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid&#34;&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; width=75%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; width=80%&gt;&lt;/div&gt;
@@ -201,8 +205,6 @@ enil stella norf. 🦆
         &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; width=100%&gt;
     &lt;/div&gt;
     &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-35%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=100% style=&#34;margin-left:15%&#34;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
         
