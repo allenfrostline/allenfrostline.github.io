@@ -104,7 +104,7 @@ enil stella norf. 🦆
       <guid>https://allenfrostline.com/pottery/</guid>
       <description>
         &lt;style&gt;
-.grid {
+.grid7 {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -114,7 +114,7 @@ enil stella norf. 🦆
     overflow: hidden;
 }
 
-.grid img {
+.grid7 img {
     pointer-events: none;
 }
 
@@ -169,42 +169,59 @@ enil stella norf. 🦆
 }
 &lt;/style&gt;
 &lt;p&gt;I have recently started learning pottery, specifically wheel throwing. Quite a meditative process it is to turn clay (a fine word for mud/soil/earth) into any form in your mind with nothing but a wheel and your bare hands. More than sure that it&amp;rsquo;ll be a long-term hobby of mine, I doubt anybody would be willing to pay for my pieces yet, and thus am just showing my work below for illustration.&lt;/p&gt;
-&lt;div id=&#34;spring-summer-2024&#34; class=&#34;grid&#34;&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=100% style=&#34;margin-left:15%&#34;&gt;&lt;/div&gt;
+&lt;h1 id=&#34;spring-2024&#34;&gt;Spring 2024&lt;/h1&gt;
+&lt;p&gt;I started throwing porcelain and &lt;a href=&#34;https://en.wikipedia.org/wiki/Celadon&#34;&gt;celadon&lt;/a&gt; (青瓷, aka &lt;em&gt;greenware&lt;/em&gt;, a type of porcelain glazed in jade green) when I came back to my hometown Shangyu (上虞), which turned out to be one of the oldest origins of celadon since the Han Dynasty (AD25 - AD220). The texture of the clay is much different, specifically in that it tends to be rather soft and smooth yet really absorbent if you apply any water when throwing it (it will quickly end up collapsing, or cracking when dried). A rule of thumb is to lubricate it with slip only, as infrequently as possible.&lt;/p&gt;
+&lt;p&gt;Another interesting trait of porcelain is that it&amp;rsquo;s usually trimmed only when fully dried, which is why you sometimes see paper thin porcelain cups and bowls that are almost translucent. Carving on a bone dry surface is also a really different experience. Both trimming and carving tools need to be frequently sharpened.&lt;/p&gt;
+&lt;div id=&#34;spring-2024&#34; class=&#34;grid7&#34;&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_thumb_cup_tall.png&#34;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_thumb_cup.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_v_cup.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl2.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=95%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-23&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-22&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-22&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/ceramic_warawara_bowl.png&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/ceramic_knit_bowl.png&#34; width=90%&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;span-22&#34; style=&#34;margin-bottom:10%;margin-left:3%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=70%&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid&#34;&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34;&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; width=75%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; width=80%&gt;&lt;/div&gt;
+&lt;h1 id=&#34;fall--winter-2023&#34;&gt;Fall &amp;amp; Winter 2023&lt;/h1&gt;
+&lt;p&gt;Been throwing pottery on a weekly basis during the latter half of year. Learning the techniques required to throw big, tall guys (and eventually back to the small ones).&lt;/p&gt;
+&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid7&#34;&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:15%;margin-right:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-31&#34; style=&#34;margin-left:-20%;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/tall_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_cup.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/pinch_cup.png&#34; width=70%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/thumb_pressed_textured_cup.png&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup3.png&#34;&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-left:-15%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/pinch_cup.png&#34; width=70%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-left:-5%;margin-right:5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/thumb_pressed_textured_cup.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-right:5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup3.png&#34;&gt;&lt;/div&gt;
     &lt;div style=&#34;margin:0 7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/lidded_jar.png&#34;&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-42&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase.png&#34;&gt;&lt;/div&gt;
-    &lt;div style=&#34;display:flex;align-items:end;margin-left:-80%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_bud_vase.png&#34; width=25% height=25% style=&#34;margin-right:15%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup3.png&#34; width=60%&gt;
-    &lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup2.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin:10% 15% 0 -50%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup3.png&#34;&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-left:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup2.png&#34;&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/swirl_cup.png&#34; width=85%&gt;&lt;/div&gt;
     &lt;div style=&#34;margin:0 7% 0 -7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup2.png&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-33&#34; style=&#34;margin:0 -5% 0 -10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/medium_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_flowerpot.png&#34; width=65%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_green_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_jar.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div style=&#34;margin-left:-72%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/go_jar.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-33&#34; style=&#34;margin:0 -5% 0 0&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/medium_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_flowerpot.png&#34; width=55%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-21&#34; style=&#34;margin-bottom:50%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-21&#34; style=&#34;margin-right:15%;margin-bottom:50%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-42&#34; style=&#34;margin-top:-37%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase2.png&#34; width=70%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-50%;margin-top:-20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; width=65%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-20%;margin-bottom:-10%;margin-right:10%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; width=60% style=&#34;margin-right:150%;margin-left:-25%;margin-bottom:-10%&#34;&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-10%;margin-bottom:-10%;margin-right:5%&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; width=60% style=&#34;margin:0 50% -5% -10%&#34;&gt;
         &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; width=100%&gt;
     &lt;/div&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin:-20% -10% 0 -25%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; width=65%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-35%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;summer-2023&#34;&gt;Summer 2023&lt;/h1&gt;
+&lt;p&gt;Back in the summer I haven&amp;rsquo;t taken any lesson on pottery yet. However, here are some of my ugly lovely pieces.&lt;/p&gt;
+&lt;div id=&#34;summer-2023&#34; class=&#34;grid7&#34;&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_green_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_jar.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div style=&#34;margin-left:5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/go_jar.png&#34;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
         
@@ -382,6 +399,7 @@ enil stella norf. 🦆
 &lt;h1&gt;虾兵蟹将&lt;/h1&gt;
 &lt;details&gt;&lt;summary&gt;万能酱虾仁炒蛋&lt;/summary&gt;【万能酱：生抽x2、陈醋x1、蚝油x1、辣椒粉x1、淀粉x1、白糖x1，加入清水半碗搅匀】【步骤：虾仁煎熟盛出，四个鸡蛋打散炒熟后加虾仁，倒酱汁】&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;大虾粉丝煲&lt;/summary&gt;8只大虾：虾头虾壳加料酒和少量水煮沸转小火焖20分钟，高汤过筛；虾身带尾两面煎上色（半熟）备用。热油爆香葱、姜、蒜、洋葱、小辣椒，加粉丝2捆（记得冲冷水晾干）后加虾高汤。入虾身，浇酱汁（砂糖大半勺，蚝油、酱油各两大勺，胡椒适量，盐一小撮）后小火焖6分钟。&lt;/details&gt;
+&lt;details&gt;&lt;summary&gt;捞汁花螺&lt;/summary&gt;【料汁】盐、糖、生抽、鸡精、蚝油、蒜蓉、柠檬、香菜。【花螺】刷表面、冲干净、吐沙。开水烫5min后过冰水、下料汁。冷藏1h后开吃。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;星星生腌汁&lt;/summary&gt;蒜10辦、杭椒6个、红椒1个、花椒、香叶、生姜、生抽500ml、可乐500ml、料酒125ml、梅子酱187.5ml。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;清蒸鱼&lt;/summary&gt;鱼身划刀，抹盐巴、料酒，塞姜片腌10分钟。蒸15分钟后铺葱姜丝，加蒸鱼豉油，淋热油，出锅。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;炒花蛤&lt;/summary&gt;花蛤盐水吐沙洗净，开水1分钟取出再洗一遍。热锅冷油入姜、蒜、辣至炒香，加花蛤2-3分钟后加生抽、料酒、蚝油，加适量盐然后勾芡。加葱花，出锅。&lt;/details&gt;
@@ -389,6 +407,7 @@ enil stella norf. 🦆
 &lt;details&gt;&lt;summary&gt;空气炸锅大虾仁&lt;/summary&gt;料酒、生抽、蚝油、黑胡椒，抓匀虾仁腌制。虾仁蘸鸡蛋液（全蛋+淀粉）后裹面包糠。全部放在烤纸上，360F空气炸锅8分钟。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;蒜蓉粉丝蒸扇贝&lt;/summary&gt;扇贝分离成壳和肉。壳刷净，肉用料酒腌制少许。粉丝入热水泡软，用筷子卷起来入扇贝壳。在粉丝上摆贝肉并撒少许蒜蓉。其余蒜蓉入油锅炒香至淡黄色，加盐和蒸鱼豉油淋在贝肉上。蒸5-6分钟出锅撒葱花、椒丝，淋热油。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;蒜蓉粉丝龙利鱼&lt;/summary&gt;六到八瓣蒜剁碎，加两小勺海底捞青椒燕麦酱，四大勺生抽，一大勺蚝油，一小勺盐，一小勺糖，两小勺香油，两小勺食用油拌匀，把龙利鱼切块拿料酒姜末抓几下去腥，放半碗酱汁拌匀，盘中放事先泡好剪好的粉丝和金针菇，浇剩下的半碗酱汁拌匀，再铺上之前拌好的鱼片（鱼片尽量不要重合），蒸十分钟，取出后撒米椒碎和葱碎，把两小勺花椒油在油锅烧热，浇到碗内。&lt;/details&gt;
+&lt;details&gt;&lt;summary&gt;虾滑娃娃菜粉丝煲&lt;/summary&gt;【酱汁】生抽x2、蚝油x1、老抽x1、白糖x1，加清水拌匀。【粉丝煲】粉丝泡软。热锅冷油下蒜末、辣椒，然后铺上金针菇和娃娃菜闷2min。下虾滑后铺上粉丝，浇酱汁，小火收汁出锅。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;蛤蜊炖蛋&lt;/summary&gt;蛤蜊盐水吐沙洗净，姜水烧至打开并捞出（蛤蜊汤漂去浮沫备用）。鸡蛋加蛤蜊汤（两倍蛋液）打匀。蛤蜊装盘倒入蛋液蒸5-10分钟。&lt;/details&gt;
 &lt;details&gt;&lt;summary&gt;西京烧银鳕鱼&lt;/summary&gt;银鳕鱼（Chilean Seabass）两块吸干水分放进真空袋备用。白味增50g、清酒5g、味啉25g混合均匀后倒入真空袋。抽真空封口，冷藏腌制一夜以上后取出擦干净表面，热油煎至六面金黄，烤箱350F至内心40F，出炉后喷枪处置。&lt;/details&gt;
 &lt;h1&gt;加一个汤&lt;/h1&gt;
