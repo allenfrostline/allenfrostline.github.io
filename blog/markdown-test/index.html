@@ -142,11 +142,17 @@
 <details><summary>Foldable paragraphs</summary>
 目人關上年時連大！體子一開類到營導她！院組火原望腦卻半頭來在說？假方重文。中什跟，營定分了營技，子主銷樣一包目國北個的係氣度；引曾經就。得親筆點灣提！建家數進，我不來：生微節係單門怎公子！只過河、化族際光說原形底，在還之展拿心少，心重學似市本力多出習任用軍不道要。的主吃行要故又神界食其一看我萬此軍過。者美性學還食然話系產如新先！望處因也於不為氣名調根冷還公們國標受連輕，一沒受，了地是大太口？過市裝，見女解心為步排？園小前工，在有超，無得步高論與室外公傷變算班興養身靜，功半成第，加多所收育你公了國無間性民不信在。兩感想，推滿安大微優停信雨了別，那現界氣企體的麼公可以處戰聲有醫是的意起覺在站的愛適此史教教好文此指務克。我自區來收你強器至陽形然一勢……通魚當全等中速開只風同度然不！研都人去山裡然更男園得曾是便無座市來是論準！展最能代處下代能病，下老光。</details>
 <p>充ンめ府壮2変ロツコ社報本ぽず優銀いげよじ道追映活ちかん佐幻フる指稿でスどる人印ぴね。辺ぴリ琉万セサヒノ扱72通ク映由ばれと目業ゆす券同フスセリ条趣94府いゆし況一コクレ刊記勲悔殿牲つえ。緊ヨムハロ張受ネツ際込ノミ並計イ突2集キエ原更実レ青樹受レ中科リ湿車すよで体明づ話欧ラ職米ばぞこん波3台フるぎ面明レセミ部隆コヱヒ応反か索宮なでぽぴ。</p>
-<h1 id="h1-heading">h1 Heading</h1>
+<h1 id="h1-h1-h1-heading">h1 <code>h1</code> <code>$h1$</code> Heading</h1>
 <p>Paragraph</p>
-<h2 id="h2-heading">h2 Heading</h2>
+<h2 id="h2-h2-h2-heading">h2 <code>h2</code> <code>$h2$</code> Heading</h2>
 <p>Paragraph</p>
-<h3 id="h3-6-headings">h3-6 Headings</h3>
+<h3 id="h3-h3-h3-headings">h3 <code>h3</code> <code>$h3$</code> Headings</h3>
+<p>Paragraph</p>
+<h4 id="h4-h4-h4-headings">h4 <code>h4</code> <code>$h4$</code> Headings</h4>
+<p>Paragraph</p>
+<h5 id="h5-h5-h5-headings">h5 <code>h5</code> <code>$h5$</code> Headings</h5>
+<p>Paragraph</p>
+<h6 id="h6-h6-h6-headings">h6 <code>h6</code> <code>$h6</code> Headings</h6>
 <p>Paragraph</p>
 <h1 id="footnoteshttpsgithubcommarkdown-itmarkdown-it-footnote"><a href="https://github.com/markdown-it/markdown-it-footnote">Footnotes</a></h1>
 <p>Footnote 1 link<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
@@ -196,11 +202,7 @@
 <li>Marker character change forces new list start:
 <ul>
 <li>Random stuff</li>
-</ul>
-<ul>
 <li>More and more</li>
-</ul>
-<ul>
 <li>Random stuff</li>
 </ul>
 </li>
@@ -420,6 +422,27 @@ classDiagram
   Class01 : int chimp
   Class01 : int gorilla
   Class08 <--> C2: Cool label
+
+</div>
+
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+mindmap
+    id1["`**Root** with
+a second line
+Unicode works too: 🤓`"]
+      id2["`The dog in **the** hog... a *very long text* that wraps to a new line`"]
+      id3[Regular labels still works]
+      id4[OK this is something different]
+        id4.1[What is this?]
+        id4.3[This is me]
+            id4.3.1[...and me]
 
 </div>
 

@@ -33,16 +33,6 @@ img {
     max-width: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    line-height: 1;
-    font-weight: bold;
-}
-
 .title h1,
 .title h2,
 .title h3,
@@ -87,13 +77,19 @@ h6 {
     margin-top: -0.1ex;
 }
 
-:matches(.vitae, .recipe, .archive, .title, .masthead)
+:matches(.vitae, .archive, .title, .masthead)
     :matches(h1, h2, h3, h4, h5, h6):before {
     content: none;
 }
 
 :matches(h1, h2, h3, h4, h5, h6) code {
     font-size: 0.98em;
+}
+
+:matches(h1, h2, h3, h4, h5, h6) {
+    line-height: 1;
+    margin: 20px 0 8px 0;
+    font-weight: bold;
 }
 
 blockquote {
