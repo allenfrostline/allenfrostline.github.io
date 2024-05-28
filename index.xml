@@ -178,8 +178,11 @@ enil stella norf. 🦆
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_v_cup.png&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl2.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=95%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-23&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-22&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-23&#34;&gt;
+        &lt;div class=&#34;span-22&#34;&gt;&lt;/div&gt;
+        &lt;div class=&#34;span-21&#34; style=&#34;margin: 20% 10% -20% -10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/spoon_markl.png&#34;&gt;&lt;/div&gt;
+    &lt;/div&gt;
     &lt;div class=&#34;span-22&#34;&gt;
         &lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_warawara_bowl.png&#34;&gt;
         &lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_knit_bowl.png&#34; width=90%&gt;
