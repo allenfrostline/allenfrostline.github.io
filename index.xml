@@ -104,17 +104,27 @@ enil stella norf. 🦆
       <guid>https://allenfrostline.com/pottery/</guid>
       <description>
         &lt;style&gt;
-.grid7 {
+.grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    align-items: end;
-    text-align: center;
+    align-items: center;
     grid-gap: 5px;
     overflow: hidden;
 }
 
-.grid7 img {
+.grid div {
+    text-align: center;
+}
+
+.col7 {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.col8 {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.grid img {
     pointer-events: none;
 }
 
@@ -172,24 +182,25 @@ enil stella norf. 🦆
 &lt;h1 id=&#34;spring-2024&#34;&gt;Spring 2024&lt;/h1&gt;
 &lt;p&gt;I started throwing porcelain and &lt;a href=&#34;https://en.wikipedia.org/wiki/Celadon&#34;&gt;celadon&lt;/a&gt; (青瓷, aka &lt;em&gt;greenware&lt;/em&gt;, a type of porcelain glazed in jade green) when I came back to my hometown Shangyu (上虞), which turned out to be one of the oldest origins of celadon since the Han Dynasty (AD25 - AD220). The texture of the clay is much different, specifically in that it tends to be rather soft and smooth yet really absorbent if you apply any water when throwing it (it will quickly end up collapsing, or cracking when dried). A rule of thumb is to lubricate it with slip only, as infrequently as possible.&lt;/p&gt;
 &lt;p&gt;Another interesting trait of porcelain is that it&amp;rsquo;s usually trimmed only when fully dried, which is why you sometimes see paper thin porcelain cups and bowls that are almost translucent. Carving on a bone dry surface is also a really different experience. Both trimming and carving tools need to be frequently sharpened.&lt;/p&gt;
-&lt;div id=&#34;spring-2024&#34; class=&#34;grid7&#34;&gt;
+&lt;div id=&#34;spring-2024&#34; class=&#34;grid col8&#34;&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_jar.png&#34;&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_thumb_cup_tall.png&#34;&gt;&lt;/div&gt;
-    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_thumb_cup.png&#34; width=90%&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_thumb_cup.png&#34; width=95%&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_v_cup.png&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl2.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bowl.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_warawara_bowl.png&#34; width=90%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-21&#34; style=&#34;margin:-20% 20% 20% -20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/spoon_markl.png&#34;&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-22&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-22&#34; style=&#34;&#34;&gt;&lt;img style=&#34;rotate:20deg;margin:0 15% 0 0&#34; src=&#34;https://allenfrostline.com/images/pottery/spoon_markl.png&#34; width=50%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-22&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_vase.png&#34;&gt;&lt;/div&gt;
     &lt;div class=&#34;span-22&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_knit_bowl.png&#34; width=70%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_knit_bowl.png&#34; width=75%&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id=&#34;fall--winter-2023&#34;&gt;Fall &amp;amp; Winter 2023&lt;/h1&gt;
 &lt;p&gt;Been throwing pottery on a weekly basis during the latter half of year. Learning the techniques required to throw big, tall guys (and eventually back to the small ones).&lt;/p&gt;
-&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid7&#34;&gt;
-    &lt;div class=&#34;span-12&#34; style=&#34;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34;&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:15%;margin-right:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34;&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid col7&#34;&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:15%;margin-right:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-12&#34; style=&#34;margin-left:20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-31&#34; style=&#34;margin-left:-20%;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/tall_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_cup.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div style=&#34;margin-left:-15%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/pinch_cup.png&#34; width=70%&gt;&lt;/div&gt;
@@ -204,19 +215,19 @@ enil stella norf. 🦆
     &lt;div style=&#34;margin:0 7% 0 -7%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/volcano_cup2.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-33&#34; style=&#34;margin:0 -5% 0 0&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/medium_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_flowerpot.png&#34; width=55%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-21&#34; style=&#34;margin-bottom:50%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; width=80%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-21&#34; style=&#34;margin-bottom:45%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/vessel_with_spout.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-21&#34; style=&#34;margin-right:15%;margin-bottom:50%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin-top:-37%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase2.png&#34; width=70%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin-top:-20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_blue_bud_vase2.png&#34; width=70%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-42&#34; style=&#34;margin-left:-10%;margin-bottom:-10%;margin-right:5%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; width=60% style=&#34;margin:0 50% -5% -10%&#34;&gt;
-        &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; width=100%&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/small_sauce_bowl.png&#34; width=60% style=&#34;margin:-30% 40% 0 -10%&#34;&gt;
+        &lt;img src=&#34;https://allenfrostline.com/images/pottery/warped_bowl.png&#34; width=100% style=&#34;margin-top:-10%&#34;&gt;
     &lt;/div&gt;
-    &lt;div class=&#34;span-42&#34; style=&#34;margin:-20% -10% 0 -25%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; width=65%&gt;&lt;/div&gt;
-    &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-35%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-42&#34; style=&#34;margin:-30% -10% 0 -25%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase2.png&#34; width=65%&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-41&#34; style=&#34;margin-left:-25%;margin-top:-30%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/round_ivory_bud_vase.png&#34; width=100%&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id=&#34;summer-2023&#34;&gt;Summer 2023&lt;/h1&gt;
 &lt;p&gt;Back in the summer I haven&amp;rsquo;t taken any lesson on pottery yet. However, here are some of my ugly lovely pieces.&lt;/p&gt;
-&lt;div id=&#34;summer-2023&#34; class=&#34;grid7&#34;&gt;
+&lt;div id=&#34;summer-2023&#34; class=&#34;grid col7&#34;&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_green_bud_vase.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/small_jar.png&#34; width=90%&gt;&lt;/div&gt;
     &lt;div style=&#34;margin-left:5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/go_jar.png&#34;&gt;&lt;/div&gt;
@@ -468,6 +479,282 @@ enil stella norf. 🦆
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>言葉</title>
+      <link>https://allenfrostline.com/kotoba/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://allenfrostline.com/kotoba/</guid>
+      <description>
+        &lt;p&gt;I&amp;rsquo;m not sure if this is gonna last but I plan to list here all new words that I come across in different languages. Words are beautiful on their own but especially so when they come in a plethora. One might be asking for a leaf but who knows? Here is my forest.&lt;/p&gt;
+&lt;p&gt;&lt;img src=https://allenfrostline.com/images/divider.png style=&#34;width:min(100%,300px)&#34;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;style&gt;
+span.word {
+    line-height: 5ex;
+    position: relative;
+}
+
+ruby {
+    display: inline-flex;
+    flex-direction: column-reverse;
+}
+
+rt {
+    display: inline;
+    line-height: 0;
+    margin-bottom: -4px;
+    text-align: center;
+}
+
+:matches(rt, .definition) {
+    color: #b40203;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    visibility: hidden;
+}
+
+.word:hover :matches(.definition, rt) {
+    visibility: visible;
+}
+&lt;/style&gt;
+&lt;p&gt;&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;딸기&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;Dalgi&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;草莓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;배&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;bai&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;梨&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;다섯&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;dases&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;五&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;독일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;dogxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;德国&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;둘&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;dul&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;二&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;칸호사&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;ganhosa&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;护士&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;공&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gong&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;零&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;구&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gu&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;九&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;금요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwmxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周五&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;근처&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwnce&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;附近&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;귤&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gyul&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;橘子&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;하나&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;hana&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;一&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;한국&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;hangug&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;韩国&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;화요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;hoaxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周二&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;회사원&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;hoisaxuen&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;上班族&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;호주&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;hoju&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;澳洲&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;자두&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;jadu&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;李子&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;저것&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;jeges&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;那个&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;직업&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;jigxeb&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;职业&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;중국&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;junggug&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;中国&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;昨日&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;kino&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;昨天&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;言葉&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;kotoba&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;话语&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;마흔&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;mahwn&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;四十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;미국&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;migug&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;美国&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;목요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;mogxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周四&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;나이&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;naxi&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;年龄&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;넷&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;neis&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;四&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;日本語&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;nihonngo&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;日语&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;포도&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;podo&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;葡萄&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;사과&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;sagoa&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;苹果&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;생일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;saingxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;生日&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;사람&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;salam&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;人&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;셋&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;seis&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;三&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;서른&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;selwn&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;三十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;성함&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;sengham&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;名字&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;선생님&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;sensaingnim&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;老师&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;수바&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;suba&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;西瓜&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;쉰&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;suin&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;五十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;수요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;suxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周三&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;스물&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;swmul&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;二十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;토요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;toxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周六&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;tschüss&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;tschuss&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;再见&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;아홉&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xahob&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;九&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;아흔&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xahwn&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;九十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;이것&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xiges&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;这个&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;일곱&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xilgob&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;七&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;일흔&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xilhwn&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;七十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;이름&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xilwm&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;名字&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;일요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xilxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周天&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;오늘&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xonwl&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;今天&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;월요일&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xuelxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周一&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;의사&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xwisa&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;医生&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;여덟&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyedelb&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;八&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;여든&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyedwn&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;八十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;예순&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyeisun&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;六十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;열&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyel&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;十&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;영국&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyenggug&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;英国&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;여섯&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xyeses&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;六&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
 
         
       </description>

@@ -1,9 +1,8 @@
-body {
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Source Han Sans CN', 'Source Han Serif', 'Songti SC', serif;
-}
-
-blockquote {
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Source Han Sans CN', 'Source Han Serif', 'Kaiti SC', serif;
+:matches(body, blockquote) {
+    font-family: Palatino, "Palatino Linotype", "Palatino LT STD",
+        "Book Antiqua", Georgia, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol", "Source Han Sans CN", "Source Han Serif", "Songti SC",
+        serif;
 }
 
 code {
@@ -11,17 +10,6 @@ code {
 }
 
 code.nohighlight {
-    font-family: Consolas, Courier, 'Courier New', monospace;
-}
-
-code.nohighlight {
-    font-size: 14px
-}
-
-pre code {
+    font-family: Consolas, Courier, "Courier New", monospace;
     font-size: 14px;
-}
-
-.MathJax {
-    pointer-events: none;
 }
