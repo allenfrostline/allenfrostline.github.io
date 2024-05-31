@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 May 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Jun 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>至少还有六月可爱</title>
+      <link>https://allenfrostline.com/blog/june2024/</link>
+      <pubDate>Sat, 01 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/june2024/</guid>
+      <description>芒种未至 无籽西瓜和木莲豆腐早早盛开 明黄色的雨絮填满草被 车流停在浅滩 是夜无法拥抱 无人告白 但 至少还有六月可爱</description>
+    </item>
     <item>
       <title>我执</title>
       <link>https://allenfrostline.com/blog/obsession/</link>
@@ -700,13 +707,6 @@
       <pubDate>Tue, 17 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
       <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.&#xA;Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
-    </item>
-    <item>
-      <title>GMM Estimation of an ARMA(2,1) Model</title>
-      <link>https://allenfrostline.com/blog/gmm-estimation/</link>
-      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/gmm-estimation/</guid>
-      <description>In econometrics and statistics, the generalized method of moments (GMM) is a generic method for estimating parameters in statistical models. Usually it is applied in the context of semiparametric models, where the parameter of interest is finite-dimensional, whereas the full shape of the data&amp;rsquo;s distribution function may not be known, and therefore maximum likelihood estimation is not applicable. Today, we are trying to write a Generalizd Method of Moments estimation framework in Python, and use it to estimate an ARMA(2,1) time series.</description>
     </item>
   </channel>
 </rss>
