@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jun 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>假如猫从世界上消失了</title>
+      <link>https://allenfrostline.com/blog/if-cats-disappeared-from-the-world/</link>
+      <pubDate>Mon, 03 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/if-cats-disappeared-from-the-world/</guid>
+      <description>回美国的飞机上，为了倒时差提前睡了一觉，醒来是芝加哥时间的凌晨三四点，觉得不上不下，所以打开了在我片单上待了两年之久的《假如猫从世界上消失了</description>
+    </item>
     <item>
       <title>至少还有六月可爱</title>
       <link>https://allenfrostline.com/blog/june2024/</link>
@@ -700,13 +707,6 @@
       <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/trading-system-on-aliyun/</guid>
       <description>It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s trading softwares or Xueqiu, as I will introduce below.&#xA;Server: Aliyun ECS Aliyun Elastic Compute Service (ECS) is by far the most stable server option in mainland China. Costs less than $7 p/m and offering free trial for months.</description>
-    </item>
-    <item>
-      <title>Strategy: LSTM Neural Network &#43; Small Cap</title>
-      <link>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</link>
-      <pubDate>Tue, 17 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/strategy-lstm-neural-network-small-cap/</guid>
-      <description>This post covers the introduction to a simple LSTM neural network strategy in China A-share market, as well as its programming realization. Here we use RqAlpha&amp;rsquo;s trading API.&#xA;Performance Info Result Backtest Interval 20130101 - 20170101 Initial Capital 1,000,000 Annualized Return (Strategy) 68.444% Annualized Return (Benchmark) 9.205% Sharpe Ratio 3.4771 Maximum Drawdown -13.396% Intuition: Small Cap It is quite intuitive that small cap companies generally embrace larger probability to go up.</description>
     </item>
   </channel>
 </rss>
