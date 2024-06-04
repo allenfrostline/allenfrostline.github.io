@@ -532,6 +532,10 @@ rt {
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;bai&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;梨&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;보다&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;boda&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;看&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;다섯&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;dases&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;五&lt;/span&gt;&lt;/span&gt;
@@ -623,6 +627,10 @@ rt {
 &lt;span&gt;목요일&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;mogxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周四&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;물어보다&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;mulxeboda&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;问&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;나이&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;naxi&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
@@ -719,6 +727,10 @@ rt {
 &lt;span&gt;일요일&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xilxyoxil&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;周天&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;오다&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xoda&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;来&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;오늘&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;xonwl&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
