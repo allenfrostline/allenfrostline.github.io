@@ -5,13 +5,13 @@
     <description>Recent content on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Blog</title>
       <link>https://allenfrostline.com/blog/</link>
-      <pubDate>Mon, 03 Jun 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
       
       <guid>https://allenfrostline.com/blog/</guid>
       <description>
@@ -588,6 +588,10 @@ rt {
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;dwlama&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;电视剧&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;개&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gai&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;个&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;개자식&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gaijasig&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;死小子&lt;/span&gt;&lt;/span&gt;
@@ -624,6 +628,10 @@ rt {
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gu&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;九&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;권&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;guen&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;捆/本&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;극장&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwgjax&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;剧场&lt;/span&gt;&lt;/span&gt;
@@ -643,6 +651,10 @@ rt {
 &lt;span&gt;그렇지&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwlehji&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
 &lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;是啊&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
+&lt;span&gt;그럼&lt;/span&gt;
+&lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwlem&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;
+&lt;/ruby&gt;&lt;span class=&#34;definition&#34;&gt;那么&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&#34;word&#34;&gt;&lt;ruby &gt;
 &lt;span&gt;그러니까&lt;/span&gt;
 &lt;rp&gt;(&lt;/rp&gt;&lt;rt &gt;gwleniGa&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;

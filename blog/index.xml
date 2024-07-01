@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>七月我站在路口</title>
+      <link>https://allenfrostline.com/blog/july2024/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/july2024/</guid>
+      <description>七月大火流城 每个路口都在燃烧 灼热的井盖，喷发不久的孤岛 在以车为名的船只间飘摇的 我的身形 沉默地 沉默地 沉默地向着地底逃跑</description>
+    </item>
     <item>
       <title>假如猫从世界上消失了</title>
       <link>https://allenfrostline.com/blog/if-cats-disappeared-from-the-world/</link>
@@ -700,13 +707,6 @@
       <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-trump-tweets/</guid>
       <description>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)&#xA;Update:&#xA;Alright&amp;hellip; See this Github repository trump2cash. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do.</description>
-    </item>
-    <item>
-      <title>How to Set Up an Algo-trading System on Aliyun</title>
-      <link>https://allenfrostline.com/blog/trading-system-on-aliyun/</link>
-      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/trading-system-on-aliyun/</guid>
-      <description>It&amp;rsquo;s been a while since I first heard of the GitHub project easytrader, which is a well wrapped API for transporting the paper trading signals on Ricequant or Joinquant to the broker&amp;rsquo;s trading softwares or Xueqiu, as I will introduce below.&#xA;Server: Aliyun ECS Aliyun Elastic Compute Service (ECS) is by far the most stable server option in mainland China. Costs less than $7 p/m and offering free trial for months.</description>
     </item>
   </channel>
 </rss>
