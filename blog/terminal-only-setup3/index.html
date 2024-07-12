@@ -15,8 +15,8 @@
 
     
       
-      <meta property="description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended &amp;hellip;">
-      <meta property="og:description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended &amp;hellip;">
+      <meta property="description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. A lot of them are based on third-party plugins and some are defined &amp;hellip;">
+      <meta property="og:description" content="In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. A lot of them are based on third-party plugins and some are defined &amp;hellip;">
       
     
 
@@ -147,30 +147,25 @@
 
 
 
-<p>In this post I&rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom <a href="https://github.com/allenfrostline/LunarVimConfig/blob/main/config.lua"><code style="color:black">config.lua</code></a> so it&rsquo;s <em><strong>not</strong></em> recommended to take the following as your random online reference.</p>
+<p>In this post I&rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. A lot of them are based on third-party plugins and some are defined in my custom <a href="https://github.com/allenfrostline/LunarVimConfig/blob/main/config.lua"><code style="color:black">config.lua</code></a> so it&rsquo;s definitely <em><strong>not</strong></em> recommended to take the following as your random online reference of VIM commands.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align:center">Description</th>
 <th style="text-align:center">Command</th>
-<th style="text-align:center">Source</th>
+<th style="text-align:center">Source (if not VIM default)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:center">Select all content</td>
 <td style="text-align:center"><code>ggVG</code></td>
-<td style="text-align:center">default keybinding</td>
-</tr>
-<tr>
-<td style="text-align:center">Paste the last yanked that&rsquo;s not from delete/cut</td>
-<td style="text-align:center"><code>ctrl</code> <code>p</code></td>
-<td style="text-align:center">custom keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Toggle upper/lower case</td>
 <td style="text-align:center"><code>~</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Toggle wrap mode</td>
@@ -180,42 +175,42 @@
 <tr>
 <td style="text-align:center">Split vertically or horizontally</td>
 <td style="text-align:center"><code>|</code> or <code>-</code></td>
-<td style="text-align:center">custom keybinding</td>
+<td style="text-align:center">custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Align markdown tables</td>
 <td style="text-align:center"><code>ctrl</code> <code>[</code> and <code>ctrl</code> <code>]</code></td>
-<td style="text-align:center"><code>vim-simple-align</code>, custom keybinding</td>
+<td style="text-align:center"><code>vim-simple-align</code>, custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Shuffle tabs</td>
 <td style="text-align:center"><code>tab</code> and <code>shift</code> <code>tab</code></td>
-<td style="text-align:center">custom keybinding</td>
+<td style="text-align:center">custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Close current buffer<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></td>
 <td style="text-align:center"><code>space</code> <code>c</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Close current window</td>
 <td style="text-align:center"><code>:q</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Open a new empty buffer</td>
 <td style="text-align:center"><code>space</code> <code>b</code></td>
-<td style="text-align:center">custom keybinding</td>
+<td style="text-align:center">custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Save the changes of current buffer</td>
 <td style="text-align:center"><code>:w</code> or <code>ctrl</code> <code>s</code></td>
-<td style="text-align:center">default and custom keybinding</td>
+<td style="text-align:center">and custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Toggle file explorer</td>
 <td style="text-align:center"><code>space</code> <code>e</code> or <code>ctrl</code> <code>e</code></td>
-<td style="text-align:center"><code>neo-tree.nvim</code>, custom keybinding</td>
+<td style="text-align:center"><code>neo-tree.nvim</code>, custom</td>
 </tr>
 <tr>
 <td style="text-align:center">Multi-cursor select</td>
@@ -225,7 +220,7 @@
 <tr>
 <td style="text-align:center">Replace all text</td>
 <td style="text-align:center"><code>:%s/source/target/g</code></td>
-<td style="text-align:center">default vim command</td>
+<td style="text-align:center">vim command</td>
 </tr>
 <tr>
 <td style="text-align:center">Surround current word with brackets</td>
@@ -265,42 +260,42 @@
 <tr>
 <td style="text-align:center">Enter line-wise visual mode</td>
 <td style="text-align:center"><code>V</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Select multiple lines</td>
 <td style="text-align:center"><code>ma</code> (from), <code>v'a</code> (to)</td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Delete multiple lines</td>
 <td style="text-align:center"><code>ma</code> (from), <code>d'a</code> (to)</td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Select Virtual Environment</td>
 <td style="text-align:center"><code>vs</code></td>
-<td style="text-align:center"><code>venv-selector.nvim</code>, custom keybinding</td>
+<td style="text-align:center"><code>venv-selector.nvim</code>, custom</td>
 </tr>
 <tr>
 <td style="text-align:center">LSP telescope diagnostics</td>
 <td style="text-align:center"><code>space</code> <code>lw</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">LSP next diagnostic</td>
 <td style="text-align:center"><code>space</code> <code>lj</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">LSP prev diagnostic</td>
 <td style="text-align:center"><code>space</code> <code>lk</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">LSP code action</td>
 <td style="text-align:center"><code>space</code> <code>la</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Show side-by-side git diff</td>
@@ -310,22 +305,22 @@
 <tr>
 <td style="text-align:center">Delete and substitute current character</td>
 <td style="text-align:center"><code>cl</code> or <code>s</code></td>
-<td style="text-align:center">default keybindng</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Delete and substitute current word</td>
 <td style="text-align:center"><code>ciw</code></td>
-<td style="text-align:center">default keybindng</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Delete and substitute util the end of the line</td>
 <td style="text-align:center"><code>c$</code> or <code>C</code></td>
-<td style="text-align:center">default keybindng</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Delete and substitute current line</td>
 <td style="text-align:center"><code>cc</code> or <code>S</code></td>
-<td style="text-align:center">default keybindng</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Search recent files based on file name</td>
@@ -345,32 +340,32 @@
 <tr>
 <td style="text-align:center">Search the current word</td>
 <td style="text-align:center"><code>*</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">No highlight</td>
 <td style="text-align:center"><code>:nohl</code> or <code>space</code> <code>h</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Jump in or out</td>
 <td style="text-align:center"><code>ctrl</code> <code>i</code> or <code>ctrl</code> <code>o</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Hover information</td>
 <td style="text-align:center"><code>K</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Go to definition</td>
 <td style="text-align:center"><code>gd</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Go to declaration</td>
 <td style="text-align:center"><code>gD</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Format the current JSON file</td>
@@ -380,17 +375,37 @@
 <tr>
 <td style="text-align:center">Move the current line down or up</td>
 <td style="text-align:center"><code>alt</code> <code>j</code> or <code>alt</code> <code>k</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Move the current line to line <code>x</code></td>
 <td style="text-align:center"><code>:m x</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">Indent or dedent the current line</td>
 <td style="text-align:center"><code>&gt;</code> or <code>&lt;</code></td>
-<td style="text-align:center">default keybinding</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Delete forward before or including character <code>x</code></td>
+<td style="text-align:center"><code>dtx</code> or <code>dfx</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Delete backward after or including character <code>x</code></td>
+<td style="text-align:center"><code>dTx</code> or <code>dFx</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Yank forward before or including character <code>x</code></td>
+<td style="text-align:center"><code>ytx</code> or <code>yfx</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Yank backward after or including character <code>x</code></td>
+<td style="text-align:center"><code>yTx</code> or <code>yFx</code></td>
+<td style="text-align:center"></td>
 </tr>
 </tbody>
 </table>

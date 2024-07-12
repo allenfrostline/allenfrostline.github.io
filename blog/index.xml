@@ -90,7 +90,7 @@
       <link>https://allenfrostline.com/blog/terminal-only-setup3/</link>
       <pubDate>Sun, 11 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/terminal-only-setup3/</guid>
-      <description>In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. Some are based on my custom config.lua so it&amp;rsquo;s not recommended to take the following as your random online reference.&#xA;Description Command Source Select all content ggVG default keybinding Paste the last yanked that&amp;rsquo;s not from delete/cut ctrl p custom keybinding Toggle upper/lower case ~ default keybinding Toggle wrap mode :toggleWrapMode or yow wrapping.</description>
+      <description>In this post I&amp;rsquo;m just listing some (maybe, based on my use habits) useful commands that I find myself Googling all the time. A lot of them are based on third-party plugins and some are defined in my custom config.lua so it&amp;rsquo;s definitely not recommended to take the following as your random online reference of VIM commands.&#xA;Description Command Source (if not VIM default) Select all content ggVG Toggle upper/lower case ~ Toggle wrap mode :toggleWrapMode or yow wrapping.</description>
     </item>
     <item>
       <title>Casey Neistat on Apple Vision Pro</title>
