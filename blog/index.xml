@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Notes on Data-Driven Science and Engineering</title>
+      <link>https://allenfrostline.com/blog/notes-on-data-driven-sne/</link>
+      <pubDate>Sun, 14 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/notes-on-data-driven-sne/</guid>
+      <description>Dimensionality Reduction and Transforms In this part the authors mainly talk about how to reduce the dimensionality of a dataset.&#xA;Singular Value Decomposition (SVD) Matrix approximation and image compression Condition number: describes the sensitivity of matrix multiplication and inversion to the errors in the input $$ \kappa(\boldsymbol{A}) = \frac{\sigma_{\max}(\boldsymbol{A})}{\sigma_{\min}(\boldsymbol{A})} $$ Principal component analysis (PCA) Optimal hard threshold is theoretically solvable if we can assume $\gamma$ the ratio of white noise Randomized SVD (involving random projections e.</description>
+    </item>
     <item>
       <title>七月我站在路口</title>
       <link>https://allenfrostline.com/blog/july2024/</link>
@@ -700,13 +707,6 @@
       <pubDate>Mon, 13 Feb 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</guid>
       <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.&#xA;(1) Open Terminal.app and enter the directory of the folder.&#xA;cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.&#xA;git init Now you&amp;rsquo;ll see a .</description>
-    </item>
-    <item>
-      <title>What about Crawling Trump&#39;s Tweets and Make it to a Trading Algo?</title>
-      <link>https://allenfrostline.com/blog/strategy-trump-tweets/</link>
-      <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/strategy-trump-tweets/</guid>
-      <description>Since Twitter has open api and Trump has been dramatically influencing the US stock market for quite some months. I will search if there&amp;rsquo;re already people doing the identical thing and if not try do write a draft notebook on it. (To be continued.)&#xA;Update:&#xA;Alright&amp;hellip; See this Github repository trump2cash. I have to agree the author did a great job and es tot mir leid that this is eactly what I was about to do.</description>
     </item>
   </channel>
 </rss>

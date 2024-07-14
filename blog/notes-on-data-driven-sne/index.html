@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Notes on Data-Driven Science and Engineering - Allen&#39;s Whiteboard</title>
+    <meta property="og:title" content="Notes on Data-Driven Science and Engineering - Allen&#39;s Whiteboard">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="In this part the authors mainly talk about how to reduce the dimensionality of a dataset.
+[&amp;hellip;] In this part we cover a bunch of well-known machine learning algorithms in general.
+[&amp;hellip;] In &amp;hellip;">
+      <meta property="og:description" content="In this part the authors mainly talk about how to reduce the dimensionality of a dataset.
+[&amp;hellip;] In this part we cover a bunch of well-known machine learning algorithms in general.
+[&amp;hellip;] In &amp;hellip;">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://www.researchgate.net/publication/332799319/figure/fig5/AS:753944754143234@1556765845950/Schematic-of-inverted-pendulum-on-a-cart-The-control-forcing-acts-to-accelerate-or.png">
+    
+    
+    
+    
+
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+<script src="/js/math-code.js"></script>
+
+
+<script>
+  (function (u, c) {
+    var d = document, t = 'script', o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(e); }); }
+    s.parentNode.insertBefore(o, s);
+  })('//cdn.jsdelivr.net/npm/pangu@4.0.5/dist/browser/pangu.min.js', function () {
+    pangu.spacingPage();
+  });
+</script>
+
+
+
+<script async src="/js/center-img.js"></script>
+
+
+<script>
+    window.minimalAnalytics = {
+        trackingId: 'G-B4WMGBPB4Z',
+        autoTrack: true, 
+    };
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B4WMGBPB4Z"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B4WMGBPB4Z');
+</script>
+
+
+<script src="/index_1423847519945263698.js" async></script>
+
+
+  </head>
+
+  
+  <body class="blog">
+    <header class="masthead">
+      
+
+<h1><a href="/"><img src="/logo.png" alt="allenfrostline" /></a></h1>
+
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="/blog/">Blog</a></li>
+  
+  <li><a href="/pottery/">Pottery</a></li>
+  
+  <li><a href="/recipe/">Recipe</a></li>
+  
+  <li><a href="/kotoba">Kotoba</a></li>
+  
+  <li><a href="/vitae/">Vitae</a></li>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+    <h1>Notes on Data-Driven Science and Engineering</h1>
+    
+
+    <hr style="margin-top:-1em">
+
+    <h3 style="margin-top:-2.3em">
+    
+        
+
+        
+            2024-07-14
+        
+    
+    </h3>
+
+
+
+      </header>
+
+
+
+<h1 id="dimensionality-reduction-and-transforms">Dimensionality Reduction and Transforms</h1>
+<p>In this part the authors mainly talk about how to reduce the dimensionality of a dataset.</p>
+<h2 id="singular-value-decomposition-svd">Singular Value Decomposition (SVD)</h2>
+<ul>
+<li>Matrix approximation and image compression</li>
+<li>Condition number: describes the sensitivity of matrix multiplication and inversion to the errors in the input
+$$
+\kappa(\boldsymbol{A}) = \frac{\sigma_{\max}(\boldsymbol{A})}{\sigma_{\min}(\boldsymbol{A})}
+$$</li>
+<li>Principal component analysis (PCA)</li>
+<li>Optimal hard threshold is theoretically solvable if we can assume <code>$\gamma$</code> the ratio of white noise</li>
+<li>Randomized SVD (involving random projections e.g. Gaussian random projection matrix with all its elements i.i.d. Gaussian) which is especially efficient for low-rank matrices</li>
+<li>Tensor decompositions for generalized matrices e.g. N-way arrays or tensors</li>
+</ul>
+<h2 id="fourier-and-wavelet-transforms">Fourier and Wavelet Transforms</h2>
+<ul>
+<li>If function <code>$f(x)$</code> is periodic and piecewise smooth, then it can be written as a Fourier series (infite sum of cosines and sines of increasing frequency)</li>
+<li>Multiplying functions in the frequency domain is equivalent to convolving functions in the spatial domain</li>
+<li>Discrete Fourier Transform (DFT) is important for real data, and Fast Fourier Transform (FFT) is revolutionary for realistic application (by approximating <code>$n$</code> to the nearest power of 2, the time complexity is improved from <code>$\mathcal{O}(n^2)$</code> to <code>$\mathcal{O}(n\log(n))$</code>, with <code>$n$</code> being the number of data points)</li>
+<li>We can use Fourier transform (and Gabor transform a.k.a. short-time Fourier transform or sliding window Fourier transform) to analyze the behavior of dynamic systems which involve partial differential equations (PDEs) e.g. transform them into ordinary differential equations (ODEs) that are easier to solve</li>
+<li>Uncertainty principles: if <code>$f(x)$</code> is absolutely continuous and both <code>$xf(x)$</code> and <code>$f'(x)$</code> are square integrable, we have
+$$
+\left(\int_{-\infty}^{\infty}x^2|f(x)|^2\mathrm{d}x\right)
+\left(\int_{-\infty}^{\infty}\omega^2|\hat{f}(\omega)|^2\mathrm{d}w\right)\ge \frac{1}{16\pi^2}
+$$
+which basically says the product of the variances in spacial and frequency domains has a lower bound</li>
+<li>Laplace transform extends Fourier transform into functions that are not Lebesgue integrable (not converging to zero on infinity)</li>
+<li>Wavelets further extend Fourier analysis to more general orthogonal bases and partially overcome the uncertainty principle by exploiting a multi-resolution decomposition (more efficient for image compression even with very aggressive truncation)</li>
+</ul>
+<h2 id="sparcity-and-compressed-sensing">Sparcity and Compressed Sensing</h2>
+<ul>
+<li>The vector <code>$s\in\mathbb{R}^n$</code> is called K-sparse in <code>$\Psi$</code> if there are exactly K non-zero elements in <code>$x:=\Psi s\in\mathbb{R}^n$</code>. <code>$\Psi$</code> can be generic like Fourier or wavelet</li>
+<li>Compressed sensing exploits the sparsity of a signal in a generic basis to achieve full signal reconstructin from surprisingly few measurements (used to be NP-hard until recently)</li>
+<li>Restricted isometry property (RIP) assures that the matrix <code>$\boldsymbol{C\Psi}$</code> is asymptotically isometric with the number of measurements</li>
+<li>Sparse regression, like least absolute deviations (LAD) and LASSO, can alleviate the sensitivity to outliers</li>
+<li>Sparse representation for classification (SRC) can be used for image processing and classifying dynamic regimes in nonlinear differential equations</li>
+<li>Robust principal component analysis (RPCA) seeks to decompose a data matrix <code>$\boldsymbol{X}$</code> into a structured low-rank matrix <code>$\boldsymbol{L}$</code> and a sparse matrix <code>$\boldsymbol{S}$</code> containing outliers and corrupt data:
+$$
+\min_{\boldsymbol{L},\boldsymbol{S}} \text{rank}(\boldsymbol{L}) + \lVert\boldsymbol{S}\rVert_0 \quad \text{s.t.}\quad \boldsymbol{L} + \boldsymbol{S} = \boldsymbol{X}
+$$
+Considering neither <code>$\text{rank}(\cdot)$</code> or <code>$\lVert\cdot\rVert_0$</code> are convex and thus the original problem isn&rsquo;t tractable, we can solve for the optimal <code>$\boldsymbol{L}$</code> and <code>$\boldsymbol{S}$</code> with high probability using a convex relaxation:
+$$
+\min_{\boldsymbol{L},\boldsymbol{S}} \lVert\boldsymbol{L}\rVert_{\ast} + \lambda \lVert\boldsymbol{S}\rVert_1 \quad \text{s.t.}\quad \boldsymbol{L} + \boldsymbol{S} = \boldsymbol{X}
+$$
+where <code>$\lVert\cdot\rVert_{\ast}$</code> is the nuclear norm (sum of singular values, which can be seen as a proxy for rank) and <code>$\lambda=1/\sqrt{\max(n,m)}$</code>, with <code>$n$</code> and <code>$m$</code> being the dimensions of <code>$\boldsymbol{X}$</code>. We also need the following criteria to be satisfied: (1) <code>$\boldsymbol{L}$</code> is not sparse, and (2) <code>$\boldsymbol{S}$</code> is not low-rank (it&rsquo;s assumed to be random, so naturally it shouldn&rsquo;t be low-rank). This optimization problem is also known as principal component pursuit (PCP) and may be solved using the augmented Lagrange multiplier (ALM) algorithm or alternating directions method (ADM)</li>
+<li>Sparse sensor placement: if we know that we&rsquo;re reconstructing a human face, we can dramatically reduce the number of sensors required for reconstruction or classification by optimizing sensors for a particular feature library</li>
+</ul>
+<h1 id="machine-learning-and-data-analysis">Machine Learning and Data Analysis</h1>
+<p>In this part we cover a bunch of well-known machine learning algorithms in general.</p>
+<h2 id="regression-and-model-selection">Regression and Model Selection</h2>
+<ul>
+<li>Regression is a generalized viewpoint of curve fitting</li>
+<li>Least squares is a special case of <code>$l_p$</code>-norm minimization</li>
+<li>Gradient descent (GD): solve nonlinear regressions which have no general closed-form solution
+<code>$$ \boldsymbol{x}_{k+1}(\delta) = \boldsymbol{x}_k - \delta \nabla f(\boldsymbol{x}_k) $$</code>
+where <code>$\delta$</code> is the step-size. In order to determine the optimal <code>$\delta$</code> we can minimize <code>$F(\delta)=f(\boldsymbol{x}_{k+1}(\delta))$</code>, namely finding
+$$
+\frac{\partial F}{\partial \delta} = -\nabla f(\boldsymbol{x}_{k+1})\nabla f(\boldsymbol{x}_k) =0
+$$
+In other words, <code>$\delta$</code> is chosen s.t. the two consecutive gradient directions are orthogonal</li>
+<li>Alternating descent method (ADM): descent on one variable at a time (it&rsquo;s potentially faster since it involves only a line search and is derivative-free)</li>
+<li>For regression <code>$\boldsymbol{Ax}=\boldsymbol{b}$</code>, an over-determined system has more constraints than unknown variables (thus potentially no solution) while an under-determined system has fewer constraints than unknown variables (thus infinite solutions)</li>
+<li>A basic architecture for over-determined systems is to minimize the <code>$l_2$</code> error while enforcing penalization on <code>$l_1$</code>- and <code>$l_2$</code>-norms:
+$$
+\hat{\boldsymbol{x}} = \arg\min_{\boldsymbol{x}}\lVert\boldsymbol{Ax} - \boldsymbol{b}\rVert_2 + \lambda_1 \lVert\boldsymbol{x}\rVert_1 + \lambda_2 \lVert\boldsymbol{x}\rVert_2
+$$</li>
+<li>A basic architecture for under-determined systems is to minimize <code>$l_p$</code>-norm within the solution space:
+$$
+\min\lVert\boldsymbol{x}\rVert_p \quad \text{s.t.}\quad \boldsymbol{Ax} = \boldsymbol{b}
+$$</li>
+<li>Some standard regression methods: pseudo-inverse (least-squares regression), LASSO, Ridge and robust regression</li>
+<li>Without cross-validation, one will almost certainly produce a non-generalizable model that is severely overfitted</li>
+<li>Some standard cross-validation processes include:
+<ul>
+<li>K-fold: randomly partition the data into k subgroups for cross-validation</li>
+<li>Leave-p-out: repeatedly remove sample of size p from the training and kept as validation set</li>
+</ul>
+</li>
+<li>We can use divergence and information criteria (e.g. AIC and BIC) for model selection</li>
+</ul>
+<h2 id="clustering-and-classification">Clustering and Classification</h2>
+<ul>
+<li>Supervised learning focuses on dataset that are labeled (including variants like semi-supervised learning, active learning and reinforcement learning), while unsupervised learning tackles problems without labels and tries to find patterns in the data in a principled way in order to determine how to cluster and classify new data</li>
+<li>Some famous unsupervised learning algorithms:
+<ul>
+<li>K-means</li>
+<li>Dendrogram: including agglomerative and divisive hierarchical clustering</li>
+<li>Mixture models (e.g. with Gaussian distribution we have Gaussian mixture models a.k.a. GMM) assuming the data observations are a mixture of a set of k processes that combine to form the measurement. To compute GMM we need expectation-maximization (EM) algorithm, which is designed to find maximum-likelihood parameters of statistical models</li>
+</ul>
+</li>
+<li>Some famous supervised learning algorithms:
+<ul>
+<li>Linear discriminant analysis (LDA): maximizing tha ratio of between-class vs within-class variances
+$$
+\boldsymbol{w} = \arg\max_{\boldsymbol{w}}\frac{\boldsymbol{w}^T\boldsymbol{S}_B\boldsymbol{w}}{\boldsymbol{w}^T\boldsymbol{S}_W\boldsymbol{w}}
+$$
+where <code>$\boldsymbol{S}_B$</code> and <code>$\boldsymbol{S}_W$</code> are between- and within-class scatter matrices. This criterion is also kown as the generalized Rayleigh quotient corresponding to the generalized eigenvalue problem
+$$
+\boldsymbol{S}_B\boldsymbol{w} = \lambda \boldsymbol{S}_W\boldsymbol{w}
+$$</li>
+<li>Support vector machine (SVM):
+<ul>
+<li>Linear SVM: optimizing hyperplanes to split the data into distinct clusters</li>
+<li>Nonlinear SVM: optimizing nonlinear functions</li>
+<li>Kernel SVM: solve the curse of dimensionality from nonlinear function optimization</li>
+</ul>
+</li>
+<li>Decision trees (DT)</li>
+<li>Random forest (RF): ensembling multiple distinct DT with different subsamples of the data</li>
+</ul>
+</li>
+</ul>
+<h2 id="neural-networks-and-deep-learnings">Neural Networks and Deep Learnings</h2>
+<ul>
+<li>A generalized representation between input and output layers in a linear neural network (NN) would be
+<code>$$ \boldsymbol{y} = \boldsymbol{A}_M\boldsymbol{A}_{M-1}\cdots\boldsymbol{A}_2\boldsymbol{A}_1\boldsymbol{x} $$</code>
+while a nonlinear NN would be
+<code>$$ \boldsymbol{y} = f_M(\boldsymbol{A}_M f_{M-1}(\boldsymbol{A}_{M-1}\cdots f_2(\boldsymbol{A}_2 f_1(\boldsymbol{A}_1\boldsymbol{x}))\cdots)) $$</code>
+where <code>$f(\cdot)$</code> can take different nonlinear forms and are called activation functions</li>
+<li>Backpropagation seeks to use gradient of the output error to determine gradient descent updates, with the efficiency gained from calculating gradient backwards and reusing intermediate results all the time</li>
+<li>Stochastic gradient descent (SGD) is GD but on ramdomly sampled subset data for faster computation</li>
+<li>Feedforwward (FF) networks connect the input layer to the output layer by forming connections between the units so that they do not form a cycle</li>
+<li>Deep convolutional neural network (DCNN) is a famous framework for deep learning. It includes
+<ul>
+<li>Convolutional layers: similar to Gabor Fourier transform or wavelets, which slides across the entire layer to transform the input, useful for images</li>
+<li>Pooling layers: using e.g. max operation to reduce the spatial size of the representation in order to reduce the number of parameters and computation in the network, efficient to control overfitting and to fit the whole computation in memory</li>
+<li>Fully connected layers: in contrast to pooling and convolutional which are local, a fully connected layer restores global connectivity and provides a potentially important feature space for better performance</li>
+<li>Dropout layers: randomly dropping nodes in the network to prevent overfitting</li>
+</ul>
+</li>
+<li>Recurrent neural network (RNN) is an important class of neural network architectures that leverage sequential data streams, which is prevalent in speech recognition</li>
+<li>Autoencoder (AE) neural networks are a flexible and advantageous structure for exploiting low-dimensional features in high-dimensional data. It generalizes the linear subspace embedding of SVD/PCA to a nonlinear manifold embedding, often of a lower dimension. More specifically, it maps the original high-dimensional input vectors to a low-dimensional latent variable and then back to the high-dimensional output</li>
+<li>Variational autoencoder (VAE) is a probablistic version of AE and can generate new data instead of just extracting features as AE does</li>
+<li>Denoising autoencoder (DAE) takes a partially corrupted input during training to recover the original undistorted input</li>
+<li>Sparse autoencoder (SAE) imposes sparsity on the hidden units during training, while having a larger number of hidden units than inputs, so that an autoencoder can learn useful structures in the input data</li>
+<li>Generative adversarial networks (GANs) learn how to produce synthetic data through an adversarial structure whereby two neural networks are trained simultaneously, namely a discriminator for classification (real vs fake) and a generator to produce synthetic data from a latent representation</li>
+<li>Markov chain (MC), although not formally a NN, shares many common features with RNN</li>
+<li>Hopfield network (HN) is a form of RNN for understanding human memory where each node can act as an input cell in the network, altogether making this an all-to-all connected network</li>
+<li>Boltzmann machine (BM), sometimes called a stochastic Hopfield network with hidden units, is a stochastic generative counterpart of the Hopfield network. It&rsquo;s named after the Boltzmann distribution in statistical mechanics which is used in their sampling function</li>
+<li>Restricted Boltzmann machine (RBM) can be trained fro either supervised or unsupervised tasks. It&rsquo;s a subset of BM with restriction on the nodes s.t. all nodes are bipartite between groups only, and there&rsquo;re no connections between nodes within a group</li>
+<li>Deep belief network (DBN) is a generative graphical model with connections between the layers but not between units within each layer</li>
+<li>Deconvolutional network (DN) is essentially a reverse of DCNN, which can be used for e.g. denoising and object recognition</li>
+<li>Deep convolutional inverse graphics network (DCIGN) is a form of VAE that uses DCNN for encoding and decoding</li>
+<li>Liquid state machine (LSM) is a spiking neural network that consists of a large collection of nodes, each of which receives time-varying input from external sources (the inputs) as well as from other nodes, enabling it to turn the time-varying input into a spatio-temporal pattern of activations in the network nodes</li>
+<li>Extreme learning machine (ELM) ahs the same underlying architecture of an LSM except the parameters of hidden nodes are seldom updated, namely only learning from as few as a single step</li>
+<li>Echo state network (ESN) is a type of RNN with a sparsely connected hidden layer (with typically 1% connectivity)</li>
+<li>Deep residual network (DRN) is a type of very deep FF networks where therre are extra connections that pass from one layer to a layer two to five layers downstream</li>
+<li>Kohonen network (KN) is also known as self-organizing feature maps, which use competitive learning to classify data without supervision and is useful for low-dimensional visualization of high-dimensional data</li>
+<li>Neural turing maching (NTM) implements a neural network controller coupled to an external memory resource which it interacts with through attentional mechanisms</li>
+</ul>
+<h1 id="dynamics-and-control">Dynamics and Control</h1>
+<p>In this part we start using the tools mentioned above (and new tools that are based on them) to tackle actual dynamical systems.</p>
+<h2 id="data-driven-dynamical-systems">Data-Driven Dynamical Systems</h2>
+<ul>
+<li>
+<p>Continuous-time dynamical systems take the form of
+$$
+\frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x}(t) = \boldsymbol{f}(\boldsymbol{x}(t),t;\boldsymbol{\beta})
+$$
+where <code>$\boldsymbol{x}$</code> is the state of the system and <code>$\boldsymbol{f}$</code> is a vector field that possibly depends on the state <code>$\boldsymbol{x}$</code>, time <code>$t$</code> and a set of parameters <code>$\boldsymbol{\beta}$</code>. For example, below are the famous Lorenz equations
+<code>$$ \begin{align*} \dot{x} &amp;= \sigma (y-x)\\ \dot{y} &amp;= x(\rho - z) - y\\  \dot{z} &amp;= xy - \beta z \end{align*} $$</code></p>
+</li>
+<li>
+<p>Discrete-time systems take the following form
+$$
+\boldsymbol{x}_{k+1} = \boldsymbol{F}(\boldsymbol{x}_k)
+$$
+where discrete-time propagator, also known as the flow map, is sometimes induced from a continuous-time system</p>
+</li>
+<li>
+<p>For linear dynamics like
+$$
+\frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x} = \boldsymbol{Ax}
+$$
+we have solution
+$$
+\boldsymbol{x}(t_0 + t) = e^{\boldsymbol{A}t}\boldsymbol{x}(t_0) = \boldsymbol{Q}e^{\boldsymbol{\Lambda}t}\boldsymbol{Q}^{-1}\boldsymbol{x}(t_0)
+$$
+where <code>$\boldsymbol{Q}$</code> and <code>$\boldsymbol{\Lambda}$</code> come from the eigendecomposition of <code>$\boldsymbol{A}=\boldsymbol{Q\Lambda Q}^{-1}$</code>. By defining <code>$\boldsymbol{z}:=\boldsymbol{Q}^{-1}\boldsymbol{x}$</code> we have an even simpler form:
+$$
+\frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{z} = \boldsymbol{\Lambda}\boldsymbol{z}
+$$
+with solution
+$$
+\boldsymbol{z}(t_0 + t) = e^{\boldsymbol{\Lambda} t}\boldsymbol{z}(t_0)
+$$
+which means the dynamics of each <code>$z_i\in\boldsymbol{z}$</code> solely depends on itself, and that is very desirable</p>
+</li>
+<li>
+<p>Goals with the analysis of dynamical systems:</p>
+<ul>
+<li>Future state prediction</li>
+<li>Design and optimization</li>
+<li>Estimation and control</li>
+<li>Interpretability and physical understanding</li>
+</ul>
+</li>
+<li>
+<p>Challenges of modern dynamical systems:</p>
+<ul>
+<li>Nonlinearity</li>
+<li>Unknown dynamics</li>
+<li>High dimensionality</li>
+</ul>
+</li>
+<li>
+<p>Approaches that are defining modern data-driven dynamical systems:</p>
+</li>
+<li>
+<p>Operator-theoretic representations: to address nonlinearity in terms of infinite-dimensional but linear operators</p>
+<ul>
+<li>Data-driven regression and machine learning: discover dynamical systems from abundant data</li>
+<li>Reduced-order models (ROMs): to address the high dimensionality problem</li>
+</ul>
+</li>
+<li>
+<p>Some open-source libraries:</p>
+<ul>
+<li><a href="https://github.com/mathLab/PyDMD">PyDMD</a></li>
+<li><a href="https://github.com/dynamicslab/pysindy">PySINDy</a></li>
+<li><a href="https://github.com/dynamicslab/pykoopman">PyKoopman</a></li>
+<li><a href="https://github.com/deeptime-ml/deeptime">Deeptime</a></li>
+<li><a href="https://github.com/sklus/d3s">Data-driven dynamical systems toolbox</a></li>
+</ul>
+</li>
+<li>
+<p>Dynamic mode decomposition (DMD), particularly the version that&rsquo;s presented here, works with irregularly sampled data and with concatenated data from several different experiments or numerical simulations. Given sampled snapshots
+<code>$$ \begin{align*} \boldsymbol{X} = \begin{bmatrix} | &amp; | &amp; &amp; |\\ \boldsymbol{x}(t_1) &amp; \boldsymbol{x}(t_2) &amp; \cdots &amp; \boldsymbol{x}(t_m)\\ | &amp; | &amp; &amp; | \end{bmatrix}\\ \boldsymbol{X}' = \begin{bmatrix} | &amp; | &amp; &amp; |\\ \boldsymbol{x}(t_1') &amp; \boldsymbol{x}(t_2') &amp; \cdots &amp; \boldsymbol{x}(t_m')\\ | &amp; | &amp; &amp; | \end{bmatrix} \end{align*} $$</code>
+where <code>$t_k':=t_k + \Delta t$</code> with sufficiently small time step <code>$\Delta t$</code>. Notice here we don&rsquo;t need to assume uniform sampling where <code>$t_k:=k\Delta t$</code> and <code>$t_k':=t_k + \Delta t=t_{k+1}$</code>. The DMD algorithm then seeks the leading eigendecomposition of the best-fit linear operator <code>$\boldsymbol{A}$</code> that relates the two snapshot matrices in time:
+$$
+\boldsymbol{X}&rsquo; \approx \boldsymbol{AX}
+$$
+More mathematically we could describe the bets-fit operator <code>$\boldsymbol{A}$</code> as
+$$
+\boldsymbol{A} = \arg\min_{\boldsymbol{A}} \lVert\boldsymbol{X}&rsquo;-\boldsymbol{AX}\rVert_F = \boldsymbol{X}&rsquo;\boldsymbol{X}^{\dagger}
+$$
+where <code>$\boldsymbol{X}^{\dagger}$</code> is the pseudo-inverse of the matrix. This algorithm generalizes the optimization framework of the exact DMD (with uniform sampling) to perform regressions to exponential-time dynamics. We can efficiently compute DMD via SVD as <code>$m\ll n$</code> in the data and we can project <code>$\boldsymbol{A}$</code> onto the smaller subspace before decomposition.</p>
+<p>To cope with noise in the data, we can include both forward and backward operators (if physically reasonable) in the optimization
+<code>$$ \boldsymbol{X}' \approx \boldsymbol{A}_1\boldsymbol{X}\quad\text{and}\quad \boldsymbol{X}\approx\boldsymbol{A}_2\boldsymbol{X} $$</code>
+where <code>$\boldsymbol{A}_2\approx \boldsymbol{A}_1$</code> for noise-free data. We then compute <code>$\boldsymbol{A}$</code> as the average of <code>$\boldsymbol{A}_1$</code> and <code>$\boldsymbol{A}_2$</code> to remove the systematic bias from the noises in the data. In summary, we have this alternative optimization:
+$$
+\boldsymbol{A} = \arg\min_{\boldsymbol{A}} \frac{1}{2}\left(\lVert\boldsymbol{X}&rsquo;-\boldsymbol{AX}\rVert_F + \lVert\boldsymbol{X} - \boldsymbol{A}^{-1}\boldsymbol{X}&rsquo;\rVert_F\right)
+$$
+which unfortunately introduces nonlinearity and non-convexity to the objective function and thus make the problem high untractable. For that concern, we can alternatively formulate it as
+<code>$$ \begin{align*} \boldsymbol{A} := \frac{1}{2}(\boldsymbol{A}_1 + \boldsymbol{A}_2) = \arg\min_{\boldsymbol{A}_1,\boldsymbol{A}_2} &amp;\left(\lVert\boldsymbol{X}'-\boldsymbol{A}_1\boldsymbol{X}\rVert_F + \lVert\boldsymbol{X} - \boldsymbol{A}_2\boldsymbol{X}'\rVert_F\right)\\ \text{s.t.}&amp; \quad \boldsymbol{A}_1\boldsymbol{A}_2 = \boldsymbol{I}\quad \text{and}\quad \boldsymbol{A}_2\boldsymbol{A}_1 = \boldsymbol{I} \end{align*} $$</code>
+which moves the nonlinearity to the constraints and thus we get to keep the linear, convex objective and tackle the nonlinear constraints using e.g. ADM algorithms</p>
+</li>
+<li>
+<p>Sparse Identification of Nonlinear Dynamics (SINDy) algorithm bypasses the intractable combinatorial search through all possible model structures, leveraging the fact that many dynamical systems
+$$
+\frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x} = \boldsymbol{f}(\boldsymbol{x})
+$$
+have dynamics <code>$\boldsymbol{f}$</code> with only a few active terms in the space of possible right-hand side functions e.g. a few linear and quadratic terms in Lorenz equations. We can then approximate <code>$\boldsymbol{f}$</code> by a generalized linear model
+$$
+\boldsymbol{f}(\boldsymbol{x}) \approx \sum_{k=1}^p \theta_k(\boldsymbol{x})\xi_k = \boldsymbol{\Theta}(\boldsymbol{x})\boldsymbol{\xi}
+$$
+with the fewest non-zero terms in <code>$\boldsymbol{\xi}$</code> as possible. We first gather time-series data <code>$\boldsymbol{X}\in\mathbb{R}^{n\times m}$</code> and its first-order-derivitives w.r.t. time <code>$\dot{\boldsymbol{X}}\in\mathbb{R}^{n\times m}$</code>. The library of candidate nonlinear functions are represented as
+$$
+\boldsymbol{\Theta}(\boldsymbol{X}) = \begin{bmatrix}
+\boldsymbol{1} &amp; \boldsymbol{X} &amp; \boldsymbol{X}^2 &amp; \cdots &amp; \boldsymbol{X}^d &amp; \cdots &amp; \sin(\boldsymbol{X}) &amp; \cdots
+\end{bmatrix}
+$$
+and the dynamical system can how be represented by
+$$
+\dot{\boldsymbol{X}} = \boldsymbol{\Theta}(\boldsymbol{X})\boldsymbol{\Xi}
+$$
+and the active term coefficients can be identified using regularized sparse regression e.g. using <code>$l_1$</code>-penalty:
+$$
+\xi_k = \arg\min_{\xi_k}\lVert\dot{\boldsymbol{X}}_k - \boldsymbol{\Theta}(\boldsymbol{X})\boldsymbol{\xi}_k\rVert_2 + \lambda \lVert \boldsymbol{\xi}_k\rVert_1
+$$
+We can use information criteria e.g. AIC to choose the most parsimonious model along the Pareto frontier</p>
+</li>
+<li>
+<p>Koopman operator theory introduces a way to represent a nonlinear dynamical system in terms of an infinite-dimensional linear operator acting on a Hilbert space of measurement functions of the state of the system. Mathematically, consider real-valued measurement functions <code>$g:\boldsymbol{M}\to\mathbb{R}$</code> which are elements of an infinite-dimensional Hilbert space. The functions <code>$g$</code> are also commonly known as observables. Typically, the Hilbert space is given by the Lebesgue square-integrable functions on <code>$\boldsymbol{M}$</code>. The Koopman operator <code>$\mathcal{K}_t$</code> is an infinite-dimensional linear operator that acts on measurement functions <code>$g$</code> as
+<code>$$ \mathcal{K}_t g = g \circ \boldsymbol{F}_t $$</code>
+where <code>$\circ$</code> is the composition operator. For a discrete-time system with time step <code>$\Delta t$</code>, the above becomes
+<code>$$ \mathcal{K}_{\Delta t} g(\boldsymbol{x}_k) = g(\boldsymbol{F}_{\Delta t}(\boldsymbol{x}_k)) = g(\boldsymbol{x}_{k+1}) \Rightarrow g(\boldsymbol{x}_{k+1}) = \mathcal{K}_{\Delta t} g(\boldsymbol{x}) $$</code>
+namely the Koopman operator defines an infinite-dimensional linear dynamical system that advances the observation to the next time-step.</p>
+<p>For sufficiently smooth dynamical systems we can also define continuous-time analogue of the Koopman operator:
+<code>$$ \frac{\mathrm{d}}{\mathrm{d} t}g = \mathcal{K} g $$</code>
+We can also leverage DMD, SINDy or delay coordinates to extend the concept of Koopman operator to a more data-driven manner. More discussion, while available in the book, is omitted here.</p>
+</li>
+</ul>
+<h2 id="linear-control-theory">Linear Control Theory</h2>
+<ul>
+<li>
+<p>Types of control:
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+    %%{init:{"flowchart":{"curve":"linear"}}}%%
+
+    flowchart TB
+        A(( )):::empty
+        A--passive---B(( )):::empty
+        A--active---C(( )):::empty
+        C--no sensors<br>open-loop---D(( )):::empty
+        C--sensor-based---E(( )):::empty
+        E--disturbance<br>feedforward---F(( )):::empty
+        E--feedback<br>closed-loop---G(( )):::empty
+
+        classDef empty fill:#000,stroke-width:0;
+    
+</div>
+
+Correspondinly, their meanings:</p>
+<ul>
+<li>passive: no input energy needed, e.g. stop signs at intersections</li>
+<li>open-loop: no sensor needed, e.g. traffic signals that are pre-programmed to regulate the traffic flow</li>
+<li>feedforward: use disturbance to actively control the system, e.g. pre-emptively change the traffic light when a large crowd is expected to pass</li>
+<li>feedback: use sensors to measure the system directly and then shapes the control in response to whether the system is actually achieving the desired goal or not, e.g. smart traffic lights with a control logic informed by inductive sensors in the roadbed that measures traffic density</li>
+</ul>
+</li>
+<li>
+<p>Closed-loop feedback systems:
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+    %%{init:{"flowchart":{"curve": "natural"}}}%%
+
+    flowchart LR
+        subgraph sub[ ]
+            direction TB
+            A(System):::system
+            B(Controller):::controller
+        end
+
+        S(( )):::empty
+        T(( )):::empty
+
+        S -- Disturbances<br>w --> sub
+        sub -- Cost<br>j --> T
+        A -- Sensors<br>y --> B
+        B -- Actuators<br>u --> A
+
+        classDef system fill:#B0C4DE,stroke:#000,stroke-width:1.5px;
+        classDef controller fill:#F4A460,stroke:#000,stroke-width:1.5px;
+        classDef empty fill:#000,stroke-width:0;
+    
+</div>
+
+Denote <code>$\boldsymbol{y}$</code> as the sensor measurements, <code>$\boldsymbol{u}$</code> as the actuation signal, and <code>$\boldsymbol{x}$</code> as the actual system state. Denote the exogenous disturbance as <code>$\boldsymbol{w}=\begin{bmatrix}\boldsymbol{w}_d^T &amp; \boldsymbol{w}_n^T &amp; \boldsymbol{w}_r^T\end{bmatrix}^T$</code>, where <code>$\boldsymbol{w}_d$</code> are disturbances to the state of the system, <code>$\boldsymbol{w}_n$</code> are measurement noise and <code>$\boldsymbol{w}_r$</code> represent a reference trajectory that should be tracked by the closed-loop system. A feedback system can then be mathematically described as
+<code>$$ \begin{align*} \frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x} &amp;= \boldsymbol{f}(\boldsymbol{x},\boldsymbol{u},\boldsymbol{w}_d)\\ \boldsymbol{y} &amp;= \boldsymbol{g}(\boldsymbol{x},\boldsymbol{u},\boldsymbol{w}_n) \end{align*} $$</code>
+with the goal being to construct a control law
+$$
+\boldsymbol{u} = \boldsymbol{k}(\boldsymbol{y},\boldsymbol{w}_r)
+$$
+that minimizes a cost function
+$$
+\boldsymbol{J}\overset{\Delta}{=}\boldsymbol{J}(\boldsymbol{x},\boldsymbol{u},\boldsymbol{w}_r)
+$$
+Kalman filter, for example, is just a special case wherre the control law is <code>$\boldsymbol{u}=\boldsymbol{k}(\boldsymbol{y},\hat{\boldsymbol{x}},\boldsymbol{w}_r)$</code> where <code>$\hat{\boldsymbol{x}}$</code> is the full-state estimate based on the measurements of <code>$\boldsymbol{u}$</code> and <code>$\boldsymbol{y}$</code></p>
+</li>
+<li>
+<p>Linear time-invariant systems: consider the following simple system (can be seen as approximation of systems that satisfy <code>$\boldsymbol{f}(\bar{\boldsymbol{x}},\bar{\boldsymbol{u}})=\boldsymbol{0}$</code> near a fixed point <code>$(\bar{\boldsymbol{x}}, \bar{\boldsymbol{u}})$</code> with Taylor expansion up to <code>$\mathcal{O}(1)$</code> terms)
+<code>$$ \begin{align*} \frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x} &amp;= \boldsymbol{Ax} + \boldsymbol{Bu}\\ \boldsymbol{y} &amp;= \boldsymbol{Cx} + \boldsymbol{Du} \end{align*} $$</code>
+Notice we don&rsquo;t consider disturbance <code>$\boldsymbol{w}_d$</code> and noice <code>$\boldsymbol{w}_n$</code> here which will be added back when we introduce Kalman filtering</p>
+</li>
+<li>
+<p>Unforced linear system: in the absence of control we have an unforced system
+$$
+\frac{\mathrm{d}}{\mathrm{d}x}\boldsymbol{x} = \boldsymbol{Ax}
+$$
+with solution given by
+$$
+\boldsymbol{x}(t) = e^{\boldsymbol{A}t}\boldsymbol{x}(0)
+$$
+where the matrix exponential is defined by
+<code>$$ \begin{align*} e^{\boldsymbol{A}t} &amp;= \boldsymbol{I} + \boldsymbol{A}t + \frac{1}{2}\boldsymbol{A}^2 t^2 + \frac{1}{3}\boldsymbol{A}^3 t^3 + \cdots \tag{using expansion}\\ &amp;= \boldsymbol{Q}e^{\boldsymbol{\Lambda} t}\boldsymbol{Q}^{-1} \tag{using eigendecomposition} \end{align*} $$</code>
+and hence simplifying the solution further into
+$$
+\boldsymbol{x}(t) = \boldsymbol{Q}e^{\boldsymbol{\Lambda} t}\boldsymbol{Q}^{-1}\boldsymbol{x}(0)
+$$
+Where <code>$\boldsymbol{Q}$</code> and <code>$\boldsymbol{\Lambda}$</code> come from the eigendecomposition of <code>$\boldsymbol{A}$</code>. It doesn&rsquo;t only makes matrix exponential tractable, but also brings intuition in the system statbility, as we can prove that if all the eigenvalues of <code>$\boldsymbol{A}$</code> have negative real part, then the system is stable; if any eigenvalue has positive real part, the system is unstable and will diverge from the fixed point along the corresponding unstable eigenvector direction</p>
+</li>
+<li>
+<p>Forced linear system: with control <code>$\boldsymbol{u}$</code> and zero initial condition <code>$\boldsymbol{x}(0)=\boldsymbol{0}$</code>, we have solution
+$$
+\boldsymbol{x}(t) = \int_0^t e^{\boldsymbol{A}(t-\tau)}\boldsymbol{Bu}(\tau)\mathrm{d} \tau \overset{\Delta}{=} e^{\boldsymbol{A}t}\boldsymbol{B}\ast \boldsymbol{u}(t)
+$$
+namely the convolution of a kernel <code>$e^{\boldsymbol{A}t}\boldsymbol{B}$</code> and the control input <code>$\boldsymbol{u}(t)$</code>. The output is thus just
+$$
+\boldsymbol{y}(t) = \boldsymbol{Cx}(t) = \boldsymbol{C}e^{\boldsymbol{A}t}\boldsymbol{B}\ast \boldsymbol{u}(t)
+$$</p>
+</li>
+<li>
+<p>Controllability: consider the following controllability matrix
+$$
+\mathcal{C} =\begin{bmatrix}
+\boldsymbol{B} &amp; \boldsymbol{AB} &amp; \boldsymbol{A}^2\boldsymbol{B} &amp; \cdots &amp; \boldsymbol{A}^{n-1}\boldsymbol{B}
+\end{bmatrix}
+$$
+If the matrix <code>$\mathcal{C}$</code> has n linearly independent columns, i.e. has (column) rank n, then the system is controllable. The span of the columns of <code>$\mathcal{C}$</code> forms a Krylov subspace that determines which state vector directions in <code>$\mathbb{R}^n$</code> may be manipulated with control, and thus implies arbitrary eigenvalue placement and reachability of any state <code>$\boldsymbol{\xi}\in\mathbb{R}^n$</code> in finite time with certain actuation signal <code>$\boldsymbol{u}(t)$</code></p>
+</li>
+<li>
+<p>Observability: consider the following observability matrix
+<code>$$ \mathcal{O} = \begin{bmatrix} \boldsymbol{C} \\ \boldsymbol{CA} \\  \boldsymbol{CA}^2 \\  \vdots \\ \boldsymbol{CA}^{n-1} \end{bmatrix} $$</code>
+If the matrix <code>$\mathcal{O}$</code> has n linearly independent rows, i.e. has (row) rank n, then the system is observable. Interestingly, it&rsquo;s worth noting that the observability criterion is mathematically the dual of the controllability criterion, more specifically, the observability matrix is the transpose of the controllability matrix for the same pair <code>$(\boldsymbol{A},\boldsymbol{C})$</code>.</p>
+</li>
+<li>
+<p>Linear-quadratic regulator (LQR) uses quadratic terms to the cost function and makes choosing the control law a well-posed optimization problem, for which there is a wealth of theoretical and numerical techniques:
+$$
+J(t) = \int_0^t \boldsymbol{x}(\tau)^{\ast}\boldsymbol{Q}\boldsymbol{x}(\tau) + \boldsymbol{u}(\tau)^{\ast}\boldsymbol{R}\boldsymbol{u}(\tau)\mathrm{d}\tau
+$$
+In fact, because the cost function is quadratic, there is an analytical solution for the optimal controller gains <code>$\boldsymbol{K}_r$</code> given by
+$$
+\boldsymbol{K}_r = \boldsymbol{R}^{-1} \boldsymbol{B}^{\ast} \boldsymbol{X}
+$$
+where <code>$\boldsymbol{X}$</code> is the solution to an algebraic Riccati equation (you can find the derivation in the book)
+$$
+\boldsymbol{A}^{\ast}\boldsymbol{X} + \boldsymbol{XA} - \boldsymbol{XBR}^{-1}\boldsymbol{B}^{\ast}\boldsymbol{X} + \boldsymbol{Q} = \boldsymbol{0}
+$$
+The schematic of the LQR is represented below
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+    %%{init:{'flowchart':{'curve':'natural'}}}%%
+
+    flowchart LR 
+        subgraph sub[ ]
+            direction TB
+            B(LQR<br>u=-Kx):::controller
+            A(System<br>dx/dt=Ax+Bu):::system 
+        end
+
+        C(( )):::empty
+
+        A -- x --> B
+        B -- u --> A
+        A -- y=x --> C
+        
+        classDef system fill:#B0C4DE,stroke:#000,stroke-width:1.5px;
+        classDef controller fill:#F4A460,stroke:#000,stroke-width:1.5px;
+        classDef empty fill:#000,stroke-width:0;
+    
+</div>
+</p>
+</li>
+<li>
+<p>The Kalman filter (KF) is the most commonly used full-state estimator as it optimally balances the competing effects of measurement noise, disturbances and model uncertainty. The dynamics are defined as
+$$
+\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}t}\boldsymbol{x} &amp;= \boldsymbol{Ax} + \boldsymbol{Bu} + \boldsymbol{w}_d \
+\boldsymbol{y} &amp;= \boldsymbol{Cx} + \boldsymbol{Du} + \boldsymbol{w}_n
+\end{align*}
+$$
+where <code>$\boldsymbol{w}_d$</code> and <code>$\boldsymbol{w}_n$</code> corresponds to disturbance and noice. KF assumes that both <code>$\boldsymbol{w}_d$</code> and <code>$\boldsymbol{w}_n$</code> are zero-mean Gaussian with known covariances. The estimated system will be
+$$
+\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}t}\hat{\boldsymbol{x}} &amp;= \boldsymbol{A}\hat{\boldsymbol{x}} + \boldsymbol{Bu} + \boldsymbol{K}_f(\boldsymbol{y} - \hat{\boldsymbol{y}})\
+\hat{\boldsymbol{y}} &amp;= \boldsymbol{C}\hat{\boldsymbol{x}} + \boldsymbol{Du}
+\end{align*}
+$$</p>
+</li>
+<li>
+<p>Linear-quadratic Gaussian (LQG) is another optimal sensor-based feedback framework combining Kalman filter and LQR:
+$$
+\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}t}\hat{\boldsymbol{x}} &amp;= (\boldsymbol{A} - \boldsymbol{K}_f \boldsymbol{C}d - \boldsymbol{B} \boldsymbol{K}_r)\hat{\boldsymbol{x}} + \boldsymbol{K}_f \boldsymbol{y}\
+\boldsymbol{u} &amp;= -\boldsymbol{K}_r \hat{\boldsymbol{x}}
+\end{align*}
+$$
+which is the solution w.r.t. the following ensemble-averaged version of the cost function
+$$
+J(t) = \langle \int_0^t [\boldsymbol{x}(\tau)^{\ast} + \boldsymbol{u}(\tau)^{\ast}\boldsymbol{R}\boldsymbol{u}(\tau)]\mathrm{d}\tau \rangle
+$$
+Applying LQR to <code>$\hat{\boldsymbol{x}}$</code> above results in the following closed-loop system (denoting <code>$\boldsymbol{\varepsilon}=\boldsymbol{x}-\hat{\boldsymbol{x}}$</code>):
+<code>$$ \frac{\mathrm{d}}{\mathrm{d}t} \begin{bmatrix}\boldsymbol{x}\\\boldsymbol{\varepsilon}\end{bmatrix} = \begin{bmatrix} \boldsymbol{A} - \boldsymbol{BK}_r &amp; \boldsymbol{BK}_r \\ \boldsymbol{0} &amp; \boldsymbol{A} - \boldsymbol{K}_f\boldsymbol{C} \end{bmatrix} \begin{bmatrix} \boldsymbol{x} \\ \boldsymbol{\varepsilon} \end{bmatrix} +  \begin{bmatrix}  \boldsymbol{I} &amp; \boldsymbol{0} \\ \boldsymbol{I} &amp; -\boldsymbol{K}_f \end{bmatrix} \begin{bmatrix} \boldsymbol{w}_d \\ \boldsymbol{w}_n \end{bmatrix} $$</code>
+The LQG framework assumes accurate model of the system and knowledge of the magnitudes of the disturbances and measurement noise, which are assumed to be Gaussian processes. These are strong assumptions and likely violated in real data.</p>
+</li>
+<li>
+<p>Inverted pendulum on a cart: this is a famous dynamical system example where the nonlinear system is given by
+<code>$$ \begin{align*} \dot{x} &amp;= v\\ \dot{v} &amp;=\frac{-m^2L^2g\cos(\theta)\sin(\theta) + mL^2 (mL\omega^2\sin(\theta) - \delta v) + mL^2 u}{mL^2(M + m(1 - \cos(\theta)^2))}\\ \dot{\theta} &amp;= \omega\\ \dot{\omega} &amp;= \frac{(m+M)mgL\sin(\theta) - mL\cos(\theta)(mL\omega^2\sin(\theta)-\delta v) - mL\cos(\theta)u}{mL^2(M+m(1-\cos(\theta)^2))} \end{align*} $$</code>
+where <code>$x$</code> is the cart position, <code>$v$</code> is the velocity, <code>$\theta$</code> is the pendulum angle, <code>$\omega$</code> is the angular velocity, <code>$m$</code> is the pendulum mass, <code>$M$</code> is the cart mass, <code>$L$</code> is the pendulum arm length, <code>$g$</code> is the gravitational acceleration, <code>$\delta$</code> is a friction damping on the cart, and <code>$u$</code> is a control force applied to the cart</p>
+<p><img src="https://www.researchgate.net/publication/332799319/figure/fig5/AS:753944754143234@1556765845950/Schematic-of-inverted-pendulum-on-a-cart-The-control-forcing-acts-to-accelerate-or.png" style="width:max(50%,300px)"></img></p>
+</li>
+<li>
+<p>Robust control: it can be shown that LQG regulators can have arbitrarily small stability margins, making them fragile to model uncertainties, time delays and other model imperfections. We can generalize the optimial control framework here by incorporating a different cost function that penalizes worst-case scenario performance and thereby make the solution robust.</p>
+</li>
+<li>
+<p>Laplace transform: can be seen as a one-sided generalized Fourier transform that is valid for functions that do not converge to zero at <code>$t\to\infty$</code>. It&rsquo;s particularly useful because it transforms differential equations into algebraic equations, and convolution integrals in the time domain into simple products in the frequency domain:
+<code>$$ \mathcal{L}\left\{f(t)\right\} = f(s) = \int_{0^-}^{\infty}f(t)e^{-st}\mathrm{d}t $$</code>
+which gives without proof here:
+<code>$$ \mathcal{L}\left\{\mathrm{d}f/\mathrm{d}t\right\} = sf(s) $$</code>
+Therefore a standard control system after Laplace becomes
+<code>$$ \begin{align*} s\boldsymbol{x}(s) &amp;= \boldsymbol{Ax}(s) + \boldsymbol{Bu}(s)\\ \boldsymbol{y}(s) &amp;= \boldsymbol{Cx}(s) + \boldsymbol{Du}(s) \end{align*} $$</code>
+which is easily solved:
+<code>$$ \begin{align*} \boldsymbol{x}(s) &amp;= (s\boldsymbol{I} - \boldsymbol{A})^{-1}\boldsymbol{Bu}(s)\\ \boldsymbol{y}(s) &amp;= [\boldsymbol{C}(s\boldsymbol{I} - \boldsymbol{A})^{-1}\boldsymbol{C} + \boldsymbol{D}]\boldsymbol{u}(s)\overset{\Delta}{=}\boldsymbol{G}(s)\boldsymbol{u}(s) \end{align*} $$</code>
+with <code>$\boldsymbol{G}(s)$</code> defined above as the transfer function. For open-loop control (using system inversion) we need this <code>$\boldsymbol{G}$</code> to be stable and to have more zeros than poles.</p>
+</li>
+</ul>
+<h2 id="balanced-models-for-control">Balanced Models for Control</h2>
+<ul>
+<li>Model reduction: in many nonlinear systems it&rsquo;s possible to use linear control techniques e.g. to delay transition from laminar to turbulent flow in a spatially developing boundary layer, to reduce skin-friction drag in wall turbulence, and to stabilize the flow past an open cavity</li>
+<li>There are two broad approches to obtain reduced-order models (ROMs):
+<ul>
+<li>Start with a high-dimensional system e.g. discretized Navier-Stokes equations and project the dynamics onto a low-dimensional subspace identified</li>
+<li>Collect data from a simulation or an experiment and identify a low-rank model using data-driven techniques a.k.a. system identification</li>
+</ul>
+</li>
+<li>Balanced model reduction: consider a high-dimensional system and reduce it&rsquo;s complexity in the not-so-influential areas while keeping the overal important part</li>
+<li>Eigensystem realization algorithm (ERA) produces low-dimensional linear input-output models from sesor measurement of an impulse-response experiment based on the &ldquo;minimal realization &quot; theory</li>
+<li>Observer Kalman filter identification (OKID) was developed to complement the ERA for lightly damped experiemntal systems with noise</li>
+</ul>
+<h1 id="advanced-data-driven-modeling-and-control">Advanced Data-Driven Modeling and Control</h1>
+<p>In this part we cover a bunch of data-driven algorithms available, specifically they are designed for systems that lack a principled model.</p>
+<h2 id="data-driven-control">Data-Driven Control</h2>
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+%%{init:{"flowchart":{"curve":"natural"}}}%%
+
+flowchart LR
+    A(System):::system
+    B(Controller):::controller
+    
+    A -- Sensors<br>y --> B
+    B -- Actuators<br>u --> A
+
+    classDef system fill:#B0C4DE,stroke:#000,stroke-width:1.5px;
+    classDef controller fill:#F4A460,stroke:#000,stroke-width:1.5px;
+
+</div>
+
+<ul>
+<li>Model predictive control (MPC): adding weighted <code>$l$</code>-2 norms of the control and the control changes to the cost function:
+<code>$$ J(\boldsymbol{x}_i) = \sum_{k=0}^{m_p-1}\lVert \hat{\boldsymbol{x}}_{i+k}-\boldsymbol{r}_{i+k} \rVert_{\boldsymbol{Q}}^2 + \sum_{k=1}^{m_c-1}\left(\lVert\boldsymbol{u}_{i+k}\rVert_{\boldsymbol{R}}^2 + \lVert\Delta\boldsymbol{u}_{i+k}\rVert_{\boldsymbol{R}}^2 \right) $$</code>
+where <code>$\boldsymbol{Q}$</code> and <code>$\boldsymbol{R}$</code> are from the original LQR cost function, <code>$m_p$</code> is the number of time steps of prediction, and <code>$m_c$</code> is the number of time steps for the cost horizon purpose.</li>
+<li>Nonlinear system identification for control: use system identification techniques on nonlinear control systems with full state measurement of <code>$\boldsymbol{x}$</code></li>
+<li>DMD with control (DMDc): it&rsquo;s observed that naively applying DMD to data from a system with actuation would often result in incorrect dynamics as the effects of internal dynamics are confused with the effects of actuation. Instead, if the actuation signal is measured, a new DMD regression may be formulated in order to disambiguate the effect of internal dynamics from that of actuation and control. By including a matrix of actuation input history to the system
+<code>$$ \boldsymbol{\Upsilon} = \begin{bmatrix} | &amp; | &amp; &amp; | \\ \boldsymbol{u}_1 &amp; \boldsymbol{u}_2 &amp; \cdots &amp; \boldsymbol{u}_m\\ | &amp; | &amp; &amp; | \end{bmatrix} $$</code>
+we have the DMDc equations in matrix form:
+<code>$$ \boldsymbol{X}' \approx \boldsymbol{AX} + \boldsymbol{B\Upsilon} $$</code>
+from which we can solve for <code>$\boldsymbol{A}$</code> and <code>$\boldsymbol{B}$</code> using least-squares regression and SVD for dimensionality reduction.</li>
+<li>Koopman operator nonlinear control</li>
+<li>SINDy with control</li>
+<li>Machine learning control</li>
+<li>Reinforcement learning</li>
+<li>Iterative learning control: faster, not model-based, iterative optimization</li>
+<li>Genetic algorithms: start with a population of different ginetic sequences and propagate through generations until converged</li>
+<li>Genetic programming (GP): instead of searching for near-global optima, search for the best expression / program e.g. finding the dynamic system equations of certain dataset</li>
+<li>Adaptive extremum-seeking control: similar to ILC but in continuous systems, updating parameters in real time searching  for extremum of output</li>
+</ul>
+<h2 id="reinforcement-learning">Reinforcement Learning</h2>
+<ul>
+<li>The basic feedback loop of a reinforcement learning schematic is like below
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+    
+    flowchart LR
+        A("Agent<br>π(s,a,θ)"):::agent
+        B(Environment):::env
+        A --->|Action<br>a|B 
+        B -.->|Reward<br>r|A
+        B --->|Observe State<br>s|A
+
+        classDef agent fill:#ffa200,stroke-width:1.5px,stroke:black
+        classDef env fill:#d47dff,stroke-width:1.5px,stroke:black
+    
+</div>
+
+where the policy is often formulated as an optimization problem to give probabilistic action
+<code>$$ \boldsymbol{\pi}(\boldsymbol{s},\boldsymbol{a})=\text{Pr}(\boldsymbol{a}|\boldsymbol{s})\approx\boldsymbol{\pi}(\boldsymbol{s},\boldsymbol{a},\boldsymbol{\theta}) $$</code>
+and the environment modeled as a Markov decision process (MDP)
+<code>$$ P(\boldsymbol{s}',\boldsymbol{s},\boldsymbol{a}) = \text{Pr}(\boldsymbol{s}_{k+1}=\boldsymbol{s}'|\boldsymbol{s}_k=\boldsymbol{s},\boldsymbol{a}_k=\boldsymbol{a}) $$</code>
+with a reward function
+<code>$$ R(\boldsymbol{s}',\boldsymbol{s},\boldsymbol{a}) = \text{Pr}(\boldsymbol{r}_{k+1}|\boldsymbol{s}_{k+1}=\boldsymbol{s}',\boldsymbol{s}_k=\boldsymbol{s},\boldsymbol{a}_k=\boldsymbol{a}) $$</code>
+The value function, given policy <code>$\boldsymbol{\pi}$</code>, is then just
+<code>$$ V_{\boldsymbol{\pi}}(\boldsymbol{s}) = \mathbb{E}\left(\sum_{k=0}^{\infty}\gamma^k\boldsymbol{r}_k | \boldsymbol{s}_0=\boldsymbol{s}\right) $$</code>
+where <code>$\gamma$</code> is the discount rate, as future rewards should be discounted compared with the more valuable current rewards. This means the optimal policy is just
+<code>$$ \boldsymbol{\pi} = \arg\max_{\boldsymbol{\pi}} \mathbb{E}(\boldsymbol{r}_0 + \gamma V(\boldsymbol{s}')) $$</code>
+where <code>$\boldsymbol{s}'=\boldsymbol{s}_{k+1}$</code>. This is called the Bellman&rsquo;s equation.</li>
+<li>Categorization of RL techniques:
+<script src="/js/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        theme: 'forest',
+    });
+</script>
+<div class="mermaid">
+     
+    flowchart TB
+        A[/Deep RL/]:::deep
+
+        classDef deep fill:#fff,stroke-width:1.5px,stroke:#000
+
+        subgraph S1["Model-based RL"]
+            direction TB
+            B("Dynamic Programming (Bellamn Optimality)")
+            D("Actor Critic")
+            E("Deep MPC")
+            B ~~~ D 
+            D ~~~ E
+        end 
+
+        subgraph S2["Model-free RL"]
+            subgraph SUB1["Gradient Free"]
+                subgraph sub1["Off Policy"]
+                    direction TB
+                    F("Q-learning")
+                    G("DQN")
+                    F~~~G
+                end
+
+                subgraph sub2["On Policy"]
+                    H("SARSA")
+                end
+
+                sub1 ~~~ sub2
+            end
+
+            subgraph SUB2["Gradient-based"]
+                I("Deep Policy Network")
+                J("Policy Gradient Optimization")
+                I ~~~ J
+            end
+            
+            SUB1 ~~~ SUB2
+
+        end 
+
+        S1 ~~~ S2
+
+        D --> A
+        E --> A
+        G --> A
+        I --> A 
+    
+</div>
+
+We will talk about these one by one below.</li>
+<li>Model-based optimization and control
+<ul>
+<li>Dynamic programming (DP): Bellman equation with top-down or bottom-up approach</li>
+<li>Value iteration: update value of all states until converge</li>
+<li>Policy iteration: initialize and update value or policy iteratively until converge</li>
+</ul>
+</li>
+<li>Model-free reinforcement learning
+<ul>
+<li>Monte Carlo (MC) learning: estimate the value of states or actions by averaging the returns after the whole trajectory</li>
+<li>Temporal differences (TD) learning: continuous counterparty of MC learning</li>
+<li>State-action-reward-state-action (SARSA) learning: a specific type of TD learning that is used to learn the Q function on-policy
+<code>$$ Q^{\text{new}}(\boldsymbol{s}_k,\boldsymbol{a}_k) = \boldsymbol{Q}^{\text{old}}(\boldsymbol{s}_k,\boldsymbol{a}_k) + \alpha(R_{\Sigma}^{(n)} - Q^{\text{old}}(\boldsymbol{s}_k,\boldsymbol{a}_k)) $$</code>
+Note it&rsquo;s on-policy because the actual action sequence has been used to receive the rewards <code>$\boldsymbol{r}$</code> and evaluate the (n+1)-th step Q function</li>
+<li>Q-learning: slightly different from SARSA
+<code>$$ Q^{\text{new}}(\boldsymbol{s}_k,\boldsymbol{a}_k) = Q^{\text{old}}(\boldsymbol{s}_k,\boldsymbol{a}_k) + \alpha(\boldsymbol{r}_k + \gamma \max_{\boldsymbol{a}}Q(\boldsymbol{s}_{k+1},\boldsymbol{a}) - Q^{\text{old}}(\boldsymbol{s}_k,\boldsymbol{a}_k)) $$</code>
+Notice here the target value is <code>$\max_{\boldsymbol{a}} Q(\boldsymbol{s}_{k+1},\boldsymbol{a})$</code> and thus Q-learning is off-policy, as it uses the optimal action for the updates of the Q function. This makes experience relay possible (learn from watching the optimal alternative) and is closely related to how imitation learning works. We can also introduce <code>$\varepsilon$</code>-greedy in taking <code>$\max_{\boldsymbol{a}}Q$</code> which is related to simulated annealing from optimization, making the result more robust.</li>
+</ul>
+</li>
+<li>Deep reinforcement learning
+<ul>
+<li>Deep Q-learning (DQN): approximate the matrix Q function as a neural network</li>
+<li>Actor-Critic networks: actor as policy-based, and critic as value-based, use temporal difference signal from the critic to update the policy</li>
+</ul>
+</li>
+<li>Optimal nonlinear control
+<ul>
+<li>Hamilton-Jacobi-Bellman (HJB) equation extends the Bellman equation to a nonlinear system that&rsquo;s defined by differential equations
+<code>$$ -\frac{\delta V}{\delta t} = \min_{\boldsymbol{u}(t)}\left(\left(\frac{\delta V}{\delta /\boldsymbol{x}}\right)^T\!\!\!\boldsymbol{f}(\boldsymbol{x}(t),\boldsymbol{u}(t)) + \mathcal{L}(\boldsymbol{x}(t),\boldsymbol{u}(t))\right) $$</code>
+which gives the optimal policy for more general problems. The equation is usually solved numerically only.</li>
+</ul>
+</li>
+</ul>
+<h2 id="reduced-order-models-roms">Reduced-Order Models (ROMs)</h2>
+<ul>
+<li>Proper orthogonal decomposition (POD):
+<ul>
+<li>Measure and observe data <code>$\boldsymbol{X}$</code></li>
+<li>De-mean and get <code>$\boldsymbol{Y}:=\boldsymbol{X} - \overline{\boldsymbol{X}}$</code></li>
+<li>SVD to get spatial patterns (modes) <code>$\boldsymbol{\Phi}$</code> and temporal patterns <code>$\boldsymbol{\Psi}$</code> of the original data <code>$\boldsymbol{Y}=\boldsymbol{\Phi\Sigma\Psi}^{\ast}$</code></li>
+<li>Examine the modes and understand the primary spatial structures in the flow; the corresponding singular values in <code>$\boldsymbol{\Sigma}$</code> tells about the mode importances</li>
+<li>Use the most significant modes to reconstruct an approximate version of the original dataset</li>
+</ul>
+</li>
+<li>Fourier mode expansion: just like Fourier transformation extends SVD in decomposition, here by replacing SVD with Fourier we have better (temporal) Interpretability, less noise sensitivity and faster computation.</li>
+<li>Continuous-time and neural network versions of POD: skipped</li>
+</ul>
+<h2 id="interpolation-for-parametric-reduced-order-models">Interpolation for Parametric Reduced-Order Models</h2>
+<p>This chapter is about sparse interpolation methods for rapid and low-dimensional construction of the ROMs.</p>
+<h2 id="physics-informed-machine-learning">Physics-Informed Machine Learning</h2>
+<ul>
+<li>Mathematical foundation of physics-informed ML is still data-driven system identification</li>
+<li>Four critical aspects to developing a robust sensing framework
+<ul>
+<li>Sensor placement</li>
+<li>Sensor cost</li>
+<li>Discovery of the measurement map (DNN can help)</li>
+<li>Multi-modal data integration from diverse sensor types (SVD, ROMs and SINDy autoencoder)</li>
+</ul>
+</li>
+<li>Prominent algorithms and frameworks:
+<ul>
+<li>Fourier forecast</li>
+<li>Koopman forecast</li>
+<li>DeepONet (universal approximation theorem for nonlinear operators, namely NN can approximate not only functions, but also nonlinear operators, which is mapping from functions to functions)</li>
+<li>Physics-informed neural networks (PINN): use NN to approximate the solution of a PDE based on physic laws. The approximation aims to not only satisfy the PDE but also fit the data and its boundary/initial conditions</li>
+</ul>
+</li>
+<li>Boundary value problems (BVPs) involve solving differential equations where the solution is required to satisfy certain conditions at the boundaries of the domain. Deep learning helps here because
+<ul>
+<li>It can approximate the system and turn nonlinear problems linear so that we can exploit their linear superposition</li>
+<li>It reduces the dimensionality which helps with both numerical computation burden and analytical difficulty</li>
+</ul>
+</li>
+</ul>
+
+
+<script>
+  var unfocusableElems = document.querySelectorAll('pre');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+  var unfocusableElems = document.querySelectorAll('iframe');
+  unfocusableElems.forEach(function (el) { el.setAttribute("tabindex", "-1"); });
+</script>
+
+<footer>
+  
+<br><br>
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/blog/july2024/">七月我站在路口</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/blog\/july2024\/';
+    
+  } else if (e.which == 39) {  
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+<script src="https://giscus.app/client.js" data-repo="allenfrostline/allenfrostline.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk3NzEzOTkxNg==" data-category="General" data-category-id="DIC_kwDOBJkPzM4CbgIQ"
+        data-mapping="pathname" data-strict="0" data-reactions-enabled="0" data-emit-metadata="0"
+        data-input-position="bottom" data-theme="light" data-lang="en" data-loading="lazy" crossorigin="anonymous"
+        async>
+        </script>
+
+
+
+<script async src="/js/alt-title.js"></script>
+
+<script async src="/js/center-img.js"></script>
+
+<script async src="/js/external-link.js"></script>
+
+<script async src="/js/fix-footnote.js"></script>
+
+<script async src="/js/header-link.js"></script>
+
+<script async src="/js/load-typekit.js"></script>
+
+<script async src="/js/math-code.js"></script>
+
+<script async src="/js/mermaid.min.js"></script>
+
+<script async src="/js/right-quote.js"></script>
+
+
+<script src="/js/math-code.js"></script>
+
+  
+  
+  
+  
+</footer>
+</article>
+</body>
+
+</html>

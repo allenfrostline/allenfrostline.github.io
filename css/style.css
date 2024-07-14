@@ -29,6 +29,10 @@ label {
     font-size: inherit;
 }
 
+.mermaid {
+    text-align: center;
+}
+
 img {
     max-width: 100%;
 }
