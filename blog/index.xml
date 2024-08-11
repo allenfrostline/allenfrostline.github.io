@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 11 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>八月</title>
+      <link>https://allenfrostline.com/blog/aug2024/</link>
+      <pubDate>Sun, 11 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/aug2024/</guid>
+      <description>八月天天加班 八月没空</description>
+    </item>
     <item>
       <title>Notes on Data-Driven Science and Engineering</title>
       <link>https://allenfrostline.com/blog/notes-on-data-driven-sne/</link>
@@ -700,13 +707,6 @@
       <pubDate>Sat, 11 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/arma-for-aapl/</guid>
       <description>The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&amp;rsquo;re going to apply it on the stock price of Apple Inc. We will perform the prediction mainly in four parts: Data loading Decomposition ARMA: fit and predict Evaluation After the whole process, there&amp;rsquo;re some TBD concerns. Data loading import pandas as pd import numpy as np import</description>
-    </item>
-    <item>
-      <title>How to Deploy a Local Project onto Github</title>
-      <link>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</link>
-      <pubDate>Mon, 13 Feb 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/how-to-deploy-a-local-project-onto-github/</guid>
-      <description>This passage covers the major steps of deploying your local project (files in a well-structured folder) onto a Github repository. Here we take ~/Desktop/XGBoost as an example, in which I have three Python scripts and a Readme.md doc. Make sure you have the command line tool Git installed already.&#xA;(1) Open Terminal.app and enter the directory of the folder.&#xA;cd ~/Desktop/XGBoost (2) Initialize the directory to a Git project.&#xA;git init Now you&amp;rsquo;ll see a .</description>
     </item>
   </channel>
 </rss>
