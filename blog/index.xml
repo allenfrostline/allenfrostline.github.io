@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>九月来得好晚</title>
+      <link>https://allenfrostline.com/blog/sep2024/</link>
+      <pubDate>Sun, 01 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/sep2024/</guid>
+      <description>上个九月好像已经过去一个世纪那么久了。打开电脑第一句话就是这么俗套的开场，我也很无奈。但我的人生一遍一遍重复，每一遍都很像生死轮回，一个人投</description>
+    </item>
     <item>
       <title>八月</title>
       <link>https://allenfrostline.com/blog/aug2024/</link>
@@ -700,13 +707,6 @@
       <pubDate>Sun, 12 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</guid>
       <description>On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.</description>
-    </item>
-    <item>
-      <title>Basic Walkthrough of ARMA: Take AAPL for Example</title>
-      <link>https://allenfrostline.com/blog/arma-for-aapl/</link>
-      <pubDate>Sat, 11 Mar 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/arma-for-aapl/</guid>
-      <description>The ARMA model consists of two parts: Auto-Regressive and Moving Average. This is a powerful tool in predicting stationary time series. Today, we&amp;rsquo;re going to apply it on the stock price of Apple Inc. We will perform the prediction mainly in four parts: Data loading Decomposition ARMA: fit and predict Evaluation After the whole process, there&amp;rsquo;re some TBD concerns. Data loading import pandas as pd import numpy as np import</description>
     </item>
   </channel>
 </rss>
