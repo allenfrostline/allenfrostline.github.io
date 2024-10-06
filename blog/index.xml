@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>十</title>
+      <link>https://allenfrostline.com/blog/oct2024/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/oct2024/</guid>
+      <description>命运暂且的交错 在最后都化作乌有</description>
+    </item>
     <item>
       <title>九月来得好晚</title>
       <link>https://allenfrostline.com/blog/sep2024/</link>
@@ -700,13 +707,6 @@
       <pubDate>Sun, 26 Mar 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</guid>
       <description>A terrible thing just almost happened, to my Apple Pencil. It was not working. Not pairing with my iPad. Not charging even with the official female2female adapter. Not showing up on the Control Center. No where. It&amp;rsquo;s B-R-O-K-E-N, broken.&#xA;My Captain does not answer, his lips are pale and still,&#xA;My father does not feel my arm, he has no pulse nor will,&#xA;The ship is anchor&amp;rsquo;d safe and sound, its voyage closed and done,</description>
-    </item>
-    <item>
-      <title>Strategy: XGBoost Classification &#43; Technical Indicators</title>
-      <link>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</link>
-      <pubDate>Sun, 12 Mar 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/strategy-xgboost-technical-indicators/</guid>
-      <description>On many Kaggle public leaderboards, you will see an algorithm called &amp;ldquo;XGBoost&amp;rdquo;, or &amp;ldquo;Xtreme Gradient Boosting&amp;rdquo;. This is an optimized algorithm under the Gradient Boosting framework. The key difference between the normal boosting models and XGBoost, as far as I can see, is that XGBoost allows for parallel processing while keeps the accuracy on its performance. This dramatically makes large-scale machine learning algorithms (since boosting is essentially an ensemble of several weak learning algorithms) possible on personal computers (even on my MBP 2015), and further empowers people like me to apply them onto more practical scenarios, e.</description>
     </item>
   </channel>
 </rss>
