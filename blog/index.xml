@@ -20,7 +20,7 @@
       <link>https://allenfrostline.com/blog/vim-quick-save/</link>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/vim-quick-save/</guid>
-      <description>If you&amp;rsquo;re using iTerm2 like I do and you do pretty much everything in (neo-)vim, you&amp;rsquo;ve probably already built your mustle memory typing :w or :qa blazing fast. However, if you&amp;rsquo;re multilingual like I am, you&amp;rsquo;re probably also frequently frustrated because you cannot as quickly jumping between normal and insert modes when you&amp;rsquo;re on a different input source, say Chinese or Japanese &amp;ndash; and you need to be on normal mode first to save, that&amp;rsquo;s the rule.</description>
+      <description>If you do pretty much everything in (neo-)vim like me, you&amp;rsquo;ve probably already built your mustle memory to type :w or :qa blazing fast. However, if you&amp;rsquo;re multilingual like I am, you&amp;rsquo;re probably also frequently frustrated because you cannot as quickly jump between normal and insert modes when you&amp;rsquo;re on a different input source, say Chinese or Japanese &amp;ndash; and you need to be on normal mode first to save, that&amp;rsquo;s the rule.</description>
     </item>
     <item>
       <title>十</title>
