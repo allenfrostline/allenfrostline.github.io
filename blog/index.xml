@@ -6,8 +6,22 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>你说十一月你会来找我</title>
+      <link>https://allenfrostline.com/blog/nov2024/</link>
+      <pubDate>Sat, 09 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/nov2024/</guid>
+      <description>11月1号星期三，芝加哥大降温的第一周，破天荒下了一天的雪。你不在家，猫也不在家，我一个人很无聊，发现下雪了就去天台坐了一天。明明是工作日的</description>
+    </item>
+    <item>
+      <title>Quick Save in (Neo-)Vim</title>
+      <link>https://allenfrostline.com/blog/vim-quick-save/</link>
+      <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/vim-quick-save/</guid>
+      <description>If you&amp;rsquo;re using iTerm2 like I do and you do pretty much everything in (neo-)vim, you&amp;rsquo;ve probably already built your mustle memory typing :w or :qa blazing fast. However, if you&amp;rsquo;re multilingual like I am, you&amp;rsquo;re probably also frequently frustrated because you cannot as quickly jumping between normal and insert modes when you&amp;rsquo;re on a different input source, say Chinese or Japanese &amp;ndash; and you need to be on normal mode first to save, that&amp;rsquo;s the rule.</description>
+    </item>
     <item>
       <title>十</title>
       <link>https://allenfrostline.com/blog/oct2024/</link>
@@ -693,20 +707,6 @@
       <pubDate>Sun, 21 May 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/bitcoin-time-series/</guid>
       <description>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. Step 1: Import All Packages import quandl import cmocean import warnings import numpy as np import pandas as pd import seaborn as sns import statsmodels.api as sm from pytrends.request import TrendReq from scipy import stats as ss from datetime import datetime as dt from arch.</description>
-    </item>
-    <item>
-      <title>Notes on Operations Research</title>
-      <link>https://allenfrostline.com/blog/notes-on-operations-research/</link>
-      <pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/notes-on-operations-research/</guid>
-      <description>This is my lecture notes from the course Operations Research. The course was intended to be a fundamental one introducing various aspects of operations research, the thinking process of a typical optimization problem, and famous theorems and applications. Introduction Summary of this lecture: Introduction Basic Linear Programming Taha Chapters 1, 2, 3 Structure: 7 lectures 7 tutorials 2 assignments individual written open-book exam (only book and no notes in the</description>
-    </item>
-    <item>
-      <title>Is My Apple Pencil Broken!?</title>
-      <link>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</link>
-      <pubDate>Sun, 26 Mar 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/is-my-apple-pencil-broken/</guid>
-      <description>A terrible thing just almost happened, to my Apple Pencil. It was not working. Not pairing with my iPad. Not charging even with the official female2female adapter. Not showing up on the Control Center. No where. It&amp;rsquo;s B-R-O-K-E-N, broken.&#xA;My Captain does not answer, his lips are pale and still,&#xA;My father does not feel my arm, he has no pulse nor will,&#xA;The ship is anchor&amp;rsquo;d safe and sound, its voyage closed and done,</description>
     </item>
   </channel>
 </rss>
