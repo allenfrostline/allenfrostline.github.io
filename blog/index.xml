@@ -6,8 +6,15 @@
     <description>Recent content in Blog on Allen&#39;s Whiteboard</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://allenfrostline.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>十二月，没来过</title>
+      <link>https://allenfrostline.com/blog/dec2024/</link>
+      <pubDate>Wed, 11 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://allenfrostline.com/blog/dec2024/</guid>
+      <description>以前每年到了十一二月的时候，时间都会开始默默加速（尤其是相对于接下来的一二月相比，那是最难捱最缓慢的两个月），今年也不例外。十一月发生的事情</description>
+    </item>
     <item>
       <title>你说十一月你会来找我</title>
       <link>https://allenfrostline.com/blog/nov2024/</link>
@@ -700,13 +707,6 @@
       <pubDate>Sun, 21 May 2017 00:00:00 +0000</pubDate>
       <guid>https://allenfrostline.com/blog/an-interesting-econometrics-problem/</guid>
       <description>Today we&amp;rsquo;re gonna talk about an Econometrics problem raised by one of my supervisors, Dr. Bekker. It was both interesting and unexpectedly tricky, took me quite some days, and is now summarized as below.&#xA;Question Assume model $\mathbf{y}=\boldsymbol{\iota}\beta_1+\mathbf{x}\beta_2+\mathbf{u}$ and $\{u_i\}$ i.i.d. Let $\boldsymbol{x&#39;x}/n\to c&amp;gt;0$ and $\boldsymbol{\iota&#39;x}\to0$ as $n\to\infty$. Suppose an estimator $\hat\gamma$ is available for the ratio $\gamma=\beta_1/\beta_2$, which is distributed independently of $\mathbf{u}$ and&#xA;$$ n^{1/2}(\hat\gamma-\gamma)\overset{A}{\sim}\mathcal{N}(0,\lambda^2). $$&#xA;Define&#xA;$$ \hat\beta_2 = \frac{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;\mathbf{y}}{(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)&amp;rsquo;(\mathbf{x}+\boldsymbol{\iota}\hat\gamma)},\tag{1} $$</description>
-    </item>
-    <item>
-      <title>Bitcoin Inter-exchange Price Spread Prediction</title>
-      <link>https://allenfrostline.com/blog/bitcoin-time-series/</link>
-      <pubDate>Sun, 21 May 2017 00:00:00 +0000</pubDate>
-      <guid>https://allenfrostline.com/blog/bitcoin-time-series/</guid>
-      <description>Price prediction is thought to be very difficult for any equity, however the price spread between two exchanges may not. We look into the price spread between two of the largest Bitcoin exchanges: Bitstamp and BTC-E. Step 1: Import All Packages import quandl import cmocean import warnings import numpy as np import pandas as pd import seaborn as sns import statsmodels.api as sm from pytrends.request import TrendReq from scipy import stats as ss from datetime import datetime as dt from arch.</description>
     </item>
   </channel>
 </rss>
