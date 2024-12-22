@@ -108,12 +108,17 @@ enil stella norf. 🦆
     width: 100%;
     display: grid;
     align-items: center;
-    grid-gap: 5px;
+    grid-gap: 0px;
     overflow: hidden;
 }
 
 .grid div {
     text-align: center;
+    margin-bottom: -8px;
+}
+
+.col5 {
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .col7 {
@@ -122,6 +127,10 @@ enil stella norf. 🦆
 
 .col8 {
     grid-template-columns: repeat(8, 1fr);
+}
+
+.row5 {
+    grid-template-rows: repeat(5, 20%);
 }
 
 .grid img {
@@ -177,8 +186,21 @@ enil stella norf. 🦆
     grid-row-end: span 4;
     grid-column-end: span 4;
 }
+
+.span-53 {
+    grid-row-end: span 5;
+    grid-column-end: span 3;
+}
 &lt;/style&gt;
 &lt;p&gt;I have recently started learning pottery, specifically wheel throwing. Quite a meditative process it is to turn clay (a fine word for mud/soil/earth) into any form in your mind with nothing but a wheel and your bare hands. More than sure that it&amp;rsquo;ll be a long-term hobby of mine, I doubt anybody would be willing to pay for my pieces yet, and thus am just showing my work below for illustration.&lt;/p&gt;
+&lt;h1 id=&#34;autumn--winter-2024&#34;&gt;Autumn &amp;amp; Winter 2024&lt;/h1&gt;
+&lt;p&gt;Took several hand building classes and started making weird stuff ʕ•ᴥ•ʔ and decided it&amp;rsquo;s not too bad to keep the background in the photos.&lt;/p&gt;
+&lt;div id=&#34;autumn-winter-2024&#34; class=&#34;grid col8 row5&#34;&gt;
+    &lt;div class=&#34;span-22&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/lidless.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-43&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/capsule.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-53&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/knee.png&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;span-22&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/cones.png&#34;&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;h1 id=&#34;spring-2024&#34;&gt;Spring 2024&lt;/h1&gt;
 &lt;p&gt;I started throwing porcelain and &lt;a href=&#34;https://en.wikipedia.org/wiki/Celadon&#34;&gt;celadon&lt;/a&gt; (青瓷, aka &lt;em&gt;greenware&lt;/em&gt;, a type of porcelain glazed in jade green) when I came back to my hometown Shangyu (上虞), which turned out to be one of the oldest origins of celadon since the Han Dynasty (AD25 - AD220). The texture of the clay is much different, specifically in that it tends to be rather soft and smooth yet really absorbent if you apply any water when throwing it (it will quickly end up collapsing, or cracking when dried). A rule of thumb is to lubricate it with slip only, as infrequently as possible.&lt;/p&gt;
 &lt;p&gt;Another interesting trait of porcelain is that it&amp;rsquo;s usually trimmed only when fully dried, which is why you sometimes see paper thin porcelain cups and bowls that are almost translucent. Carving on a bone dry surface is also a really different experience. Both trimming and carving tools need to be frequently sharpened.&lt;/p&gt;
@@ -195,9 +217,9 @@ enil stella norf. 🦆
     &lt;div class=&#34;span-22&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/celadon_small_bud_vase.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/porcelain_knit_bowl.png&#34; width=75%&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;h1 id=&#34;fall--winter-2023&#34;&gt;Fall &amp;amp; Winter 2023&lt;/h1&gt;
+&lt;h1 id=&#34;autumn--winter-2023&#34;&gt;Autumn &amp;amp; Winter 2023&lt;/h1&gt;
 &lt;p&gt;Been throwing pottery on a weekly basis during the latter half of year. Learning the techniques required to throw big, tall guys (and eventually back to the small ones).&lt;/p&gt;
-&lt;div id=&#34;fall-winter-2023&#34; class=&#34;grid col7&#34;&gt;
+&lt;div id=&#34;autumn-winter-2023&#34; class=&#34;grid col7&#34;&gt;
     &lt;div class=&#34;span-12&#34; style=&#34;margin-right:-10%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/sharp_lidded_teapot.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34; style=&#34;margin-left:15%;margin-right:-5%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/handle_lidded_teapot.png&#34; width=80%&gt;&lt;/div&gt;
     &lt;div class=&#34;span-12&#34; style=&#34;margin-left:20%&#34;&gt;&lt;img src=&#34;https://allenfrostline.com/images/pottery/textured_bowl.png&#34; width=90%&gt;&lt;/div&gt;
